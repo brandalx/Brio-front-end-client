@@ -37,3 +37,6 @@ build/
 *.pyc
 _pycache_/
 .env
+#parcel
+yarn.lock
+.parcel-cache
