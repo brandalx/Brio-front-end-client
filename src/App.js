@@ -1,5 +1,10 @@
-import React from "react";
-
+import React from 'react';
+import AppRoutes from './AppRoutes';
+import { ChakraProvider } from '@chakra-ui/react';
 export default function App() {
-  return <div>Hello World</div>;
+  return (
+    <ChakraProvider>
+      <AppRoutes />
+    </ChakraProvider>
+  );
 }
