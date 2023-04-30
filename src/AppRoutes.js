@@ -5,24 +5,28 @@ import Page404 from './pages/Page404';
 import Footer from './components/Footer';
 import Main from './components/Main';
 import Header from './components/Header';
+import { globalContext } from './context/globalContext';
 
 export default function AppRoutes() {
   return (
     <>
-      <BrowserRouter>
-        <div className='wrapper'>
-          <Header />
+      <globalContext.Provider value={{}}>
+        {/* TODO: pass global values in value obj */}
+        <BrowserRouter>
+          <div className='wrapper'>
+            <Header />
 
-          <Main>
-            <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/*' element={<Page404 />} />
-            </Routes>
-          </Main>
+            <Main>
+              <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/*' element={<Page404 />} />
+              </Routes>
+            </Main>
 
-          <Footer />
-        </div>
-      </BrowserRouter>
+            <Footer />
+          </div>
+        </BrowserRouter>
+      </globalContext.Provider>
     </>
   );
 }
