@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   chakra,
+  Text,
   Box,
   Flex,
   useColorModeValue,
@@ -43,9 +44,9 @@ export default function Navbar() {
                 <Logo />
                 <VisuallyHidden>Brio</VisuallyHidden>
               </chakra.a>
-              <chakra.h1 fontSize='xl' fontWeight='extrabold' color='primary.default' ml='2'>
+              <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='2'>
                 Brio
-              </chakra.h1>
+              </Text>
 
               <Flex alignItems='center' justifyContent='center' px={4} display={{ base: 'none', md: 'inline-flex' }}>
                 <InputGroup>
