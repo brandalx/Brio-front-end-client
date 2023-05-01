@@ -5,7 +5,7 @@ export default function Footer() {
   const { colorMode } = useColorMode();
 
   return (
-    <footer className='page-header' style={{ background: theme.colors[colorMode].bg }}>
+    <footer className='page-header' style={{ background: theme.colors.bg }}>
       <p>This is sticky footer</p>
     </footer>
   );

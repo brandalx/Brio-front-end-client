@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Sun from '../assets/svg/Sun';
-import Moon from '../assets/svg/Moon';
 import {
   chakra,
   Box,
@@ -14,14 +12,12 @@ import {
   VStack,
   IconButton,
   CloseButton,
-  useColorMode,
   InputGroup,
   Input,
   InputRightElement,
   Badge,
   Avatar,
   Container,
-  Heading,
   MenuItem,
   MenuDivider,
   MenuList,
@@ -34,11 +30,9 @@ import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import Logo from '../assets/svg/logo';
 
 export default function Navbar() {
-  const dc = useColorMode().colorMode;
-
   const bg = useColorModeValue('white', 'gray.800');
   const mobileNav = useDisclosure();
-  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <>
       <Container maxW='1110px'>
@@ -49,7 +43,7 @@ export default function Navbar() {
                 <Logo />
                 <VisuallyHidden>Brio</VisuallyHidden>
               </chakra.a>
-              <chakra.h1 fontSize='xl' fontWeight='extrabold' color={`${dc}.primary.default`} ml='2'>
+              <chakra.h1 fontSize='xl' fontWeight='extrabold' color='primary.default' ml='2'>
                 Brio
               </chakra.h1>
 
@@ -66,7 +60,7 @@ export default function Navbar() {
               <HStack spacing={1} mr={1} display={{ base: 'none', md: 'inline-flex' }}>
                 <Button variant='ghost'>Restaurants</Button>
                 <Button variant='ghost'>Deals</Button>
-                <Box color={`${dc}.neutral.grayDark`}>|</Box>
+                <Box color='neutral.grayDark'>|</Box>
                 <Button variant='ghost'>My orders</Button>
                 <Button borderRadius='100px'>
                   <Flex gap={2}>
@@ -78,13 +72,13 @@ export default function Navbar() {
                 </Button>
                 <Button
                   mx={5}
-                  _hover={{ color: 'black', background: `${dc}.primary.30` }}
+                  _hover={{ color: 'black', background: 'primary.30' }}
                   color='white'
-                  background={`${dc}.primary.default`}
+                  background='primary.default'
                 >
                   Get Started
                 </Button>
-                <Button onClick={toggleColorMode}>{colorMode === 'light' ? <Moon /> : <Sun />}</Button>
+
                 <Menu>
                   <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                     <Avatar size='sm' name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />{' '}
@@ -153,13 +147,12 @@ export default function Navbar() {
                   </Button>
                   <Button
                     mx={5}
-                    _hover={{ color: 'black', background: `${dc}.primary.30` }}
+                    _hover={{ color: 'black', background: 'primary.30' }}
                     color='white'
-                    background={`${dc}.primary.default`}
+                    background='primary.default'
                   >
                     Get Started
                   </Button>
-                  <Button onClick={toggleColorMode}>{colorMode === 'light' ? <Moon /> : <Sun />}</Button>
                   <Avatar size='md' name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />{' '}
                   <Flex w='100%' justifyContent='space-between' px='16px'>
                     <Flex justifyContent='flex-end'>
