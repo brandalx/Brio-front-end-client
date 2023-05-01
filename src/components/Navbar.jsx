@@ -21,7 +21,12 @@ import {
   Badge,
   Avatar,
   Container,
-  Heading
+  Heading,
+  MenuItem,
+  MenuDivider,
+  MenuList,
+  Menu,
+  MenuButton
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
 
@@ -36,12 +41,8 @@ export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <>
-      <Heading as='h1' size='h1'>
-        This is an H1 heading
-      </Heading>
-
       <Container maxW='1110px'>
-        <chakra.header w='full' px={{ base: 2, sm: 4 }} py={4} shadow='md'>
+        <chakra.header w='full' px={{ base: 2, sm: 4 }} py={4}>
           <Flex alignItems='center' justifyContent='space-between' mx='auto'>
             <Flex>
               <chakra.a href='/' title='Homepage' display='flex' alignItems='center'>
@@ -84,7 +85,18 @@ export default function Navbar() {
                   Get Started
                 </Button>
                 <Button onClick={toggleColorMode}>{colorMode === 'light' ? <Moon /> : <Sun />}</Button>
-                <Avatar size='sm' name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />{' '}
+                <Menu>
+                  <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                    <Avatar size='sm' name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />{' '}
+                  </MenuButton>
+
+                  <MenuList>
+                    <MenuItem>Link 1</MenuItem>
+                    <MenuItem>Link 2</MenuItem>
+                    <MenuDivider />
+                    <MenuItem>Link 3</MenuItem>
+                  </MenuList>
+                </Menu>
               </HStack>
 
               <Box display={{ base: 'inline-flex', md: 'none' }}>
@@ -100,6 +112,7 @@ export default function Navbar() {
                 />
 
                 <VStack
+                  transition='all 0.2s'
                   flexDir='column-reverse'
                   alignItems='start'
                   pos='absolute'
@@ -111,7 +124,7 @@ export default function Navbar() {
                   p={2}
                   pb={4}
                   m={2}
-                  mt={6}
+                  mt={2}
                   bg={bg}
                   spacing={3}
                   borderRadius='15px'
@@ -148,16 +161,16 @@ export default function Navbar() {
                   </Button>
                   <Button onClick={toggleColorMode}>{colorMode === 'light' ? <Moon /> : <Sun />}</Button>
                   <Avatar size='md' name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />{' '}
-                  <Flex w='100%' justifyContent='space-between'>
-                    <Flex justifyContent='space-between'>
-                      <Flex alignItems='center'>
+                  <Flex w='100%' justifyContent='space-between' px='16px'>
+                    <Flex justifyContent='flex-end'>
+                      {/* <Flex alignItems='center'>
                         <Logo />
                       </Flex>
                       <Flex alignItems='center'>
                         <Box as='span' fontSize='xl' fontWeight='extrabold' color={`${dc}.primary.default`} ml='2'>
                           Brio
                         </Box>
-                      </Flex>
+                      </Flex> */}
                     </Flex>
                     <CloseButton aria-label='Close menu' onClick={mobileNav.onClose} />
                   </Flex>
