@@ -1,7 +1,5 @@
 import React from 'react';
 
-import theme from '../utils/theme';
-
 import Sun from '../assets/svg/Sun';
 import Moon from '../assets/svg/Moon';
 import {
@@ -22,7 +20,8 @@ import {
   InputRightElement,
   Badge,
   Avatar,
-  Container
+  Container,
+  Heading
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
 
@@ -37,6 +36,10 @@ export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <>
+      <Heading as='h1' size='h1'>
+        This is an H1 heading
+      </Heading>
+
       <Container maxW='1110px'>
         <chakra.header w='full' px={{ base: 2, sm: 4 }} py={4} shadow='md'>
           <Flex alignItems='center' justifyContent='space-between' mx='auto'>
