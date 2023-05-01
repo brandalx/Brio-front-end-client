@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import Main from './components/Main';
 import Header from './components/Header';
 import { globalContext } from './context/globalContext';
+import Navbar from './components/Navbar';
 
 export default function AppRoutes() {
   return (
@@ -14,7 +15,10 @@ export default function AppRoutes() {
         {/* TODO: pass global values in value obj */}
         <BrowserRouter>
           <div className='wrapper'>
-            <Header />
+            <Header>
+              {' '}
+              <Navbar />{' '}
+            </Header>
 
             <Main>
               <Routes>
