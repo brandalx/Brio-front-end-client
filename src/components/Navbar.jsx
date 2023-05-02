@@ -140,34 +140,59 @@ export default function Navbar() {
                   borderWidth={1}
                   shadow='lg'
                 >
-                  <Box>
-                    <InputGroup>
+                  <Box my='8px'>
+                    <InputGroup size='sm' fontSize='md' mx='10px'>
                       <InputRightElement pointerEvents='none'>
-                        <AiOutlineSearch />
+                        <AiOutlineSearch color='#828282' size={14} />
                       </InputRightElement>
-                      <Input type='text' size='xxs' sizeplaceholder='Search...' />
+                      <Input
+                        background='neutral.grayLightest'
+                        _placeholder={{ color: 'neutral.gray' }}
+                        borderRadius={100}
+                        fontSize='2xs'
+                        type='tel'
+                        placeholder='Search...'
+                      />
                     </InputGroup>
                   </Box>
                   <Button variant='ghost'>Restaurants</Button>
                   <Button variant='ghost'>Deals</Button>
                   <Button variant='ghost'>My orders</Button>
-                  <Button borderRadius='100px'>
-                    <Flex gap={2}>
-                      <Badge ml='1' colorScheme='blue' borderRadius={100} px={2} py={1}>
-                        1
-                      </Badge>{' '}
-                      <IconShoppingBag />
-                    </Flex>
+                  <Box as='div' ps={2} pe={4}>
+                    <Button background='primary.light' borderRadius='100px' py='20px' position='relative'>
+                      <Flex>
+                        <Badge
+                          fontSize='3xs'
+                          color='white'
+                          background='primary.default'
+                          borderRadius={100}
+                          px={2}
+                          py={1}
+                          position='absolute'
+                          top='-5px'
+                          right='-5px'
+                          transform='translate(20%, -20%)'
+                        >
+                          1
+                        </Badge>
+                        <IconShoppingBag color='#4E60FF' />
+                      </Flex>
+                    </Button>
+                  </Box>
+                  <Button variant='ghost' px={2} py={6} borderRadius={100}>
+                    <Menu>
+                      <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                        <Avatar size='md' name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />{' '}
+                      </MenuButton>
+
+                      <MenuList>
+                        <MenuItem>Link 1</MenuItem>
+                        <MenuItem>Link 2</MenuItem>
+                        <MenuDivider />
+                        <MenuItem>Link 3</MenuItem>
+                      </MenuList>
+                    </Menu>
                   </Button>
-                  <Button
-                    mx={5}
-                    _hover={{ color: 'black', background: 'primary.30' }}
-                    color='white'
-                    background='primary.default'
-                  >
-                    Get Started
-                  </Button>
-                  <Avatar size='md' name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />{' '}
                   <Flex w='100%' justifyContent='space-between' px='16px'>
                     <Flex justifyContent='flex-end'>
                       {/* <Flex alignItems='center'>
