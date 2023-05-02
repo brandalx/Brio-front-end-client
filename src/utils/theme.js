@@ -6,6 +6,8 @@ const config = {
 };
 
 const colors = {
+  white: '#FFFFFF',
+  black: '#000000',
   bg: '#F7F7F9',
   primary: {
     default: '#4E60FF',
@@ -16,7 +18,7 @@ const colors = {
     dark: '#3A4CEB'
   },
   neutral: {
-    black: '#000000',
+    black: '#2B2B43',
     grayDark: '#333333',
     gray: '#828282',
     grayLight: '#BDBDBD',
