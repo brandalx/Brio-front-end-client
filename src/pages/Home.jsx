@@ -8,21 +8,41 @@ export default function Home() {
     <>
       <Container maxW='1110px'>
         <Box>
-          <Grid templateColumns='repeat(2, 1fr)' gap={1}>
-            <GridItem w='100%' h='auto' bg='blue.500'>
+          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
+            <GridItem w='100%' h='auto' bg='primary.light' borderRadius={20}>
               <Flex alignItems='center'>
                 <Box w='50%'>
-                  <Image src={burgertest} alt='Dan Abramov' />
+                  <Image src={burgertest} alt='Promotion 1' />
                 </Box>
-                <Box w='50%'>text</Box>
+                <Box w='50%'>
+                  <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
+                    All deserts
+                  </Text>
+                  <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
+                    20% OFF
+                  </Text>
+                  <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
+                    Deserty
+                  </Text>
+                </Box>
               </Flex>
             </GridItem>
-            <GridItem w='100%' h='auto' bg='blue.500'>
+            <GridItem borderRadius={20} w='100%' h='auto' bg='primary.light'>
               <Flex alignItems='center'>
                 <Box w='50%'>
-                  <Image src={burgertest} alt='Dan Abramov' />
+                  <Image src={burgertest} alt='Promotion 1' />
                 </Box>
-                <Box w='50%'>text</Box>
+                <Box w='50%'>
+                  <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
+                    Big Burgers
+                  </Text>
+                  <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
+                    50% OFF
+                  </Text>
+                  <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
+                    Fooddies
+                  </Text>
+                </Box>
               </Flex>
             </GridItem>
           </Grid>
