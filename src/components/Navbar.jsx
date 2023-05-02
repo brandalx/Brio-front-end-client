@@ -23,7 +23,8 @@ import {
   MenuDivider,
   MenuList,
   Menu,
-  MenuButton
+  MenuButton,
+  InputLeftElement
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
 
@@ -39,7 +40,7 @@ export default function Navbar() {
       <Container maxW='1110px'>
         <chakra.header w='full' px={{ base: 2, sm: 4 }} py={4}>
           <Flex alignItems='center' justifyContent='space-between' mx='auto'>
-            <Flex>
+            <Flex alignItems='center'>
               <chakra.a href='/' title='Homepage' display='flex' alignItems='center'>
                 <Logo />
                 <VisuallyHidden>Brio</VisuallyHidden>
@@ -48,50 +49,62 @@ export default function Navbar() {
                 Brio
               </Text>
 
-              <Flex alignItems='center' justifyContent='center' px={4} display={{ base: 'none', md: 'inline-flex' }}>
-                <InputGroup>
-                  <InputRightElement pointerEvents='none'>
-                    <AiOutlineSearch />
-                  </InputRightElement>
-                  <Input type='tel' placeholder='Search...' />
-                </InputGroup>
-              </Flex>
+              <InputGroup size='md' fontSize='md' mx='10px'>
+                <InputRightElement pointerEvents='none'>
+                  <AiOutlineSearch color='#828282' size={18} />
+                </InputRightElement>
+                <Input
+                  background='neutral.grayLightest'
+                  _placeholder={{ color: 'neutral.gray' }}
+                  borderRadius={100}
+                  fontSize='2xs'
+                  type='tel'
+                  placeholder='Search...'
+                />
+              </InputGroup>
             </Flex>
             <HStack display='flex' alignItems='center' spacing={1}>
-              <HStack spacing={1} mr={1} display={{ base: 'none', md: 'inline-flex' }}>
+              <HStack spacing={2} mr={1} display={{ base: 'none', md: 'inline-flex' }}>
                 <Button variant='ghost'>Restaurants</Button>
                 <Button variant='ghost'>Deals</Button>
                 <Box color='neutral.grayDark'>|</Box>
                 <Button variant='ghost'>My orders</Button>
-                <Button borderRadius='100px'>
-                  <Flex gap={2}>
-                    <Badge ml='1' colorScheme='blue' borderRadius={100} px={2} py={1}>
-                      1
-                    </Badge>{' '}
-                    <IconShoppingBag />
-                  </Flex>
-                </Button>
-                <Button
-                  mx={5}
-                  _hover={{ color: 'black', background: 'primary.30' }}
-                  color='white'
-                  background='primary.default'
-                >
-                  Get Started
-                </Button>
+                <Box as='div' ps={2} pe={4}>
+                  <Button background='primary.light' borderRadius='100px' py='20px' position='relative'>
+                    <Flex>
+                      <Badge
+                        fontSize='3xs'
+                        color='white'
+                        background='primary.default'
+                        borderRadius={100}
+                        px={2}
+                        py={1}
+                        position='absolute'
+                        top='-5px'
+                        right='-5px'
+                        transform='translate(20%, -20%)'
+                      >
+                        1
+                      </Badge>
+                      <IconShoppingBag color='#4E60FF' />
+                    </Flex>
+                  </Button>
+                </Box>
 
-                <Menu>
-                  <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                    <Avatar size='sm' name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />{' '}
-                  </MenuButton>
+                <Button variant='ghost' px={2} py={6} borderRadius={100}>
+                  <Menu>
+                    <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                      <Avatar size='sm' name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />{' '}
+                    </MenuButton>
 
-                  <MenuList>
-                    <MenuItem>Link 1</MenuItem>
-                    <MenuItem>Link 2</MenuItem>
-                    <MenuDivider />
-                    <MenuItem>Link 3</MenuItem>
-                  </MenuList>
-                </Menu>
+                    <MenuList>
+                      <MenuItem>Link 1</MenuItem>
+                      <MenuItem>Link 2</MenuItem>
+                      <MenuDivider />
+                      <MenuItem>Link 3</MenuItem>
+                    </MenuList>
+                  </Menu>
+                </Button>
               </HStack>
 
               <Box display={{ base: 'inline-flex', md: 'none' }}>
@@ -132,7 +145,7 @@ export default function Navbar() {
                       <InputRightElement pointerEvents='none'>
                         <AiOutlineSearch />
                       </InputRightElement>
-                      <Input type='tel' placeholder='Search...' />
+                      <Input type='text' size='xxs' sizeplaceholder='Search...' />
                     </InputGroup>
                   </Box>
                   <Button variant='ghost'>Restaurants</Button>

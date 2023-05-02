@@ -77,18 +77,57 @@ const fonts = {
   mono: 'Menlo, monospace'
 };
 const fontSizes = {
-  xs: '60px',
-  sm: '20px',
-
-  md: '32px',
-
-  lg: '40px',
-
-  xl: '24px',
-
-  xxl: '18px'
+  '3xs': '0.75rem', //12px
+  '2xs': '0.875rem', //14px
+  xs: '1.125rem', //18px
+  sm: ' 1.25rem', //20px
+  md: '1.5rem', //24px
+  lg: '2rem', //32px
+  xl: '2.5rem', //40px
+  '2xl': '3.75rem' //60px
 };
 
-const theme = extendTheme({ colors, config, fontSizes, fonts, fontWeights, lineHeights, letterSpacings });
+const components = {
+  Button: {
+    defaultProps: {
+      size: '2xs',
+      variant: '2xs',
+      p: '50px'
+    },
+    sizes: {
+      '2xs': {
+        h: '30px',
+        fontSize: '2xs',
+        px: '10px'
+      }
+    }
+  }
+};
+
+const styles = {
+  global: {
+    // styles for the `body`
+    // styles for the `a`
+  }
+};
+// const sizes = {
+//   xl: {
+//     h: '56px',
+//     fontSize: 'lg',
+//     px: '32px',
+//     bg: '#9747FF'
+//   }
+// };
+const theme = extendTheme({
+  colors,
+  config,
+  fontSizes,
+  fonts,
+  fontWeights,
+  lineHeights,
+  letterSpacings,
+  components,
+  styles
+});
 
 export default theme;
