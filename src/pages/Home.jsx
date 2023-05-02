@@ -1,10 +1,9 @@
 import React from 'react';
-import { Box, Container, Flex, SimpleGrid, Stack, chakra, Text, GridItem, Grid, Image, Badge } from '@chakra-ui/react';
+import { Box, Container, Flex, Text, GridItem, Grid, Image, Badge } from '@chakra-ui/react';
 import img1 from '../assets/images/salad.jpg';
 import burgertest from '../assets/images/burgertest.png';
-import { Link } from 'react-router-dom';
 import Emoji from 'react-emojis';
-import { StarIcon } from '@chakra-ui/icons';
+import { AiOutlineClockCircle } from 'react-icons/ai';
 export default function Home() {
   return (
     <>
@@ -150,26 +149,125 @@ export default function Home() {
           </Grid>
         </Box>
 
-        <Box>
+        <Box py='25px'>
           <Text color='neutral.black' fontSize='sm'>
             Nearby restaurants
           </Text>
           <Box>
-            <Grid templateColumns='repeat(3, 1fr)' gap={3}>
-              <GridItem w='100%' h='10' bg='blue.500'>
-                <Box bg='neutral.white' border='1px' borderColor='neutral.grayLightest'>
+            <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
+              <GridItem w='100%' bg='neutral.white'>
+                <Box bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='lg'>
                   <Image src={img1} roundedTop='lg' />
 
                   <Box p='6'>
                     <Box>
                       <Text color='neutral.black' fontSize='xs' fontWeight='bold'>
-                        Royal Sushi House
+                        Burgers & Pizza
                       </Text>
+                      <Box display='flex'>
+                        <Box display='flex' alignItems='center' me={2}>
+                          {' '}
+                          <AiOutlineClockCircle color='#828282' />
+                        </Box>
+                        <Text color='neutral.gray' fontSize='3xs'>
+                          40-60 min * $24 min sum
+                        </Text>
+                      </Box>
+                      <Badge mt={4} bg='neutral.grayLightest' rounded='full' p={1} px={3} me='8px'>
+                        <Box display='flex'>
+                          <Box as='span' display='flex' alignItems='center' me={2}>
+                            <Emoji emoji='hamburger' size='20' />
+                          </Box>
+                          <Text color='neutral.grayDark' fontSize='3xs'>
+                            Burger
+                          </Text>
+                        </Box>
+                      </Badge>
+                      <Badge mt={2} bg='neutral.grayLightest' rounded='full' p={1} px={3}>
+                        <Box display='flex'>
+                          <Box as='span' display='flex' alignItems='center' me={2}>
+                            <Emoji emoji='sushi' size='20' />
+                          </Box>
+                          <Text color='neutral.grayDark' fontSize='3xs'>
+                            Sushi
+                          </Text>
+                        </Box>
+                      </Badge>
+                    </Box>
+                  </Box>
+                </Box>
+              </GridItem>
+              <GridItem w='100%' bg='neutral.white'>
+                <Box bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='lg'>
+                  <Image src={img1} roundedTop='lg' />
 
-                      <Text color='neutral.gray' fontSize='3xs'>
-                        30-40 min * $32 min sum
+                  <Box p='6'>
+                    <Box>
+                      <Text color='neutral.black' fontSize='xs' fontWeight='bold'>
+                        Burgers & Pizza
                       </Text>
-                      <Badge mt={4} bg='neutral.grayLightest' rounded='full' p={1} px={3}>
+                      <Box display='flex'>
+                        <Box display='flex' alignItems='center' me={2}>
+                          {' '}
+                          <AiOutlineClockCircle color='#828282' />
+                        </Box>
+                        <Text color='neutral.gray' fontSize='3xs'>
+                          40-60 min * $24 min sum
+                        </Text>
+                      </Box>
+                      <Badge mt={4} bg='neutral.grayLightest' rounded='full' p={1} px={3} me='8px'>
+                        <Box display='flex'>
+                          <Box as='span' display='flex' alignItems='center' me={2}>
+                            <Emoji emoji='hamburger' size='20' />
+                          </Box>
+                          <Text color='neutral.grayDark' fontSize='3xs'>
+                            Burger
+                          </Text>
+                        </Box>
+                      </Badge>
+                      <Badge mt={2} bg='neutral.grayLightest' rounded='full' p={1} px={3}>
+                        <Box display='flex'>
+                          <Box as='span' display='flex' alignItems='center' me={2}>
+                            <Emoji emoji='sushi' size='20' />
+                          </Box>
+                          <Text color='neutral.grayDark' fontSize='3xs'>
+                            Sushi
+                          </Text>
+                        </Box>
+                      </Badge>
+                    </Box>
+                  </Box>
+                </Box>
+              </GridItem>
+              <GridItem w='100%' bg='neutral.white'>
+                <Box bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='lg'>
+                  <Image src={img1} roundedTop='lg' />
+
+                  <Box p='6'>
+                    <Box>
+                      <Text color='neutral.black' fontSize='xs' fontWeight='bold'>
+                        Burgers & Pizza
+                      </Text>
+                      <Box display='flex'>
+                        <Box display='flex' alignItems='center' me={2}>
+                          {' '}
+                          <AiOutlineClockCircle color='#828282' />
+                        </Box>
+                        <Text color='neutral.gray' fontSize='3xs'>
+                          40-60 min * $24 min sum
+                        </Text>
+                      </Box>
+                      <Badge mt={4} bg='neutral.grayLightest' rounded='full' p={1} px={3} me='8px'>
+                        <Box display='flex'>
+                          <Box as='span' display='flex' alignItems='center' me={2}>
+                            <Emoji emoji='hamburger' size='20' />
+                          </Box>
+                          <Text color='neutral.grayDark' fontSize='3xs'>
+                            Burger
+                          </Text>
+                        </Box>
+                      </Badge>
+                      <Badge mt={2} bg='neutral.grayLightest' rounded='full' p={1} px={3}>
                         <Box display='flex'>
                           <Box as='span' display='flex' alignItems='center' me={2}>
                             <Emoji emoji='sushi' size='20' />
