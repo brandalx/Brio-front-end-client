@@ -49,7 +49,7 @@ export default function Home() {
           </Grid>
         </Box>
         <Box py={30}>
-          <Grid templateColumns='repeat(6, 1fr)' gap={3}>
+          <Grid templateColumns='repeat(6, 1fr)' gap={4}>
             <GridItem
               w='100%'
               h='auto'
@@ -60,8 +60,24 @@ export default function Home() {
               p={2}
             >
               <Box textAlign='center'>
-                <Emoji emoji='woman-dancing' size='40' />
+                <Emoji emoji='pizza' size='40' />
                 <Text fontSize='2xs' fontWeight='regular' color='primary.default'>
+                  Burger
+                </Text>
+              </Box>
+            </GridItem>
+            <GridItem
+              w='100%'
+              h='auto'
+              borderRadius={16}
+              bg='neutral.white'
+              borderColor='neutral.grayLightest'
+              borderWidth='1px'
+              p={2}
+            >
+              <Box textAlign='center'>
+                <Emoji emoji='pizza' size='40' />
+                <Text fontSize='2xs' fontWeight='regular' color='primary.gray'>
                   Burger
                 </Text>
               </Box>
