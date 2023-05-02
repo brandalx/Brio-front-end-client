@@ -3,6 +3,7 @@ import { Box, Container, Flex, SimpleGrid, Stack, chakra, Text, GridItem, Grid, 
 import img1 from '../assets/images/salad.jpg';
 import burgertest from '../assets/images/burgertest.png';
 import { Link } from 'react-router-dom';
+import Emoji from 'react-emojis';
 export default function Home() {
   return (
     <>
@@ -44,6 +45,26 @@ export default function Home() {
                   </Text>
                 </Box>
               </Flex>
+            </GridItem>
+          </Grid>
+        </Box>
+        <Box py={30}>
+          <Grid templateColumns='repeat(6, 1fr)' gap={3}>
+            <GridItem
+              w='100%'
+              h='auto'
+              borderRadius={16}
+              bg='primary.light'
+              borderColor='primary.default'
+              borderWidth='1px'
+              p={2}
+            >
+              <Box textAlign='center'>
+                <Emoji emoji='woman-dancing' size='40' />
+                <Text fontSize='2xs' fontWeight='regular' color='primary.default'>
+                  Burger
+                </Text>
+              </Box>
             </GridItem>
           </Grid>
         </Box>
