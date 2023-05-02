@@ -514,6 +514,106 @@ export default function Home() {
               </GridItem>
             </Grid>
           </Box>
+          <Box py={15} display='flex'>
+            <Grid templateColumns={{ base: 'repeat(4, 1fr)', sm: 'repeat(4 1fr)', md: 'repeat(6, 1fr)' }} gap={3}>
+              <GridItem h='auto'>
+                <Box
+                  as='button'
+                  textAlign='center'
+                  bg='neutral.white'
+                  border='1px'
+                  borderRadius='full'
+                  color='neutral.gray'
+                  fontWeight='extrabold'
+                  fontSize='3xs'
+                  px={2}
+                  py={1}
+                >
+                  DINING OPTIONS
+                </Box>
+              </GridItem>
+              <GridItem h='auto'>
+                <Box
+                  as='button'
+                  textAlign='center'
+                  bg='neutral.white'
+                  border='1px'
+                  borderRadius='full'
+                  color='neutral.gray'
+                  fontWeight='extrabold'
+                  fontSize='3xs'
+                  px={2}
+                  py={1}
+                >
+                  PRICE RANGE
+                </Box>
+              </GridItem>
+              <GridItem h='auto'>
+                <Box
+                  as='button'
+                  textAlign='center'
+                  bg='neutral.white'
+                  border='1px'
+                  borderRadius='full'
+                  color='neutral.gray'
+                  fontWeight='extrabold'
+                  fontSize='3xs'
+                  px={2}
+                  py={1}
+                >
+                  DELIVERY TIME
+                </Box>
+              </GridItem>
+              <GridItem h='auto'>
+                <Box
+                  as='button'
+                  textAlign='center'
+                  bg='neutral.white'
+                  border='1px'
+                  borderRadius='full'
+                  color='neutral.gray'
+                  fontWeight='extrabold'
+                  fontSize='3xs'
+                  px={2}
+                  py={1}
+                >
+                  DINING OPTIONS
+                </Box>
+              </GridItem>
+              <GridItem h='auto'>
+                <Box
+                  as='button'
+                  textAlign='center'
+                  bg='neutral.white'
+                  border='1px'
+                  borderRadius='full'
+                  color='neutral.gray'
+                  fontWeight='extrabold'
+                  fontSize='3xs'
+                  px={2}
+                  py={1}
+                >
+                  PAYMENT METHODS
+                </Box>
+              </GridItem>
+              <GridItem h='auto'>
+                <Box
+                  as='button'
+                  textAlign='center'
+                  bg='neutral.white'
+                  border='1px'
+                  borderRadius='full'
+                  color='neutral.gray'
+                  fontWeight='extrabold'
+                  fontSize='3xs'
+                  px={2}
+                  py={1}
+                >
+                  <Text>LOCATION</Text>
+                </Box>
+              </GridItem>
+            </Grid>
+          </Box>
         </Box>
       </Container>
     </>
