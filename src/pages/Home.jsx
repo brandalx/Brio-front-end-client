@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, Container, Flex, SimpleGrid, Stack, chakra, Text, GridItem, Grid, Image } from '@chakra-ui/react';
+import { Box, Container, Flex, SimpleGrid, Stack, chakra, Text, GridItem, Grid, Image, Badge } from '@chakra-ui/react';
 import img1 from '../assets/images/salad.jpg';
 import burgertest from '../assets/images/burgertest.png';
 import { Link } from 'react-router-dom';
 import Emoji from 'react-emojis';
+import { StarIcon } from '@chakra-ui/icons';
 export default function Home() {
   return (
     <>
@@ -147,6 +148,43 @@ export default function Home() {
               </Box>
             </GridItem>
           </Grid>
+        </Box>
+
+        <Box>
+          <Text color='neutral.black' fontSize='sm'>
+            Nearby restaurants
+          </Text>
+          <Box>
+            <Grid templateColumns='repeat(3, 1fr)' gap={3}>
+              <GridItem w='100%' h='10' bg='blue.500'>
+                <Box bg='neutral.white' border='1px' borderColor='neutral.grayLightest'>
+                  <Image src={img1} roundedTop='lg' />
+
+                  <Box p='6'>
+                    <Box>
+                      <Text color='neutral.black' fontSize='xs' fontWeight='bold'>
+                        Royal Sushi House
+                      </Text>
+
+                      <Text color='neutral.gray' fontSize='3xs'>
+                        30-40 min * $32 min sum
+                      </Text>
+                      <Badge mt={4} bg='neutral.grayLightest' rounded='full' p={1} px={3}>
+                        <Box display='flex'>
+                          <Box as='span' display='flex' alignItems='center' me={2}>
+                            <Emoji emoji='sushi' size='20' />
+                          </Box>
+                          <Text color='neutral.grayDark' fontSize='3xs'>
+                            Sushi
+                          </Text>
+                        </Box>
+                      </Badge>
+                    </Box>
+                  </Box>
+                </Box>
+              </GridItem>
+            </Grid>
+          </Box>
         </Box>
       </Container>
     </>

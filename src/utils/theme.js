@@ -19,7 +19,7 @@ const colors = {
   },
   neutral: {
     black: '#2B2B43',
-    grayDark: '#333333',
+    grayDark: '#545563',
     gray: '#828282',
     grayLight: '#BDBDBD',
     grayLightest: '#F2F2F2',
