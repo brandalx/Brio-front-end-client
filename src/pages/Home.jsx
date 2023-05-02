@@ -23,9 +23,7 @@ export default function Home() {
       <SimpleGrid bg={`${dc}.bg`} spacing={5} templateColumns='repeat(3, 1fr)' gap={6}>
         <Card>
           <CardHeader>
-            <Heading color={`${dc}.primary.default`} size='md'>
-              Customer dashboard
-            </Heading>
+            <Heading color={`${dc}.primary.default`}>Customer dashboard</Heading>
           </CardHeader>
           <CardBody>
             <Image src={img1} objectFit='contain' />
@@ -37,7 +35,7 @@ export default function Home() {
         </Card>
         <Card>
           <CardHeader>
-            <Heading size='md'> Customer dashboard</Heading>
+            <Heading> Customer dashboard</Heading>
           </CardHeader>
           <CardBody>
             <Text>View a summary of all your customers over the last month.</Text>
@@ -49,7 +47,7 @@ export default function Home() {
         </Card>
         <Card>
           <CardHeader>
-            <Heading size='md'> Customer dashboard</Heading>
+            <Heading> Customer dashboard</Heading>
           </CardHeader>
           <CardBody>
             <Text>View a summary of all your customers over the last month.</Text>

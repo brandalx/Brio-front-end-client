@@ -6,85 +6,42 @@ const config = {
 };
 
 const colors = {
-  light: {
-    bg: '#F7F7F9',
-    primary: {
-      default: '#4E60FF',
-      lightest: '#F8F9FF',
-      light: '#F3F4FF',
-      30: '#CACFFF',
-      hover: '#697BFF',
-      dark: '#3A4CEB'
-    },
-    neutral: {
-      black: '#000000',
-      grayDark: '#333333',
-      gray: '#828282',
-      grayLight: '#BDBDBD',
-      grayLightest: '#F2F2F2',
-      white: '#FFFFFF',
-      background: '#F7F7F9'
-    },
-    error: {
-      default: '#FF5C60',
-      lightest: '#FFF6F6',
-      light: '#FFEAEA',
-      hover: '#FF6B6F',
-      dark: '#E13E42'
-    },
-    success: {
-      default: '#1ABF70',
-      light: '#E8F9F1'
-    },
-    secondary: {
-      default: '#FD6D22',
-      light: '#FFF3ED'
-    },
-    tertiary: {
-      default: '#8C3EEE',
-      light: '#F6F0FE'
-    }
+  bg: '#F7F7F9',
+  primary: {
+    default: '#4E60FF',
+    lightest: '#F8F9FF',
+    light: '#F3F4FF',
+    30: '#CACFFF',
+    hover: '#697BFF',
+    dark: '#3A4CEB'
   },
-  dark: {
-    bg: '#030017',
-    primary: {
-      default: '#4E60FF',
-      lightest: '#F8F9FF',
-      light: '#F3F4FF',
-      30: '#CACFFF',
-      hover: '#1D004E',
-      dark: '#3A4CEB'
-    },
-    neutral: {
-      black: '#000000',
-      darkblack: '#93A6AE',
-      grayDark: '#333333',
-      gray: '#828282',
-      grayLight: '#BDBDBD',
-      grayLightest: '#F2F2F2',
-      white: '#FFFFFF',
-      darkwhite: '#FDFDFE',
-      background: '#F7F7F9'
-    },
-    error: {
-      default: '#FF5C60',
-      lightest: '#FFF6F6',
-      light: '#FFEAEA',
-      hover: '#FF6B6F',
-      dark: '#E13E42'
-    },
-    success: {
-      default: '#1ABF70',
-      light: '#E8F9F1'
-    },
-    secondary: {
-      default: '#FD6D22',
-      light: '#FFF3ED'
-    },
-    tertiary: {
-      default: '#8C3EEE',
-      light: '#F6F0FE'
-    }
+  neutral: {
+    black: '#000000',
+    grayDark: '#333333',
+    gray: '#828282',
+    grayLight: '#BDBDBD',
+    grayLightest: '#F2F2F2',
+    white: '#FFFFFF',
+    background: '#F7F7F9'
+  },
+  error: {
+    default: '#FF5C60',
+    lightest: '#FFF6F6',
+    light: '#FFEAEA',
+    hover: '#FF6B6F',
+    dark: '#E13E42'
+  },
+  success: {
+    default: '#1ABF70',
+    light: '#E8F9F1'
+  },
+  secondary: {
+    default: '#FD6D22',
+    light: '#FFF3ED'
+  },
+  tertiary: {
+    default: '#8C3EEE',
+    light: '#F6F0FE'
   }
 };
 
@@ -113,112 +70,64 @@ const fontWeights = {
   bold: 700,
   extrabold: 800
 };
+
 const fonts = {
-  fonts: {
-    body: 'Nunito, sans-serif',
-    heading: 'Nunito, sans-serif',
-    mono: 'Menlo, monospace'
-  }
+  body: 'Nunito, sans-serif',
+  heading: 'Nunito, sans-serif',
+  mono: 'Menlo, monospace'
 };
 const fontSizes = {
-  h1: {
-    size: '11px',
-    lineHeight: '82px',
-    letterSpacing: '0.1px',
-    fontWeight: 'bold'
-  },
-  h2: {
-    size: '40px',
-    lineHeight: '56px',
-    letterSpacing: '0.1px',
-    fontWeight: 'extrabold'
-  },
-  h3: {
-    size: '32px',
-    lineHeight: '42px',
-    letterSpacing: '0.1px',
-    fontWeight: 'bold'
-  },
-  h4: {
-    size: '24px',
-    lineHeight: '32px',
-    letterSpacing: '0.1px',
-    fontWeight: 'extrabold'
-  },
-  h5: {
-    size: '20px',
-    lineHeight: '28px',
-    letterSpacing: '0.1px',
-    fontWeight: 'semibold'
-  },
-  h6: {
-    size: '18px',
-    lineHeight: '24px',
-    letterSpacing: '0.1px',
-    fontWeight: 'bold'
-  },
-  subtitle1: {
-    size: '14px',
-    lineHeight: '20px',
-    letterSpacing: '0.1px',
-    fontWeight: 'bold'
-  },
-  subtitle2: {
-    size: '13px',
-    lineHeight: '18px',
-    letterSpacing: '0px',
-    fontWeight: 'semibold'
-  },
-  body1: {
-    size: '14px',
-    lineHeight: '20px',
-    letterSpacing: '0.1px',
-    fontWeight: 'normal'
-  },
-  body2: {
-    size: '13px',
-    lineHeight: '18px',
-    letterSpacing: '0.2px',
-    fontWeight: 'normal'
-  },
-  small1: {
-    size: '13px',
-    lineHeight: '18px',
-    letterSpacing: '0.1px',
-    fontWeight: 'bold'
-  },
-  small2: {
-    size: '12px',
-    lineHeight: '16px',
-    letterSpacing: '0px',
-    fontWeight: 'semibold'
-  },
-  small3: {
-    size: '10px',
-    lineHeight: '14px',
-    letterSpacing: '0px',
-    fontWeight: 'bold'
-  },
-  button1: {
-    size: '14px',
-    lineHeight: '20px',
-    letterSpacing: '0.4px',
-    fontWeight: 'bold'
-  },
-  button2: {
-    size: '12px',
-    lineHeight: '18px',
-    letterSpacing: '0.6px',
-    fontWeight: 'extrabold'
-  },
-  caption: {
-    size: '11px',
-    lineHeight: '16px',
-    letterSpacing: '0.6px',
-    fontWeight: 'bold'
+  '3xs': '0.75rem', //12px
+  '2xs': '0.875rem', //14px
+  xs: '1.125rem', //18px
+  sm: ' 1.25rem', //20px
+  md: '1.5rem', //24px
+  lg: '2rem', //32px
+  xl: '2.5rem', //40px
+  '2xl': '3.75rem' //60px
+};
+
+const components = {
+  Button: {
+    defaultProps: {
+      size: '2xs',
+      variant: '2xs',
+      p: '50px'
+    },
+    sizes: {
+      '2xs': {
+        h: '30px',
+        fontSize: '2xs',
+        px: '10px'
+      }
+    }
   }
 };
 
-const theme = extendTheme({ colors, config, fontSizes, fonts, fontWeights, lineHeights, letterSpacings });
+const styles = {
+  global: {
+    // styles for the `body`
+    // styles for the `a`
+  }
+};
+// const sizes = {
+//   xl: {
+//     h: '56px',
+//     fontSize: 'lg',
+//     px: '32px',
+//     bg: '#9747FF'
+//   }
+// };
+const theme = extendTheme({
+  colors,
+  config,
+  fontSizes,
+  fonts,
+  fontWeights,
+  lineHeights,
+  letterSpacings,
+  components,
+  styles
+});
 
 export default theme;
