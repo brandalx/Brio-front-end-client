@@ -79,7 +79,7 @@ export default function Restaurant() {
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
             <GridItem w='100%' h='100%'>
               <Box py='25px'>
-                <Text color='neutral.black' fontSize='sm'>
+                <Text color='neutral.black' fontWeight='semibold' fontSize='sm'>
                   Menu
                 </Text>
                 <Box>
