@@ -8,6 +8,7 @@ import Header from './components/Header';
 import { globalContext } from './context/globalContext';
 import Navbar from './components/Navbar';
 import Restaurant from './pages/Restaurant';
+import Product from './pages/Product';
 
 export default function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ export default function AppRoutes() {
               <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/restaurant' element={<Restaurant />} />
+                <Route path='/restaurant/product' element={<Product />} />
                 <Route path='/*' element={<Page404 />} />
               </Routes>
             </Main>
