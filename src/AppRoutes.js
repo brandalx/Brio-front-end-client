@@ -7,6 +7,7 @@ import Main from './components/Main';
 import Header from './components/Header';
 import { globalContext } from './context/globalContext';
 import Navbar from './components/Navbar';
+import Restaurant from './pages/Restaurant';
 
 export default function AppRoutes() {
   return (
@@ -23,6 +24,7 @@ export default function AppRoutes() {
             <Main>
               <Routes>
                 <Route path='/' element={<Home />} />
+                <Route path='/restaurant' element={<Restaurant />} />
                 <Route path='/*' element={<Page404 />} />
               </Routes>
             </Main>
