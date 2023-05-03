@@ -9,9 +9,9 @@ export default function Restaurant() {
       <Box background='bg' py='50px'>
         <Container maxW='1110px'>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
-            <GridItem w='100%'>
-              <Flex>
-                <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '0.5fr 1fr' }} gap={2}>
+            <GridItem w='100%' h='100%'>
+              <Flex h='100%'>
+                <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '0.5fr 1fr' }} gap={4}>
                   <Flex alignItems='center'>
                     <GridItem w='100%'>
                       <Image borderWidth='15px' borderColor='neutral.white' borderRadius='16px' src={img1} />
@@ -19,7 +19,7 @@ export default function Restaurant() {
                   </Flex>
                   <GridItem w='100%'>
                     {' '}
-                    <Flex flexDirection='column'>
+                    <Flex flexDirection='column' justifyContent='center' h='100%'>
                       <Text fontSize='xl' fontWeight='extrabold'>
                         Royal Sushi House
                       </Text>
