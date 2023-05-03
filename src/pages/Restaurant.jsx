@@ -232,16 +232,6 @@ export default function Restaurant() {
                 </Box>
               </Box>
             </GridItem>
-            <GridItem w='100%' h='100%'>
-              <Box my='25px' border='1px' borderColor='primary.default' borderRadius='16px' h='100%'>
-                <Flex flexDirection='column' textAlign='center' justifyItems='center' alignItems='center'>
-                  <Box mt='50%'>
-                    <Emoji emoji='construction' size='20' />
-                    <Text>We're working on this section</Text>
-                  </Box>
-                </Flex>
-              </Box>
-            </GridItem>
           </Grid>
         </Container>
       </Box>
