@@ -4,6 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import './css/tools/stickyFooter.css';
 import theme from './utils/theme';
 import './css/tools/fonts.css';
+
 export default function App() {
   return (
     <ChakraProvider theme={theme}>
