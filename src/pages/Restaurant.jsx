@@ -1,7 +1,21 @@
-import { Box, Container, Flex, GridItem, Text, Image, Grid } from '@chakra-ui/react';
+import {
+  Box,
+  Container,
+  Flex,
+  Badge,
+  GridItem,
+  Text,
+  Image,
+  Grid,
+  Heading,
+  Stack,
+  Avatar,
+  Button
+} from '@chakra-ui/react';
 import React from 'react';
 import img1 from '../assets/images/salad.jpg';
 import { AiOutlineClockCircle } from 'react-icons/ai';
+import Emoji from 'react-emojis';
 
 export default function Restaurant() {
   return (
@@ -56,6 +70,177 @@ export default function Restaurant() {
                   />
                 </Box>
               </Flex>
+            </GridItem>
+          </Grid>
+        </Container>
+      </Box>
+      <Box>
+        <Container maxW='1110px'>
+          <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
+            <GridItem w='100%' h='100%'>
+              <Box py='25px'>
+                <Text color='neutral.black' fontSize='sm'>
+                  Menu
+                </Text>
+                <Box>
+                  <Grid
+                    templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
+                    gap={4}
+                  >
+                    <GridItem w='100%' bg='neutral.white'>
+                      <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px'>
+                        <Box>
+                          <Image
+                            borderRadius='16px'
+                            w='100%'
+                            src='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                          />
+                        </Box>
+                        <Stack>
+                          <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
+                            Nigiri set
+                          </Text>
+                          <Text color='neutral.gray' fontSize='3xs'>
+                            Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
+                            et saepe.
+                          </Text>
+                          <Flex justifyContent='space-between' alignItems='center'>
+                            <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                              $ 16.80
+                            </Text>
+                            <Button
+                              background='primary.light'
+                              borderRadius='100px'
+                              py='10px'
+                              px='10px'
+                              fontSize='md'
+                              color='primary.default'
+                            >
+                              +
+                            </Button>
+                          </Flex>
+                        </Stack>
+                      </Box>
+                    </GridItem>
+
+                    <GridItem w='100%' bg='neutral.white'>
+                      <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px'>
+                        <Box>
+                          <Image
+                            borderRadius='16px'
+                            w='100%'
+                            src='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                          />
+                        </Box>
+                        <Stack>
+                          <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
+                            Nigiri set
+                          </Text>
+                          <Text color='neutral.gray' fontSize='3xs'>
+                            Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
+                            et saepe.
+                          </Text>
+                          <Flex justifyContent='space-between' alignItems='center'>
+                            <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                              $ 16.80
+                            </Text>
+                            <Button
+                              background='primary.light'
+                              borderRadius='100px'
+                              py='10px'
+                              px='10px'
+                              fontSize='md'
+                              color='primary.default'
+                            >
+                              +
+                            </Button>
+                          </Flex>
+                        </Stack>
+                      </Box>
+                    </GridItem>
+                    <GridItem w='100%' bg='neutral.white'>
+                      <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px'>
+                        <Box>
+                          <Image
+                            borderRadius='16px'
+                            w='100%'
+                            src='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                          />
+                        </Box>
+                        <Stack>
+                          <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
+                            Nigiri set
+                          </Text>
+                          <Text color='neutral.gray' fontSize='3xs'>
+                            Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
+                            et saepe.
+                          </Text>
+                          <Flex justifyContent='space-between' alignItems='center'>
+                            <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                              $ 16.80
+                            </Text>
+                            <Button
+                              background='primary.light'
+                              borderRadius='100px'
+                              py='10px'
+                              px='10px'
+                              fontSize='md'
+                              color='primary.default'
+                            >
+                              +
+                            </Button>
+                          </Flex>
+                        </Stack>
+                      </Box>
+                    </GridItem>
+                    <GridItem w='100%' bg='neutral.white'>
+                      <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px'>
+                        <Box>
+                          <Image
+                            borderRadius='16px'
+                            w='100%'
+                            src='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                          />
+                        </Box>
+                        <Stack>
+                          <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
+                            Nigiri set
+                          </Text>
+                          <Text color='neutral.gray' fontSize='3xs'>
+                            Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
+                            et saepe.
+                          </Text>
+                          <Flex justifyContent='space-between' alignItems='center'>
+                            <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                              $ 16.80
+                            </Text>
+                            <Button
+                              background='primary.light'
+                              borderRadius='100px'
+                              py='10px'
+                              px='10px'
+                              fontSize='md'
+                              color='primary.default'
+                            >
+                              +
+                            </Button>
+                          </Flex>
+                        </Stack>
+                      </Box>
+                    </GridItem>
+                  </Grid>
+                </Box>
+              </Box>
+            </GridItem>
+            <GridItem w='100%' h='100%'>
+              <Box my='25px' border='1px' borderColor='primary.default' borderRadius='16px' h='100%'>
+                <Flex flexDirection='column' textAlign='center' justifyItems='center' alignItems='center'>
+                  <Box mt='50%'>
+                    <Emoji emoji='construction' size='20' />
+                    <Text>We're working on this section</Text>
+                  </Box>
+                </Flex>
+              </Box>
             </GridItem>
           </Grid>
         </Container>
