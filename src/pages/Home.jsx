@@ -4,6 +4,7 @@ import img1 from '../assets/images/salad.jpg';
 import burgertest from '../assets/images/burgertest.png';
 import Emoji from 'react-emojis';
 import { AiOutlineClockCircle } from 'react-icons/ai';
+import CategoryPicker from '../components/CategoryPicker';
 export default function Home() {
   return (
     <>
@@ -50,102 +51,13 @@ export default function Home() {
         </Box>
         <Box py={30}>
           <Grid templateColumns={{ base: 'repeat(3, 1fr)', md: 'repeat(6, 1fr)' }} gap={4}>
-            <GridItem
-              w='100%'
-              h='auto'
-              borderRadius={16}
-              bg='primary.light'
-              borderColor='primary.default'
-              borderWidth='1px'
-              p={2}
-            >
-              <Box textAlign='center'>
-                <Emoji emoji='pizza' size='40' />
-                <Text fontSize='2xs' fontWeight='regular' color='primary.default'>
-                  Pizza
-                </Text>
-              </Box>
-            </GridItem>
-            <GridItem
-              w='100%'
-              h='auto'
-              borderRadius={16}
-              bg='neutral.white'
-              borderColor='neutral.grayLightest'
-              borderWidth='1px'
-              p={2}
-            >
-              <Box textAlign='center'>
-                <Emoji emoji='hamburger' size='40' />
-                <Text fontSize='2xs' fontWeight='regular' color='primary.gray'>
-                  Burger
-                </Text>
-              </Box>
-            </GridItem>
-            <GridItem
-              w='100%'
-              h='auto'
-              borderRadius={16}
-              bg='neutral.white'
-              borderColor='neutral.grayLightest'
-              borderWidth='1px'
-              p={2}
-            >
-              <Box textAlign='center'>
-                <Emoji emoji='cut-of-meat' size='40' />
-                <Text fontSize='2xs' fontWeight='regular' color='primary.gray'>
-                  BBQ
-                </Text>
-              </Box>
-            </GridItem>
-            <GridItem
-              w='100%'
-              h='auto'
-              borderRadius={16}
-              bg='neutral.white'
-              borderColor='neutral.grayLightest'
-              borderWidth='1px'
-              p={2}
-            >
-              <Box textAlign='center'>
-                <Emoji emoji='sushi' size='40' />
-                <Text fontSize='2xs' fontWeight='regular' color='primary.gray'>
-                  Sushi
-                </Text>
-              </Box>
-            </GridItem>
-            <GridItem
-              w='100%'
-              h='auto'
-              borderRadius={16}
-              bg='primary.light'
-              borderColor='primary.default'
-              borderWidth='1px'
-              p={2}
-            >
-              <Box textAlign='center'>
-                <Emoji emoji='broccoli' size='40' />
-                <Text fontSize='2xs' fontWeight='regular' color='primary.default'>
-                  Vegan
-                </Text>
-              </Box>
-            </GridItem>
-            <GridItem
-              w='100%'
-              h='auto'
-              borderRadius={16}
-              bg='primary.light'
-              borderColor='primary.default'
-              borderWidth='1px'
-              p={2}
-            >
-              <Box textAlign='center'>
-                <Emoji emoji='cupcake' size='40' />
-                <Text fontSize='2xs' fontWeight='regular' color='primary.default'>
-                  Desserts
-                </Text>
-              </Box>
-            </GridItem>
+            <CategoryPicker emoji='pizza' label='Pizza' />
+
+            <CategoryPicker emoji='hamburger' label='Burger' />
+            <CategoryPicker emoji='cut-of-meat' label='   Sushi' />
+            <CategoryPicker emoji='sushi' label='Sushi' />
+            <CategoryPicker emoji='broccoli' label='Vegan' />
+            <CategoryPicker emoji='cupcake' label='  Desserts' />
           </Grid>
         </Box>
 
@@ -416,102 +328,13 @@ export default function Home() {
           </Text>
           <Box py={15}>
             <Grid templateColumns={{ base: 'repeat(3, 1fr)', md: 'repeat(6, 1fr)' }} gap={4}>
-              <GridItem
-                w='100%'
-                h='auto'
-                borderRadius={16}
-                bg='primary.light'
-                borderColor='primary.default'
-                borderWidth='1px'
-                p={2}
-              >
-                <Box textAlign='center'>
-                  <Emoji emoji='pizza' size='40' />
-                  <Text fontSize='2xs' fontWeight='regular' color='primary.default'>
-                    Pizza
-                  </Text>
-                </Box>
-              </GridItem>
-              <GridItem
-                w='100%'
-                h='auto'
-                borderRadius={16}
-                bg='neutral.white'
-                borderColor='neutral.grayLightest'
-                borderWidth='1px'
-                p={2}
-              >
-                <Box textAlign='center'>
-                  <Emoji emoji='hamburger' size='40' />
-                  <Text fontSize='2xs' fontWeight='regular' color='primary.gray'>
-                    Burger
-                  </Text>
-                </Box>
-              </GridItem>
-              <GridItem
-                w='100%'
-                h='auto'
-                borderRadius={16}
-                bg='neutral.white'
-                borderColor='neutral.grayLightest'
-                borderWidth='1px'
-                p={2}
-              >
-                <Box textAlign='center'>
-                  <Emoji emoji='cut-of-meat' size='40' />
-                  <Text fontSize='2xs' fontWeight='regular' color='primary.gray'>
-                    BBQ
-                  </Text>
-                </Box>
-              </GridItem>
-              <GridItem
-                w='100%'
-                h='auto'
-                borderRadius={16}
-                bg='neutral.white'
-                borderColor='neutral.grayLightest'
-                borderWidth='1px'
-                p={2}
-              >
-                <Box textAlign='center'>
-                  <Emoji emoji='sushi' size='40' />
-                  <Text fontSize='2xs' fontWeight='regular' color='primary.gray'>
-                    Sushi
-                  </Text>
-                </Box>
-              </GridItem>
-              <GridItem
-                w='100%'
-                h='auto'
-                borderRadius={16}
-                bg='primary.light'
-                borderColor='primary.default'
-                borderWidth='1px'
-                p={2}
-              >
-                <Box textAlign='center'>
-                  <Emoji emoji='broccoli' size='40' />
-                  <Text fontSize='2xs' fontWeight='regular' color='primary.default'>
-                    Vegan
-                  </Text>
-                </Box>
-              </GridItem>
-              <GridItem
-                w='100%'
-                h='auto'
-                borderRadius={16}
-                bg='primary.light'
-                borderColor='primary.default'
-                borderWidth='1px'
-                p={2}
-              >
-                <Box textAlign='center'>
-                  <Emoji emoji='cupcake' size='40' />
-                  <Text fontSize='2xs' fontWeight='regular' color='primary.default'>
-                    Desserts
-                  </Text>
-                </Box>
-              </GridItem>
+              <CategoryPicker emoji='pizza' label='Pizza' />
+
+              <CategoryPicker emoji='hamburger' label='Burger' />
+              <CategoryPicker emoji='cut-of-meat' label='   Sushi' />
+              <CategoryPicker emoji='sushi' label='Sushi' />
+              <CategoryPicker emoji='broccoli' label='Vegan' />
+              <CategoryPicker emoji='cupcake' label='  Desserts' />
             </Grid>
           </Box>
           <Box py={15} display='flex'>
