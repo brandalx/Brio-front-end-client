@@ -30,6 +30,7 @@ import { IconShoppingBag } from '@tabler/icons-react';
 
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import Logo from '../assets/svg/logo';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   const bg = useColorModeValue('white', 'gray.800');
@@ -42,11 +43,14 @@ export default function Navbar() {
           <Flex alignItems='center' justifyContent='space-between' mx='auto'>
             <Flex alignItems='center'>
               <chakra.a href='/' title='Homepage' display='flex' alignItems='center'>
-                <Logo />
+                <Link to='/'>
+                  {' '}
+                  <Logo />
+                </Link>
                 <VisuallyHidden>Brio</VisuallyHidden>
               </chakra.a>
               <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='2'>
-                Brio
+                <Link to='/'> Brio</Link>
               </Text>
 
               <InputGroup size='md' fontSize='md' mx='10px'>
@@ -65,7 +69,9 @@ export default function Navbar() {
             </Flex>
             <HStack display='flex' alignItems='center' spacing={1}>
               <HStack spacing={2} mr={1} display={{ base: 'none', md: 'inline-flex' }}>
-                <Button variant='ghost'>Restaurants</Button>
+                <Button variant='ghost'>
+                  <Link to='/restaurant'>Restaurants</Link>
+                </Button>
                 <Button variant='ghost'>Deals</Button>
                 <Box color='neutral.grayDark'>|</Box>
                 <Button variant='ghost'>My orders</Button>

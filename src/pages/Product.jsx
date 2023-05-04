@@ -22,6 +22,7 @@ import { FaChevronLeft } from 'react-icons/fa';
 
 import ImageGallery from 'react-image-gallery';
 import ProductCard from '../components/RestaurantPage/ProductCard';
+import { Link } from 'react-router-dom';
 export default function Product() {
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const thumbnailPosition = isLargerThanMd ? 'left' : 'bottom';
@@ -53,7 +54,7 @@ export default function Product() {
             <Flex alignItems='center'>
               <Icon as={FaChevronLeft} mr={1} boxSize={4} />
               <Text color='neutral.black' fontSize='xs'>
-                Back to Restaurant Page
+                <Link to='/restaurant'> Back to Restaurant Page</Link>
               </Text>
             </Flex>
           </Button>

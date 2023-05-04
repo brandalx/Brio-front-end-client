@@ -17,6 +17,7 @@ import img1 from '../assets/images/salad.jpg';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import Emoji from 'react-emojis';
 import ProductCard from '../components/RestaurantPage/ProductCard';
+import { Link } from 'react-router-dom';
 
 export default function Restaurant() {
   return (
@@ -88,35 +89,44 @@ export default function Restaurant() {
                     templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
                     gap={4}
                   >
-                    <ProductCard
-                      img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-                      title='Nigiri set'
-                      info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
+                    <Link to='/restaurant/product'>
+                      <ProductCard
+                        img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                        title='Nigiri set'
+                        info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
                             et saepe.'
-                      price='16.80'
-                    />
+                        price='16.80'
+                      />
+                    </Link>
+                    <Link to='/restaurant/product'>
+                      <ProductCard
+                        img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                        title='Nigiri set'
+                        info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
+                            et saepe.'
+                        price='16.80'
+                      />
+                    </Link>
 
-                    <ProductCard
-                      img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-                      title='Nigiri set'
-                      info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
+                    <Link to='/restaurant/product'>
+                      <ProductCard
+                        img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                        title='Nigiri set'
+                        info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
                             et saepe.'
-                      price='16.80'
-                    />
-                    <ProductCard
-                      img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-                      title='Nigiri set'
-                      info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
+                        price='16.80'
+                      />
+                    </Link>
+
+                    <Link to='/restaurant/product'>
+                      <ProductCard
+                        img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                        title='Nigiri set'
+                        info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
                             et saepe.'
-                      price='16.80'
-                    />
-                    <ProductCard
-                      img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-                      title='Nigiri set'
-                      info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
-                            et saepe.'
-                      price='16.80'
-                    />
+                        price='16.80'
+                      />
+                    </Link>
                   </Grid>
                 </Box>
               </Box>
