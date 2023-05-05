@@ -16,6 +16,8 @@ import React from 'react';
 import img1 from '../assets/images/salad.jpg';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import Emoji from 'react-emojis';
+import ProductCard from '../components/RestaurantPage/ProductCard';
+import { Link } from 'react-router-dom';
 
 export default function Restaurant() {
   return (
@@ -87,147 +89,44 @@ export default function Restaurant() {
                     templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
                     gap={4}
                   >
-                    <GridItem w='100%' bg='neutral.white'>
-                      <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px'>
-                        <Box>
-                          <Image
-                            borderRadius='16px'
-                            w='100%'
-                            src='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-                          />
-                        </Box>
-                        <Stack>
-                          <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
-                            Nigiri set
-                          </Text>
-                          <Text color='neutral.gray' fontSize='3xs'>
-                            Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
-                            et saepe.
-                          </Text>
-                          <Flex justifyContent='space-between' alignItems='center'>
-                            <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                              $ 16.80
-                            </Text>
-                            <Button
-                              background='primary.light'
-                              borderRadius='100px'
-                              py='10px'
-                              px='10px'
-                              fontSize='md'
-                              color='primary.default'
-                            >
-                              +
-                            </Button>
-                          </Flex>
-                        </Stack>
-                      </Box>
-                    </GridItem>
+                    <Link to='/restaurant/product'>
+                      <ProductCard
+                        img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                        title='Nigiri set'
+                        info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
+                            et saepe.'
+                        price='16.80'
+                      />
+                    </Link>
+                    <Link to='/restaurant/product'>
+                      <ProductCard
+                        img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                        title='Nigiri set'
+                        info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
+                            et saepe.'
+                        price='16.80'
+                      />
+                    </Link>
 
-                    <GridItem w='100%' bg='neutral.white'>
-                      <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px'>
-                        <Box>
-                          <Image
-                            borderRadius='16px'
-                            w='100%'
-                            src='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-                          />
-                        </Box>
-                        <Stack>
-                          <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
-                            Nigiri set
-                          </Text>
-                          <Text color='neutral.gray' fontSize='3xs'>
-                            Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
-                            et saepe.
-                          </Text>
-                          <Flex justifyContent='space-between' alignItems='center'>
-                            <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                              $ 16.80
-                            </Text>
-                            <Button
-                              background='primary.light'
-                              borderRadius='100px'
-                              py='10px'
-                              px='10px'
-                              fontSize='md'
-                              color='primary.default'
-                            >
-                              +
-                            </Button>
-                          </Flex>
-                        </Stack>
-                      </Box>
-                    </GridItem>
-                    <GridItem w='100%' bg='neutral.white'>
-                      <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px'>
-                        <Box>
-                          <Image
-                            borderRadius='16px'
-                            w='100%'
-                            src='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-                          />
-                        </Box>
-                        <Stack>
-                          <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
-                            Nigiri set
-                          </Text>
-                          <Text color='neutral.gray' fontSize='3xs'>
-                            Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
-                            et saepe.
-                          </Text>
-                          <Flex justifyContent='space-between' alignItems='center'>
-                            <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                              $ 16.80
-                            </Text>
-                            <Button
-                              background='primary.light'
-                              borderRadius='100px'
-                              py='10px'
-                              px='10px'
-                              fontSize='md'
-                              color='primary.default'
-                            >
-                              +
-                            </Button>
-                          </Flex>
-                        </Stack>
-                      </Box>
-                    </GridItem>
-                    <GridItem w='100%' bg='neutral.white'>
-                      <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px'>
-                        <Box>
-                          <Image
-                            borderRadius='16px'
-                            w='100%'
-                            src='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-                          />
-                        </Box>
-                        <Stack>
-                          <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
-                            Nigiri set
-                          </Text>
-                          <Text color='neutral.gray' fontSize='3xs'>
-                            Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
-                            et saepe.
-                          </Text>
-                          <Flex justifyContent='space-between' alignItems='center'>
-                            <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                              $ 16.80
-                            </Text>
-                            <Button
-                              background='primary.light'
-                              borderRadius='100px'
-                              py='10px'
-                              px='10px'
-                              fontSize='md'
-                              color='primary.default'
-                            >
-                              +
-                            </Button>
-                          </Flex>
-                        </Stack>
-                      </Box>
-                    </GridItem>
+                    <Link to='/restaurant/product'>
+                      <ProductCard
+                        img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                        title='Nigiri set'
+                        info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
+                            et saepe.'
+                        price='16.80'
+                      />
+                    </Link>
+
+                    <Link to='/restaurant/product'>
+                      <ProductCard
+                        img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                        title='Nigiri set'
+                        info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
+                            et saepe.'
+                        price='16.80'
+                      />
+                    </Link>
                   </Grid>
                 </Box>
               </Box>
