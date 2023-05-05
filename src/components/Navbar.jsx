@@ -75,7 +75,7 @@ export default function Navbar() {
                 <Button variant='ghost'>Deals</Button>
                 <Box color='neutral.grayDark'>|</Box>
                 <Button variant='ghost'>My orders</Button>
-                <Box as='div' ps={2} pe={4}>
+                {/* <Box as='div' ps={2} pe={4}>
                   <Button background='primary.light' borderRadius='100px' py='20px' position='relative'>
                     <Flex>
                       <Badge
@@ -95,7 +95,8 @@ export default function Navbar() {
                       <IconShoppingBag color='#4E60FF' />
                     </Flex>
                   </Button>
-                </Box>
+                </Box> */}
+                {/* USER CART WILL BE HIDDEN FOR RELEASE 0.1 */}
 
                 <Button variant='ghost' px={2} py={6} borderRadius={100}>
                   <Menu>
@@ -104,10 +105,10 @@ export default function Navbar() {
                     </MenuButton>
 
                     <MenuList>
-                      <MenuItem>Link 1</MenuItem>
-                      <MenuItem>Link 2</MenuItem>
+                      <MenuItem fontWeight='medium'>My Account</MenuItem>
+                      <MenuItem fontWeight='medium'>Settings</MenuItem>
                       <MenuDivider />
-                      <MenuItem>Link 3</MenuItem>
+                      <MenuItem fontWeight='medium'> Log Out</MenuItem>
                     </MenuList>
                   </Menu>
                 </Button>
@@ -161,10 +162,16 @@ export default function Navbar() {
                       />
                     </InputGroup>
                   </Box>
-                  <Button variant='ghost'>Restaurants</Button>
-                  <Button variant='ghost'>Deals</Button>
-                  <Button variant='ghost'>My orders</Button>
-                  <Box as='div' ps={2} pe={4}>
+                  <Button fontWeight='extrabold' fontSize='xs' variant='ghost'>
+                    <Link to='/restaurant'>Restaurants </Link>
+                  </Button>
+                  <Button fontWeight='extrabold' fontSize='xs' variant='ghost'>
+                    Deals
+                  </Button>
+                  <Button fontWeight='extrabold' fontSize='xs' variant='ghost'>
+                    My orders
+                  </Button>
+                  {/* <Box as='div' ps={2} pe={4}>
                     <Button background='primary.light' borderRadius='100px' py='20px' position='relative'>
                       <Flex>
                         <Badge
@@ -184,7 +191,8 @@ export default function Navbar() {
                         <IconShoppingBag color='#4E60FF' />
                       </Flex>
                     </Button>
-                  </Box>
+                  </Box> */}
+                  {/* USER CART WILL BE HIDDEN FOR RELEASE 0.1 */}
                   <Button variant='ghost' px={2} py={6} borderRadius={100}>
                     <Menu>
                       <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
@@ -192,24 +200,15 @@ export default function Navbar() {
                       </MenuButton>
 
                       <MenuList>
-                        <MenuItem>Link 1</MenuItem>
-                        <MenuItem>Link 2</MenuItem>
+                        <MenuItem fontWeight='medium'>My Account</MenuItem>
+                        <MenuItem fontWeight='medium'>Settings</MenuItem>
                         <MenuDivider />
-                        <MenuItem>Link 3</MenuItem>
+                        <MenuItem fontWeight='medium'> Log Out</MenuItem>
                       </MenuList>
                     </Menu>
                   </Button>
                   <Flex w='100%' justifyContent='space-between' px='16px'>
-                    <Flex justifyContent='flex-end'>
-                      {/* <Flex alignItems='center'>
-                        <Logo />
-                      </Flex>
-                      <Flex alignItems='center'>
-                        <Box as='span' fontSize='xl' fontWeight='extrabold' color={`${dc}.primary.default`} ml='2'>
-                          Brio
-                        </Box>
-                      </Flex> */}
-                    </Flex>
+                    <Flex justifyContent='flex-end'></Flex>
                     <CloseButton aria-label='Close menu' onClick={mobileNav.onClose} />
                   </Flex>
                 </VStack>

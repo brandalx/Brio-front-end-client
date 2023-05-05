@@ -1,9 +1,7 @@
 import React from 'react';
-import { Box, Container, Flex, Text, GridItem, Grid, Image, Badge } from '@chakra-ui/react';
+import { Box, Container, Flex, Text, GridItem, Grid, Image } from '@chakra-ui/react';
 import img1 from '../assets/images/salad.jpg';
 import burgertest from '../assets/images/burgertest.png';
-import Emoji from 'react-emojis';
-import { AiOutlineClockCircle } from 'react-icons/ai';
 import CategoryPicker from '../components/HomePage/CategoryPicker';
 import RestaurantCard from '../components/HomePage/RestaurantCard';
 export default function Home() {
