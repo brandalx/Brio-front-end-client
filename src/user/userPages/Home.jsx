@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Container, Flex, Text, GridItem, Grid, Image } from '@chakra-ui/react';
-import img1 from '../assets/images/salad.jpg';
-import burgertest from '../assets/images/burgertest.png';
-import CategoryPicker from '../components/HomePage/CategoryPicker';
-import RestaurantCard from '../components/HomePage/RestaurantCard';
+import img1 from '../../assets/images/salad.jpg';
+import burgertest from '../../assets/images/burgertest.png';
+import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
+import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
 export default function Home() {
   const badgeData = [
     { badgeTitle: 'Burger', badgeEmoji: 'hamburger' },

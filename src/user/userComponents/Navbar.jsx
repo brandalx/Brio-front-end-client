@@ -29,7 +29,7 @@ import {
 import { IconShoppingBag } from '@tabler/icons-react';
 
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
-import Logo from '../assets/svg/logo';
+import Logo from '../../assets/svg/logo';
 import { Link } from 'react-router-dom';
 
 export default function Navbar() {

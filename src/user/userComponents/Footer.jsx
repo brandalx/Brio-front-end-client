@@ -1,8 +1,8 @@
-import theme from '../utils/theme';
+import theme from '../../utils/theme';
 
 import { Box, Container, Link, SimpleGrid, Stack, Text, useColorModeValue, Heading } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
-import Logo from '../assets/svg/logo';
+import Logo from '../../assets/svg/logo';
 
 export default function Footer() {
   return (

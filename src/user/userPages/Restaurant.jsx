@@ -13,10 +13,10 @@ import {
   Button
 } from '@chakra-ui/react';
 import React from 'react';
-import img1 from '../assets/images/salad.jpg';
+import img1 from '../../assets/images/salad.jpg';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import Emoji from 'react-emojis';
-import ProductCard from '../components/RestaurantPage/ProductCard';
+import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link } from 'react-router-dom';
 
 export default function Restaurant() {
