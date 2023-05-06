@@ -20,9 +20,9 @@ const colors = {
   neutral: {
     black: '#2B2B43',
     grayDark: '#545563',
-    gray: '#828282',
-    grayLight: '#BDBDBD',
-    grayLightest: '#F2F2F2',
+    gray: '#83859C',
+    grayLight: '#C7C8D2',
+    grayLightest: '#EDEEF2',
     white: '#FFFFFF',
     background: '#F7F7F9'
   },
