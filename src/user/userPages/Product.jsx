@@ -21,7 +21,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaChevronLeft } from 'react-icons/fa';
 
 import ImageGallery from 'react-image-gallery';
-import ProductCard from '../components/RestaurantPage/ProductCard';
+import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link } from 'react-router-dom';
 export default function Product() {
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');

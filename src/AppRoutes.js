@@ -1,14 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Page404 from './pages/Page404';
-import Footer from './components/Footer';
-import Main from './components/Main';
-import Header from './components/Header';
+import Home from './user/userPages/Home';
+
 import { globalContext } from './context/globalContext';
-import Navbar from './components/Navbar';
-import Restaurant from './pages/Restaurant';
-import Product from './pages/Product';
+
+import Restaurant from './user/userPages/Restaurant';
+import Product from './user/userPages/Product';
+import RestaurantDashboard from './admin/adminPages/RestaurantDashboard';
+import RestaurantOrders from './admin/adminPages/RestaurantOrders';
+import AdminHeader from './admin/adminComponents/AdminHeader';
+import AdminFooter from './admin/adminComponents/AdminFooter';
+import Header from './user/userComponents/Header';
+import Main from './user/userComponents/Main';
+import Footer from './user/userComponents/Footer';
 
 export default function AppRoutes() {
   return (
@@ -17,21 +21,26 @@ export default function AppRoutes() {
         {/* TODO: pass global values in value obj */}
         <BrowserRouter>
           <div className='wrapper'>
-            <Header>
-              {' '}
-              <Navbar />{' '}
-            </Header>
+            <Routes>
+              <Route path='/admin/*' element={<AdminHeader />} />
 
+              <Route path='/*' element={<Header />} />
+            </Routes>
             <Main>
               <Routes>
+                {/* ----------ALL USERS ROUTES------------ */}
                 <Route path='/' element={<Home />} />
                 <Route path='/restaurant' element={<Restaurant />} />
                 <Route path='/restaurant/product' element={<Product />} />
-                <Route path='/*' element={<Page404 />} />
+                {/* ----------ALL ADMIN ROUTES------------ */}
+                <Route path='/admin' element={<RestaurantDashboard />} />
+                <Route path='/admin/orders' element={<RestaurantOrders />} />
               </Routes>
             </Main>
-
-            <Footer />
+            <Routes>
+              <Route path='/*' element={<Footer />} />
+              <Route path='/admin/*' element={<AdminFooter />} />
+            </Routes>
           </div>
         </BrowserRouter>
       </globalContext.Provider>
