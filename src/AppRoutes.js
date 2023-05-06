@@ -30,6 +30,8 @@ export default function AppRoutes() {
               <Routes>
                 {/* ----------ALL USERS ROUTES------------ */}
                 <Route path='/' element={<Home />} />
+                <Route path='/login' element={<Home />} />
+
                 <Route path='/restaurant' element={<Restaurant />} />
                 <Route path='/restaurant/product' element={<Product />} />
                 {/* ----------ALL ADMIN ROUTES------------ */}
