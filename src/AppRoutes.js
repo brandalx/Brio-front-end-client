@@ -13,6 +13,7 @@ import AdminFooter from './admin/adminComponents/AdminFooter';
 import Header from './user/userComponents/Header';
 import Main from './user/userComponents/Main';
 import Footer from './user/userComponents/Footer';
+import Login from './user/userPages/Login';
 
 export default function AppRoutes() {
   return (
@@ -25,12 +26,13 @@ export default function AppRoutes() {
               <Route path='/admin/*' element={<AdminHeader />} />
 
               <Route path='/*' element={<Header />} />
+              <Route path='/login/*' element={<div />} />
             </Routes>
             <Main>
               <Routes>
                 {/* ----------ALL USERS ROUTES------------ */}
                 <Route path='/' element={<Home />} />
-                <Route path='/login' element={<Home />} />
+                <Route path='/login' element={<Login />} />
 
                 <Route path='/restaurant' element={<Restaurant />} />
                 <Route path='/restaurant/product' element={<Product />} />
@@ -42,6 +44,7 @@ export default function AppRoutes() {
             <Routes>
               <Route path='/*' element={<Footer />} />
               <Route path='/admin/*' element={<AdminFooter />} />
+              <Route path='/login/*' element={<div />} />
             </Routes>
           </div>
         </BrowserRouter>
