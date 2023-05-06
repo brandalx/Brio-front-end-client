@@ -67,6 +67,7 @@ export default function AdminNavbar() {
               </InputGroup>
             </Flex>
             <HStack display='flex' alignItems='center' spacing={1}>
+              {/* Desltop Navbar */}
               <HStack spacing={2} mr={1} display={{ base: 'none', md: 'inline-flex' }}>
                 <Button variant='ghost'>
                   <Link to='/restaurant'>Restaurants</Link>
@@ -90,7 +91,7 @@ export default function AdminNavbar() {
                   </Menu>
                 </Button>
               </HStack>
-
+              {/* Mobile navbar */}
               <Box display={{ base: 'inline-flex', md: 'none' }}>
                 <IconButton
                   display={{ base: 'flex', md: 'none' }}
