@@ -24,7 +24,8 @@ import Logo from '../../assets/svg/logo';
 import {Link} from 'react-router-dom';
 import Notification from "../../assets/svg/Notification";
 import RoyalSushiHouse from "../../assets/svg/RoyalSushiHouse";
-
+import {AiOutlineMenu} from "react-icons/ai";
+import theme from '../../utils/theme'
 export default function AdminNavbar() {
     const bg = useColorModeValue('white', 'gray.800');
     const mobileNav = useDisclosure();
@@ -36,39 +37,39 @@ export default function AdminNavbar() {
                     <chakra.header w='full' px={{base: 2, sm: 4}} py={3.5} position='relative'>
                         <Flex alignItems='center' justifyContent='space-between' mx='auto'>
                             <Flex alignItems='center'>
-                                <chakra.a h={'52px'} href='/' title='Homepage' display='flex' alignItems='center'>
-                                    <Link to='/'>
-                                        {' '}
-                                        <Logo/>
-                                    </Link>
+                                <chakra.a  h={'52px'} href='/admin' title='Homepage' display='flex' alignItems='center'>
+                                    <Logo />
                                     <VisuallyHidden>Brio</VisuallyHidden>
                                 </chakra.a>
-                                <Link h={'52px'} to='/admin' display='flex' flexDirection='column'>
-                                    <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='2'>
-                                        Brio
-                                    </Text>
-                                    <Text fontSize='3xs' fontWeight='extrabold' color='neutral.gray' ml='2'>
-                                        for owners
-                                    </Text>
-                                </Link>
-
+                                <Box h='52px' ml='10px' mt='5px'>
+                                    <Link h={'52px'} to='/admin' display='flex' flexdirection='column' alignitems='flex-end'>
+                                        <Text fontSize='sm' fontWeight='extrabold' color='primary.default'>
+                                            Brio
+                                        </Text>
+                                        <Text fontSize='3xs' fontWeight='extrabold' color='neutral.gray' mt=''>
+                                            for owners
+                                        </Text>
+                                    </Link>
+                                    <chakra.a href='/admin' ml='2' mt='0.5'>{' '}</chakra.a>
+                                </Box>
                             </Flex>
+
                             <HStack display='flex' alignItems='center' spacing={1}>
                                 {/* Deckstop Navbar */}
                                 <HStack spacing={5} mr={0} display={{base: 'none', md: 'inline-flex'}}>
-                                    <Button p='8px' fontSize='fontSizes.2xs'>
+                                    <Button color={theme.colors.neutral.black} fontWeight={theme.fontWeights.bold} p='8px' fontSize='fontSizes.2xs'>
                                         <Link to='/dashboard'>Dashboard</Link>
                                     </Button>
-                                    <Button p='8px' fontSize='fontSizes.2xs'>
+                                    <Button color={theme.colors.neutral.black} fontWeight={theme.fontWeights.bold} p='8px' fontSize='fontSizes.2xs'>
                                         <Link to='/orders'>Orders</Link>
                                     </Button>
-                                    <Button p='8px' fontSize='fontSizes.2xs'>
+                                    <Button color={theme.colors.neutral.black} fontWeight={theme.fontWeights.bold} p='8px' fontSize='fontSizes.2xs'>
                                         <Link to='/customers'>Customers</Link>
                                     </Button>
-                                    <Button p='8px' fontSize='fontSizes.2xs'>
+                                    <Button color={theme.colors.neutral.black} fontWeight={theme.fontWeights.bold} p='8px' fontSize='fontSizes.2xs'>
                                         <Link to='/menu'>Menu</Link>
                                     </Button>
-                                    <Button p='8px' fontSize='fontSizes.2xs'>
+                                    <Button color={theme.colors.neutral.black} fontWeight={theme.fontWeights.bold} p='8px' fontSize='fontSizes.2xs'>
                                         <Link to='/promotions'>Promotions</Link>
                                     </Button>
 
