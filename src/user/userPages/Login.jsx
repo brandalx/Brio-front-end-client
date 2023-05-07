@@ -114,6 +114,16 @@ export default function Login() {
                             Login
                           </Button>
                         </Link>
+                        <Text
+                          textAlign='center'
+                          fontSize='2xs'
+                          fontWeight='bold'
+                          as='span'
+                          color='primary.default'
+                          _hover={{ textDecor: 'underline', cursor: 'pointer' }}
+                        >
+                          Forgot password
+                        </Text>{' '}
                       </Stack>
                     </Stack>
                   </Box>
