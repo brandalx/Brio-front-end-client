@@ -25,26 +25,27 @@ import { AiOutlineSearch } from 'react-icons/ai';
 export default function Login() {
   return (
     <>
-      <Box h='100vh'>
-        <Container maxW='1110px' h='100%'>
-          <Grid h='100%' templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
-            <GridItem w='100%'>
-              <Box px={{ base: 2, sm: 4 }} py={6}>
-                <Flex alignItems='center'>
-                  <chakra.a href='/' title='Homepage' display='flex' alignItems='center'>
-                    <Link to='/'>
-                      {' '}
-                      <Logo />
-                    </Link>
-                    <VisuallyHidden>Brio</VisuallyHidden>
-                  </chakra.a>
-                  <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='2'>
-                    <Link to='/'> Brio</Link>
-                  </Text>
-                </Flex>
-              </Box>
-              <Flex alignItems='center' h='100%'>
-                <Box maxWidth='350px'>
+      <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
+        <Container maxW='550px'>
+          <GridItem w='100%' h='100vh'>
+            <Flex h='100%' w='100' justifyContent='center'>
+              <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
+                <Box py={6}>
+                  <Flex>
+                    <chakra.a href='/' title='Homepage' display='flex' alignItems='center'>
+                      <Link to='/'>
+                        {' '}
+                        <Logo />
+                      </Link>
+                      <VisuallyHidden>Brio</VisuallyHidden>
+                    </chakra.a>
+                    <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='2'>
+                      <Link to='/'> Brio</Link>
+                    </Text>
+                  </Flex>
+                </Box>
+
+                <Box>
                   <Box>
                     <Text fontSize='2xl' fontWeight='bold' color='neutral.black'>
                       Login
@@ -93,51 +94,59 @@ export default function Login() {
                             </Checkbox>
                           </Flex>
                         </Stack>
-                        <Button
-                          background='primary.default'
-                          fontWeight='bold'
-                          variant='solid'
-                          color='neutral.white'
-                          borderWidth='1px'
-                          borderColor='neutral.white'
-                          _hover={{
-                            background: 'neutral.white',
-                            color: 'primary.default',
-                            borderWidth: '1px',
-                            borderColor: 'primary.default'
-                          }}
-                          py={5}
-                        >
-                          Login
-                        </Button>
+                        <Link to='/'>
+                          <Button
+                            w='100%'
+                            background='primary.default'
+                            fontWeight='bold'
+                            variant='solid'
+                            color='neutral.white'
+                            borderWidth='1px'
+                            borderColor='neutral.white'
+                            _hover={{
+                              background: 'neutral.white',
+                              color: 'primary.default',
+                              borderWidth: '1px',
+                              borderColor: 'primary.default'
+                            }}
+                            py={5}
+                          >
+                            Login
+                          </Button>
+                        </Link>
                       </Stack>
                     </Stack>
                   </Box>
+                </Box>
 
-                  <Box textAlign='center' pt='50%'>
-                    <Text>
-                      Don’t have an account?{' '}
-                      <Link to='/#'>
-                        {' '}
-                        <Text
-                          fontSize='2xs'
-                          fontWeight='bold'
-                          as='span'
-                          color='primary.default'
-                          _hover={{ textDecor: 'underline' }}
-                        >
-                          Sign up
-                        </Text>{' '}
-                      </Link>
-                    </Text>
-                  </Box>
+                <Box textAlign='center' py={6}>
+                  <Text>
+                    Don’t have an account?{' '}
+                    <Link to='/#'>
+                      {' '}
+                      <Text
+                        fontSize='2xs'
+                        fontWeight='bold'
+                        as='span'
+                        color='primary.default'
+                        _hover={{ textDecor: 'underline' }}
+                      >
+                        Sign up
+                      </Text>{' '}
+                    </Link>
+                  </Text>
                 </Box>
               </Flex>
-            </GridItem>
-            <GridItem w='100%' maxH={'100vh'} bg='linear-gradient(to right, #B2D1FF, #697BFF)'></GridItem>
-          </Grid>
+            </Flex>
+          </GridItem>
         </Container>
-      </Box>
+        <GridItem
+          display={{ base: 'none', md: 'inline-flex' }}
+          w='100%'
+          bg='linear-gradient(to right, #B2D1FF, #697BFF)'
+          h='100vh'
+        ></GridItem>
+      </Grid>
     </>
   );
 }
