@@ -32,7 +32,6 @@ export default function AdminNavbar() {
 
     return (<>
             <Container maxW='full' borderBottom="1px solid #EDEEF2">
-
                 <Container maxW='1110px'>
                     <chakra.header w='full' px={{base: 2, sm: 4}} py={3.5} position='relative'>
                         <Flex alignItems='center' justifyContent='space-between' mx='auto'>
@@ -67,7 +66,7 @@ export default function AdminNavbar() {
                                         <Link to='/customers'>Customers</Link>
                                     </Button>
                                     <Button color={theme.colors.neutral.black} fontWeight={theme.fontWeights.bold} p='8px' fontSize='fontSizes.2xs'>
-                                        <Link to='/menu'>Menu</Link>
+                                        <Link to='/admin/menu'>Menu</Link>
                                     </Button>
                                     <Button color={theme.colors.neutral.black} fontWeight={theme.fontWeights.bold} p='8px' fontSize='fontSizes.2xs'>
                                         <Link to='/promotions'>Promotions</Link>
