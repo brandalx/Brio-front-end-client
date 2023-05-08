@@ -11,7 +11,8 @@ import {
   Grid,
   Textarea,
   Stack,
-  Checkbox
+  Checkbox,
+  Divider
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -208,7 +209,72 @@ export default function AccountSettings() {
             </GridItem>
           </Grid>
         </Box>
-        <Box>Buttons log out etc here</Box>
+        <Divider pt={8} />
+        <Box pt={5}>
+          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
+            <GridItem w='100%'>
+              <Button
+                background='neutral.white'
+                fontSize='2xs'
+                fontWeight='bold'
+                variant='solid'
+                color='error.default'
+                borderWidth='1px'
+                borderColor='error.default'
+                _hover={{
+                  background: 'error.default',
+                  color: 'neutral.white',
+                  borderWidth: '1px',
+                  borderColor: 'error.default'
+                }}
+                py={5}
+                me='20px'
+              >
+                Log out
+              </Button>
+              ;
+            </GridItem>
+
+            <GridItem w='100%'>
+              <Button
+                background='neutral.white'
+                fontSize='2xs'
+                fontWeight='bold'
+                variant='solid'
+                color='neutral.gray'
+                borderWidth='1px'
+                borderColor='neutral.gray'
+                _hover={{
+                  background: 'error.default',
+                  color: 'neutral.white',
+                  borderWidth: '1px',
+                  borderColor: 'error.default'
+                }}
+                py={5}
+                me='20px'
+              >
+                Discard changes
+              </Button>
+              <Button
+                background='primary.default'
+                fontWeight='bold'
+                variant='solid'
+                color='neutral.white'
+                borderWidth='1px'
+                borderColor='neutral.white'
+                _hover={{
+                  background: 'neutral.white',
+                  color: 'primary.default',
+                  borderWidth: '1px',
+                  borderColor: 'primary.default'
+                }}
+                py={5}
+              >
+                Save changes
+              </Button>
+            </GridItem>
+          </Grid>
+        </Box>
       </Box>
     </Box>
   );
