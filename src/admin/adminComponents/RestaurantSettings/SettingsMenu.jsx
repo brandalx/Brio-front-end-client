@@ -17,7 +17,7 @@ export default function SettingsMenu() {
   ];
   return (
     <Box>
-      <Text mb='16px' fontSize='s' fontWeight='semibold' color='neutral.black'>
+      <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
         Settings
       </Text>
       {arr.map((element) => {
@@ -28,9 +28,16 @@ export default function SettingsMenu() {
             borderRadius='16px'
             mb='12px'
             p='10px'
+            transition='all 0.3s'
             borderWidth='2px'
             borderColor='neutral.grayLightest'
-            _hover={{ borderColor: 'primary.default', borderWidth: '2px', bg: 'primary.light', cursor: 'pointer' }}
+            _hover={{
+              borderColor: 'primary.default',
+              borderWidth: '2px',
+              bg: 'primary.light',
+              cursor: 'pointer',
+              transition: 'all 0.3s'
+            }}
           >
             <Flex alignItems='center'>
               <Box me={4} p={3} bg='neutral.grayLightest' borderRadius={12}>

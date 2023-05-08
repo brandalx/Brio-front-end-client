@@ -1,6 +1,7 @@
 import { Box, Container, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 import SettingsMenu from '../adminComponents/RestaurantSettings/SettingsMenu';
+import AccountSettings from '../adminComponents/RestaurantSettings/AccountSettings';
 
 export default function RestaurantSettings() {
   return (
@@ -12,7 +13,9 @@ export default function RestaurantSettings() {
               {' '}
               <SettingsMenu />{' '}
             </GridItem>
-            <GridItem w='100%'>part two2</GridItem>
+            <GridItem w='100%'>
+              <AccountSettings />
+            </GridItem>
           </Grid>
         </Container>
       </Box>
