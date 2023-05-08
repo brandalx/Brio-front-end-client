@@ -1,4 +1,16 @@
-import { Box, Flex, Text, Image, Button } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Text,
+  Image,
+  Button,
+  GridItem,
+  Input,
+  FormLabel,
+  FormControl,
+  Grid,
+  Textarea
+} from '@chakra-ui/react';
 import React from 'react';
 
 export default function AccountSettings() {
@@ -11,7 +23,7 @@ export default function AccountSettings() {
         <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
           Restaurant information
         </Text>
-        <Box>
+        <Box pt={5}>
           <Flex alignItems='center'>
             <Box borderWidth='2px' borderColor='primary.default' me='20px' borderRadius='12px'>
               <Image
@@ -61,8 +73,100 @@ export default function AccountSettings() {
             </Button>
           </Flex>
         </Box>
-        <Box>Restaurant input here</Box>
-        <Box>Notifications here</Box>
+        <Box pt={5}>
+          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr 1fr ' }} gap={6}>
+            <GridItem w='100%'>
+              <FormControl id='name'>
+                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                  Restaurant name
+                </FormLabel>
+
+                <Input
+                  type='name'
+                  background='neutral.white'
+                  _placeholder={{ color: 'neutral.gray' }}
+                  borderRadius='8px'
+                  fontSize='2xs'
+                  placeholder='Restaurant Name'
+                />
+              </FormControl>
+            </GridItem>
+            <GridItem w='100%'>
+              <FormControl id='email'>
+                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                  Email
+                </FormLabel>
+
+                <Input
+                  type='email'
+                  background='neutral.white'
+                  _placeholder={{ color: 'neutral.gray' }}
+                  borderRadius='8px'
+                  fontSize='2xs'
+                  placeholder='example@gmail.com'
+                />
+              </FormControl>
+            </GridItem>
+            <GridItem w='100%'>
+              <FormControl id='phone'>
+                <FormLabel fontWeight='semibold' placeholder='+1(217) 555-0113' fontSize='3xs' color='neutral.grayDark'>
+                  Phone number
+                </FormLabel>
+
+                <Input
+                  type='phone'
+                  background='neutral.white'
+                  _placeholder={{ color: 'neutral.gray' }}
+                  borderRadius='8px'
+                  fontSize='2xs'
+                  placeholder='name@example.com'
+                />
+              </FormControl>
+            </GridItem>
+          </Grid>
+        </Box>
+        <Box pt={5}>
+          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
+            <GridItem w='100%'>
+              <FormControl id='name'>
+                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                  Restaurant name
+                </FormLabel>
+
+                <Textarea
+                  type='text'
+                  background='neutral.white'
+                  _placeholder={{ color: 'neutral.gray' }}
+                  borderRadius='8px'
+                  fontSize='2xs'
+                  placeholder='Restaurant Adress'
+                />
+              </FormControl>
+            </GridItem>
+
+            <GridItem w='100%'>
+              <FormControl id='phone'>
+                <FormLabel
+                  fontWeight='semibold'
+                  placeholder='Restaurant desciption'
+                  fontSize='3xs'
+                  color='neutral.grayDark'
+                >
+                  Description
+                </FormLabel>
+
+                <Textarea
+                  type='text'
+                  background='neutral.white'
+                  _placeholder={{ color: 'neutral.gray' }}
+                  borderRadius='8px'
+                  fontSize='2xs'
+                  placeholder='name@example.com'
+                />
+              </FormControl>
+            </GridItem>
+          </Grid>
+        </Box>
         <Box>Buttons log out etc here</Box>
       </Box>
     </Box>
