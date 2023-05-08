@@ -28,8 +28,9 @@ export default function SettingsMenu() {
             borderRadius='16px'
             mb='12px'
             p='10px'
-            borderWidth='1px'
+            borderWidth='2px'
             borderColor='neutral.grayLightest'
+            _hover={{ borderColor: 'primary.default', borderWidth: '2px', bg: 'primary.light', cursor: 'pointer' }}
           >
             <Flex alignItems='center'>
               <Box me={4} p={3} bg='neutral.grayLightest' borderRadius={12}>
