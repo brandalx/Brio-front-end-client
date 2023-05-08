@@ -174,7 +174,7 @@ export default function AccountSettings() {
           <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
             Email notifications
           </Text>
-          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
+          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={{ base: 4, md: 6 }}>
             <GridItem w='100%'>
               <Stack mt={2} direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
                 <Flex alignItems='center'>
@@ -197,7 +197,12 @@ export default function AccountSettings() {
             </GridItem>
 
             <GridItem w='100%'>
-              <Stack mt={2} direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+              <Stack
+                mt={{ base: '0px', md: 4 }}
+                direction={{ base: 'column', sm: 'row' }}
+                align={'start'}
+                justify={'space-between'}
+              >
                 <Flex alignItems='center'>
                   <Checkbox mr='2'>
                     <Text color='neutral.black' fontSize='2xs'>
@@ -214,6 +219,7 @@ export default function AccountSettings() {
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
             <GridItem w='100%'>
               <Button
+                w={{ base: '100%', md: 'initial' }}
                 background='neutral.white'
                 fontSize='2xs'
                 fontWeight='bold'
@@ -232,46 +238,49 @@ export default function AccountSettings() {
               >
                 Log out
               </Button>
-              ;
             </GridItem>
 
             <GridItem w='100%'>
-              <Button
-                background='neutral.white'
-                fontSize='2xs'
-                fontWeight='bold'
-                variant='solid'
-                color='neutral.gray'
-                borderWidth='1px'
-                borderColor='neutral.gray'
-                _hover={{
-                  background: 'error.default',
-                  color: 'neutral.white',
-                  borderWidth: '1px',
-                  borderColor: 'error.default'
-                }}
-                py={5}
-                me='20px'
-              >
-                Discard changes
-              </Button>
-              <Button
-                background='primary.default'
-                fontWeight='bold'
-                variant='solid'
-                color='neutral.white'
-                borderWidth='1px'
-                borderColor='neutral.white'
-                _hover={{
-                  background: 'neutral.white',
-                  color: 'primary.default',
-                  borderWidth: '1px',
-                  borderColor: 'primary.default'
-                }}
-                py={5}
-              >
-                Save changes
-              </Button>
+              <Flex flexDirection={{ base: 'row' }}>
+                <Button
+                  w={{ base: '50%', md: 'initial' }}
+                  background='neutral.white'
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='neutral.gray'
+                  borderWidth='1px'
+                  borderColor='neutral.gray'
+                  _hover={{
+                    background: 'error.default',
+                    color: 'neutral.white',
+                    borderWidth: '1px',
+                    borderColor: 'error.default'
+                  }}
+                  py={5}
+                  me='20px'
+                >
+                  Discard changes
+                </Button>
+                <Button
+                  w={{ base: '50%', md: 'initial' }}
+                  background='primary.default'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='neutral.white'
+                  borderWidth='1px'
+                  borderColor='neutral.white'
+                  _hover={{
+                    background: 'neutral.white',
+                    color: 'primary.default',
+                    borderWidth: '1px',
+                    borderColor: 'primary.default'
+                  }}
+                  py={5}
+                >
+                  Save changes
+                </Button>
+              </Flex>
             </GridItem>
           </Grid>
         </Box>
