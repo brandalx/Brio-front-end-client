@@ -23,13 +23,16 @@ function SettingItem({ element, isSelected, onItemSelected }) {
   }, [onItemSelected, element.id]);
 
   let location = useLocation();
-
+  function normalizePath(path) {
+    return path.replace(/\/{2,}/g, '/').replace(/\/$/, '');
+  }
   useEffect(() => {
-    if (location.pathname == '/admin/restaurant/settings') {
+    const normalizedPath = normalizePath(location.pathname);
+    if (normalizedPath === '/admin/restaurant/settings') {
       onItemSelected(1);
-    } else if (location.pathname == '/admin/restaurant/settings/administrators') {
+    } else if (normalizedPath === '/admin/restaurant/settings/administrators') {
       onItemSelected(2);
-    } else if (location.pathname == '/admin/restaurant/settings/security') {
+    } else if (normalizedPath === '/admin/restaurant/settings/security') {
       onItemSelected(3);
     }
   }, [location.pathname]);
