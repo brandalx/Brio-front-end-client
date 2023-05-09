@@ -2,6 +2,8 @@ import { Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from '@
 import React from 'react';
 
 export default function TableAdmins() {
+  const arr = [{ name: 'Albert Flores', status: 'Online', time: `05:51 pm 21 Apr, 2021` }];
+
   return (
     <TableContainer>
       <Table colorScheme='gray'>
@@ -19,17 +21,25 @@ export default function TableAdmins() {
           </Tr>
         </Thead>
         <Tbody>
-          <Tr transition='all 0.2s' _hover={{ bg: 'bg', transition: 'all 0.2s', cursor: 'pointer' }}>
-            <Td fontSize='2xs' color='neutral.grayDark'>
-              Albert Flores
-            </Td>
-            <Td fontSize='2xs' color='neutral.black' fontWeight='semibold'>
-              Online
-            </Td>
-            <Td fontSize='2xs' color='neutral.black' isNumeric>
-              05:51 pm 21 Apr, 2021
-            </Td>
-          </Tr>
+          {arr.map((item) => {
+            return (
+              <Tr
+                key={item.name}
+                transition='all 0.2s'
+                _hover={{ bg: 'bg', transition: 'all 0.2s', cursor: 'pointer' }}
+              >
+                <Td fontSize='2xs' color='neutral.grayDark'>
+                  {item.name}
+                </Td>
+                <Td fontSize='2xs' color='neutral.black' fontWeight='semibold'>
+                  {item.status}
+                </Td>
+                <Td fontSize='2xs' color='neutral.black' isNumeric>
+                  {item.time}
+                </Td>
+              </Tr>
+            );
+          })}
         </Tbody>
       </Table>
     </TableContainer>
