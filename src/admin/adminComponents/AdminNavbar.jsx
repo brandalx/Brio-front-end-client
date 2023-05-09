@@ -17,15 +17,15 @@ import {
     MenuItem,
     MenuList,
     Menu,
-    MenuButton
+    MenuButton, Image, Avatar
 } from '@chakra-ui/react';
 
 import Logo from '../../assets/svg/logo';
 import {Link} from 'react-router-dom';
 import Notification from "../../assets/svg/Notification";
-import RoyalSushiHouse from "../../assets/svg/RoyalSushiHouse";
 import {AiOutlineMenu} from "react-icons/ai";
 import theme from '../../utils/theme'
+
 export default function AdminNavbar() {
     const bg = useColorModeValue('white', 'gray.800');
     const mobileNav = useDisclosure();
@@ -36,12 +36,13 @@ export default function AdminNavbar() {
                     <chakra.header w='full' px={{base: 2, sm: 4}} py={3.5} position='relative'>
                         <Flex alignItems='center' justifyContent='space-between' mx='auto'>
                             <Flex alignItems='center'>
-                                <chakra.a  h={'52px'} href='/admin' title='Homepage' display='flex' alignItems='center'>
-                                    <Logo />
+                                <chakra.a h={'52px'} href='/admin' title='Homepage' display='flex' alignItems='center'>
+                                    <Logo/>
                                     <VisuallyHidden>Brio</VisuallyHidden>
                                 </chakra.a>
                                 <Box h='52px' ml='10px' mt='5px'>
-                                    <Link h={'52px'} to='/admin' display='flex' flexdirection='column' alignitems='flex-end'>
+                                    <Link h={'52px'} to='/admin' display='flex' flexdirection='column'
+                                          alignitems='flex-end'>
                                         <Text fontSize='sm' fontWeight='extrabold' color='primary.default'>
                                             Brio
                                         </Text>
@@ -56,20 +57,60 @@ export default function AdminNavbar() {
                             <HStack display='flex' alignItems='center' spacing={1}>
                                 {/* Deckstop Navbar */}
                                 <HStack spacing={5} mr={0} display={{base: 'none', md: 'inline-flex'}}>
-                                    <Button color={theme.colors.neutral.black} fontWeight={theme.fontWeights.bold} p='8px' fontSize='fontSizes.2xs'>
-                                        <Link to='/dashboard'>Dashboard</Link>
+                                    <Button
+                                        color='neutral.black'
+                                        fontWeight='bold'
+                                        fontSize='fontSizes.2xs'
+                                        _hover={{
+                                            textDecoration: 'none',
+                                            color: 'primary.default',
+                                        }}
+                                    >
+                                        <Link to='/admin/dashboard'>Dashboard</Link>
                                     </Button>
-                                    <Button color={theme.colors.neutral.black} fontWeight={theme.fontWeights.bold} p='8px' fontSize='fontSizes.2xs'>
-                                        <Link to='/orders'>Orders</Link>
+                                    <Button
+                                        color='neutral.black'
+                                        fontWeight='bold'
+                                        fontSize='fontSizes.2xs'
+                                        _hover={{
+                                            textDecoration: 'none',
+                                            color: 'primary.default',
+                                        }}
+                                    >
+                                        <Link to='/admin/orders'>Orders</Link>
                                     </Button>
-                                    <Button color={theme.colors.neutral.black} fontWeight={theme.fontWeights.bold} p='8px' fontSize='fontSizes.2xs'>
-                                        <Link to='/customers'>Customers</Link>
+                                    <Button
+                                        color='neutral.black'
+                                        fontWeight='bold'
+                                        fontSize='fontSizes.2xs'
+                                        _hover={{
+                                            textDecoration: 'none',
+                                            color: 'primary.default',
+                                        }}
+                                    >
+                                        <Link to='/admin/customers'>Customers</Link>
                                     </Button>
-                                    <Button color={theme.colors.neutral.black} fontWeight={theme.fontWeights.bold} p='8px' fontSize='fontSizes.2xs'>
+                                    <Button
+                                        color='neutral.black'
+                                        fontWeight='bold'
+                                        fontSize='fontSizes.2xs'
+                                        _hover={{
+                                            textDecoration: 'none',
+                                            color: 'primary.default',
+                                        }}
+                                    >
                                         <Link to='/admin/menu'>Menu</Link>
                                     </Button>
-                                    <Button color={theme.colors.neutral.black} fontWeight={theme.fontWeights.bold} p='8px' fontSize='fontSizes.2xs'>
-                                        <Link to='/promotions'>Promotions</Link>
+                                    <Button
+                                        color='neutral.black'
+                                        fontWeight='bold'
+                                        fontSize='fontSizes.2xs'
+                                        _hover={{
+                                            textDecoration: 'none',
+                                            color: 'primary.default',
+                                        }}
+                                    >
+                                        <Link to='/admin/promotions'>Promotions</Link>
                                     </Button>
 
                                     <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest'/>
@@ -114,7 +155,9 @@ export default function AdminNavbar() {
                                             <Menu>
                                                 <MenuButton as={Button} rounded={'full'} variant={'link'}
                                                             cursor={'pointer'} minW={0}>
-                                                    <RoyalSushiHouse/>
+                                                    <Avatar py='3px' borderRadius='xl' size='md'
+                                                            name='Prosper Otemuyiwa'
+                                                            src='https://cdn.pixabay.com/photo/2017/10/15/11/41/sushi-2853382_960_720.jpg'/>{' '}
                                                 </MenuButton>
                                             </Menu>
                                         </Button>
@@ -160,18 +203,19 @@ export default function AdminNavbar() {
                                                 </MenuList>
                                             </Menu>
                                         </Button>
+
                                         <Button py={6} px={1} borderRadius='16px' border='2px solid #EDEEF2' bg='white'>
                                             <Menu>
                                                 <MenuButton as={Button} rounded={'full'} variant={'link'}
                                                             cursor={'pointer'} minW={0}>
-                                                    <RoyalSushiHouse/>
+                                                    <Avatar py='3px' borderRadius='xl' size='md'
+                                                            name='Prosper Otemuyiwa'
+                                                            src='https://cdn.pixabay.com/photo/2017/10/15/11/41/sushi-2853382_960_720.jpg'/>{' '}
                                                 </MenuButton>
                                             </Menu>
                                         </Button>
 
-
                                         <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest'/>
-
 
                                         <IconButton
                                             display={{base: 'flex', md: 'none'}}
@@ -226,8 +270,6 @@ export default function AdminNavbar() {
                                                 <Link to='/dashboard'>Dashboard</Link>
                                             </Button>
                                         </Flex>
-
-
                                         <Flex w='100%' justifyContent='space-between' px='16px'>
                                             <Flex justifyContent='flex-end'></Flex>
                                             <CloseButton aria-label='Close menu' onClick={mobileNav.onClose}/>

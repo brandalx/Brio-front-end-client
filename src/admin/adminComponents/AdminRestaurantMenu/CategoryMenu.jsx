@@ -23,7 +23,6 @@ export default function CategoryMenu() {
                 </Box>)
 
             })}
-
             <Divider mt='21px'/>
             <Box mt='20px' display='flex' justifyContent='space-between'>
                 <Box px='5px' border='1px solid #EDEEF2' borderRadius='16px' display='flex' flex-direction='column'>
