@@ -25,28 +25,15 @@ export default function CategoryMenu() {
         id: 3,
         title: 'Dinner menu',
         amount: 12
-    }, {title: 'Drinks menu', amount: 15}];
+    }, {id: 4, title: 'Drinks menu', amount: 15}];
 
     const [isTablet] = useMediaQuery("(max-width: 992px)");
     const [isMobile] = useMediaQuery("(max-width: 576px)");
+    const [isLilMob] = useMediaQuery("(max-width: 350px)");
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const {isOpen, onOpen, onClose} = useDisclosure();
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-    useEffect(() => {
-        if (isOpen) {
-            const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
-            document.body.style.overflow = 'hidden';
-            document.body.style.paddingRight = `${scrollBarWidth}px`; // compensate for the scrollbar width
-        } else {
-            document.body.style.overflow = 'unset';
-            document.body.style.paddingRight = '0px';
-        }
-        return () => {
-            document.body.style.overflow = 'unset';
-            document.body.style.paddingRight = '0px';
-        };
-    }, [isOpen]);
 
     return (
         <GridItem overflow='hidden' colSpan={4}>
@@ -55,8 +42,9 @@ export default function CategoryMenu() {
             <Box display='flex' flexWrap='wrap'>
                 {arr.map(element => {
                     return (
-                        <Box cursor='pointer' onClick={onOpen}
-                             ml={isMobile ? 0 : (isTablet ? '16px' : 0)}
+                        <Box cursor='pointer'
+                             ml={isMobile ? 0 : (isTablet ? '8px' : 0)}
+                             mr={isMobile ? 0 : (isTablet ? '8px' : 0)}
                              key={element.id} width={isMobile ? '100%' : (isTablet ? '46%' : '100%')} mb='12px' p='10px'
                              border='1px solid #EDEEF2' borderRadius='16px'>
                             <Heading fontSize='2xs' fontWeight={theme.fontWeights.bold}
@@ -71,7 +59,7 @@ export default function CategoryMenu() {
                 })}
             </Box>
             <Divider mt='21px'/>
-            <Box gap={isTablet ? 4 : 0} mt='20px' display='flex' justifyContent='space-between'>
+            <Box width='100%' gap={isTablet ? 4 : 0} mt='20px' display='flex' justifyContent='space-between'>
                 <Box width={isTablet ? '100%' : ''} px='5px' border='1px solid #EDEEF2'
                      borderRadius='16px'
                      display='flex' flex-direction='column'>
@@ -83,7 +71,7 @@ export default function CategoryMenu() {
                     </Button>
                 </Box>
                 <Box width={isTablet ? '100%' : ''} border='1px solid #EDEEF2' borderRadius='16px'>
-                    <Button width='95%' display='flex' flexDirection='column' h='72px'>
+                    <Button onClick={onOpen} width='95%' display='flex' flexDirection='column' h='72px'>
                         <AddPlus/>
                         <Text mt='6px'>
                             New meal item
@@ -91,7 +79,7 @@ export default function CategoryMenu() {
                     </Button>
                 </Box>
             </Box>
-            <Modal   isOpen={isOpen} onClose={onClose} zIndex='9999999'>
+            <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
                 <ModalOverlay
                     sx={{
                         position: 'fixed',
@@ -101,21 +89,29 @@ export default function CategoryMenu() {
                         height: '100%',
                         zIndex: '10',
                         bg: 'rgba(0,0,0,0.6)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
                     }}
                 />
+
+
                 <ModalContent
-                    mx="auto"
-                    my="auto"
+                    position='relative'
+                    boxSizing="content-box"
+                        left={isLilMob ? '15px' : '0'}
+                    width={['85%', '100%', '350px', '350px']}
+                    maxW="96%"
                 >
 
-                <ModalHeader>{selectedCategory?.title}</ModalHeader>
+                    <ModalHeader>{selectedCategory?.title}</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody overflow='auto'>
                         <Heading fontSize='2xs' fontWeight={theme.fontWeights.bold}
                                  color={theme.colors.neutral.black}>
                             Create meal item
                         </Heading>
-                        <Box  display='flex' gap={6}>
+                        <Box display='flex' gap={6}>
                             <Box display='flex' flexDirection='column'>
                                 <Text>Meal image</Text>
                                 <Image

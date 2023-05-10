@@ -31,13 +31,13 @@ export default function AdminNavbar() {
     const mobileNav = useDisclosure();
 
     return (<>
-            <Container   zIndex ='9999999' maxW='full' borderBottom="1px solid #EDEEF2">
+            <Container zIndex='9999999' maxW='full' borderBottom="1px solid #EDEEF2">
                 <Container maxW='1110px'>
                     <chakra.header w='full' px={{base: 2, sm: 4}} py={3.5} position='relative'>
                         <Flex alignItems='center' justifyContent='space-between' mx='auto'>
                             <Flex alignItems='center'>
                                 <chakra.a href='/' title='Homepage' display='flex' alignItems='center'>
-                                    <Logo />
+                                    <Logo/>
                                     <VisuallyHidden>Brio</VisuallyHidden>
                                 </chakra.a>
                                 <Box h='52px' ml='10px' mt='5px'>
@@ -116,7 +116,7 @@ export default function AdminNavbar() {
                                     <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest'/>
                                     <HStack spacing={6} display={{base: 'none', md: 'inline-flex'}}>
 
-                                        <Button ml='4px' bg="neutral.grayLightest" color='black' px={3} py={6}
+                                        <Box ml='4px' bg="neutral.grayLightest" color='black' px={'8px'} py={'7.5px'}
                                                 borderRadius='16px'
                                                 position='relative'>
                                             <Box
@@ -139,7 +139,7 @@ export default function AdminNavbar() {
                                                 0
                                             </Box>
                                             <Menu>
-                                                <MenuButton as={Button} p='3px' rounded={'full'} variant={'link'}
+                                                <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'}
                                                             cursor={'pointer'}
                                                             minW={0}>
                                                     <Notification/>
@@ -150,17 +150,22 @@ export default function AdminNavbar() {
                                                     <MenuItem fontWeight='medium'>Event</MenuItem>
                                                 </MenuList>
                                             </Menu>
-                                        </Button>
-                                        <div>
-                                            <Menu>
-                                                <MenuButton as={Button} rounded={'full'} variant={'link'}
-                                                            cursor={'pointer'} minW={0}>
-                                                    <Avatar py='3px' borderRadius='xl' size='md'
-                                                            name='Prosper Otemuyiwa'
-                                                            src='https://cdn.pixabay.com/photo/2017/10/15/11/41/sushi-2853382_960_720.jpg'/>{' '}
-                                                </MenuButton>
-                                            </Menu>
-                                        </div>
+                                        </Box>
+
+                                        <Menu>
+                                            <MenuButton as={Button} rounded={'full'} variant={'link'}
+                                                        cursor={'pointer'} minW={0}>
+                                                <Avatar py='2px' borderRadius='xl' size='md'
+                                                        name='Prosper Otemuyiwa'
+                                                        src='https://cdn.pixabay.com/photo/2017/10/15/11/41/sushi-2853382_960_720.jpg'/>{' '}
+                                            </MenuButton>
+                                            <MenuList>
+                                                <MenuItem fontWeight='medium'>Event</MenuItem>
+                                                <MenuItem fontWeight='medium'>Event</MenuItem>
+                                                <MenuItem fontWeight='medium'>Event</MenuItem>
+                                            </MenuList>
+                                        </Menu>
+
                                     </HStack>
                                 </HStack>
                                 {/* Mobile navbar */}
@@ -168,7 +173,7 @@ export default function AdminNavbar() {
 
                                     <HStack display='flex' alignItems='center' spacing={4}>
 
-                                        <Button ml='4px' bg="neutral.grayLightest" color='black' px={3} py={6}
+                                        <Box ml='4px' bg="neutral.grayLightest" color='black' px={'8px'} py={'8px'}
                                                 borderRadius='16px'
                                                 position='relative'>
                                             <Box
@@ -176,8 +181,8 @@ export default function AdminNavbar() {
                                                 top='-2px'
                                                 right='-4px'
                                                 bg='primary.default'
-                                                h='20px'
-                                                w='20px'
+                                                h='18px'
+                                                w='18px'
                                                 borderRadius='8px'
                                                 display='flex'
                                                 alignItems='center'
@@ -186,12 +191,12 @@ export default function AdminNavbar() {
                                                 fontWeight='semibold'
                                                 color='white'
                                                 textAlign='center'
-                                                minWidth='20px'
+
                                             >
                                                 0
                                             </Box>
                                             <Menu>
-                                                <MenuButton p='3px' rounded={'full'} variant={'link'}
+                                                <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'}
                                                             cursor={'pointer'}
                                                             minW={0}>
                                                     <Notification/>
@@ -202,26 +207,21 @@ export default function AdminNavbar() {
                                                     <MenuItem fontWeight='medium'>Event</MenuItem>
                                                 </MenuList>
                                             </Menu>
-                                        </Button>
-
-
-                                            <Menu>
-                                                <MenuButton rounded={'full'} variant={'link'}
-                                                            cursor={'pointer'} minW={0}>
-                                                    <Avatar py='3px' borderRadius='xl' size='md'
-                                                            name='Prosper Otemuyiwa'
-                                                            src='https://cdn.pixabay.com/photo/2017/10/15/11/41/sushi-2853382_960_720.jpg'/>{' '}
-                                                </MenuButton>
-                                                <MenuList>
-                                                    <MenuItem fontWeight='medium'>Event</MenuItem>
-                                                    <MenuItem fontWeight='medium'>Event</MenuItem>
-                                                    <MenuItem fontWeight='medium'>Event</MenuItem>
-                                                </MenuList>
-                                            </Menu>
-
-
-                                        <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest'/>
-
+                                        </Box>
+                                        <Menu>
+                                            <MenuButton as={Button} rounded={'full'} variant={'link'}
+                                                        cursor={'pointer'} minW={0}>
+                                                <Avatar py='2px' borderRadius='xl' size='md'
+                                                        name='Prosper Otemuyiwa'
+                                                        src='https://cdn.pixabay.com/photo/2017/10/15/11/41/sushi-2853382_960_720.jpg'/>{' '}
+                                            </MenuButton>
+                                            <MenuList>
+                                                <MenuItem fontWeight='medium'>Event</MenuItem>
+                                                <MenuItem fontWeight='medium'>Event</MenuItem>
+                                                <MenuItem fontWeight='medium'>Event</MenuItem>
+                                            </MenuList>
+                                        </Menu>
+                                        <Box  ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest'/>
                                         <IconButton
                                             display={{base: 'flex', md: 'none'}}
                                             aria-label='Open menu'
@@ -231,6 +231,7 @@ export default function AdminNavbar() {
                                             variant='ghost'
                                             h='48px'
                                             w='48px'
+
                                             borderRadius='16px'
                                             bg='neutral.grayLightest'
                                             icon={<AiOutlineMenu/>}

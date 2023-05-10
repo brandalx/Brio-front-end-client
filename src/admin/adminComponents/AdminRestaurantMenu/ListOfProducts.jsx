@@ -86,7 +86,6 @@ export default function ListOfProducts() {
                                     </Box>
                                 )}
                             </Box>
-
                         </Box>
                         {isTablet && (
                             <Box alignItems='center' justifyContent='center' display='flex' gap={3}>
