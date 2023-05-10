@@ -19,7 +19,9 @@ import TrashBox from "../../../assets/svg/TrashBox";
 export default function ListOfProducts() {
     const gridColumns = useBreakpointValue({base: "1fr", md: "1fr 4fr"});
     const [isMobile] = useMediaQuery("(max-width: 576px)");
-    const [isTablet] = useMediaQuery("(max-width: 768px)");
+    const [isTablet] = useMediaQuery("(max-width: 767px)");
+    const [isDek] = useMediaQuery("(min-width: 768px)");
+
 
     return (
         <GridItem colSpan={8}>
@@ -33,7 +35,7 @@ export default function ListOfProducts() {
                         mt='30px'
                         flexWrap='wrap'
                         borderRadius='16px'
-                        p='16px 16px 16px 12px'
+                        p={isTablet ? '8px' : '16px 16px 16px 12px'}
                         border='1px'
                         borderColor='neutral.grayLightest'
                         gap='12px'
@@ -60,7 +62,8 @@ export default function ListOfProducts() {
                                     objectPosition="center"
                                 />
                             </Box>
-                            <Box display='flex' ml={[3, 3, 0]} alignItems='center'>
+                            <Box flexDirection={isMobile ? 'column' : 'row'} display='flex' ml={[3, 3, 0]}
+                                 alignItems='center'>
                                 <Box
                                     display='flex'
                                     alignItems='start'
@@ -71,21 +74,36 @@ export default function ListOfProducts() {
                                     </Heading>
                                     <Box fontSize='2xs'>{item.description}</Box>
                                 </Box>
-                                <Box alignItems='center' display='flex' gap={3}>
-                                    <Text fontSize='xs' fontWeight='bold' color='neutral.black'>{item.price}</Text>
-                                    <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest'/>
-                                    <Button>
-                                        <Pen/>
-                                    </Button>
-                                    <Copy/>
-                                    <TrashBox/>
-                                </Box>
+                                {isDek && (
+                                    <Box alignItems='center' justifyContent='center' display='flex' gap={3}>
+                                        <Text fontSize='xs' fontWeight='bold' color='neutral.black'>{item.price}</Text>
+                                        <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest'/>
+                                        <Button>
+                                            <Pen/>
+                                        </Button>
+                                        <Copy/>
+                                        <TrashBox/>
+                                    </Box>
+                                )}
                             </Box>
+
                         </Box>
-                        <Box>
+                        {isTablet && (
+                            <Box alignItems='center' justifyContent='center' display='flex' gap={3}>
+                                <Text fontSize='xs' fontWeight='bold' color='neutral.black'>{item.price}</Text>
+                                <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest'/>
+                                <Button>
+                                    <Pen/>
+                                </Button>
+                                <Copy/>
+                                <TrashBox/>
+                            </Box>
+                        )}
+
+                        <Box display={isMobile ? 'flex' : 'block'} flexDirection='column'>
                             <Box
                                 display='flex'
-                                flexDirection={['row', 'row', 'row-reverse']}
+                                flexDirection={isMobile ? 'column' : (isTablet ? 'row' : 'column')}
                                 alignItems='center'
                                 justifyContent='space-around'
 
@@ -95,7 +113,8 @@ export default function ListOfProducts() {
                             </Box>
                             <Divider mt='20px' mb='16px'/>
 
-                            <Box display='flex' flexDirection={isTablet ? 'row' : 'row'} justifyContent='space-between'>
+                            <Box display='flex' flexDirection={isMobile ? 'row' : (isTablet ? 'row' : 'row')}
+                                 justifyContent='space-between'>
 
                                 <Box mb={['16px', '16px', 0]}>
                                     <Heading fontSize='2xs' lineHeight='24px'
@@ -103,7 +122,7 @@ export default function ListOfProducts() {
                                     <Text fontSize='13px' color='neutral.grayDark'>{item.ingredients}</Text>
                                 </Box>
                                 <Box>
-                                    <Heading fontSize='2xs' lineHeight='24px'
+                                    <Heading fontSize='' lineHeight='24px'
                                              fontWeight='bold'>Nutritional value</Heading>
                                     <Text fontSize='13px' color='neutral.grayDark'>{item.nutritionalValue}</Text>
                                 </Box>

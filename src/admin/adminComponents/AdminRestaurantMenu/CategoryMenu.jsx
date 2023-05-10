@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box,
     Button,
@@ -14,12 +14,13 @@ import {
     ModalHeader,
     ModalCloseButton,
     ModalBody,
-    ModalFooter, Image, InputLeftAddon, Input
+    ModalFooter, Image, InputLeftAddon, Input, useDisclosure
 } from "@chakra-ui/react";
 import AddPlus from "../../../assets/svg/AddPlus";
 import theme from '../../../utils/theme';
 
 export default function CategoryMenu() {
+
     const arr = [{id: 1, title: 'Breakfast menu', amount: 17}, {id: 2, title: 'Lunch menu', amount: 27}, {
         id: 3,
         title: 'Dinner menu',
@@ -29,27 +30,33 @@ export default function CategoryMenu() {
     const [isTablet] = useMediaQuery("(max-width: 992px)");
     const [isMobile] = useMediaQuery("(max-width: 576px)");
 
-    const [isOpen, setIsOpen] = useState(false);
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const openModal = (category) => {
-        setSelectedCategory(category);
-        setIsOpen(true);
-    }
-
-    const closeModal = () => {
-        setSelectedCategory(null);
-        setIsOpen(false);
-    }
+    useEffect(() => {
+        if (isOpen) {
+            const scrollBarWidth = window.innerWidth - document.body.offsetWidth;
+            document.body.style.overflow = 'hidden';
+            document.body.style.paddingRight = `${scrollBarWidth}px`; // compensate for the scrollbar width
+        } else {
+            document.body.style.overflow = 'unset';
+            document.body.style.paddingRight = '0px';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+            document.body.style.paddingRight = '0px';
+        };
+    }, [isOpen]);
 
     return (
-        <GridItem colSpan={4}>
+        <GridItem overflow='hidden' colSpan={4}>
             <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>Category
                 menu</Text>
             <Box display='flex' flexWrap='wrap'>
                 {arr.map(element => {
                     return (
-                        <Box onClick={() => openModal(element)} ml={isMobile ? 0 : (isTablet ? '16px' : 0)}
+                        <Box cursor='pointer' onClick={onOpen}
+                             ml={isMobile ? 0 : (isTablet ? '16px' : 0)}
                              key={element.id} width={isMobile ? '100%' : (isTablet ? '46%' : '100%')} mb='12px' p='10px'
                              border='1px solid #EDEEF2' borderRadius='16px'>
                             <Heading fontSize='2xs' fontWeight={theme.fontWeights.bold}
@@ -84,27 +91,42 @@ export default function CategoryMenu() {
                     </Button>
                 </Box>
             </Box>
-            <Modal isOpen={isOpen} onClose={closeModal}>
-                <ModalOverlay/>
-                <ModalContent>
-                    <ModalHeader>{selectedCategory?.title}</ModalHeader>
+            <Modal   isOpen={isOpen} onClose={onClose} zIndex='9999999'>
+                <ModalOverlay
+                    sx={{
+                        position: 'fixed',
+                        top: '0',
+                        left: '0',
+                        width: '100%',
+                        height: '100%',
+                        zIndex: '10',
+                        bg: 'rgba(0,0,0,0.6)',
+                    }}
+                />
+                <ModalContent
+                    mx="auto"
+                    my="auto"
+                >
+
+                <ModalHeader>{selectedCategory?.title}</ModalHeader>
                     <ModalCloseButton/>
-                    <ModalBody>
+                    <ModalBody overflow='auto'>
                         <Heading fontSize='2xs' fontWeight={theme.fontWeights.bold}
                                  color={theme.colors.neutral.black}>
                             Create meal item
                         </Heading>
-                        <Box display='flex' gap={6}>
+                        <Box  display='flex' gap={6}>
                             <Box display='flex' flexDirection='column'>
                                 <Text>Meal image</Text>
                                 <Image
-                                    width="125px"
-                                    height="125px"
+                                    width={["100px", "125px", "125px", "125px"]}
+                                    height={["100px", "125px", "125px", "125px"]}
                                     borderRadius="20px"
-                                    src='https://images.pexels.com/photos/16542268/pexels-photo-16542268.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+                                    src='https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg'
                                     objectFit="cover"
                                     objectPosition="center"
                                 />
+
                             </Box>
                             <Box display='flex' alignItems='center' gap={6}>
                                 <Button w='84px' h='44px' border='1px' borderColor='primary.default'
@@ -141,7 +163,7 @@ export default function CategoryMenu() {
                     </ModalBody>
                     <ModalFooter>
                         <Button p='20px' h='20px' border='1px' borderColor='neutral.gray'
-                                color='neutral.gray' colorScheme="blue" mr={3} onClick={closeModal}>
+                                color='neutral.gray' colorScheme="blue" mr={3} onClick={onClose}>
                             Cancel
                         </Button>
                         <Button p='20px' border='1px' borderColor='primary.default'
@@ -151,5 +173,6 @@ export default function CategoryMenu() {
             </Modal>
         </GridItem>
     );
+
 }
 

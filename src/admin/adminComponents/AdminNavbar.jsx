@@ -31,13 +31,13 @@ export default function AdminNavbar() {
     const mobileNav = useDisclosure();
 
     return (<>
-            <Container maxW='full' borderBottom="1px solid #EDEEF2">
+            <Container   zIndex ='9999999' maxW='full' borderBottom="1px solid #EDEEF2">
                 <Container maxW='1110px'>
                     <chakra.header w='full' px={{base: 2, sm: 4}} py={3.5} position='relative'>
                         <Flex alignItems='center' justifyContent='space-between' mx='auto'>
                             <Flex alignItems='center'>
-                                <chakra.a h={'52px'} href='/admin' title='Homepage' display='flex' alignItems='center'>
-                                    <Logo/>
+                                <chakra.a href='/' title='Homepage' display='flex' alignItems='center'>
+                                    <Logo />
                                     <VisuallyHidden>Brio</VisuallyHidden>
                                 </chakra.a>
                                 <Box h='52px' ml='10px' mt='5px'>
@@ -60,29 +60,29 @@ export default function AdminNavbar() {
                                     <Button
                                         color='neutral.black'
                                         fontWeight='bold'
-                                        fontSize='fontSizes.2xs'
+                                        fontSize='14px'
                                         _hover={{
                                             textDecoration: 'none',
                                             color: 'primary.default',
                                         }}
                                     >
-                                        <Link to='/admin/dashboard'>Dashboard</Link>
+                                        <Link fontSize='fontSizes.2xs' to='/admin/dashboard'>Dashboard</Link>
                                     </Button>
                                     <Button
                                         color='neutral.black'
                                         fontWeight='bold'
-                                        fontSize='fontSizes.2xs'
+                                        fontSize='14px'
                                         _hover={{
                                             textDecoration: 'none',
                                             color: 'primary.default',
                                         }}
                                     >
-                                        <Link to='/admin/orders'>Orders</Link>
+                                        <Link fontSize='fontSizes.2xs' to='/admin/orders'>Orders</Link>
                                     </Button>
                                     <Button
                                         color='neutral.black'
                                         fontWeight='bold'
-                                        fontSize='fontSizes.2xs'
+                                        fontSize='14px'
                                         _hover={{
                                             textDecoration: 'none',
                                             color: 'primary.default',
@@ -99,12 +99,12 @@ export default function AdminNavbar() {
                                             color: 'primary.default',
                                         }}
                                     >
-                                        <Link to='/admin/menu'>Menu</Link>
+                                        <Link fontSize='fontSizes.2xs' to='/admin/menu'>Menu</Link>
                                     </Button>
                                     <Button
                                         color='neutral.black'
                                         fontWeight='bold'
-                                        fontSize='fontSizes.2xs'
+                                        fontSize='14px'
                                         _hover={{
                                             textDecoration: 'none',
                                             color: 'primary.default',
@@ -151,7 +151,7 @@ export default function AdminNavbar() {
                                                 </MenuList>
                                             </Menu>
                                         </Button>
-                                        <Button py={6} px={1} borderRadius='16px' border='2px solid #EDEEF2' bg='white'>
+                                        <div>
                                             <Menu>
                                                 <MenuButton as={Button} rounded={'full'} variant={'link'}
                                                             cursor={'pointer'} minW={0}>
@@ -160,7 +160,7 @@ export default function AdminNavbar() {
                                                             src='https://cdn.pixabay.com/photo/2017/10/15/11/41/sushi-2853382_960_720.jpg'/>{' '}
                                                 </MenuButton>
                                             </Menu>
-                                        </Button>
+                                        </div>
                                     </HStack>
                                 </HStack>
                                 {/* Mobile navbar */}
@@ -191,7 +191,7 @@ export default function AdminNavbar() {
                                                 0
                                             </Box>
                                             <Menu>
-                                                <MenuButton as={Button} p='3px' rounded={'full'} variant={'link'}
+                                                <MenuButton p='3px' rounded={'full'} variant={'link'}
                                                             cursor={'pointer'}
                                                             minW={0}>
                                                     <Notification/>
@@ -204,16 +204,21 @@ export default function AdminNavbar() {
                                             </Menu>
                                         </Button>
 
-                                        <Button py={6} px={1} borderRadius='16px' border='2px solid #EDEEF2' bg='white'>
+
                                             <Menu>
-                                                <MenuButton as={Button} rounded={'full'} variant={'link'}
+                                                <MenuButton rounded={'full'} variant={'link'}
                                                             cursor={'pointer'} minW={0}>
                                                     <Avatar py='3px' borderRadius='xl' size='md'
                                                             name='Prosper Otemuyiwa'
                                                             src='https://cdn.pixabay.com/photo/2017/10/15/11/41/sushi-2853382_960_720.jpg'/>{' '}
                                                 </MenuButton>
+                                                <MenuList>
+                                                    <MenuItem fontWeight='medium'>Event</MenuItem>
+                                                    <MenuItem fontWeight='medium'>Event</MenuItem>
+                                                    <MenuItem fontWeight='medium'>Event</MenuItem>
+                                                </MenuList>
                                             </Menu>
-                                        </Button>
+
 
                                         <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest'/>
 
