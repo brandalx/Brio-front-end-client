@@ -43,14 +43,14 @@ export default function Navbar() {
           <Flex alignItems='center' justifyContent='space-between' mx='auto'>
             <Flex alignItems='center'>
               <chakra.a href='/' title='Homepage' display='flex' alignItems='center'>
-                <Link to='/'>
-                  {' '}
-                  <Logo />
-                </Link>
+                <Logo />
                 <VisuallyHidden>Brio</VisuallyHidden>
               </chakra.a>
+
               <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='2'>
-                <Link to='/'> Brio</Link>
+                <chakra.a href='/' title='Homepage'>
+                  Brio
+                </chakra.a>
               </Text>
 
               <InputGroup size='md' fontSize='md' mx='10px'>
@@ -98,7 +98,7 @@ export default function Navbar() {
                 </Box> */}
                 {/* USER CART WILL BE HIDDEN FOR RELEASE 0.1 */}
 
-                <Button variant='ghost' px={2} py={6} borderRadius={100}>
+                <div>
                   <Menu>
                     <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                       <Avatar size='sm' name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />{' '}
@@ -111,7 +111,7 @@ export default function Navbar() {
                       <MenuItem fontWeight='medium'> Log Out</MenuItem>
                     </MenuList>
                   </Menu>
-                </Button>
+                </div>
               </HStack>
 
               <Box display={{ base: 'inline-flex', md: 'none' }}>
@@ -193,7 +193,7 @@ export default function Navbar() {
                     </Button>
                   </Box> */}
                   {/* USER CART WILL BE HIDDEN FOR RELEASE 0.1 */}
-                  <Button variant='ghost' px={2} py={6} borderRadius={100}>
+                  <div>
                     <Menu>
                       <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                         <Avatar size='md' name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />{' '}
@@ -206,7 +206,7 @@ export default function Navbar() {
                         <MenuItem fontWeight='medium'> Log Out</MenuItem>
                       </MenuList>
                     </Menu>
-                  </Button>
+                  </div>
                   <Flex w='100%' justifyContent='space-between' px='16px'>
                     <Flex justifyContent='flex-end'></Flex>
                     <CloseButton aria-label='Close menu' onClick={mobileNav.onClose} />

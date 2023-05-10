@@ -8,7 +8,7 @@ export default function TableAdmins() {
     { name: 'Floyd Miles', status: 'Online', time: `07:38 am 20 Apr, 2021` },
     { name: 'Kristin Watson', status: 'Inactive', time: `04:02 am 20 Apr, 2021` },
     { name: 'Darrell Steward', status: 'Suspended', time: `01:09 am 19 Apr, 2021` },
-    { name: 'Darrell Steward', status: 'Tag large', time: `01:09 am 19 Apr, 2021` }
+    { name: 'Jane Cooper', status: 'Tag large', time: `01:09 am 19 Apr, 2021` }
   ];
 
   return (
