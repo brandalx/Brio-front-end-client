@@ -1,5 +1,6 @@
-import { Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Box, Flex, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import React from 'react';
+import Status from '../../../assets/svg/Status';
 
 export default function TableAdmins() {
   const arr = [
@@ -38,7 +39,25 @@ export default function TableAdmins() {
                   {item.name}
                 </Td>
                 <Td fontSize='2xs' color='neutral.black' fontWeight='semibold'>
-                  {item.status}
+                  <Flex alignItems='center'>
+                    <Box as='span' me={2}>
+                      {' '}
+                      <Status
+                        color={
+                          item.status === 'Online'
+                            ? '#1ABF70'
+                            : item.status === 'Inactive'
+                            ? '#4E60FF'
+                            : item.status === 'Suspended'
+                            ? '#FF5C60'
+                            : item.status === 'Tag large'
+                            ? '#4E60FF'
+                            : 'yellow'
+                        }
+                      />
+                    </Box>
+                    {item.status}
+                  </Flex>
                 </Td>
                 <Td fontSize='2xs' color='neutral.black' isNumeric>
                   {item.time}
