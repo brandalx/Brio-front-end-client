@@ -1,9 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Box, Divider, Flex, Heading, Text } from '@chakra-ui/react';
 import Account from '../../../assets/svg/Account';
 import Administrators from '../../../assets/svg/Administrators';
 import Security from '../../../assets/svg/Security';
 import theme from '../../../utils/theme';
+import { Link, useLocation } from 'react-router-dom';
 
 function SettingItem({ element, isSelected, onItemSelected }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -20,6 +21,21 @@ function SettingItem({ element, isSelected, onItemSelected }) {
   const handleClick = useCallback(() => {
     onItemSelected(element.id);
   }, [onItemSelected, element.id]);
+
+  let location = useLocation();
+  function normalizePath(path) {
+    return path.replace(/\/{2,}/g, '/').replace(/\/$/, '');
+  }
+  useEffect(() => {
+    const normalizedPath = normalizePath(location.pathname);
+    if (normalizedPath === '/admin/restaurant/settings') {
+      onItemSelected(1);
+    } else if (normalizedPath === '/admin/restaurant/settings/administrators') {
+      onItemSelected(2);
+    } else if (normalizedPath === '/admin/restaurant/settings/security') {
+      onItemSelected(3);
+    }
+  }, [location.pathname]);
 
   const borderColor = isSelected ? 'primary.default' : isHovered ? 'primary.default' : 'neutral.grayLightest';
   const bgColor = isSelected ? 'primary.default' : isHovered ? 'primary.lightest' : 'neutral.white';
@@ -60,9 +76,27 @@ function SettingItem({ element, isSelected, onItemSelected }) {
 
 export default function SettingsMenu() {
   const arr = [
-    { id: 1, title: 'Account', description: 'Restaurant information', icon: Account },
-    { id: 2, title: 'Administrators', description: 'Invite and manage admins', icon: Administrators },
-    { id: 3, title: 'Security', description: 'Password, 2FA', icon: Security }
+    {
+      id: 1,
+      title: 'Account',
+      description: 'Restaurant information',
+      icon: Account,
+      link: ''
+    },
+    {
+      id: 2,
+      title: 'Administrators',
+      description: 'Invite and manage admins',
+      icon: Administrators,
+      link: 'administrators'
+    },
+    {
+      id: 3,
+      title: 'Security',
+      description: 'Password, 2FA',
+      icon: Security,
+      link: 'security'
+    }
   ];
 
   const [selectedItem, setSelectedItem] = useState(null);
@@ -77,12 +111,9 @@ export default function SettingsMenu() {
         Settings
       </Text>
       {arr.map((element) => (
-        <SettingItem
-          key={element.id}
-          element={element}
-          isSelected={selectedItem === element.id}
-          onItemSelected={handleItemSelected}
-        />
+        <Link to={element.link} key={element.id}>
+          <SettingItem element={element} isSelected={selectedItem === element.id} onItemSelected={handleItemSelected} />
+        </Link>
       ))}
     </Box>
   );
