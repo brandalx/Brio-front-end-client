@@ -27,7 +27,45 @@ export default function Security() {
           <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
             2 factor authentication
           </Text>
-          <Box pt={5}>box1</Box>
+          <Box pt={5}>
+            <Flex flexDirection={{ base: 'column', md: 'row' }} alignItems={{ base: 'normal', md: 'flex-end' }}>
+              <FormControl id='phone'>
+                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                  Phone number
+                </FormLabel>
+
+                <Input
+                  w={{ base: '100%', md: 'fit-content' }}
+                  type='phone'
+                  background='neutral.white'
+                  _placeholder={{ color: 'neutral.gray' }}
+                  borderRadius='8px'
+                  fontSize='2xs'
+                  placeholder='   Phone number'
+                />
+              </FormControl>
+
+              <Button
+                mt={{ base: 5, md: 0 }}
+                w={{ base: '100%', md: 'initial' }}
+                background='primary.default'
+                fontWeight='bold'
+                variant='solid'
+                color='neutral.white'
+                borderWidth='1px'
+                borderColor='neutral.white'
+                _hover={{
+                  background: 'neutral.white',
+                  color: 'primary.default',
+                  borderWidth: '1px',
+                  borderColor: 'primary.default'
+                }}
+                py={5}
+              >
+                Turn on
+              </Button>
+            </Flex>
+          </Box>
           <Box pt={5}>box2</Box>
         </Box>
       </Box>
