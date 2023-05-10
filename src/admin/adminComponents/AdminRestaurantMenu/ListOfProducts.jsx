@@ -61,26 +61,25 @@ export default function ListOfProducts() {
                                 />
                             </Box>
                             <Box display='flex' ml={[3, 3, 0]} alignItems='center'>
-                                  <Box
-                                      display='flex'
-                                      alignItems='start'
-                                      flexDirection='column'
-                                  >
-                                      <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>
-                                          {item.title}
-                                      </Heading>
-                                      <Box fontSize='2xs'>{item.description}</Box>
-                              </Box>
-                               <Box alignItems='center' display='flex' gap={3}>
-                                   <Text fontSize='xs' fontWeight='bold' color='neutral.black'>{item.price}</Text>
-                                   <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest'/>
-                                   <Button>
-                                       <Pen/>
-                                   </Button>
-                                   <Copy/>
-                                   <TrashBox/>
-                               </Box>
-
+                                <Box
+                                    display='flex'
+                                    alignItems='start'
+                                    flexDirection='column'
+                                >
+                                    <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>
+                                        {item.title}
+                                    </Heading>
+                                    <Box fontSize='2xs'>{item.description}</Box>
+                                </Box>
+                                <Box alignItems='center' display='flex' gap={3}>
+                                    <Text fontSize='xs' fontWeight='bold' color='neutral.black'>{item.price}</Text>
+                                    <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest'/>
+                                    <Button>
+                                        <Pen/>
+                                    </Button>
+                                    <Copy/>
+                                    <TrashBox/>
+                                </Box>
                             </Box>
                         </Box>
                         <Box>
