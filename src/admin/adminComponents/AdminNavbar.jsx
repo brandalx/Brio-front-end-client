@@ -1,32 +1,30 @@
 import React from 'react';
 
 import {
-    chakra,
-    Text,
+    Avatar,
     Box,
-    Flex,
-    useColorModeValue,
-    VisuallyHidden,
-    HStack,
     Button,
-    useDisclosure,
-    VStack,
-    IconButton,
+    chakra,
     CloseButton,
     Container,
-    MenuItem,
-    MenuList,
+    Flex,
+    HStack,
+    IconButton,
     Menu,
     MenuButton,
-    Image,
-    Avatar
+    MenuItem,
+    MenuList,
+    Text,
+    useColorModeValue,
+    useDisclosure,
+    VisuallyHidden,
+    VStack
 } from '@chakra-ui/react';
 
 import Logo from '../../assets/svg/logo';
-import {Link} from 'react-router-dom';
+import {Link, Link as RouterLink} from 'react-router-dom';
 import Notification from '../../assets/svg/Notification';
 import {AiOutlineMenu} from 'react-icons/ai';
-import {Link as RouterLink} from 'react-router-dom';
 
 export default function AdminNavbar() {
     const bg = useColorModeValue('white', 'gray.800');
@@ -34,7 +32,7 @@ export default function AdminNavbar() {
 
     return (
         <>
-            <Container zIndex='9999999' maxW='full' borderBottom='1px solid #EDEEF2' p={0}>
+                <Container zIndex='9999999' maxW='full' borderBottom='1px solid #EDEEF2' p={0}>
                 <Container maxW='1110px'>
                     <chakra.header w='full' px={{base: 2, sm: 4}} py={3.5} position='relative' maxW='none'>
                         <Flex display='flex' alignItems='center' justifyContent='space-between' mx='auto'>
@@ -43,7 +41,7 @@ export default function AdminNavbar() {
                                     <Logo/>
                                     <VisuallyHidden>Brio</VisuallyHidden>
                                     <Box ml='10px' mt='5px'>
-                                        <Box to='/admin' display='flex' flexDirection='column' alignItems='flex-end'>
+                                        <Box to='/admin' display='flex' flexDirection='column' alignItems='start'>
                                             <Text fontSize='sm' fontWeight='extrabold' color='primary.default'>
                                                 Brio
                                             </Text>
@@ -61,7 +59,7 @@ export default function AdminNavbar() {
                                     <Button
                                         color='neutral.black'
                                         fontWeight='bold'
-                                        fontSize='14px'
+                                        fontSize='2xs'
                                         _hover={{
                                             textDecoration: 'none',
                                             color: 'primary.default'
@@ -74,7 +72,7 @@ export default function AdminNavbar() {
                                     <Button
                                         color='neutral.black'
                                         fontWeight='bold'
-                                        fontSize='14px'
+                                        fontSize='2xs'
                                         _hover={{
                                             textDecoration: 'none',
                                             color: 'primary.default'
@@ -87,7 +85,7 @@ export default function AdminNavbar() {
                                     <Button
                                         color='neutral.black'
                                         fontWeight='bold'
-                                        fontSize='14px'
+                                        fontSize='2xs'
                                         _hover={{
                                             textDecoration: 'none',
                                             color: 'primary.default'
@@ -98,7 +96,7 @@ export default function AdminNavbar() {
                                     <Button
                                         color='neutral.black'
                                         fontWeight='bold'
-                                        fontSize='fontSizes.2xs'
+                                        fontSize='2xs'
                                         _hover={{
                                             textDecoration: 'none',
                                             color: 'primary.default'
@@ -111,7 +109,7 @@ export default function AdminNavbar() {
                                     <Button
                                         color='neutral.black'
                                         fontWeight='bold'
-                                        fontSize='14px'
+                                        fontSize='2xs'
                                         _hover={{
                                             textDecoration: 'none',
                                             color: 'primary.default'

@@ -67,9 +67,9 @@ export default function ListOfProducts() {
                                     objectPosition='center'
                                 />
                             </Box>
-                            <Box flexdirection={isMobile ? 'column' : 'row'} display='flex' ml={[3, 3, 0]}
+                            <Box flexDirection={isMobile ? 'column' : 'row'} display='flex' ml={[3, 3, 0]}
                                  alignItems='center'>
-                                <Box display='flex' alignItems='start' flexdirection='column'>
+                                <Box display='flex' alignItems='start' flexDirection='column'>
                                     <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>
                                         {item.title}
                                     </Heading>
@@ -104,10 +104,10 @@ export default function ListOfProducts() {
                             </Box>
                         )}
 
-                        <Box display={isMobile ? 'flex' : 'block'} flexdirection='column'>
+                        <Box display={isMobile ? 'flex' : 'block'} flexDirection='column'>
                             <Box
                                 display='flex'
-                                flexdirection={isMobile ? 'column' : isTablet ? 'row' : 'column'}
+                                flexDirection={isMobile ? 'column' : isTablet ? 'row' : 'column'}
                                 alignItems='center'
                                 justifyContent='space-around'
                                 gap={4}
@@ -117,7 +117,7 @@ export default function ListOfProducts() {
 
                             <Box
                                 display='flex'
-                                flexdirection={isMobile ? 'row' : isTablet ? 'row' : 'row'}
+                                flexDirection={isMobile ? 'row' : isTablet ? 'row' : 'row'}
                                 justifyContent='space-between'
                             >
                                 <Box mb={['16px', '16px', 0]}>
