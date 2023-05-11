@@ -157,6 +157,7 @@ export default function AdminNavbar() {
                                                     <MenuItem fontWeight='medium'>Event</MenuItem>
                                                     <MenuItem fontWeight='medium'>Event</MenuItem>
                                                     <MenuItem fontWeight='medium'>Event</MenuItem>
+                                                    <MenuItem fontWeight='medium'>Event</MenuItem>
                                                 </MenuList>
                                             </Menu>
                                         </Box>
