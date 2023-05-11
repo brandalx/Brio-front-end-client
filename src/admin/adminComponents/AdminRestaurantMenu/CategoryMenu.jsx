@@ -24,7 +24,7 @@ import '../../../css/global.css';
 import AddPlus from '../../../assets/svg/AddPlus';
 import theme from '../../../utils/theme';
 
-export default function CategoryMenu({selectedCategory}) {
+export default function CategoryMenu() {
     const arr = [
         {id: 1, title: 'Breakfast menu', amount: 17},
         {id: 2, title: 'Lunch menu', amount: 27},
