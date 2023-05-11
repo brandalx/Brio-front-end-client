@@ -17,6 +17,7 @@ export default function Administrators({ color = 'black' }) {
         strokeLinecap='round'
         strokeLinejoin='round'
       />
+
       <path
         d='M19.1667 17.4991V15.8324C19.1661 15.0939 18.9203 14.3764 18.4678 13.7927C18.0153 13.209 17.3818 12.7921 16.6667 12.6074'
         stroke={color}
