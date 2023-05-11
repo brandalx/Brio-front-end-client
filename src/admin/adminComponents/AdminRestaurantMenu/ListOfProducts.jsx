@@ -68,12 +68,12 @@ export default function ListOfProducts() {
                                     objectPosition='center'
                                 />
                             </Box>
-                            <Box flexDirection={isMobile ? 'column' : 'row'} display='flex' ml={[3, 3, 0]}
+                            <Box flexdirection={isMobile ? 'column' : 'row'} display='flex' ml={[3, 3, 0]}
                                  alignItems='center'>
                                 <Box
                                     display='flex'
                                     alignItems='start'
-                                    flexDirection='column'
+                                    flexdirection='column'
                                 >
                                     <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>
                                         {item.title}
@@ -105,10 +105,10 @@ export default function ListOfProducts() {
                             </Box>
                         )}
 
-                        <Box display={isMobile ? 'flex' : 'block'} flexDirection='column'>
+                        <Box display={isMobile ? 'flex' : 'block'} flexdirection='column'>
                             <Box
                                 display='flex'
-                                flexDirection={isMobile ? 'column' : (isTablet ? 'row' : 'column')}
+                                flexdirection={isMobile ? 'column' : (isTablet ? 'row' : 'column')}
                                 alignItems='center'
                                 justifyContent='space-around'
 
@@ -118,7 +118,7 @@ export default function ListOfProducts() {
                             </Box>
                             <Divider mt='20px' mb='16px'/>
 
-                            <Box display='flex' flexDirection={isMobile ? 'row' : (isTablet ? 'row' : 'row')}
+                            <Box display='flex' flexdirection={isMobile ? 'row' : (isTablet ? 'row' : 'row')}
                                  justifyContent='space-between'>
 
                                 <Box mb={['16px', '16px', 0]}>

@@ -35,24 +35,24 @@ export default function AdminNavbar() {
                 <Container maxW='1110px'>
                     <chakra.header w='full' px={{base: 2, sm: 4}} py={3.5} position='relative'>
                         <Flex alignItems='center' justifyContent='space-between' mx='auto'>
-                            <Flex alignItems='center'>
-                                <chakra.a href='/' title='Homepage' display='flex' alignItems='center'>
-                                    <Logo/>
-                                    <VisuallyHidden>Brio</VisuallyHidden>
-                                </chakra.a>
-                                <Box h='52px' ml='10px' mt='5px'>
-                                    <Link h={'52px'} to='/admin' display='flex' flexdirection='column'
-                                          alignitems='flex-end'>
-                                        <Text fontSize='sm' fontWeight='extrabold' color='primary.default'>
-                                            Brio
-                                        </Text>
-                                        <Text fontSize='3xs' fontWeight='extrabold' color='neutral.gray' mt=''>
-                                            for owners
-                                        </Text>
-                                    </Link>
-                                    <chakra.a href='/admin' ml='2' mt='0.5'>{' '}</chakra.a>
-                                </Box>
-                            </Flex>
+                            <Link to="/admin" display="block" _hover={{ textDecoration: 'none' }}>
+                                <Flex alignItems="center">
+                                    <Box display="flex" alignItems="center">
+                                        <Logo />
+                                        <VisuallyHidden>Brio</VisuallyHidden>
+                                    </Box>
+                                    <Box h="52px" ml="10px" mt="5px">
+                                        <Box to="/admin" display="flex" flexDirection="column" alignItems="flex-end">
+                                            <Text fontSize="sm" fontWeight="extrabold" color="primary.default">
+                                                Brio
+                                            </Text>
+                                            <Text fontSize="3xs" fontWeight="extrabold" color="neutral.gray" mt="">
+                                                for owners
+                                            </Text>
+                                        </Box>
+                                    </Box>
+                                </Flex>
+                            </Link>
 
                             <HStack display='flex' alignItems='center' spacing={1}>
                                 {/* Deckstop Navbar */}
@@ -231,7 +231,6 @@ export default function AdminNavbar() {
                                             variant='ghost'
                                             h='48px'
                                             w='48px'
-
                                             borderRadius='16px'
                                             bg='neutral.grayLightest'
                                             icon={<AiOutlineMenu/>}
