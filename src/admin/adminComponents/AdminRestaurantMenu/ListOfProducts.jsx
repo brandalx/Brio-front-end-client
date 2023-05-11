@@ -11,15 +11,19 @@ import {
 } from "@chakra-ui/react";
 import theme from "../../../utils/theme";
 import {arrayProducts} from '../../adminJSON/adminListOfProducts';
-import DragAndDrop from "../../../assets/svg/DragAndDrop";
-import Pen from "../../../assets/svg/Pen";
-import Copy from "../../../assets/svg/Copy";
-import TrashBox from "../../../assets/svg/TrashBox";
+import DragAndDrop from '../../../assets/svg/DragAndDrop';
+import Pen from '../../../assets/svg/Pen';
+import Copy from '../../../assets/svg/Copy';
+import TrashBox from '../../../assets/svg/TrashBox';
+import {useState} from "react";
 
 export default function ListOfProducts() {
-    const gridColumns = useBreakpointValue({base: "1fr", md: "1fr 4fr"});
-    const [isMobile] = useMediaQuery("(max-width: 576px)");
-    const [isTablet] = useMediaQuery("(max-width: 768px)");
+    const gridColumns = useBreakpointValue({base: '1fr', md: '1fr 4fr'});
+    const [isMobile] = useMediaQuery('(max-width: 576px)');
+    const [isTablet] = useMediaQuery('(max-width: 767px)');
+    const [isDek] = useMediaQuery('(min-width: 768px)');
+
+
 
     return (
         <GridItem colSpan={8}>
