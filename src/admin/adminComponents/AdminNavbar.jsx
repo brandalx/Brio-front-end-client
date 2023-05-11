@@ -38,17 +38,19 @@ export default function AdminNavbar() {
                 <Container maxW='1110px'>
                     <chakra.header w='full' px={{base: 2, sm: 4}} py={3.5} position='relative' maxW='none'>
                         <Flex display='flex' alignItems='center' justifyContent='space-between' mx='auto'>
-                            <Link to='/admin' display='flex' alignItems='center' _hover={{textDecoration: 'none'}}>
-                                <Logo/>
-                                <VisuallyHidden>Brio</VisuallyHidden>
-                                <Box ml='10px' mt='5px'>
-                                    <Box to='/admin' display='flex' flexDirection='column' alignItems='flex-end'>
-                                        <Text fontSize='sm' fontWeight='extrabold' color='primary.default'>
-                                            Brio
-                                        </Text>
-                                        <Text fontSize='3xs' fontWeight='extrabold' color='neutral.gray' mt=''>
-                                            for owners
-                                        </Text>
+                            <Link to='/admin' _hover={{textDecoration: 'none'}}>
+                                <Box display='flex' alignItems='center'>
+                                    <Logo/>
+                                    <VisuallyHidden>Brio</VisuallyHidden>
+                                    <Box ml='10px' mt='5px'>
+                                        <Box to='/admin' display='flex' flexDirection='column' alignItems='flex-end'>
+                                            <Text fontSize='sm' fontWeight='extrabold' color='primary.default'>
+                                                Brio
+                                            </Text>
+                                            <Text fontSize='3xs' fontWeight='extrabold' color='neutral.gray' mt=''>
+                                                for owners
+                                            </Text>
+                                        </Box>
                                     </Box>
                                 </Box>
                             </Link>
