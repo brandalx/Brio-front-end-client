@@ -118,15 +118,15 @@ export default function CategoryMenu() {
                     maxW='96%'
                     MaxH='568px'
                 >
-                    <ModalHeader>{selectedCategory?.title}</ModalHeader>
+                    <ModalHeader fontSize='sm'>{selectedCategory?.title}</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody overflow='auto'>
-                        <Heading fontSize='2xs' fontWeight={theme.fontWeights.bold} color={theme.colors.neutral.black}>
+                        <Heading fontSize='sm' fontWeight='semibold' color='neutral.black'>
                             Create meal item
                         </Heading>
                         <Box display='flex' gap={6}>
                             <Box display='flex' flexDirection='column'>
-                                <Text>Meal image</Text>
+                                <Text mb='6px' fontSize='3xs' color='neutral.grayDark'>Meal image</Text>
                                 <Box
                                     flexWrap='wrap'
                                     position='relative'
@@ -164,22 +164,28 @@ export default function CategoryMenu() {
                         <Box gap='32px' display='flex' flexDirection='column'>
                             <Box display='flex' flexDirection='row' gap={3}>
                                 <InputGroup mt='20px' display='flex' flexDirection='column'>
-                                    <Text>Name</Text>
-                                    <Input type='text' name='name'/>
+                                    <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>Name</Text>
+                                    <Input color='neutral.gray' fontSize='2xs' type='text' placeholder='Enter meal name' name='name'/>
                                 </InputGroup>
                                 <InputGroup mt='20px' display='flex' flexDirection='column'>
-                                    <Text>Price</Text>
-                                    <Input type='number' name='price'/>
+                                    <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>Price</Text>
+                                    <Input color='neutral.gray' fontSize='2xs' placeholder='Enter meal price' type='number' name='price'/>
+                                </InputGroup>
+                            </Box>
+                            <Box display='flex' flexDirection='row' gap={3}>
+                                <InputGroup mt='20px' display='flex' flexDirection='column'>
+                                    <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>Description</Text>
+                                    <Input color='neutral.gray' fontSize='2xs' type='text' placeholder='Enter meal description' name='name'/>
                                 </InputGroup>
                             </Box>
                             <Box display='flex' flexDirection='row' gap={3}>
                                 <InputGroup display='flex' flexDirection='column'>
-                                    <Text>Ingredients</Text>
-                                    <Input type='text' name='name'/>
+                                    <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>Ingredients</Text>
+                                    <Input color='neutral.gray' fontSize='2xs' placeholder='Enter meal ingredients' type='text' name='name'/>
                                 </InputGroup>
                                 <InputGroup display='flex' flexDirection='column'>
-                                    <Text>Nutritional value</Text>
-                                    <Input type='number' name='price'/>
+                                    <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>Nutritional value</Text>
+                                    <Input color='neutral.gray' fontSize='2xs' placeholder='Enter meal nutritional value' type='number' name='price'/>
                                 </InputGroup>
                             </Box>
                         </Box>
