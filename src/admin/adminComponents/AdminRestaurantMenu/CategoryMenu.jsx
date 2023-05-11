@@ -24,7 +24,7 @@ import '../../../css/global.css';
 import AddPlus from '../../../assets/svg/AddPlus';
 import theme from '../../../utils/theme';
 
-export default function CategoryMenu() {
+export default function CategoryMenu({selectedCategory}) {
     const arr = [
         {id: 1, title: 'Breakfast menu', amount: 17},
         {id: 2, title: 'Lunch menu', amount: 27},
@@ -35,6 +35,8 @@ export default function CategoryMenu() {
         },
         {id: 4, title: 'Drinks menu', amount: 15}
     ];
+
+
 
     const [isTablet] = useMediaQuery('(max-width: 992px)');
     const [isMobile] = useMediaQuery('(max-width: 576px)');
@@ -165,27 +167,33 @@ export default function CategoryMenu() {
                             <Box display='flex' flexDirection='row' gap={3}>
                                 <InputGroup mt='20px' display='flex' flexDirection='column'>
                                     <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>Name</Text>
-                                    <Input color='neutral.gray' fontSize='2xs' type='text' placeholder='Enter meal name' name='name'/>
+                                    <Input color='neutral.gray' fontSize='2xs' type='text' placeholder='Enter meal name'
+                                           name='name'/>
                                 </InputGroup>
                                 <InputGroup mt='20px' display='flex' flexDirection='column'>
                                     <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>Price</Text>
-                                    <Input color='neutral.gray' fontSize='2xs' placeholder='Enter meal price' type='number' name='price'/>
+                                    <Input color='neutral.gray' fontSize='2xs' placeholder='Enter meal price'
+                                           type='number' name='price'/>
                                 </InputGroup>
                             </Box>
                             <Box display='flex' flexDirection='row' gap={3}>
                                 <InputGroup mt='20px' display='flex' flexDirection='column'>
                                     <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>Description</Text>
-                                    <Input color='neutral.gray' fontSize='2xs' type='text' placeholder='Enter meal description' name='name'/>
+                                    <Input color='neutral.gray' fontSize='2xs' type='text'
+                                           placeholder='Enter meal description' name='name'/>
                                 </InputGroup>
                             </Box>
                             <Box display='flex' flexDirection='row' gap={3}>
                                 <InputGroup display='flex' flexDirection='column'>
                                     <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>Ingredients</Text>
-                                    <Input color='neutral.gray' fontSize='2xs' placeholder='Enter meal ingredients' type='text' name='name'/>
+                                    <Input color='neutral.gray' fontSize='2xs' placeholder='Enter meal ingredients'
+                                           type='text' name='name'/>
                                 </InputGroup>
                                 <InputGroup display='flex' flexDirection='column'>
-                                    <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>Nutritional value</Text>
-                                    <Input color='neutral.gray' fontSize='2xs' placeholder='Enter meal nutritional value' type='number' name='price'/>
+                                    <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>Nutritional
+                                        value</Text>
+                                    <Input color='neutral.gray' fontSize='2xs'
+                                           placeholder='Enter meal nutritional value' type='number' name='price'/>
                                 </InputGroup>
                             </Box>
                         </Box>
