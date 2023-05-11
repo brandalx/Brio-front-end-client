@@ -51,7 +51,6 @@ export default function Administrators() {
         <Box pt={5}>
           <TableAdmins />
         </Box>
-        <Box pt={5}>box2</Box>
       </Box>
     </Box>
   );
