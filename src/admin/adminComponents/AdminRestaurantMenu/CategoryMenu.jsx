@@ -20,11 +20,18 @@ import AddPlus from "../../../assets/svg/AddPlus";
 import theme from '../../../utils/theme';
 
 export default function CategoryMenu() {
-    const arr = [{id: 1, title: 'Breakfast menu', amount: 17}, {id: 2, title: 'Lunch menu', amount: 27}, {
-        id: 3,
-        title: 'Dinner menu',
-        amount: 12
-    }, {title: 'Drinks menu', amount: 15}];
+
+    const arr = [
+        {id: 1, title: 'Breakfast menu', amount: 17},
+        {id: 2, title: 'Lunch menu', amount: 27},
+        {
+            id: 3,
+            title: 'Dinner menu',
+            amount: 12
+        },
+        {id: 4, title: 'Drinks menu', amount: 15}
+    ];
+
 
     const [isTablet] = useMediaQuery("(max-width: 992px)");
     const [isMobile] = useMediaQuery("(max-width: 576px)");
