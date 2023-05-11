@@ -42,11 +42,11 @@ export default function CategoryMenu() {
             <Box display='flex' flexWrap='wrap'>
                 {arr.map(element => {
                     return (
-                        <Box cursor='pointer'
-                             ml={isMobile ? 0 : (isTablet ? '8px' : 0)}
-                             mr={isMobile ? 0 : (isTablet ? '8px' : 0)}
-                             key={element.id} width={isMobile ? '100%' : (isTablet ? '46%' : '100%')} mb='12px' p='10px'
-                             border='1px solid #EDEEF2' borderRadius='16px'>
+                        <Box
+                            ml={isMobile ? 0 : (isTablet ? '8px' : 0)}
+                            mr={isMobile ? 0 : (isTablet ? '8px' : 0)}
+                            key={element.id} width={isMobile ? '100%' : (isTablet ? '46%' : '100%')} mb='12px' p='10px'
+                            border='1px solid #EDEEF2' borderRadius='16px'>
                             <Heading fontSize='2xs' fontWeight={theme.fontWeights.bold}
                                      color={theme.colors.neutral.black}>
                                 {element.title}
@@ -59,19 +59,19 @@ export default function CategoryMenu() {
                 })}
             </Box>
             <Divider mt='21px'/>
-            <Box width='100%' gap={isTablet ? 4 : 0} mt='20px' display='flex' justifyContent='space-between'>
-                <Box width={isTablet ? '100%' : ''} px='5px' border='1px solid #EDEEF2'
+            <Box width='100%' gap='4' mt='20px' display='flex' justifyContent='space-between'>
+                <Box width='100%' px='5px' border='1px solid #EDEEF2'
                      borderRadius='16px'
                      display='flex' flex-direction='column'>
-                    <Button width='95%' display='flex' flexDirection='column' h='72px'>
+                    <Button width='100%' display='flex' flexDirection='column' h='70px'>
                         <AddPlus/>
                         <Text mt='6px'>
                             New category
                         </Text>
                     </Button>
                 </Box>
-                <Box width={isTablet ? '100%' : ''} border='1px solid #EDEEF2' borderRadius='16px'>
-                    <Button onClick={onOpen} width='95%' display='flex' flexDirection='column' h='72px'>
+                <Box width='100%' border='1px solid #EDEEF2' borderRadius='16px'>
+                    <Button onClick={onOpen} width='100%' display='flex' flexDirection='column' h='70px'>
                         <AddPlus/>
                         <Text mt='6px'>
                             New meal item
@@ -99,11 +99,10 @@ export default function CategoryMenu() {
                 <ModalContent
                     position='relative'
                     boxSizing="content-box"
-                        left={isLilMob ? '15px' : '0'}
+                    left={isLilMob ? '18px' : '0'}
                     width={['85%', '100%', '350px', '350px']}
                     maxW="96%"
                 >
-
                     <ModalHeader>{selectedCategory?.title}</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody overflow='auto'>
@@ -114,50 +113,62 @@ export default function CategoryMenu() {
                         <Box display='flex' gap={6}>
                             <Box display='flex' flexDirection='column'>
                                 <Text>Meal image</Text>
-                                <Image
-                                    width={["100px", "125px", "125px", "125px"]}
-                                    height={["100px", "125px", "125px", "125px"]}
-                                    borderRadius="20px"
-                                    src='https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg'
-                                    objectFit="cover"
-                                    objectPosition="center"
-                                />
+                                <Box
+                                    flexWrap='wrap'
+                                    position='relative'
+                                    height='88px'
+                                    width={isLilMob ? '65px' : '88px'}
+                                    maxW='88px'
+                                    maxH='88px'
+                                >
+                                    <Image
+                                        width='100%'
+                                        height='100%'
+                                        borderRadius='20px'
+                                        src='https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg'
+                                        objectFit="cover"
+                                        objectPosition="center"
+                                    />
+                                </Box>
 
                             </Box>
-                            <Box display='flex' alignItems='center' gap={6}>
+                            <Box display='flex' flexDirection={isLilMob ? 'column-reverse' : ''}
+                                 justifyContant={isLilMob ? 'center' : ''} alignItems='center' gap={6}>
                                 <Button w='84px' h='44px' border='1px' borderColor='primary.default'
                                         color='primary.default'>Change</Button>
-                                <Text>Remove</Text>
+                                <Text color='neutral.gray' fontWeight='bold'>Remove</Text>
                             </Box>
                         </Box>
-                        <Box display='flex' flexDirection='row' gap={3}>
-                            <InputGroup display='flex' flexDirection='column'>
-                                <Text>Name</Text>
-                                <Input type="text" name="name"/>
-                            </InputGroup>
+                        <Box gap={'32px'} display='flex' flexDirection='column'>
+                            <Box display='flex' flexDirection='row' gap={3}>
+                                <InputGroup mt='20px' display='flex' flexDirection='column'>
+                                    <Text>Name</Text>
+                                    <Input type="text" name="name"/>
+                                </InputGroup>
 
+                                <InputGroup mt='20px' display='flex' flexDirection='column'>
+                                    <Text>Price</Text>
+                                    <Input type="number" name="price"/>
+                                </InputGroup>
+                            </Box>
                             <InputGroup display='flex' flexDirection='column'>
                                 <Text>Price</Text>
                                 <Input type="number" name="price"/>
                             </InputGroup>
-                        </Box>
-                        <InputGroup display='flex' flexDirection='column'>
-                            <Text>Price</Text>
-                            <Input type="number" name="price"/>
-                        </InputGroup>
-                        <Box display='flex' flexDirection='row' gap={3}>
-                            <InputGroup display='flex' flexDirection='column'>
-                                <Text>Ingredients</Text>
-                                <Input type="text" name="name"/>
-                            </InputGroup>
+                            <Box display='flex' flexDirection='row' gap={3}>
+                                <InputGroup display='flex' flexDirection='column'>
+                                    <Text>Ingredients</Text>
+                                    <Input type="text" name="name"/>
+                                </InputGroup>
 
-                            <InputGroup display='flex' flexDirection='column'>
-                                <Text>Nutritional value</Text>
-                                <Input type="number" name="price"/>
-                            </InputGroup>
+                                <InputGroup display='flex' flexDirection='column'>
+                                    <Text>Nutritional value</Text>
+                                    <Input type="number" name="price"/>
+                                </InputGroup>
+                            </Box>
                         </Box>
                     </ModalBody>
-                    <ModalFooter>
+                    <ModalFooter display='flex' justifyContent={isLilMob ? 'center' : 'end'}>
                         <Button p='20px' h='20px' border='1px' borderColor='neutral.gray'
                                 color='neutral.gray' colorScheme="blue" mr={3} onClick={onClose}>
                             Cancel

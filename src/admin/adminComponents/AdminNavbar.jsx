@@ -66,7 +66,7 @@ export default function AdminNavbar() {
                                             color: 'primary.default',
                                         }}
                                     >
-                                        <Link fontSize='fontSizes.2xs' to='/admin/dashboard'>Dashboard</Link>
+                                        <Link fontSize='fontSizes.2xs' to='/admin/restaurant/dashboard'>Dashboard</Link>
                                     </Button>
                                     <Button
                                         color='neutral.black'
@@ -77,7 +77,7 @@ export default function AdminNavbar() {
                                             color: 'primary.default',
                                         }}
                                     >
-                                        <Link fontSize='fontSizes.2xs' to='/admin/orders'>Orders</Link>
+                                        <Link fontSize='fontSizes.2xs' to='/admin/restaurant/orders'>Orders</Link>
                                     </Button>
                                     <Button
                                         color='neutral.black'
@@ -88,7 +88,7 @@ export default function AdminNavbar() {
                                             color: 'primary.default',
                                         }}
                                     >
-                                        <Link to='/admin/customers'>Customers</Link>
+                                        <Link to='/admin/restaurant/customers'>Customers</Link>
                                     </Button>
                                     <Button
                                         color='neutral.black'
@@ -99,7 +99,7 @@ export default function AdminNavbar() {
                                             color: 'primary.default',
                                         }}
                                     >
-                                        <Link fontSize='fontSizes.2xs' to='/admin/menu'>Menu</Link>
+                                        <Link fontSize='fontSizes.2xs' to='/admin/restaurant/menu'>Menu</Link>
                                     </Button>
                                     <Button
                                         color='neutral.black'
@@ -110,7 +110,7 @@ export default function AdminNavbar() {
                                             color: 'primary.default',
                                         }}
                                     >
-                                        <Link to='/admin/promotions'>Promotions</Link>
+                                        <Link to='/admin/restaurant/promotions'>Promotions</Link>
                                     </Button>
 
                                     <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest'/>

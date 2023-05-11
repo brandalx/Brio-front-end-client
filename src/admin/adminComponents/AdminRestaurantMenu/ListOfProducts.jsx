@@ -48,18 +48,24 @@ export default function ListOfProducts() {
                             alignItems='center'
                             mb={['16px', '16px', 0]}
                         >
-                            <Box>
-                                <DragAndDrop/>
-                            </Box>
-                            <Box flexWrap={"wrap"} position="relative" width={isMobile ? '200px' : '100px'}
-                                 height="100px">
+                            {/*<Box>*/}
+                            {/*    <DragAndDrop/>*/}
+                            {/*</Box>*/}
+                            <Box
+                                flexWrap='wrap'
+                                position='relative'
+                                width={isMobile ? '200px' : '100px'}
+                                height='72px'
+                                maxW='72px'
+                                maxH='72px'
+                            >
                                 <Image
-                                    width="100%"
-                                    height="100%"
-                                    borderRadius="20px"
+                                    width='100%'
+                                    height='100%'
+                                    borderRadius='20px'
                                     src={item.image}
-                                    objectFit="cover"
-                                    objectPosition="center"
+                                    objectFit='cover'
+                                    objectPosition='center'
                                 />
                             </Box>
                             <Box flexDirection={isMobile ? 'column' : 'row'} display='flex' ml={[3, 3, 0]}
