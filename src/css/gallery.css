@@ -21,7 +21,7 @@
 .image-gallery-thumbnail-image {
   width: 78px; /* or whatever value you want */
   height: 78px; /* or whatever value you want */
-  object-fit: cover; /* to make sure the image fills the square */
+  object-fit: cover; /* to make sure the image fills the square 1 */
 }
 .image-gallery {
   padding: 15px 0;
