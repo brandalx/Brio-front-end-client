@@ -175,13 +175,13 @@ export default function AdminNavbar() {
                                             <MenuList>
                                                 <MenuItem as={RouterLink} to='/admin/restaurant/settings'
                                                           fontWeight='medium'>
-                                                    Event
+                                                    Settings
                                                 </MenuItem>
-                                                <MenuItem as={RouterLink} to='/admin/restaurant/settings'
+                                                <MenuItem
                                                           fontWeight='medium'>
                                                     Event
                                                 </MenuItem>
-                                                <MenuItem as={RouterLink} to='/admin/restaurant/settings'
+                                                <MenuItem
                                                           fontWeight='medium'>
                                                     Event
                                                 </MenuItem>
