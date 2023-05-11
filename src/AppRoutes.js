@@ -14,7 +14,7 @@ import Header from './user/userComponents/Header';
 import Main from './user/userComponents/Main';
 import Footer from './user/userComponents/Footer';
 import Login from './user/userPages/Login';
-import RestaurantMenu from "./admin/adminPages/RestaurantMenu";
+import RestaurantMenu from './admin/adminPages/RestaurantMenu';
 import RestaurantSettings from './admin/adminPages/RestaurantSettings';
 import Page404 from './user/userPages/Page404';
 

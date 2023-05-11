@@ -14,39 +14,53 @@ import {
     ModalHeader,
     ModalCloseButton,
     ModalBody,
-    ModalFooter, Image, InputLeftAddon, Input, useDisclosure
-} from "@chakra-ui/react";
-import AddPlus from "../../../assets/svg/AddPlus";
+    ModalFooter,
+    Image,
+    InputLeftAddon,
+    Input,
+    useDisclosure
+} from '@chakra-ui/react';
+import '../../../css/global.css';
+import AddPlus from '../../../assets/svg/AddPlus';
 import theme from '../../../utils/theme';
 
 export default function CategoryMenu() {
+    const arr = [
+        {id: 1, title: 'Breakfast menu', amount: 17},
+        {id: 2, title: 'Lunch menu', amount: 27},
+        {
+            id: 3,
+            title: 'Dinner menu',
+            amount: 12
+        },
+        {id: 4, title: 'Drinks menu', amount: 15}
+    ];
 
-    const arr = [{id: 1, title: 'Breakfast menu', amount: 17}, {id: 2, title: 'Lunch menu', amount: 27}, {
-        id: 3,
-        title: 'Dinner menu',
-        amount: 12
-    }, {id: 4, title: 'Drinks menu', amount: 15}];
-
-    const [isTablet] = useMediaQuery("(max-width: 992px)");
-    const [isMobile] = useMediaQuery("(max-width: 576px)");
-    const [isLilMob] = useMediaQuery("(max-width: 350px)");
+    const [isTablet] = useMediaQuery('(max-width: 992px)');
+    const [isMobile] = useMediaQuery('(max-width: 576px)');
+    const [isLilMob] = useMediaQuery('(max-width: 350px)');
 
     const {isOpen, onOpen, onClose} = useDisclosure();
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-
     return (
-        <GridItem overflow='hidden' colSpan={4}>
-            <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>Category
-                menu</Text>
+        <GridItem width='100%' overflow='hidden' colSpan={4}>
+            <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
+                Category menu
+            </Text>
             <Box display='flex' flexWrap='wrap'>
-                {arr.map(element => {
+                {arr.map((element) => {
                     return (
                         <Box
-                            ml={isMobile ? 0 : (isTablet ? '8px' : 0)}
-                            mr={isMobile ? 0 : (isTablet ? '8px' : 0)}
-                            key={element.id} width={isMobile ? '100%' : (isTablet ? '46%' : '100%')} mb='12px' p='10px'
-                            border='1px solid #EDEEF2' borderRadius='16px'>
+                            ml={isMobile ? 0 : isTablet ? '8px' : 0}
+                            mr={isMobile ? 0 : isTablet ? '8px' : 0}
+                            key={element.id}
+                            width={isMobile ? '100%' : isTablet ? '46%' : '100%'}
+                            mb='12px'
+                            p='10px'
+                            border='1px solid #EDEEF2'
+                            borderRadius='16px'
+                        >
                             <Heading fontSize='2xs' fontWeight={theme.fontWeights.bold}
                                      color={theme.colors.neutral.black}>
                                 {element.title}
@@ -55,32 +69,34 @@ export default function CategoryMenu() {
                                 {element.amount}
                             </Text>
                         </Box>
-                    )
+                    );
                 })}
             </Box>
             <Divider mt='21px'/>
             <Box width='100%' gap='4' mt='20px' display='flex' justifyContent='space-between'>
-                <Box width='100%' px='5px' border='1px solid #EDEEF2'
-                     borderRadius='16px'
-                     display='flex' flex-direction='column'>
+                <Box width='100%' px='5px' border='1px solid #EDEEF2' borderRadius='16px' display='flex'
+                     flexDirection='column'>
                     <Button width='100%' display='flex' flexDirection='column' h='70px'>
                         <AddPlus/>
-                        <Text mt='6px'>
-                            New category
-                        </Text>
+                        <Text mt='6px'>New category</Text>
                     </Button>
                 </Box>
                 <Box width='100%' border='1px solid #EDEEF2' borderRadius='16px'>
                     <Button onClick={onOpen} width='100%' display='flex' flexDirection='column' h='70px'>
                         <AddPlus/>
-                        <Text mt='6px'>
-                            New meal item
-                        </Text>
+                        <Text mt='6px'>New meal item</Text>
                     </Button>
                 </Box>
             </Box>
-            <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
+            <Modal
+                size={isLilMob ? 'full' : 'xl'}
+                blockScrollOnMount={false}
+                isOpen={isOpen}
+                onClose={onClose}
+                zIndex='9999999'
+            >
                 <ModalOverlay
+                    width='100%'
                     sx={{
                         position: 'fixed',
                         top: '0',
@@ -95,19 +111,17 @@ export default function CategoryMenu() {
                     }}
                 />
 
-
                 <ModalContent
                     position='relative'
-                    boxSizing="content-box"
-                    left={isLilMob ? '18px' : '0'}
-                    width={['85%', '100%', '350px', '350px']}
-                    maxW="96%"
+                    boxSizing='content-box'
+                    width={['100%', '100%', '100%', '540px']}
+                    maxW='96%'
+                    MaxH='568px'
                 >
                     <ModalHeader>{selectedCategory?.title}</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody overflow='auto'>
-                        <Heading fontSize='2xs' fontWeight={theme.fontWeights.bold}
-                                 color={theme.colors.neutral.black}>
+                        <Heading fontSize='2xs' fontWeight={theme.fontWeights.bold} color={theme.colors.neutral.black}>
                             Create meal item
                         </Heading>
                         <Box display='flex' gap={6}>
@@ -126,60 +140,69 @@ export default function CategoryMenu() {
                                         height='100%'
                                         borderRadius='20px'
                                         src='https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg'
-                                        objectFit="cover"
-                                        objectPosition="center"
+                                        objectFit='cover'
+                                        objectPosition='center'
                                     />
                                 </Box>
-
                             </Box>
-                            <Box display='flex' flexDirection={isLilMob ? 'column-reverse' : ''}
-                                 justifyContant={isLilMob ? 'center' : ''} alignItems='center' gap={6}>
+                            <Box
+                                display='flex'
+                                flexDirection={isLilMob ? 'column-reverse' : ''}
+                                justifyContent={isLilMob ? 'center' : ''}
+                                alignItems='center'
+                                gap={6}
+                            >
                                 <Button w='84px' h='44px' border='1px' borderColor='primary.default'
-                                        color='primary.default'>Change</Button>
-                                <Text color='neutral.gray' fontWeight='bold'>Remove</Text>
+                                        color='primary.default'>
+                                    Change
+                                </Button>
+                                <Text color='neutral.gray' fontWeight='bold'>
+                                    Remove
+                                </Text>
                             </Box>
                         </Box>
-                        <Box gap={'32px'} display='flex' flexDirection='column'>
+                        <Box gap='32px' display='flex' flexDirection='column'>
                             <Box display='flex' flexDirection='row' gap={3}>
                                 <InputGroup mt='20px' display='flex' flexDirection='column'>
                                     <Text>Name</Text>
-                                    <Input type="text" name="name"/>
+                                    <Input type='text' name='name'/>
                                 </InputGroup>
-
                                 <InputGroup mt='20px' display='flex' flexDirection='column'>
                                     <Text>Price</Text>
-                                    <Input type="number" name="price"/>
+                                    <Input type='number' name='price'/>
                                 </InputGroup>
                             </Box>
-                            <InputGroup display='flex' flexDirection='column'>
-                                <Text>Price</Text>
-                                <Input type="number" name="price"/>
-                            </InputGroup>
                             <Box display='flex' flexDirection='row' gap={3}>
                                 <InputGroup display='flex' flexDirection='column'>
                                     <Text>Ingredients</Text>
-                                    <Input type="text" name="name"/>
+                                    <Input type='text' name='name'/>
                                 </InputGroup>
-
                                 <InputGroup display='flex' flexDirection='column'>
                                     <Text>Nutritional value</Text>
-                                    <Input type="number" name="price"/>
+                                    <Input type='number' name='price'/>
                                 </InputGroup>
                             </Box>
                         </Box>
                     </ModalBody>
                     <ModalFooter display='flex' justifyContent={isLilMob ? 'center' : 'end'}>
-                        <Button p='20px' h='20px' border='1px' borderColor='neutral.gray'
-                                color='neutral.gray' colorScheme="blue" mr={3} onClick={onClose}>
+                        <Button
+                            p='20px'
+                            h='20px'
+                            border='1px'
+                            borderColor='neutral.gray'
+                            color='neutral.gray'
+                            colorScheme='blue'
+                            mr={3}
+                            onClick={onClose}
+                        >
                             Cancel
                         </Button>
-                        <Button p='20px' border='1px' borderColor='primary.default'
-                                color='primary.default'>Publish meal item</Button>
+                        <Button p='20px' border='1px' borderColor='primary.default' color='primary.default'>
+                            Publish meal item
+                        </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
         </GridItem>
     );
-
 }
-

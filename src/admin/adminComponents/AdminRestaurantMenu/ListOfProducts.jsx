@@ -7,26 +7,25 @@ import {
     Divider,
     Button,
     useBreakpointValue,
-    useMediaQuery,
-} from "@chakra-ui/react";
-import theme from "../../../utils/theme";
+    useMediaQuery
+} from '@chakra-ui/react';
+import theme from '../../../utils/theme';
 import {arrayProducts} from '../../adminJSON/adminListOfProducts';
-import DragAndDrop from "../../../assets/svg/DragAndDrop";
-import Pen from "../../../assets/svg/Pen";
-import Copy from "../../../assets/svg/Copy";
-import TrashBox from "../../../assets/svg/TrashBox";
+import DragAndDrop from '../../../assets/svg/DragAndDrop';
+import Pen from '../../../assets/svg/Pen';
+import Copy from '../../../assets/svg/Copy';
+import TrashBox from '../../../assets/svg/TrashBox';
 
 export default function ListOfProducts() {
-    const gridColumns = useBreakpointValue({base: "1fr", md: "1fr 4fr"});
-    const [isMobile] = useMediaQuery("(max-width: 576px)");
-    const [isTablet] = useMediaQuery("(max-width: 767px)");
-    const [isDek] = useMediaQuery("(min-width: 768px)");
-
+    const gridColumns = useBreakpointValue({base: '1fr', md: '1fr 4fr'});
+    const [isMobile] = useMediaQuery('(max-width: 576px)');
+    const [isTablet] = useMediaQuery('(max-width: 767px)');
+    const [isDek] = useMediaQuery('(min-width: 768px)');
 
     return (
         <GridItem colSpan={8}>
             <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'></Text>
-            {arrayProducts.map(item => {
+            {arrayProducts.map((item) => {
                 return (
                     <Box
                         key={item.id}
@@ -70,11 +69,7 @@ export default function ListOfProducts() {
                             </Box>
                             <Box flexdirection={isMobile ? 'column' : 'row'} display='flex' ml={[3, 3, 0]}
                                  alignItems='center'>
-                                <Box
-                                    display='flex'
-                                    alignItems='start'
-                                    flexdirection='column'
-                                >
+                                <Box display='flex' alignItems='start' flexdirection='column'>
                                     <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>
                                         {item.title}
                                     </Heading>
@@ -82,7 +77,9 @@ export default function ListOfProducts() {
                                 </Box>
                                 {isDek && (
                                     <Box alignItems='center' justifyContent='center' display='flex' gap={3}>
-                                        <Text fontSize='xs' fontWeight='bold' color='neutral.black'>{item.price}</Text>
+                                        <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                                            {item.price}
+                                        </Text>
                                         <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest'/>
                                         <Button>
                                             <Pen/>
@@ -95,7 +92,9 @@ export default function ListOfProducts() {
                         </Box>
                         {isTablet && (
                             <Box alignItems='center' justifyContent='center' display='flex' gap={3}>
-                                <Text fontSize='xs' fontWeight='bold' color='neutral.black'>{item.price}</Text>
+                                <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                                    {item.price}
+                                </Text>
                                 <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest'/>
                                 <Button>
                                     <Pen/>
@@ -108,32 +107,40 @@ export default function ListOfProducts() {
                         <Box display={isMobile ? 'flex' : 'block'} flexdirection='column'>
                             <Box
                                 display='flex'
-                                flexdirection={isMobile ? 'column' : (isTablet ? 'row' : 'column')}
+                                flexdirection={isMobile ? 'column' : isTablet ? 'row' : 'column'}
                                 alignItems='center'
                                 justifyContent='space-around'
-
                                 gap={4}
                                 flexWrap='wrap'
-                            >
-                            </Box>
+                            ></Box>
                             <Divider mt='20px' mb='16px'/>
 
-                            <Box display='flex' flexdirection={isMobile ? 'row' : (isTablet ? 'row' : 'row')}
-                                 justifyContent='space-between'>
-
+                            <Box
+                                display='flex'
+                                flexdirection={isMobile ? 'row' : isTablet ? 'row' : 'row'}
+                                justifyContent='space-between'
+                            >
                                 <Box mb={['16px', '16px', 0]}>
-                                    <Heading fontSize='2xs' lineHeight='24px'
-                                             fontWeight='bold' color='neutral.black'>Ingredients</Heading>
-                                    <Text fontSize='13px' color='neutral.grayDark'>{item.ingredients}</Text>
+                                    <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>
+                                        Ingredients
+                                    </Heading>
+                                    <Text fontSize='13px' color='neutral.grayDark'>
+                                        {item.ingredients}
+                                    </Text>
                                 </Box>
                                 <Box>
-                                    <Heading fontSize='' lineHeight='24px'
-                                             fontWeight='bold'>Nutritional value</Heading>
-                                    <Text fontSize='13px' color='neutral.grayDark'>{item.nutritionalValue}</Text>
+                                    <Heading fontSize='' lineHeight='24px' fontWeight='bold'>
+                                        Nutritional value
+                                    </Heading>
+                                    <Text fontSize='13px' color='neutral.grayDark'>
+                                        {item.nutritionalValue}
+                                    </Text>
                                 </Box>
                             </Box>
                         </Box>
-                    </Box>)
+                    </Box>
+                );
             })}
-        </GridItem>)
+        </GridItem>
+    );
 }
