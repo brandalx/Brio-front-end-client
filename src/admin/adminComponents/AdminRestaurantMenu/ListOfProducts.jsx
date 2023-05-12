@@ -12,6 +12,7 @@ import {
 import theme from '../../../utils/theme';
 import {arrayProducts} from '../../adminJSON/adminListOfProducts1';
 import {arrayProducts2} from '../../adminJSON/adminListOfProducts2';
+import {arrayDrinks} from '../../adminJSON/adminListOfProducts';
 import DragAndDrop from '../../../assets/svg/DragAndDrop';
 import Pen from '../../../assets/svg/Pen';
 import Copy from '../../../assets/svg/Copy';
@@ -28,7 +29,13 @@ export default function ListOfProducts({selectedCategory}) {
     useEffect(() => {
         if (selectedCategory === 'Lunch menu' || selectedCategory === 'Dinner menu') {
             setSelectedArray(arrayProducts2);
-        } else {
+        }
+        else if(selectedCategory === 'Drinks menu'){
+            setSelectedArray(arrayDrinks);
+
+        }
+
+        else {
             setSelectedArray(arrayProducts);
         }
     }, [selectedCategory, setSelectedArray]);
