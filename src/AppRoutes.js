@@ -20,41 +20,41 @@ import Page404 from './user/userPages/Page404';
 
 export default function AppRoutes() {
   return (
-      <>
-        <globalContext.Provider value={{}}>
-          {/* TODO: pass global values in value obj */}
-          <BrowserRouter>
-            <div className='wrapper'>
-              <Routes>
-                <Route path='/admin/*' element={<AdminHeader />} />
+    <>
+      <globalContext.Provider value={{}}>
+        {/* TODO: pass global values in value obj */}
+        <BrowserRouter>
+          <div className='wrapper'>
+            <Routes>
+              <Route path='/admin/*' element={<AdminHeader />} />
 
-                <Route path='/*' element={<Header />} />
-                <Route path='/login/*' element={<div />} />
-              </Routes>
-              <Main>
-                <Routes>
-                  {/* ----------ALL USERS ROUTES------------ */}
-                  <Route path='/' element={<Home />} />
-                  <Route path='/login' element={<Login />} />
-
-                  <Route path='/restaurant' element={<Restaurant />} />
-                  <Route path='/restaurant/product' element={<Product />} />
-                  {/* ----------ALL ADMIN ROUTES------------ */}
-                  <Route path='/admin/' element={<RestaurantDashboard />} />
-                  {/*<Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />*/}
-                  <Route path='/admin/restaurant/menu' element={<RestaurantMenu />} />
-                  <Route path='/admin/restaurant/settings/*' element={<RestaurantSettings />} />
-                  <Route path='/*' element={<Page404 />} />
-                </Routes>
-              </Main>
+              <Route path='/*' element={<Header />} />
+              <Route path='/login/*' element={<div />} />
+            </Routes>
+            <Main>
               <Routes>
-                <Route path='/*' element={<Footer />} />
-                <Route path='/admin/*' element={<AdminFooter />} />
-                <Route path='/login/*' element={<div />} />
+                {/* ----------ALL USERS ROUTES------------ */}
+                <Route path='/' element={<Home />} />
+                <Route path='/login' element={<Login />} />
+
+                <Route path='/restaurant' element={<Restaurant />} />
+                <Route path='/restaurant/product' element={<Product />} />
+                {/* ----------ALL ADMIN ROUTES------------ */}
+                <Route path='/admin/restaurant/dashboard' element={<RestaurantDashboard />} />
+                {/*<Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />*/}
+                <Route path='/admin/restaurant/menu' element={<RestaurantMenu />} />
+                <Route path='/admin/restaurant/settings/*' element={<RestaurantSettings />} />
+                <Route path='/*' element={<Page404 />} />
               </Routes>
-            </div>
-          </BrowserRouter>
-        </globalContext.Provider>
-      </>
+            </Main>
+            <Routes>
+              <Route path='/*' element={<Footer />} />
+              <Route path='/admin/*' element={<AdminFooter />} />
+              <Route path='/login/*' element={<div />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </globalContext.Provider>
+    </>
   );
 }
