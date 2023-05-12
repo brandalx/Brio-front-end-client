@@ -10,25 +10,34 @@ import {
     useMediaQuery
 } from '@chakra-ui/react';
 import theme from '../../../utils/theme';
-import {arrayProducts} from '../../adminJSON/adminListOfProducts';
+import {arrayProducts} from '../../adminJSON/adminListOfProducts1';
+import {arrayProducts2} from '../../adminJSON/adminListOfProducts2';
 import DragAndDrop from '../../../assets/svg/DragAndDrop';
 import Pen from '../../../assets/svg/Pen';
 import Copy from '../../../assets/svg/Copy';
 import TrashBox from '../../../assets/svg/TrashBox';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
-export default function ListOfProducts() {
+export default function ListOfProducts({selectedCategory}) {
     const gridColumns = useBreakpointValue({base: '1fr', md: '1fr 4fr'});
     const [isMobile] = useMediaQuery('(max-width: 576px)');
     const [isTablet] = useMediaQuery('(max-width: 767px)');
     const [isDek] = useMediaQuery('(min-width: 768px)');
+    const [selectedArray, setSelectedArray] = useState(arrayProducts);
 
-
+    useEffect(() => {
+        if (selectedCategory === 'Lunch menu' || selectedCategory === 'Dinner menu') {
+            setSelectedArray(arrayProducts2);
+        } else {
+            setSelectedArray(arrayProducts);
+        }
+    }, [selectedCategory, setSelectedArray]);
 
     return (
         <GridItem colSpan={8}>
-            <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'></Text>
-            {arrayProducts.map((item) => {
+            <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold}
+                  color='neutral.black'>{selectedCategory === null ? 'Breakfast menu' : selectedCategory}</Text>
+            {selectedArray.map((item) => {
                 return (
                     <Box
                         key={item.id}
