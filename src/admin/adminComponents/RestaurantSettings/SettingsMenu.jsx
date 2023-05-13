@@ -5,7 +5,7 @@ import Administrators from '../../../assets/svg/Administrators';
 import Security from '../../../assets/svg/Security';
 import theme from '../../../utils/theme';
 import { Link, useLocation } from 'react-router-dom';
-
+import React from 'react';
 function SettingItem({ element, isSelected, onItemSelected }) {
   const [isHovered, setIsHovered] = useState(false);
   const Icon = element.icon;

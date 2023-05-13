@@ -18,7 +18,7 @@ import Pen from '../../../assets/svg/Pen';
 import Copy from '../../../assets/svg/Copy';
 import TrashBox from '../../../assets/svg/TrashBox';
 import { useEffect, useState } from 'react';
-
+import React from 'react';
 export default function ListOfProducts({ selectedCategory }) {
   const gridColumns = useBreakpointValue({ base: '1fr', md: '1fr 4fr' });
   const [isMobile] = useMediaQuery('(max-width: 576px)');
