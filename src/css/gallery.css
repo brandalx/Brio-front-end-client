@@ -1,0 +1,33 @@
+.image-gallery-left-nav .image-gallery-svg,
+.image-gallery-right-nav .image-gallery-svg {
+  height: 120px;
+  width: 20px;
+  box-shadow: none;
+}
+
+.image-gallery-thumbnail.active {
+  border: solid 5px #4e60ff;
+}
+
+.image-gallery-thumbnail {
+  border-radius: 16px;
+}
+
+.image-gallery-thumbnail-image,
+.image-gallery-thumbnail-inner {
+  border-radius: 10px;
+}
+
+.image-gallery-thumbnail-image {
+  width: 78px; /* or whatever value you want */
+  height: 78px; /* or whatever value you want */
+  object-fit: cover; /* to make sure the image fills the square 1 */
+}
+.image-gallery {
+  padding: 15px 0;
+  min-height: 300px;
+}
+.image-gallery-slide,
+.image-gallery-image {
+  border-radius: 16px;
+}

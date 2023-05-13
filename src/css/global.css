@@ -1,0 +1,15 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    overflow-y: scroll;
+}
+
+.css-1u2cvaz {
+    width: 100% !important;
+}
+
+.wrapper {
+    overflow: hidden;
+}
