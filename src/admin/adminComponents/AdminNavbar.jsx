@@ -232,7 +232,9 @@ export default function AdminNavbar() {
                         />{' '}
                       </MenuButton>
                       <MenuList>
-                        <MenuItem fontWeight='medium'>Event</MenuItem>
+                        <MenuItem as={RouterLink} to='/admin/restaurant/settings' fontWeight='medium'>
+                          Settings
+                        </MenuItem>
                         <MenuItem fontWeight='medium'>Event</MenuItem>
                         <MenuItem fontWeight='medium'>Event</MenuItem>
                       </MenuList>
@@ -276,19 +278,19 @@ export default function AdminNavbar() {
                   >
                     <Flex w='100%' direction='column' justifyContent='space-between'>
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                        <Link to='#'>Orders</Link>
+                        <Link to='/admin/restaurant/orders'>Orders</Link>
                       </Button>
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                        <Link to='#'>Customers </Link>
+                        <Link to='/admin/restaurant/customers'>Customers</Link>
                       </Button>
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                        <Link to='#'>Menu</Link>
+                        <Link to='/admin/restaurant/menu'>Menu</Link>
                       </Button>
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                        <Link to='#'>Promotions</Link>
+                        <Link to='/admin/restaurant/promotions'>Promotions</Link>
                       </Button>
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost'>
-                        <Link to='/dashboard'>Dashboard</Link>
+                        <Link to='/admin/restaurant/dashboard'>Dashboard</Link>
                       </Button>
                     </Flex>
                     <Flex w='100%' justifyContent='space-between' px='16px'>

@@ -87,7 +87,14 @@ export default function ModalRestaurantMenu({isOpen, onOpen, onClose}) {
                             alignItems='center'
                             gap={6}
                         >
-                            <Button w='84px' h='44px' border='1px' borderColor='primary.default'
+                            <Button
+                                _hover={{
+                                    background: 'primary.default',
+                                    color: 'neutral.white',
+                                    borderWidth: '1px',
+                                    borderColor: 'primary.default'
+                                }}
+                                w='84px' h='44px' border='1px' borderColor='primary.default'
                                     color='primary.default'>
                                 Change
                             </Button>
@@ -165,10 +172,23 @@ export default function ModalRestaurantMenu({isOpen, onOpen, onClose}) {
                         colorScheme='blue'
                         mr={3}
                         onClick={onClose}
+                        _hover={{
+                            background: 'error.default',
+                            color: 'neutral.white',
+                            borderWidth: '1px',
+                            borderColor: 'error.default'
+                        }}
                     >
                         Cancel
                     </Button>
-                    <Button color='white' bg='primary.default' p='20px' border='1px' borderColor='primary.default'
+                    <Button
+                        _hover={{
+                            background: 'primary.default',
+                            color: 'neutral.white',
+                            borderWidth: '1px',
+                            borderColor: 'primary.default'
+                        }}
+                        color='primary.default' p='20px' border='1px' borderColor='primary.default'
                         >
                         Publish meal item
                     </Button>
