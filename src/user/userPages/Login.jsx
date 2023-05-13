@@ -32,13 +32,13 @@ export default function Login() {
               <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
                 <Box py={6}>
                   <Flex>
-                    <chakra.a href='/' title='Homepage' display='flex' alignItems='center'>
+                    <Box title='Homepage' display='flex' alignItems='center'>
                       <Link to='/'>
                         {' '}
                         <Logo />
                       </Link>
                       <VisuallyHidden>Brio</VisuallyHidden>
-                    </chakra.a>
+                    </Box>
                     <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='2'>
                       <Link to='/'> Brio</Link>
                     </Text>

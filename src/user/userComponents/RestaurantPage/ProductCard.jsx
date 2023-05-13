@@ -17,7 +17,7 @@ export default function ProductCard({ img, title, info, price }) {
 
   return (
     <>
-      <Link to='/restaurant/product'>
+
         <GridItem w='100%' bg='neutral.white'>
           <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px'>
             <Box>
@@ -132,7 +132,7 @@ export default function ProductCard({ img, title, info, price }) {
             </Stack>
           </Box>
         </GridItem>
-      </Link>
+
     </>
   );
 }
