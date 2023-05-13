@@ -32,10 +32,20 @@ export default function AdminNavbar() {
 
   return (
     <>
-      <Container overflow-x='hidden' zIndex='9999999' maxW='none' borderBottom='1px solid #EDEEF2' p={0}>
+      <Container overflow-x='hidden' zIndex='9999999' maxW='none' borderBottom='1px solid #EDEEF2' p={0} width="100%">
         <Container maxW='1110px'>
-          <chakra.header w='full' px={{ base: 2, sm: 4 }} py={3.5} position='relative' maxW='none'>
-            <Flex display='flex' alignItems='center' justifyContent='space-between' mx='auto'>
+          <chakra.header
+              w='100%'
+              pl={0}
+              pr={0}
+              py={3.5}
+              position='relative'
+              css={{
+                width: '100%',
+                marginLeft: 0,
+                marginRight: 0
+              }}
+          >        <Flex display='flex' alignItems='center' justifyContent='space-between' mx='auto'>
               <Link to='/admin' _hover={{ textDecoration: 'none' }}>
                 <Box display='flex' alignItems='center'>
                   <Logo />
@@ -232,7 +242,9 @@ export default function AdminNavbar() {
                         />{' '}
                       </MenuButton>
                       <MenuList>
-                        <MenuItem fontWeight='medium'>Event</MenuItem>
+                        <MenuItem as={RouterLink} to='/admin/restaurant/settings' fontWeight='medium'>
+                          Settings
+                        </MenuItem>
                         <MenuItem fontWeight='medium'>Event</MenuItem>
                         <MenuItem fontWeight='medium'>Event</MenuItem>
                       </MenuList>
@@ -276,19 +288,19 @@ export default function AdminNavbar() {
                   >
                     <Flex w='100%' direction='column' justifyContent='space-between'>
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                        <Link to='#'>Orders</Link>
+                        <Link to='/admin/restaurant/orders'>Orders</Link>
                       </Button>
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                        <Link to='#'>Customers </Link>
+                        <Link to='/admin/restaurant/customers'>Customers</Link>
                       </Button>
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                        <Link to='#'>Menu</Link>
+                        <Link to='/admin/restaurant/menu'>Menu</Link>
                       </Button>
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                        <Link to='#'>Promotions</Link>
+                        <Link to='/admin/restaurant/promotions'>Promotions</Link>
                       </Button>
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost'>
-                        <Link to='/dashboard'>Dashboard</Link>
+                        <Link to='/admin/restaurant/dashboard'>Dashboard</Link>
                       </Button>
                     </Flex>
                     <Flex w='100%' justifyContent='space-between' px='16px'>
