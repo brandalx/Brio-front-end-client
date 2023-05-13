@@ -29,7 +29,7 @@ import {
 import { IconShoppingBag } from '@tabler/icons-react';
 
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
-import Logo from '../../assets/svg/logo';
+import Logo from '../../assets/svg/Logo';
 import { Link } from 'react-router-dom';
 
 export default function Navbar() {
@@ -42,9 +42,9 @@ export default function Navbar() {
         <chakra.header w='full' px={{ base: 2, sm: 4 }} py={4}>
           <Flex alignItems='center' justifyContent='space-between' mx='auto'>
             <Flex alignItems='center'>
-              <Link to='/' >
+              <Link to='/'>
                 <Box title='Homepage' display='flex' alignItems='center'>
-                <Logo />
+                  <Logo />
                 </Box>
                 <VisuallyHidden>Brio</VisuallyHidden>
               </Link>
@@ -280,9 +280,9 @@ export default function Navbar() {
                 >
                   <Flex w='100%' direction='column' justifyContent='space-between'>
                     <Box display='flex' justifyContent='center' w='100%' mx='auto' my={4}>
-                      <Link to='/' >
+                      <Link to='/'>
                         <Box title='Homepage' display='flex' alignItems='center'>
-                        <Logo />
+                          <Logo />
                         </Box>
                         <VisuallyHidden>Brio</VisuallyHidden>
                       </Link>
