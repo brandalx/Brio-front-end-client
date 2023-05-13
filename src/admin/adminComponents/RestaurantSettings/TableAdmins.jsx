@@ -12,7 +12,7 @@ export default function TableAdmins() {
   ];
 
   return (
-    <TableContainer>
+    <TableContainer overflowX='hidden'>
       <Table colorScheme='gray'>
         <Thead>
           <Tr>
