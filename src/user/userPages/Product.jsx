@@ -1,4 +1,5 @@
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import React from 'react';
 import {
   Box,
   Button,
