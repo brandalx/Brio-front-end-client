@@ -12,7 +12,8 @@ import {
   Textarea,
   Divider,
   Checkbox,
-  Stack
+  Stack,
+  Container
 } from '@chakra-ui/react';
 import React from 'react';
 import TableAdmins from './TableAdmins';
@@ -24,11 +25,12 @@ export default function Administrators() {
         Administrators
       </Text>
       <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
-        <Flex justifyContent='space-between' s>
+        <Flex justifyContent='space-between' flexDirection={{ base: 'column', md: 'row' }}>
           <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
             Invite and manage admins
           </Text>
           <Button
+            mt={{ base: '10px', md: '0px' }}
             w={{ base: '50%', md: 'initial' }}
             background='primary.default'
             fontWeight='bold'
