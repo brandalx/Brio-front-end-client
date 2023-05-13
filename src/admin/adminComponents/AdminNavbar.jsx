@@ -32,10 +32,20 @@ export default function AdminNavbar() {
 
   return (
     <>
-      <Container overflow-x='hidden' zIndex='9999999' maxW='none' borderBottom='1px solid #EDEEF2' p={0}>
+      <Container overflow-x='hidden' zIndex='9999999' maxW='none' borderBottom='1px solid #EDEEF2' p={0} width="100%">
         <Container maxW='1110px'>
-          <chakra.header w='full' px={{ base: 2, sm: 4 }} py={3.5} position='relative' maxW='none'>
-            <Flex display='flex' alignItems='center' justifyContent='space-between' mx='auto'>
+          <chakra.header
+              w='100%'
+              pl={0}
+              pr={0}
+              py={3.5}
+              position='relative'
+              css={{
+                width: '100%',
+                marginLeft: 0,
+                marginRight: 0
+              }}
+          >        <Flex display='flex' alignItems='center' justifyContent='space-between' mx='auto'>
               <Link to='/admin' _hover={{ textDecoration: 'none' }}>
                 <Box display='flex' alignItems='center'>
                   <Logo />

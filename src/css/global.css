@@ -9,3 +9,7 @@ body {
 .css-1u2cvaz {
     width: 100% !important;
 }
+
+.wrapper {
+    overflow: hidden;
+}
