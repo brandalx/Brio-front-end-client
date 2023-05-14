@@ -1,26 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Text,
-  Flex,
-  Image,
-  Button,
-  Grid,
-  GridItem,
-  FormControl,
-  FormLabel,
-  Input,
-  Textarea,
-  Stack,
-  Checkbox,
-  Divider,
-  Heading,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider
-} from '@chakra-ui/react';
+import { Box, Text, Button, Grid, GridItem, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import AdressCard from './AdressCard';
 export default function Adress() {
   let arr = [

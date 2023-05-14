@@ -9,11 +9,10 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  MenuButton,
-  Avatar
+  MenuButton
 } from '@chakra-ui/react';
 import React from 'react';
-import imagemap from '../../../assets/images/defaultmap.png';
+
 export default function PaymentCard({ item }) {
   return (
     <GridItem w='100%'>

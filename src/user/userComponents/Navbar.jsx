@@ -16,15 +16,13 @@ import {
   InputGroup,
   Input,
   InputRightElement,
-  Badge,
   Avatar,
   Container,
   MenuItem,
   MenuDivider,
   MenuList,
   Menu,
-  MenuButton,
-  InputLeftElement
+  MenuButton
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
 

@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Box, Divider, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import UserAccount from '../../../assets/svg/UserAccount';
 import Address from '../../../assets/svg/Address';
 import Security from '../../../assets/svg/Security';

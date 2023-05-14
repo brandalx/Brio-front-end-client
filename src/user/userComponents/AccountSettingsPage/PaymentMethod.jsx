@@ -1,27 +1,6 @@
 import React from 'react';
-import {
-  Box,
-  Text,
-  Flex,
-  Image,
-  Button,
-  Grid,
-  GridItem,
-  FormControl,
-  FormLabel,
-  Input,
-  Textarea,
-  Stack,
-  Checkbox,
-  Divider,
-  Heading,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider
-} from '@chakra-ui/react';
-import AdressCard from './AdressCard';
+import { Box, Grid, Text } from '@chakra-ui/react';
+
 import PaymentCard from './PaymentCard';
 import visa from '../../../assets/images/visa.png';
 import mastercard from '../../../assets/images/mastercard.png';
