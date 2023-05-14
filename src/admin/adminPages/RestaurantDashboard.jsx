@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Text, Container, Grid, GridItem } from '@chakra-ui/layout';
 import {
   Filler,
@@ -12,9 +12,9 @@ import {
   Legend
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { faker } from '@faker-js/faker';
+
 import OrdersData from '../adminComponents/RestaurantDashboard/OrdersData';
-import { Avatar } from '@chakra-ui/avatar';
+
 import MealCard from '../adminComponents/RestaurantDashboard/MealCard';
 import { Button } from '@chakra-ui/button';
 
@@ -29,8 +29,7 @@ export const options = {
       position: 'top'
     },
     title: {
-      display: true,
-      text: 'Order revenue'
+      display: true
     }
   }
 };
@@ -39,31 +38,67 @@ export const options = {
 const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
 // Chart data (temporary fake data)
-let arr = [
-  { item: 2345 },
-  { item: 1000 },
-  { item: 4345 },
-  { item: 2323 },
-  { item: 6565 },
-  { item: 3223 },
-  { item: 192 }
+
+const mealArray = [
+  {
+    image: 'https://cdn.pixabay.com/photo/2017/10/15/11/41/sushi-2853382_960_720.jpg',
+    title: 'Nigiri set',
+    amount: 362,
+    price: 185
+  },
+  {
+    image: 'https://cdn.pixabay.com/photo/2017/10/15/11/41/sushi-2853382_960_720.jpg',
+    title: 'Nigiri set',
+    amount: 362,
+    price: 185
+  }
 ];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Restaurant activity',
-      data: arr.map((item, index) => ({ x: index, y: item.item })),
-      borderColor: '#8E99FF',
-      backgroundColor: 'rgba(175, 183, 255, 0.21)',
-      fill: 'origin',
-      tension: 0.3
-    }
-  ]
-};
-
 export default function RestaurantDashboard() {
+  let orderRevenue = [
+    { item: 9876 },
+    { item: 5432 },
+    { item: 1234 },
+    { item: 5678 },
+    { item: 4321 },
+    { item: 8765 },
+    { item: 987 }
+  ];
+
+  let ordersDelivered = [
+    { item: 1357 },
+    { item: 2468 },
+    { item: 9753 },
+    { item: 8642 },
+    { item: 3141 },
+    { item: 5926 },
+    { item: 5358 }
+  ];
+
+  let ordersRecived = [
+    { item: 2324 },
+    { item: 3232 },
+    { item: 2376 },
+    { item: 3423 },
+    { item: 8864 },
+    { item: 2323 },
+    { item: 6566 }
+  ];
+  const [currentArr, setCurrentArr] = useState(ordersDelivered);
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Restaurant data',
+        data: currentArr.map((item, index) => ({ x: index, y: item.item })),
+        borderColor: '#8E99FF',
+        backgroundColor: 'rgba(175, 183, 255, 0.21)',
+        fill: 'origin',
+        tension: 0.3
+      }
+    ]
+  };
   return (
     <>
       <Box py={5}>
@@ -72,7 +107,12 @@ export default function RestaurantDashboard() {
             Dashboard
           </Text>
           <Box>
-            <OrdersData />
+            <OrdersData
+              setCurrentArr={setCurrentArr}
+              orderRevenue={orderRevenue}
+              ordersDelivered={ordersDelivered}
+              ordersRecived={ordersRecived}
+            />
           </Box>
 
           <Box>
@@ -80,9 +120,12 @@ export default function RestaurantDashboard() {
               <GridItem w='100%'>
                 <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
                   <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                    Order revenue
-                  </Text>
+                    {currentArr === orderRevenue && <>Order revenue</>}
 
+                    {currentArr === ordersDelivered && <>Orders delivered</>}
+
+                    {currentArr === ordersRecived && <>Orders received</>}
+                  </Text>
                   <Line options={options} data={data} />
                 </Box>
               </GridItem>
@@ -92,11 +135,18 @@ export default function RestaurantDashboard() {
                     Popular meals
                   </Text>
                   <Box mt={4}>
-                    <MealCard />
-                    <MealCard />
-                    <MealCard />
-                    <MealCard />
-                    <MealCard />
+                    {mealArray.map((item, index) => {
+                      return (
+                        <MealCard
+                          key={index}
+                          image={item.image}
+                          title={item.title}
+                          amount={item.amount}
+                          price={item.price}
+                          desc={item.desc}
+                        />
+                      );
+                    })}
                   </Box>
                   <Button
                     mx='auto'

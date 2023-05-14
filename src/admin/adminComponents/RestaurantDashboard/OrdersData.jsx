@@ -5,19 +5,26 @@ import OrdersRecived from '../../../assets/svg/OrdersRecived';
 import OrdersDelivered from '../../../assets/svg/OrdersDelivered';
 import Revenue from '../../../assets/svg/Revenue';
 
-export default function OrdersData() {
+export default function OrdersData({ setCurrentArr, ordersRecived, ordersDelivered, orderRevenue }) {
   let arr = [9273, 7691, 437291];
   return (
     <Grid templateColumns={{ base: '1fr ', md: '1fr 1fr 1fr ' }} gap={{ base: 2, md: 6 }}>
       <GridItem w='100%'>
         <Box
           _hover={{ cursor: 'pointer', transition: 'all 0.3s', bg: 'secondary.light', borderColor: 'secondary.light' }}
+          _active={{
+            cursor: 'pointer',
+            transition: 'all 0.3s',
+            bg: 'secondary.light',
+            borderColor: 'secondary.default'
+          }}
           borderRadius='16px'
           mb='12px'
           p='0px'
           transition='all 0.3s'
           borderWidth='1px'
           bg='neutral.white'
+          onClick={() => setCurrentArr(ordersRecived)}
         >
           <Flex alignItems='center'>
             <Box me={4} p={3} borderRadius={12}>
@@ -48,7 +55,14 @@ export default function OrdersData() {
       </GridItem>
       <GridItem w='100%'>
         <Box
+          onClick={() => setCurrentArr(ordersDelivered)}
           _hover={{ cursor: 'pointer', transition: 'all 0.3s', bg: 'tertiary.light', borderColor: 'tertiary.light' }}
+          _active={{
+            cursor: 'pointer',
+            transition: 'all 0.3s',
+            bg: 'tertiary.light',
+            borderColor: 'tertiary.default'
+          }}
           borderRadius='16px'
           mb='12px'
           p='0px'
@@ -85,7 +99,14 @@ export default function OrdersData() {
       </GridItem>
       <GridItem w='100%'>
         <Box
+          onClick={() => setCurrentArr(orderRevenue)}
           _hover={{ cursor: 'pointer', transition: 'all 0.3s', bg: 'primary.light', borderColor: 'primary.light' }}
+          _active={{
+            cursor: 'pointer',
+            transition: 'all 0.3s',
+            bg: 'primary.light',
+            borderColor: 'primary.default'
+          }}
           borderRadius='16px'
           mb='12px'
           p='0px'
