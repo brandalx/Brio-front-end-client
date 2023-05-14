@@ -16,15 +16,13 @@ import {
   InputGroup,
   Input,
   InputRightElement,
-  Badge,
   Avatar,
   Container,
   MenuItem,
   MenuDivider,
   MenuList,
   Menu,
-  MenuButton,
-  InputLeftElement
+  MenuButton
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
 
@@ -171,10 +169,10 @@ export default function Navbar() {
                       </MenuButton>
                     </Box>
                     <MenuList>
-                      <MenuItem as={Link} to='#' fontWeight='medium'>
-                        My Account
-                      </MenuItem>
-                      <MenuItem fontWeight='medium'>Settings</MenuItem>
+                      <Link to='/user/account'>
+                        {' '}
+                        <MenuItem fontWeight='medium'>Settings</MenuItem>
+                      </Link>
                       <MenuDivider />
                       <MenuItem fontWeight='medium'> Log Out</MenuItem>
                     </MenuList>
@@ -233,10 +231,11 @@ export default function Navbar() {
                     </MenuButton>
 
                     <MenuList>
-                      <MenuItem as={Link} to='#' fontWeight='medium'>
-                        My Account
-                      </MenuItem>
-                      <MenuItem fontWeight='medium'>Settings</MenuItem>
+                      <Link to='/user/account'>
+                        {' '}
+                        <MenuItem fontWeight='medium'>Settings</MenuItem>
+                      </Link>
+
                       <MenuDivider />
                       <MenuItem fontWeight='medium'> Log Out</MenuItem>
                     </MenuList>
