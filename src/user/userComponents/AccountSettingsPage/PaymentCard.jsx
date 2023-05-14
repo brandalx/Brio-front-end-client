@@ -31,7 +31,7 @@ export default function PaymentCard({ item }) {
         }}
         borderRadius='16px'
         mb='12px'
-        p='15px'
+        p='30px'
         transition='all 0.3s'
         borderWidth='1px'
         bg='neutral.white'

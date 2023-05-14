@@ -49,7 +49,7 @@ export default function PaymentMethod() {
             Connected payment methods
           </Text>
           <Box pt={5}>
-            <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={6}>
+            <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={2}>
               {arr.map((item, index) => {
                 return <PaymentCard key={index} item={item} />;
               })}
