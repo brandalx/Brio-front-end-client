@@ -39,12 +39,22 @@ export const options = {
 const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
 // Chart data (temporary fake data)
+let arr = [
+  { item: 2345 },
+  { item: 1000 },
+  { item: 4345 },
+  { item: 2323 },
+  { item: 6565 },
+  { item: 3223 },
+  { item: 192 }
+];
+
 export const data = {
   labels,
   datasets: [
     {
       label: 'Restaurant activity',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 10000 })),
+      data: arr.map((item, index) => ({ x: index, y: item.item })),
       borderColor: '#8E99FF',
       backgroundColor: 'rgba(175, 183, 255, 0.21)',
       fill: 'origin',
@@ -66,7 +76,7 @@ export default function RestaurantDashboard() {
           </Box>
 
           <Box>
-            <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '2fr 1fr ' }} gap={4}>
+            <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '2fr 1fr ' }} gap={4}>
               <GridItem w='100%'>
                 <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
                   <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
