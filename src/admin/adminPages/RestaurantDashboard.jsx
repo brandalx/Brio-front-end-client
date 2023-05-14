@@ -14,6 +14,9 @@ import {
 import { Line } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
 import OrdersData from '../adminComponents/RestaurantDashboard/OrdersData';
+import { Avatar } from '@chakra-ui/avatar';
+import MealCard from '../adminComponents/RestaurantDashboard/MealCard';
+import { Button } from '@chakra-ui/button';
 
 // Register required Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -61,10 +64,54 @@ export default function RestaurantDashboard() {
           <Box>
             <OrdersData />
           </Box>
-          <Box display='flex' justifyContent='center' alignItems='center' height='90vh'>
-            <Box textAlign='center' w='90%'>
-              <Line options={options} data={data} />
-            </Box>
+
+          <Box>
+            <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '2fr 1fr ' }} gap={4}>
+              <GridItem w='100%'>
+                <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
+                  <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                    Order revenue
+                  </Text>
+
+                  <Line options={options} data={data} />
+                </Box>
+              </GridItem>
+              <GridItem w='100%'>
+                <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
+                  <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                    Popular meals
+                  </Text>
+                  <Box mt={4}>
+                    <MealCard />
+                    <MealCard />
+                    <MealCard />
+                    <MealCard />
+                    <MealCard />
+                  </Box>
+                  <Button
+                    mx='auto'
+                    mt={4}
+                    w='100%'
+                    background='neutral.white'
+                    fontSize='2xs'
+                    fontWeight='bold'
+                    variant='solid'
+                    color='neutral.gray'
+                    borderWidth='1px'
+                    borderColor='neutral.gray'
+                    _hover={{
+                      background: 'primary.default',
+                      color: 'neutral.white',
+                      borderWidth: '1px',
+                      borderColor: 'primary.default'
+                    }}
+                    py={5}
+                  >
+                    Show all meals
+                  </Button>
+                </Box>
+              </GridItem>
+            </Grid>
           </Box>
         </Container>
       </Box>
