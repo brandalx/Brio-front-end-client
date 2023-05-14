@@ -1,5 +1,293 @@
+import {
+  Box,
+  Text,
+  Flex,
+  Image,
+  Button,
+  Grid,
+  GridItem,
+  FormControl,
+  FormLabel,
+  Input,
+  Textarea,
+  Stack,
+  Checkbox,
+  Divider
+} from '@chakra-ui/react';
 import React from 'react';
 
 export default function Account() {
-  return <div>Account</div>;
+  return (
+    <Box>
+      <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
+        Account
+      </Text>
+      <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
+        <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+          Personal information
+        </Text>
+        <Box pt={5}>
+          <Flex alignItems='center'>
+            <Box borderWidth='2px' borderColor='primary.default' me='20px' borderRadius='12px'>
+              <Image
+                borderRadius='10px'
+                boxSize='80px'
+                objectFit='cover'
+                src='https://images.pexels.com/photos/4754648/pexels-photo-4754648.jpeg?auto=compress&cs=tinysrgb&w=800'
+                alt='Avatar'
+              />
+            </Box>
+            <Button
+              background='neutral.white'
+              fontSize='2xs'
+              fontWeight='bold'
+              variant='solid'
+              color='primary.default'
+              borderWidth='1px'
+              borderColor='primary.default'
+              _hover={{
+                background: 'primary.default',
+                color: 'neutral.white',
+                borderWidth: '1px',
+                borderColor: 'primary.default'
+              }}
+              py={5}
+              me='20px'
+            >
+              Change
+            </Button>
+            <Button
+              borderColor='neutral.white'
+              borderWidth='1px'
+              _hover={{
+                background: 'error.default',
+                color: 'neutral.white',
+                borderWidth: '1px',
+                borderColor: 'error.default'
+              }}
+              fontSize='2xs'
+              color='neutral.gray'
+              fontWeight='bold'
+              variant='ghost'
+              py={5}
+              me='20px'
+            >
+              Remove
+            </Button>
+          </Flex>
+        </Box>
+        <Box pt={5}>
+          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr ' }} gap={6}>
+            <GridItem w='100%'>
+              <FormControl id='name'>
+                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                  First name
+                </FormLabel>
+
+                <Input
+                  type='text'
+                  background='neutral.white'
+                  _placeholder={{ color: 'neutral.gray' }}
+                  borderRadius='8px'
+                  fontSize='2xs'
+                  placeholder='First name'
+                />
+              </FormControl>
+            </GridItem>
+            <GridItem w='100%'>
+              <FormControl id='email'>
+                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                  Last name
+                </FormLabel>
+
+                <Input
+                  type='text'
+                  background='neutral.white'
+                  _placeholder={{ color: 'neutral.gray' }}
+                  borderRadius='8px'
+                  fontSize='2xs'
+                  placeholder='Last name'
+                />
+              </FormControl>
+            </GridItem>
+            <GridItem w='100%'>
+              <FormControl id='email'>
+                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                  Email
+                </FormLabel>
+
+                <Input
+                  type='email'
+                  background='neutral.white'
+                  _placeholder={{ color: 'neutral.gray' }}
+                  borderRadius='8px'
+                  fontSize='2xs'
+                  placeholder='example@gmail.com'
+                />
+              </FormControl>
+            </GridItem>
+            <GridItem w='100%'>
+              <FormControl id='phone'>
+                <FormLabel fontWeight='semibold' placeholder='+1(217) 555-0113' fontSize='3xs' color='neutral.grayDark'>
+                  Phone number
+                </FormLabel>
+
+                <Input
+                  type='phone'
+                  background='neutral.white'
+                  _placeholder={{ color: 'neutral.gray' }}
+                  borderRadius='8px'
+                  fontSize='2xs'
+                  placeholder='name@example.com'
+                />
+              </FormControl>
+            </GridItem>
+          </Grid>
+        </Box>
+
+        <Box pt={5}>
+          <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+            Email notifications
+          </Text>
+          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={{ base: 4, md: 6 }}>
+            <GridItem w='100%'>
+              <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                <Flex alignItems='center'>
+                  <Checkbox mr='2'>
+                    <Text color='neutral.black' fontSize='2xs'>
+                      New deals
+                    </Text>
+                  </Checkbox>
+                </Flex>
+              </Stack>
+              <Stack mt={4} direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                <Flex alignItems='center'>
+                  <Checkbox iconColor='neutral.white' mr='2'>
+                    <Text color='neutral.black' fontSize='2xs'>
+                      Password changes
+                    </Text>
+                  </Checkbox>
+                </Flex>
+              </Stack>
+            </GridItem>
+
+            <GridItem w='100%'>
+              <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                <Flex alignItems='center'>
+                  <Checkbox mr='2'>
+                    <Text color='neutral.black' fontSize='2xs'>
+                      New restaurants
+                    </Text>
+                  </Checkbox>
+                </Flex>
+              </Stack>
+            </GridItem>
+            <GridItem w='100%'>
+              <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                <Flex alignItems='center'>
+                  <Checkbox mr='2'>
+                    <Text color='neutral.black' fontSize='2xs'>
+                      Special offers
+                    </Text>
+                  </Checkbox>
+                </Flex>
+              </Stack>
+            </GridItem>
+            <GridItem w='100%'>
+              <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                <Flex alignItems='center'>
+                  <Checkbox mr='2'>
+                    <Text color='neutral.black' fontSize='2xs'>
+                      Order statuses
+                    </Text>
+                  </Checkbox>
+                </Flex>
+              </Stack>
+            </GridItem>
+            <GridItem w='100%'>
+              <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                <Flex alignItems='center'>
+                  <Checkbox mr='2'>
+                    <Text color='neutral.black' fontSize='2xs'>
+                      Newsletter
+                    </Text>
+                  </Checkbox>
+                </Flex>
+              </Stack>
+            </GridItem>
+          </Grid>
+        </Box>
+        <Divider pt={8} />
+        <Box pt={5}>
+          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
+            <GridItem w='100%'>
+              <Button
+                w={{ base: '100%', md: 'initial' }}
+                background='neutral.white'
+                fontSize='2xs'
+                fontWeight='bold'
+                variant='solid'
+                color='error.default'
+                borderWidth='1px'
+                borderColor='error.default'
+                _hover={{
+                  background: 'error.default',
+                  color: 'neutral.white',
+                  borderWidth: '1px',
+                  borderColor: 'error.default'
+                }}
+                py={5}
+                me='20px'
+              >
+                Log out
+              </Button>
+            </GridItem>
+
+            <GridItem w='100%'>
+              <Flex flexDirection={{ base: 'row' }}>
+                <Button
+                  w={{ base: '50%', md: 'initial' }}
+                  background='neutral.white'
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='neutral.gray'
+                  borderWidth='1px'
+                  borderColor='neutral.gray'
+                  _hover={{
+                    background: 'error.default',
+                    color: 'neutral.white',
+                    borderWidth: '1px',
+                    borderColor: 'error.default'
+                  }}
+                  py={5}
+                  me='20px'
+                >
+                  Discard changes
+                </Button>
+                <Button
+                  w={{ base: '50%', md: 'initial' }}
+                  background='primary.default'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='neutral.white'
+                  borderWidth='1px'
+                  borderColor='neutral.white'
+                  _hover={{
+                    background: 'neutral.white',
+                    color: 'primary.default',
+                    borderWidth: '1px',
+                    borderColor: 'primary.default'
+                  }}
+                  py={5}
+                >
+                  Save changes
+                </Button>
+              </Flex>
+            </GridItem>
+          </Grid>
+        </Box>
+      </Box>
+    </Box>
+  );
 }
