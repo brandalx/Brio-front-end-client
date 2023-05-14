@@ -21,8 +21,7 @@ import {
   MenuItem,
   MenuDivider
 } from '@chakra-ui/react';
-import imagemap from '../../../assets/images/defaultmap.png';
-import { Link } from 'react-router-dom';
+import AdressCard from './AdressCard';
 export default function Adress() {
   let arr = [
     {
@@ -68,97 +67,132 @@ export default function Adress() {
           <Box pt={5}>
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={6}>
               {arr.map((item, index) => {
-                return (
-                  <GridItem key={index} w='100%'>
-                    <Box
-                      _hover={{
-                        cursor: 'pointer',
-                        transition: 'all 0.3s',
-                        bg: 'primary.light',
-                        borderColor: 'primary.light'
-                      }}
-                      _active={{
-                        cursor: 'pointer',
-                        transition: 'all 0.3s',
-                        bg: 'primary.light',
-                        borderColor: 'primary.default'
-                      }}
-                      borderRadius='16px'
-                      mb='12px'
-                      p='0px'
-                      transition='all 0.3s'
-                      borderWidth='1px'
-                      bg='neutral.white'
-                    >
-                      <Flex justifyContent='space-between'>
-                        <Flex alignItems='center'>
-                          <Box py={2} px={2} borderRadius={12}>
-                            <Box ml='4px' py={'7.5px'} position='relative'>
-                              <Box>
-                                <Image maxH='82px' maxW='96px' borderRadius='12px' src={imagemap} />
-                              </Box>
-                            </Box>
-                          </Box>
-                          <Box>
-                            <Heading fontSize='2xs' fontWeight='bold'>
-                              {item.city}
-                            </Heading>
-                            <Text fontSize='3xs' fontWeight='semibold' color='neutral.grayDark'>
-                              {item.state} State, {item.country}
-                            </Text>
-                            <Text fontSize='3xs' color='neutral.grayDark'>
-                              {item.address1} {item.address2}
-                            </Text>
-                          </Box>
-                        </Flex>
-                        <Box>
-                          <Menu>
-                            <MenuButton
-                              _hover={{
-                                color: 'neutral.black',
-
-                                borderColor: 'neutral.lightest'
-                              }}
-                              fontSize='2xs'
-                              color='neutral.gray'
-                              fontWeight='bold'
-                              py={5}
-                              me='20px'
-                            >
-                              •••
-                            </MenuButton>
-
-                            <MenuList>
-                              <Link to='/user/account'>
-                                {' '}
-                                <MenuItem fontWeight='medium'>Edit</MenuItem>
-                              </Link>
-
-                              <MenuDivider />
-                              <MenuItem
-                                m={0}
-                                h='100%'
-                                background='neutral.white'
-                                variant='solid'
-                                color='error.default'
-                                _hover={{
-                                  background: 'error.default',
-                                  color: 'neutral.white'
-                                }}
-                                fontWeight='medium'
-                              >
-                                {' '}
-                                Remove
-                              </MenuItem>
-                            </MenuList>
-                          </Menu>
-                        </Box>
-                      </Flex>
-                    </Box>
-                  </GridItem>
-                );
+                return <AdressCard key={index} item={item} />;
               })}
             </Grid>
+          </Box>
+
+          <Box pt={5}>
+            <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
+              New shipping address
+            </Text>
+            <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr 1fr ' }} gap={6}>
+              <GridItem w='100%'>
+                <FormControl id='country'>
+                  <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                    Country
+                  </FormLabel>
+
+                  <Input
+                    type='text'
+                    background='neutral.white'
+                    _placeholder={{ color: 'neutral.gray' }}
+                    borderRadius='8px'
+                    fontSize='2xs'
+                    placeholder='Enter country'
+                  />
+                </FormControl>
+              </GridItem>
+              <GridItem w='100%'>
+                <FormControl id='state'>
+                  <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                    State
+                  </FormLabel>
+
+                  <Input
+                    type='text'
+                    background='neutral.white'
+                    _placeholder={{ color: 'neutral.gray' }}
+                    borderRadius='8px'
+                    fontSize='2xs'
+                    placeholder='Enter state'
+                  />
+                </FormControl>
+              </GridItem>
+              <GridItem w='100%'>
+                <FormControl id='city'>
+                  <FormLabel
+                    fontWeight='semibold'
+                    placeholder='+1(217) 555-0113'
+                    fontSize='3xs'
+                    color='neutral.grayDark'
+                  >
+                    City
+                  </FormLabel>
+
+                  <Input
+                    type='text'
+                    background='neutral.white'
+                    _placeholder={{ color: 'neutral.gray' }}
+                    borderRadius='8px'
+                    fontSize='2xs'
+                    placeholder='Enter city'
+                  />
+                </FormControl>
+              </GridItem>
+            </Grid>
+          </Box>
+          <Box pt={5}>
+            <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr ' }} gap={6}>
+              <GridItem w='100%'>
+                <FormControl id='adress1'>
+                  <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                    Address line 1
+                  </FormLabel>
+
+                  <Input
+                    type='text'
+                    background='neutral.white'
+                    _placeholder={{ color: 'neutral.gray' }}
+                    borderRadius='8px'
+                    fontSize='2xs'
+                    placeholder='Enter address'
+                  />
+                </FormControl>
+              </GridItem>
+              <GridItem w='100%'>
+                <FormControl id='adress2'>
+                  <FormLabel
+                    fontWeight='semibold'
+                    placeholder='+1(217) 555-0113'
+                    fontSize='3xs'
+                    color='neutral.grayDark'
+                  >
+                    Address line 2
+                  </FormLabel>
+
+                  <Input
+                    type='text'
+                    background='neutral.white'
+                    _placeholder={{ color: 'neutral.gray' }}
+                    borderRadius='8px'
+                    fontSize='2xs'
+                    placeholder='Enter address (optional)'
+                  />
+                </FormControl>
+              </GridItem>
+            </Grid>
+          </Box>
+          <Box pt={5} display='flex' justifyContent='flex-end'>
+            <Button
+              background='neutral.white'
+              fontSize='2xs'
+              fontWeight='bold'
+              variant='solid'
+              color='primary.default'
+              borderWidth='1px'
+              borderColor='primary.default'
+              _hover={{
+                background: 'primary.default',
+                color: 'neutral.white',
+                borderWidth: '1px',
+                borderColor: 'primary.default'
+              }}
+              py={5}
+              me='20px'
+            >
+              Add new address
+            </Button>
           </Box>
         </Box>
       </Box>
