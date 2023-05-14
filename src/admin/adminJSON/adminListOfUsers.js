@@ -6,7 +6,7 @@ export const arrUsers = [
         totalAmount: '$320',
         name: 'Albert Flores',
         status: 'In progress',
-        time: `05:51 pm 21 Apr, 2021`
+        creationTime: `05:51 pm 21 Apr, 2021`
     },
     {
         orderId: 1223456,
@@ -15,7 +15,7 @@ export const arrUsers = [
         totalAmount: '$320',
         name: 'Floyd Miles',
         status: 'Completed',
-        time: `07:38 am 20 Apr, 2022`
+        creationTime: `07:38 am 20 Apr, 2022`
     },
     {
         orderId: 12403457,
@@ -24,7 +24,7 @@ export const arrUsers = [
         creationDate: '22 Apr, 2021',
         totalAmount: '$129',
         status: 'Canceled',
-        time: `04:02 am 20 May, 2023`
+        creationTime: `04:02 am 20 May, 2023`
     },
     {
         orderId: 12376458,
@@ -33,7 +33,7 @@ export const arrUsers = [
         creationDate: '22 Apr, 2021',
         totalAmount: '$220',
         status: 'Completed',
-        time: `01:09 am 19 Apr, 2021`
+        creationTime: `01:09 am 19 Apr, 2021`
     },
     {
         orderId: 1234459,
@@ -42,7 +42,7 @@ export const arrUsers = [
         creationDate: '22 Apr, 2021',
         totalAmount: '$3203',
         status: 'In progress',
-        time: `01:09 am 19 Apr, 2023`
+        creationTime: `01:09 am 19 Apr, 2023`
     },
     {
         orderId: 232314,
@@ -51,6 +51,6 @@ export const arrUsers = [
         creationDate: '22 May, 2021',
         totalAmount: '$3232',
         status: 'In progress',
-        time: `01:09 am 19 Apr, 2021`
+        creationTime: `01:09 am 19 Apr, 2021`
     }
 ];
