@@ -17,6 +17,7 @@ import Login from './user/userPages/Login';
 import RestaurantMenu from './admin/adminPages/RestaurantMenu';
 import RestaurantSettings from './admin/adminPages/RestaurantSettings';
 import Page404 from './user/userPages/Page404';
+import AccountSettings from './user/userPages/AccountSettings';
 
 export default function AppRoutes() {
   return (
@@ -37,6 +38,7 @@ export default function AppRoutes() {
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<Login />} />
 
+                <Route path='/user/account/*' element={<AccountSettings />} />
                 <Route path='/restaurant' element={<Restaurant />} />
                 <Route path='/restaurant/product' element={<Product />} />
                 {/* ----------ALL ADMIN ROUTES------------ */}
