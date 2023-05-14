@@ -3,6 +3,10 @@ import React from 'react';
 import SettingsMenu from '../../user/userComponents/AccountSettingsPage/SettingsMenu';
 
 import { Route, Routes } from 'react-router-dom';
+import Address from '../userComponents/AccountSettingsPage/Address';
+import Account from '../userComponents/AccountSettingsPage/Account';
+import PaymentMethod from '../userComponents/AccountSettingsPage/PaymentMethod';
+import Security from '../userComponents/AccountSettingsPage/Security';
 
 export default function AccountSettings() {
   return (
@@ -15,10 +19,10 @@ export default function AccountSettings() {
           </GridItem>
           <GridItem w='100%'>
             <Routes>
-              <Route path='/' element={<div>elements 1</div>} />
-              <Route path='/address' element={<div>elements 2</div>} />
-              <Route path='/payment' element={<div>elements 3</div>} />
-              <Route path='/security' element={<div>elements 4</div>} />
+              <Route path='/' element={<Account />} />
+              <Route path='/address' element={<Address />} />
+              <Route path='/payment' element={<PaymentMethod />} />
+              <Route path='/security' element={<Security />} />
             </Routes>
           </GridItem>
         </Grid>
