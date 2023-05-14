@@ -45,12 +45,57 @@ export const arrUsers = [
         creationTime: `01:09 am 19 Apr, 2023`
     },
     {
-        orderId: 232314,
+        orderId: 876865,
         address: '23232 carp street',
         name: 'Loyd Cooper',
         creationDate: '22 May, 2021',
         totalAmount: '$3232',
         status: 'In progress',
         creationTime: `01:09 am 19 Apr, 2021`
-    }
+    },
+    {
+        orderId: 35456,
+        address: '23232 Lenins street',
+        name: 'Jane Cooper',
+        creationDate: '22 Apr, 2021',
+        totalAmount: '$3203',
+        status: 'In progress',
+        creationTime: `01:09 am 19 Apr, 2023`
+    },
+    {
+        orderId: 5335,
+        address: '23232 Lenins street',
+        name: 'Jane Cooper',
+        creationDate: '22 Apr, 2021',
+        totalAmount: '$3203',
+        status: 'In progress',
+        creationTime: `01:09 am 19 Apr, 2023`
+    },
+    {
+        orderId: 64646,
+        address: '23232 Lenins street',
+        name: 'Jane Cooper',
+        creationDate: '22 Apr, 2021',
+        totalAmount: '$3203',
+        status: 'In progress',
+        creationTime: `01:09 am 19 Apr, 2023`
+    },
+    {
+        orderId: 54353,
+        address: '23232 Lenins street',
+        name: 'Jane Cooper',
+        creationDate: '22 Apr, 2021',
+        totalAmount: '$3203',
+        status: 'In progress',
+        creationTime: `01:09 am 19 Apr, 2023`
+    },
+    {
+        orderId: 43224,
+        address: '23232 Lenins street',
+        name: 'Jane Cooper',
+        creationDate: '22 Apr, 2021',
+        totalAmount: '$3203',
+        status: 'In progress',
+        creationTime: `01:09 am 19 Apr, 2023`
+    },
 ];
