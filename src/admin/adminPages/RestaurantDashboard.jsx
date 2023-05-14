@@ -120,11 +120,9 @@ export default function RestaurantDashboard() {
               <GridItem w='100%'>
                 <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
                   <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                    {currentArr === orderRevenue && <>Order revenue</>}
-
-                    {currentArr === ordersDelivered && <>Orders delivered</>}
-
-                    {currentArr === ordersRecived && <>Orders received</>}
+                    {JSON.stringify(currentArr) === JSON.stringify(orderRevenue) && <>Order revenue</>}
+                    {JSON.stringify(currentArr) === JSON.stringify(ordersDelivered) && <>Orders delivered</>}
+                    {JSON.stringify(currentArr) === JSON.stringify(ordersRecived) && <>Orders received</>}
                   </Text>
                   <Line options={options} data={data} />
                 </Box>
