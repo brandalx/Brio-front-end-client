@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-
-import { Box } from '@chakra-ui/layout';
+import React from 'react';
+import { Box, Text, Container, Grid, GridItem } from '@chakra-ui/layout';
 import {
   Filler,
   Chart as ChartJS,
@@ -14,8 +13,12 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
+import OrdersData from '../adminComponents/RestaurantDashboard/OrdersData';
+
+// Register required Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
+// Chart options
 export const options = {
   responsive: true,
   plugins: {
@@ -29,8 +32,10 @@ export const options = {
   }
 };
 
+// Labels for the chart
 const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
+// Chart data (temporary fake data)
 export const data = {
   labels,
   datasets: [
@@ -44,12 +49,25 @@ export const data = {
     }
   ]
 };
+
 export default function RestaurantDashboard() {
   return (
-    <Box display='flex' justifyContent='center' alignItems='center' height='90vh'>
-      <Box textAlign='center' w='90%'>
-        <Line options={options} data={data} />
+    <>
+      <Box py={5}>
+        <Container maxW='1110px'>
+          <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
+            Dashboard
+          </Text>
+          <Box>
+            <OrdersData />
+          </Box>
+          <Box display='flex' justifyContent='center' alignItems='center' height='90vh'>
+            <Box textAlign='center' w='90%'>
+              <Line options={options} data={data} />
+            </Box>
+          </Box>
+        </Container>
       </Box>
-    </Box>
+    </>
   );
 }
