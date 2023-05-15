@@ -1,4 +1,15 @@
-import { Box, Button, Divider, Flex, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  Text
+} from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -28,15 +39,20 @@ export default function PaymentSummary() {
             <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
               Tips
             </FormLabel>
-
-            <Input
-              type='text'
-              background='neutral.white'
-              _placeholder={{ color: 'neutral.gray' }}
-              borderRadius='8px'
-              fontSize='2xs'
-              placeholder='$'
-            />
+            <InputGroup>
+              <InputLeftAddon fontSize='2xs' color='neutral.gray'>
+                {' '}
+                ${' '}
+              </InputLeftAddon>
+              <Input
+                type='text'
+                background='neutral.white'
+                _placeholder={{ color: 'neutral.gray' }}
+                borderRadius='8px'
+                fontSize='2xs'
+                placeholder='Enter tip amount'
+              />
+            </InputGroup>
           </FormControl>
         </Box>
         <Divider my={8} />
