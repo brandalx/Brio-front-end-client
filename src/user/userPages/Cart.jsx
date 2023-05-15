@@ -8,7 +8,7 @@ import Pickup from '../userComponents/Cart/Pickup';
 import Summary from '../userComponents/Cart/Summary';
 
 export default function Cart() {
-  let arr = [
+  let arrMenu = [
     {
       image: salad,
       title: 'Chicken & Ribs Combo',
@@ -40,7 +40,36 @@ export default function Cart() {
       price: 22.75
     }
   ];
-
+  let arrAddress = [
+    {
+      country: 'USA',
+      state: 'New York',
+      city: 'New York',
+      address1: '4517 Washington Ave.',
+      address2: 'Manchester, 11004'
+    },
+    {
+      country: 'USA',
+      state: 'New York',
+      city: 'New York',
+      address1: '123 Broadway',
+      address2: 'New York, 10001'
+    },
+    {
+      country: 'USA',
+      state: 'New York',
+      city: 'Brooklyn',
+      address1: '789 Elm Street',
+      address2: 'Brooklyn, 11201'
+    },
+    {
+      country: 'USA',
+      state: 'New York',
+      city: 'Albany',
+      address1: '456 Oak Avenue',
+      address2: 'Albany, 12207'
+    }
+  ];
   const location = useLocation();
   const isDeliveryPage = location.pathname === '/user/cart';
   const isPickupPage = location.pathname === '/user/cart/pickup';
@@ -59,7 +88,7 @@ export default function Cart() {
                   Menu 4 meals
                 </Text>
                 <Box pt={5}>
-                  {arr.map((item, index) => {
+                  {arrMenu.map((item, index) => {
                     return <MenuMeal key={index} item={item} />;
                   })}
                 </Box>
@@ -119,9 +148,11 @@ export default function Cart() {
                 </Grid>
               </Box>
               <Routes>
-                <Route path='/' element={<Delivery />} />
+                <Route path='/' element={<Delivery item={arrAddress} />} />
                 <Route path='/pickup' element={<Pickup />} />
               </Routes>
+            </Box>
+            <Box py={4}>
               <Summary />
             </Box>
           </GridItem>
