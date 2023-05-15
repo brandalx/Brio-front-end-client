@@ -58,6 +58,7 @@ export default function Cart() {
               </Box>
             </Box>
           </GridItem>
+          <GridItem w='100%'>jjj</GridItem>
         </Grid>
       </Container>
     </Box>

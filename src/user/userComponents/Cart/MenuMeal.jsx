@@ -34,7 +34,7 @@ export default function MenuMeal({ item }) {
               alignContent='center'
               justifyContent={{ base: 'center', md: 'flex-end' }}
             >
-              <Grid templateColumns='1fr 1fr 1fr' gap={4}>
+              <Grid templateColumns='0.8fr 0.8fr 0.4fr' gap={4}>
                 <GridItem w='100%'>
                   {' '}
                   <Box display='flex' alignItems='center'>
