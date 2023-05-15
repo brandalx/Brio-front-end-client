@@ -77,12 +77,12 @@ export default function Cart() {
   return (
     <Box>
       <Container maxW='1110px'>
-        <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
+        <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
+          My cart
+        </Text>
+        <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '2fr 1fr' }} gap={2}>
           <GridItem w='100%'>
             <Box>
-              <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
-                My cart
-              </Text>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
                 <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
                   Menu 4 meals

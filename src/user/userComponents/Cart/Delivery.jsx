@@ -123,7 +123,6 @@ export default function Delivery({ item }) {
           borderColor: 'primary.default'
         }}
         py={5}
-        me='20px'
       >
         Add new shipping address
       </Button>
