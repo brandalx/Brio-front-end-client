@@ -21,7 +21,7 @@ import {
   Checkbox,
   Divider
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
 import PaymentCard from '../userComponents/AccountSettingsPage/PaymentCard';
@@ -31,6 +31,8 @@ import mastercard from '../../assets/images/mastercard.png';
 import PaymentSummary from '../userComponents/Checkout/PaymentSummary';
 import NewPaymentMethod from '../userComponents/Checkout/NewPaymentMethod';
 export default function Checkout() {
+  const [switcher, setSwitcher] = useState(true);
+
   let arr = [
     {
       number: '**** **** **** 4629',
@@ -92,6 +94,7 @@ export default function Checkout() {
                       })}
                       <GridItem w='100%'>
                         <Box
+                          onClick={() => setSwitcher(false)}
                           _hover={{
                             cursor: 'pointer',
                             transition: 'all 0.3s',
@@ -142,7 +145,7 @@ export default function Checkout() {
                       </GridItem>
                     </Grid>
                     <Box>
-                      <NewPaymentMethod />
+                      <NewPaymentMethod switcher={switcher} />
                     </Box>
                   </Box>
                 </Box>

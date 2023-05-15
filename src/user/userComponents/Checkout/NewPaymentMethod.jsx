@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-export default function NewPaymentMethod() {
+export default function NewPaymentMethod({ switcher }) {
   return (
     <>
       <Box ms={2} mb={4} mt={10}>
@@ -29,6 +29,7 @@ export default function NewPaymentMethod() {
                 </FormLabel>
 
                 <Input
+                  isDisabled={switcher}
                   type='text'
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
@@ -45,6 +46,7 @@ export default function NewPaymentMethod() {
                 </FormLabel>
 
                 <Input
+                  isDisabled={switcher}
                   type='text'
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
@@ -61,6 +63,7 @@ export default function NewPaymentMethod() {
                 </FormLabel>
 
                 <Input
+                  isDisabled={switcher}
                   type='text'
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
@@ -81,6 +84,7 @@ export default function NewPaymentMethod() {
                   </FormLabel>
 
                   <Input
+                    isDisabled={switcher}
                     type='text'
                     background='neutral.white'
                     _placeholder={{ color: 'neutral.gray' }}
@@ -107,7 +111,7 @@ export default function NewPaymentMethod() {
                 justify={'space-between'}
               >
                 <Flex alignItems='center'>
-                  <Checkbox iconColor='neutral.white' mr='2'>
+                  <Checkbox isDisabled={switcher} iconColor='neutral.white' mr='2'>
                     <Text color='neutral.black' fontSize='2xs'>
                       Save this payment method
                     </Text>
@@ -115,6 +119,7 @@ export default function NewPaymentMethod() {
                 </Flex>
               </Stack>
               <Button
+                isDisabled={switcher}
                 mt={{ base: '20px', md: '0px' }}
                 w={{ base: '100%', md: 'initial' }}
                 background='neutral.white'
