@@ -3,13 +3,13 @@ import React from 'react';
 import defaultmap from '../../../assets/images/defaultmap.png';
 export default function Pickup() {
   return (
-    <Box py={4}>
+    <Box pt={4}>
       <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
-        Select your shipping adress
+        Restaurant address
       </Text>
-      <Box py={4}>
+      <Box pt={4}>
         <Image borderRadius='12px' src={defaultmap} w='100%' />
-        <Box my={4}>
+        <Box mt={4}>
           <Text fontWeight='bold' fontSize='2xs' color='neutral.black'>
             San Diego
           </Text>

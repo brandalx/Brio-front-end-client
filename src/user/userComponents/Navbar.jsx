@@ -34,7 +34,8 @@ export default function Navbar() {
   const bg = useColorModeValue('white', 'gray.800');
   const mobileNav = useDisclosure();
   const location = useLocation();
-  const isInCart = location.pathname === '/user/cart';
+  const isInCart = location.pathname.startsWith('/user/cart');
+
   return (
     <>
       <Container maxW='1110px'>
@@ -180,7 +181,20 @@ export default function Navbar() {
                       </Link>
                       <MenuDivider />
                       <Link to='/login'>
-                        <MenuItem fontWeight='medium'> Log Out</MenuItem>
+                        <MenuItem
+                          m={0}
+                          h='100%'
+                          background='neutral.white'
+                          variant='solid'
+                          color='error.default'
+                          _hover={{
+                            background: 'error.default',
+                            color: 'neutral.white'
+                          }}
+                          fontWeight='medium'
+                        >
+                          Log Out
+                        </MenuItem>
                       </Link>
                     </MenuList>
                   </Menu>
