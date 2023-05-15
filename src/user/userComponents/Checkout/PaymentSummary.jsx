@@ -8,6 +8,7 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
+  InputLeftElement,
   Text
 } from '@chakra-ui/react';
 import React from 'react';
@@ -40,10 +41,10 @@ export default function PaymentSummary() {
               Tips
             </FormLabel>
             <InputGroup>
-              <InputLeftAddon fontSize='2xs' color='neutral.gray'>
+              <InputLeftElement pointerEvents='none' fontSize='2xs' color='neutral.gray'>
                 {' '}
                 ${' '}
-              </InputLeftAddon>
+              </InputLeftElement>
               <Input
                 type='text'
                 background='neutral.white'
