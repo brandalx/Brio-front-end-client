@@ -3,7 +3,7 @@ import { Box, Container, Grid, GridItem, Text, Divider, Button } from '@chakra-u
 import salad from '../../assets/images/salad.jpg';
 import MenuMeal from '../userComponents/Cart/MenuMeal';
 import Delivery from '../userComponents/Cart/Delivery';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import Pickup from '../userComponents/Cart/Pickup';
 import Summary from '../userComponents/Cart/Summary';
 
@@ -41,6 +41,10 @@ export default function Cart() {
     }
   ];
 
+  const location = useLocation();
+  const isDeliveryPage = location.pathname === '/user/cart';
+  const isPickupPage = location.pathname === '/user/cart/pickup';
+
   return (
     <Box>
       <Container maxW='1110px'>
@@ -71,14 +75,14 @@ export default function Cart() {
                       <Button
                         borderRadius='14px'
                         w='100%'
-                        background='neutral.black'
+                        background={isDeliveryPage ? 'neutral.black' : 'neutral.grayLightest'}
                         fontWeight='bold'
                         variant='solid'
-                        color='neutral.white'
+                        color={isDeliveryPage ? 'neutral.white' : 'neutral.black'}
                         borderWidth='1px'
-                        borderColor='neutral.black'
+                        borderColor='neutral.grayLightest'
                         _hover={{
-                          background: 'neutral.white',
+                          background: 'neutral.grayLightest',
                           color: 'neutral.black',
                           borderWidth: '1px',
                           borderColor: 'neutral.black'
@@ -94,14 +98,14 @@ export default function Cart() {
                       <Button
                         borderRadius='14px'
                         w='100%'
-                        background='neutral.black'
+                        background={isPickupPage ? 'neutral.black' : 'neutral.grayLightest'}
                         fontWeight='bold'
                         variant='solid'
-                        color='neutral.white'
+                        color={isPickupPage ? 'neutral.white' : 'neutral.black'}
                         borderWidth='1px'
-                        borderColor='neutral.black'
+                        borderColor='neutral.grayLightest'
                         _hover={{
-                          background: 'neutral.white',
+                          background: 'neutral.grayLightest',
                           color: 'neutral.black',
                           borderWidth: '1px',
                           borderColor: 'neutral.black'
