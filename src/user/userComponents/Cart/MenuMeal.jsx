@@ -1,8 +1,8 @@
 import { Box, Button, Grid, GridItem, Text, Image, Divider } from '@chakra-ui/react';
 import React from 'react';
 import TrashBox from '../../../assets/svg/TrashBox';
-import salad from '../../../assets/images/salad.jpg';
-export default function MenuMeal() {
+
+export default function MenuMeal({ item }) {
   return (
     <>
       <Box>
@@ -10,17 +10,17 @@ export default function MenuMeal() {
           <GridItem w='100%'>
             <Box display='flex' alignItems='center'>
               <Box me={2}>
-                <Image borderRadius='12px' maxH='72px' maxW='72px' src={salad} />
+                <Image borderRadius='12px' maxH='72px' maxW='72px' src={item.image} />
               </Box>
               <Box>
                 <Box>
                   <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
-                    Chicken & Ribs Combo
+                    {item.title}
                   </Text>
                 </Box>
                 <Box>
                   <Text color='neutral.grayDark' fontSize='2xs'>
-                    Lorem ipsum dolor sit amet, pri atqui facete evertitur an, ea assum solet invidunt vim.
+                    {item.desc}
                   </Text>
                 </Box>
               </Box>
@@ -68,7 +68,7 @@ export default function MenuMeal() {
                   <Box w='100%' display='flex' justifyContent='center'>
                     {' '}
                     <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
-                      $ 16.80
+                      $ {item.price}
                     </Text>
                   </Box>
                 </GridItem>
