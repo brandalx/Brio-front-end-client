@@ -137,6 +137,7 @@ export default function PaymentMethod() {
           </Box>
           <Box pt={5} display='flex' justifyContent='flex-end'>
             <Button
+              w={{ base: '100%', md: 'initial' }}
               background='neutral.white'
               fontSize='2xs'
               fontWeight='bold'

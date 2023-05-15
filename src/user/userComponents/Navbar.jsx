@@ -28,11 +28,13 @@ import { IconShoppingBag } from '@tabler/icons-react';
 
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import Logo from '../../assets/svg/Logo';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Navbar() {
   const bg = useColorModeValue('white', 'gray.800');
   const mobileNav = useDisclosure();
+  const location = useLocation();
+  const isInCart = location.pathname.startsWith('/user/cart');
 
   return (
     <>
@@ -108,6 +110,8 @@ export default function Navbar() {
 
                 <HStack spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
                   <Box
+                    borderColor={isInCart ? 'primary.default' : 'neutral.white'}
+                    borderWidth='1px'
                     ml='4px'
                     bg='primary.lightest'
                     _hover={{ bg: 'primary.light' }}
@@ -142,8 +146,10 @@ export default function Navbar() {
                       </MenuButton>
 
                       <MenuList>
-                        <MenuItem fontWeight='medium'>My cart</MenuItem>
-                        <MenuItem fontWeight='medium'>Option 2</MenuItem>
+                        <Link to='user/cart'>
+                          {' '}
+                          <MenuItem fontWeight='medium'>My cart</MenuItem>
+                        </Link>
                       </MenuList>
                     </Menu>
                   </Box>
@@ -174,7 +180,22 @@ export default function Navbar() {
                         <MenuItem fontWeight='medium'>Settings</MenuItem>
                       </Link>
                       <MenuDivider />
-                      <MenuItem fontWeight='medium'> Log Out</MenuItem>
+                      <Link to='/login'>
+                        <MenuItem
+                          m={0}
+                          h='100%'
+                          background='neutral.white'
+                          variant='solid'
+                          color='error.default'
+                          _hover={{
+                            background: 'error.default',
+                            color: 'neutral.white'
+                          }}
+                          fontWeight='medium'
+                        >
+                          Log Out
+                        </MenuItem>
+                      </Link>
                     </MenuList>
                   </Menu>
                 </HStack>
@@ -183,6 +204,8 @@ export default function Navbar() {
               <Box display={{ base: 'inline-flex', md: 'none' }}>
                 <HStack display='flex' alignItems='center' spacing={4}>
                   <Box
+                    borderColor={isInCart ? 'primary.default' : 'neutral.white'}
+                    borderWidth='1px'
                     ml='4px'
                     bg='neutral.grayLightest'
                     color='black'
@@ -214,8 +237,10 @@ export default function Navbar() {
                         <IconShoppingBag color='#4E60FF' />
                       </MenuButton>
                       <MenuList>
-                        <MenuItem fontWeight='medium'>My cart</MenuItem>
-                        <MenuItem fontWeight='medium'>Option 2</MenuItem>
+                        <Link to='user/cart'>
+                          {' '}
+                          <MenuItem fontWeight='medium'>My cart</MenuItem>
+                        </Link>
                       </MenuList>
                     </Menu>
                   </Box>
@@ -237,7 +262,9 @@ export default function Navbar() {
                       </Link>
 
                       <MenuDivider />
-                      <MenuItem fontWeight='medium'> Log Out</MenuItem>
+                      <Link to='/login'>
+                        <MenuItem fontWeight='medium'> Log Out</MenuItem>
+                      </Link>
                     </MenuList>
                   </Menu>
                   <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest' />
