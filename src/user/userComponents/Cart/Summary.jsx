@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Summary() {
   return (
@@ -34,25 +35,27 @@ export default function Summary() {
               $149.40
             </Text>
           </Flex>
-          <Button
-            w='100%'
-            background='primary.default'
-            fontSize='2xs'
-            fontWeight='bold'
-            variant='solid'
-            color='neutral.white'
-            borderWidth='1px'
-            borderColor='primary.default'
-            _hover={{
-              background: 'neutral.white',
-              color: 'primary.default',
-              borderWidth: '1px',
-              borderColor: 'primary.default'
-            }}
-            py={5}
-          >
-            Proceed to checkout
-          </Button>
+          <Link to='/user/checkout'>
+            <Button
+              w='100%'
+              background='primary.default'
+              fontSize='2xs'
+              fontWeight='bold'
+              variant='solid'
+              color='neutral.white'
+              borderWidth='1px'
+              borderColor='primary.default'
+              _hover={{
+                background: 'neutral.white',
+                color: 'primary.default',
+                borderWidth: '1px',
+                borderColor: 'primary.default'
+              }}
+              py={5}
+            >
+              Proceed to checkout
+            </Button>
+          </Link>
         </Box>
       </Box>
     </>

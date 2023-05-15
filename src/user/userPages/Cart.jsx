@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Grid, GridItem, Text, Divider, Button } from '@chakra-ui/react';
+import { Box, Container, Grid, GridItem, Text, Button } from '@chakra-ui/react';
 import salad from '../../assets/images/salad.jpg';
 import MenuMeal from '../userComponents/Cart/MenuMeal';
 import Delivery from '../userComponents/Cart/Delivery';

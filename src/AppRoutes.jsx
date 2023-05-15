@@ -19,6 +19,7 @@ import RestaurantSettings from './admin/adminPages/RestaurantSettings';
 import Page404 from './user/userPages/Page404';
 import AccountSettings from './user/userPages/AccountSettings';
 import Cart from './user/userPages/Cart';
+import Checkout from './user/userPages/Checkout';
 
 export default function AppRoutes() {
   return (
@@ -41,6 +42,7 @@ export default function AppRoutes() {
 
                 <Route path='/user/account/*' element={<AccountSettings />} />
                 <Route path='/user/cart/*' element={<Cart />} />
+                <Route path='/user/checkout/' element={<Checkout />} />
                 <Route path='/restaurant' element={<Restaurant />} />
                 <Route path='/restaurant/product' element={<Product />} />
                 {/* ----------ALL ADMIN ROUTES------------ */}
