@@ -16,25 +16,25 @@ import {
   InputGroup,
   Input,
   InputRightElement,
-  Badge,
   Avatar,
   Container,
   MenuItem,
   MenuDivider,
   MenuList,
   Menu,
-  MenuButton,
-  InputLeftElement
+  MenuButton
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
 
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
-import Logo from '../../assets/svg/logo';
-import { Link } from 'react-router-dom';
+import Logo from '../../assets/svg/Logo';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Navbar() {
   const bg = useColorModeValue('white', 'gray.800');
   const mobileNav = useDisclosure();
+  const location = useLocation();
+  const isInCart = location.pathname.startsWith('/user/cart');
 
   return (
     <>
@@ -42,9 +42,9 @@ export default function Navbar() {
         <chakra.header w='full' px={{ base: 2, sm: 4 }} py={4}>
           <Flex alignItems='center' justifyContent='space-between' mx='auto'>
             <Flex alignItems='center'>
-              <Link to='/' >
+              <Link to='/'>
                 <Box title='Homepage' display='flex' alignItems='center'>
-                <Logo />
+                  <Logo />
                 </Box>
                 <VisuallyHidden>Brio</VisuallyHidden>
               </Link>
@@ -110,6 +110,8 @@ export default function Navbar() {
 
                 <HStack spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
                   <Box
+                    borderColor={isInCart ? 'primary.default' : 'neutral.white'}
+                    borderWidth='1px'
                     ml='4px'
                     bg='primary.lightest'
                     _hover={{ bg: 'primary.light' }}
@@ -144,8 +146,10 @@ export default function Navbar() {
                       </MenuButton>
 
                       <MenuList>
-                        <MenuItem fontWeight='medium'>My cart</MenuItem>
-                        <MenuItem fontWeight='medium'>Option 2</MenuItem>
+                        <Link to='user/cart'>
+                          {' '}
+                          <MenuItem fontWeight='medium'>My cart</MenuItem>
+                        </Link>
                       </MenuList>
                     </Menu>
                   </Box>
@@ -171,12 +175,27 @@ export default function Navbar() {
                       </MenuButton>
                     </Box>
                     <MenuList>
-                      <MenuItem as={Link} to='#' fontWeight='medium'>
-                        My Account
-                      </MenuItem>
-                      <MenuItem fontWeight='medium'>Settings</MenuItem>
+                      <Link to='/user/account'>
+                        {' '}
+                        <MenuItem fontWeight='medium'>Settings</MenuItem>
+                      </Link>
                       <MenuDivider />
-                      <MenuItem fontWeight='medium'> Log Out</MenuItem>
+                      <Link to='/login'>
+                        <MenuItem
+                          m={0}
+                          h='100%'
+                          background='neutral.white'
+                          variant='solid'
+                          color='error.default'
+                          _hover={{
+                            background: 'error.default',
+                            color: 'neutral.white'
+                          }}
+                          fontWeight='medium'
+                        >
+                          Log Out
+                        </MenuItem>
+                      </Link>
                     </MenuList>
                   </Menu>
                 </HStack>
@@ -185,6 +204,8 @@ export default function Navbar() {
               <Box display={{ base: 'inline-flex', md: 'none' }}>
                 <HStack display='flex' alignItems='center' spacing={4}>
                   <Box
+                    borderColor={isInCart ? 'primary.default' : 'neutral.white'}
+                    borderWidth='1px'
                     ml='4px'
                     bg='neutral.grayLightest'
                     color='black'
@@ -216,8 +237,10 @@ export default function Navbar() {
                         <IconShoppingBag color='#4E60FF' />
                       </MenuButton>
                       <MenuList>
-                        <MenuItem fontWeight='medium'>My cart</MenuItem>
-                        <MenuItem fontWeight='medium'>Option 2</MenuItem>
+                        <Link to='user/cart'>
+                          {' '}
+                          <MenuItem fontWeight='medium'>My cart</MenuItem>
+                        </Link>
                       </MenuList>
                     </Menu>
                   </Box>
@@ -233,12 +256,15 @@ export default function Navbar() {
                     </MenuButton>
 
                     <MenuList>
-                      <MenuItem as={Link} to='#' fontWeight='medium'>
-                        My Account
-                      </MenuItem>
-                      <MenuItem fontWeight='medium'>Settings</MenuItem>
+                      <Link to='/user/account'>
+                        {' '}
+                        <MenuItem fontWeight='medium'>Settings</MenuItem>
+                      </Link>
+
                       <MenuDivider />
-                      <MenuItem fontWeight='medium'> Log Out</MenuItem>
+                      <Link to='/login'>
+                        <MenuItem fontWeight='medium'> Log Out</MenuItem>
+                      </Link>
                     </MenuList>
                   </Menu>
                   <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest' />
@@ -280,9 +306,9 @@ export default function Navbar() {
                 >
                   <Flex w='100%' direction='column' justifyContent='space-between'>
                     <Box display='flex' justifyContent='center' w='100%' mx='auto' my={4}>
-                      <Link to='/' >
+                      <Link to='/'>
                         <Box title='Homepage' display='flex' alignItems='center'>
-                        <Logo />
+                          <Logo />
                         </Box>
                         <VisuallyHidden>Brio</VisuallyHidden>
                       </Link>
