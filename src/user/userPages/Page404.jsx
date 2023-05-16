@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, Flex, Text, VisuallyHidden, chakra } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import Logo from '../../assets/svg/Logo';
+import Logo from '../../assets/svg/logo';
 
 export default function Page404() {
   return (
