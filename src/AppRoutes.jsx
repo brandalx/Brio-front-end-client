@@ -47,7 +47,7 @@ export default function AppRoutes() {
                 <Route path='/restaurant/product' element={<Product />} />
                 {/* ----------ALL ADMIN ROUTES------------ */}
                 <Route path='/admin/restaurant/dashboard' element={<RestaurantDashboard />} />
-                {/*<Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />*/}
+                <Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />
                 <Route path='/admin/restaurant/menu' element={<RestaurantMenu />} />
                 <Route path='/admin/restaurant/settings/*' element={<RestaurantSettings />} />
                 <Route path='/*' element={<Page404 />} />
