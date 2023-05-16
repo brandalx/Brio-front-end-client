@@ -4,11 +4,11 @@ import AdressCard from './AdressCard';
 export default function Adress() {
   let arr = [
     {
-      country: 'USA',
-      state: 'New York',
-      city: 'New York',
-      address1: '4517 Washington Ave.',
-      address2: 'Manchester, 11004'
+      country: 'Kazahstan',
+      state: 'Kazahstan',
+      city: 'Alama ata',
+      address1: 'samal2',
+      address2: ''
     },
     {
       country: 'USA',
