@@ -7,7 +7,7 @@ import {
   Divider,
   Button,
   useBreakpointValue,
-  useMediaQuery
+  useMediaQuery, useDisclosure
 } from '@chakra-ui/react';
 import theme from '../../../utils/theme';
 import { arrayProducts } from '../../adminJSON/adminListOfProducts1';
@@ -19,12 +19,29 @@ import Copy from '../../../assets/svg/Copy';
 import TrashBox from '../../../assets/svg/TrashBox';
 import { useEffect, useState } from 'react';
 import React from 'react';
+import ModalTextRedactor from './ModalTextRedactor'
 export default function ListOfProducts({ selectedCategory }) {
   const gridColumns = useBreakpointValue({ base: '1fr', md: '1fr 4fr' });
   const [isMobile] = useMediaQuery('(max-width: 575px)');
   const [isTablet] = useMediaQuery('(max-width: 767px)');
   const [isDek] = useMediaQuery('(min-width: 768px)');
   const [selectedArray, setSelectedArray] = useState(arrayProducts);
+  const {isOpen, onOpen, onClose} = useDisclosure()
+  const handleSave = (itemId, editedTitle, editedDescription) => {
+    // Обработка сохранения изменений
+    const updatedArray = selectedArray.map((item) => {
+      if (item.id === itemId) {
+        return {
+          ...item,
+          title: editedTitle,
+          description: editedDescription
+        };
+      }
+      return item;
+    });
+    setSelectedArray(updatedArray);
+  };
+
 
   useEffect(() => {
     if (selectedCategory === 'Lunch menu' || selectedCategory === 'Dinner menu') {
@@ -96,7 +113,7 @@ export default function ListOfProducts({ selectedCategory }) {
                       {item.price}
                     </Text>
                     <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
-                    <Button>
+                    <Button onClick={onOpen}>
                       <Pen />
                     </Button>
                     <Copy />
@@ -104,6 +121,16 @@ export default function ListOfProducts({ selectedCategory }) {
                   </Box>
                 )}
               </Box>
+              <ModalTextRedactor
+                  isOpen={isOpen}
+                  onOpen={onOpen}
+                  onClose={onClose}
+                  title={item.title}
+                  item={item}
+                  description={item.description}
+              />
+
+
             </Box>
             {isTablet && (
               <Box alignItems='center' justifyContent='center' display='flex' gap={3}>
@@ -111,12 +138,13 @@ export default function ListOfProducts({ selectedCategory }) {
                   {item.price}
                 </Text>
                 <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
-                <Button>
+                <Button onClick={onOpen}>
                   <Pen />
                 </Button>
                 <Copy />
                 <TrashBox />
               </Box>
+
             )}
 
             <Box display={isMobile ? 'flex' : 'block'} flexDirection='column'>
