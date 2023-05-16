@@ -1,22 +1,24 @@
 import React from 'react';
 import {
     Button,
-
     FormControl,
     FormLabel,
-    Input, Modal, ModalBody, ModalCloseButton,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalHeader,
-    ModalOverlay, Textarea, useDisclosure, useMediaQuery
+    ModalOverlay,
+    useDisclosure,
+    useMediaQuery
 } from "@chakra-ui/react";
 
-export default function ModalTextRedactor({isOpen, onOpen, onClose, item}) {
-
-    const initialRef = React.useRef(null)
-    const finalRef = React.useRef(null)
+export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
+    const initialRef = React.useRef(null);
+    const finalRef = React.useRef(null);
     const [isLilMob] = useMediaQuery('(max-width: 350px)');
-
 
     return (
         <>
@@ -42,7 +44,6 @@ export default function ModalTextRedactor({isOpen, onOpen, onClose, item}) {
                         alignItems: 'center'
                     }}
                 />
-
                 <ModalContent
                     position='relative'
                     boxSizing='content-box'
@@ -66,11 +67,10 @@ export default function ModalTextRedactor({isOpen, onOpen, onClose, item}) {
                             <Input placeholder="Ingredients"/>
                             <FormLabel mt="15px">Price</FormLabel>
                             <Input placeholder="Price"/>
-                            <FormLabel mt="15px"> Nutritional value</FormLabel>
+                            <FormLabel mt="15px">Nutritional value</FormLabel>
                             <Input placeholder="Nutritional value"/>
                         </FormControl>
                     </ModalBody>
-
                     <ModalFooter display='flex' justifyContent={isLilMob ? 'center' : 'end'}>
                         <Button
                             p='20px'
@@ -101,66 +101,13 @@ export default function ModalTextRedactor({isOpen, onOpen, onClose, item}) {
                             p='20px'
                             border='1px'
                             borderColor='primary.default'
-                            onClick={() => {
-                                onClose();
-                            }}
+                            onClick={onClose}
                         >
                             Save
                         </Button>
-
-    FormControl, FormLabel, Input,
-    Modal,
-    ModalBody, ModalCloseButton,
-    ModalContent, ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    useDisclosure
-} from "@chakra-ui/react";
-
-export default function AdminHeader({isOpen, onOpen, onClose}) {
-    const {isOpen, onOpen, onClose} = useDisclosure()
-
-    const initialRef = React.useRef(null)
-    const finalRef = React.useRef(null)
-
-    return (
-        <>
-            <Button onClick={onOpen}>Open Modal</Button>
-            <Button ml={4} ref={finalRef}>
-                I'll receive focus on close
-            </Button>
-
-            <Modal
-                initialFocusRef={initialRef}
-                finalFocusRef={finalRef}
-                isOpen={isOpen}
-                onClose={onClose}
-            >
-                <ModalOverlay/>
-                <ModalContent>
-                    <ModalHeader>Create your account</ModalHeader>
-                    <ModalCloseButton/>
-                    <ModalBody pb={6}>
-                        <FormControl>
-                            <FormLabel>First name</FormLabel>
-                            <Input ref={initialRef} placeholder='First name'/>
-                        </FormControl>
-
-                        <FormControl mt={4}>
-                            <FormLabel>Last name</FormLabel>
-                            <Input placeholder='Last name'/>
-                        </FormControl>
-                    </ModalBody>
-
-                    <ModalFooter>
-                        <Button colorScheme='blue' mr={3}>
-                            Save
-                        </Button>
-                        <Button onClick={onClose}>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
         </>
-    )
-
+    );
 }
