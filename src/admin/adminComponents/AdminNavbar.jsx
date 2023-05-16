@@ -21,7 +21,7 @@ import {
   VStack
 } from '@chakra-ui/react';
 
-import Logo from '../../assets/svg/logo';
+import Logo from '../../assets/svg/Logo';
 import { Link, Link as RouterLink } from 'react-router-dom';
 import Notification from '../../assets/svg/Notification';
 import { AiOutlineMenu } from 'react-icons/ai';
@@ -32,20 +32,22 @@ export default function AdminNavbar() {
 
   return (
     <>
-      <Container overflow-x='hidden' zIndex='9999999' maxW='none' borderBottom='1px solid #EDEEF2' p={0} width="100%">
+      <Container overflow-x='hidden' zIndex='9999999' maxW='none' borderBottom='1px solid #EDEEF2' p={0} width='100%'>
         <Container maxW='1110px'>
           <chakra.header
-              w='100%'
-              pl={0}
-              pr={0}
-              py={3.5}
-              position='relative'
-              css={{
-                width: '100%',
-                marginLeft: 0,
-                marginRight: 0
-              }}
-          >        <Flex display='flex' alignItems='center' justifyContent='space-between' mx='auto'>
+            w='100%'
+            pl={0}
+            pr={0}
+            py={3.5}
+            position='relative'
+            css={{
+              width: '100%',
+              marginLeft: 0,
+              marginRight: 0
+            }}
+          >
+            {' '}
+            <Flex display='flex' alignItems='center' justifyContent='space-between' mx='auto'>
               <Link to='/admin' _hover={{ textDecoration: 'none' }}>
                 <Box display='flex' alignItems='center'>
                   <Logo />

@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 export default function ListOfProducts({ selectedCategory }) {
   const gridColumns = useBreakpointValue({ base: '1fr', md: '1fr 4fr' });
-  const [isMobile] = useMediaQuery('(max-width: 576px)');
+  const [isMobile] = useMediaQuery('(max-width: 575px)');
   const [isTablet] = useMediaQuery('(max-width: 767px)');
   const [isDek] = useMediaQuery('(min-width: 768px)');
   const [selectedArray, setSelectedArray] = useState(arrayProducts);

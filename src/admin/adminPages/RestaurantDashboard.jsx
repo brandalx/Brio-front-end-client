@@ -2,7 +2,7 @@ import { Box, Button, Flex, Text } from '@chakra-ui/react';
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../../assets/svg/logo';
+import Logo from '../../assets/svg/Logo';
 import Emoji from 'react-emojis';
 
 export default function RestaurantDashboard() {

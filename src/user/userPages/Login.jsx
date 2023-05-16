@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../../assets/svg/logo';
+import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 export default function Login() {
