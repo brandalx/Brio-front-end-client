@@ -13,7 +13,7 @@ export default function UserOrders() {
             My orders
           </Text>
 
-          <TableContainer overflowX='hidden' borderWidth='1px' borderRadius='lg' borderColor='gray.200'>
+          <TableContainer borderWidth='1px' borderRadius='lg' borderColor='gray.200'>
             <Table size='sm' variant='simple' colorScheme='gray' borderRadius='md' borderColor='gray.200'>
               <Thead bg='neutral.background'>
                 <Tr borderBottom='1.8px solid #C7C8D2'>
