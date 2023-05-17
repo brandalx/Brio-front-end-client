@@ -13,7 +13,7 @@ import {
   Skeleton
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { DotLoader } from 'react-spinners';
+
 import imagemap from '../../../assets/images/defaultmap.png';
 import axios from 'axios';
 
