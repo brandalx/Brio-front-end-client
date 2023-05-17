@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import imagemap from '../../../assets/images/defaultmap.png';
+import ThreeDots from '../../../assets/svg/ThreeDots';
 export default function AdressCard({ item }) {
   return (
     <GridItem w='100%'>
@@ -60,6 +61,8 @@ export default function AdressCard({ item }) {
           <Box>
             <Menu>
               <MenuButton
+                mt={4}
+                me={3}
                 _hover={{
                   color: 'neutral.black',
                   borderColor: 'neutral.lightest'
@@ -67,10 +70,8 @@ export default function AdressCard({ item }) {
                 fontSize='2xs'
                 color='neutral.gray'
                 fontWeight='bold'
-                py={5}
-                me='20px'
               >
-                •••
+                <ThreeDots />
               </MenuButton>
 
               <MenuList>
@@ -78,7 +79,6 @@ export default function AdressCard({ item }) {
                 <MenuDivider />
                 <MenuItem
                   m={0}
-                  h='100%'
                   background='neutral.white'
                   variant='solid'
                   color='error.default'

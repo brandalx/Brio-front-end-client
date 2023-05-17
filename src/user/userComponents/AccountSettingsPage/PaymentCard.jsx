@@ -12,6 +12,7 @@ import {
   MenuButton
 } from '@chakra-ui/react';
 import React from 'react';
+import ThreeDots from '../../../assets/svg/ThreeDots';
 
 export default function PaymentCard({ item }) {
   return (
@@ -60,10 +61,8 @@ export default function PaymentCard({ item }) {
                 fontSize='2xs'
                 color='neutral.gray'
                 fontWeight='bold'
-                py={0}
-                me='0px'
               >
-                •••
+                <ThreeDots />
               </MenuButton>
 
               <MenuList>
@@ -71,7 +70,6 @@ export default function PaymentCard({ item }) {
                 <MenuDivider />
                 <MenuItem
                   m={0}
-                  h='100%'
                   background='neutral.white'
                   variant='solid'
                   color='error.default'
