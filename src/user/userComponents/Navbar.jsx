@@ -105,7 +105,9 @@ export default function Navbar() {
                     color: 'primary.default'
                   }}
                 >
-                  My orders
+                  <Link fontSize='fontSizes.2xs' to='/user/orders'>
+                    My orders
+                  </Link>
                 </Button>
 
                 <HStack spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
@@ -326,7 +328,7 @@ export default function Navbar() {
                       <Link to='#'>Deals </Link>
                     </Button>
                     <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                      <Link>My orders</Link>
+                      <Link to='/user/orders'>My orders</Link>
                     </Button>
                     <Box my='8px' display='flex' justifyItems='center'>
                       <InputGroup size='sm' fontSize='md' w='60%' mx='auto'>

@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import imagemap from '../../../assets/images/defaultmap.png';
+import ThreeDots from '../../../assets/svg/ThreeDots';
 export default function Delivery({ item }) {
   return (
     <Box py={4}>
@@ -67,6 +68,8 @@ export default function Delivery({ item }) {
                   <Box>
                     <Menu>
                       <MenuButton
+                        mt={4}
+                        me={3}
                         _hover={{
                           color: 'neutral.black',
                           borderColor: 'neutral.lightest'
@@ -74,10 +77,8 @@ export default function Delivery({ item }) {
                         fontSize='2xs'
                         color='neutral.gray'
                         fontWeight='bold'
-                        py={5}
-                        me='20px'
                       >
-                        •••
+                        <ThreeDots />
                       </MenuButton>
 
                       <MenuList>
@@ -85,7 +86,6 @@ export default function Delivery({ item }) {
                         <MenuDivider />
                         <MenuItem
                           m={0}
-                          h='100%'
                           background='neutral.white'
                           variant='solid'
                           color='error.default'
