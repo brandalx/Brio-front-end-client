@@ -23,3 +23,21 @@ export const handelApiGet = async (_url) => {
     throw err;
   }
 };
+
+// for post,put,patch,delete methods
+export const handleApiMethod = async (_url, _method, _body = {}) => {
+  try {
+    const resp = await axios({
+      url: _url,
+      method: _method,
+      data: _body,
+      headers: {
+        'x-api-key': localStorage[TOKEN_KEY]
+      }
+    });
+    return resp.data;
+  } catch (err) {
+    // same as before
+    throw err;
+  }
+};
