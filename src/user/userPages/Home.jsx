@@ -6,10 +6,6 @@ import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
 import { API_URL, handelApiGet } from '../../services/apiServices';
 import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
 export default function Home() {
-  const badgeData = [
-    { badgeTitle: 'Burger', badgeEmoji: 'hamburger' },
-    { badgeTitle: 'Sushi', badgeEmoji: 'sushi' }
-  ];
   // todo: add tag into product into backend model and validation
 
   const [arr, setAr] = useState([]);
@@ -103,7 +99,7 @@ export default function Home() {
                       title={item.title}
                       time='40-60 min'
                       price='$24 min sum'
-                      badgeData={badgeData}
+                      badgeData={item.tags}
                     />
                   );
                 })}
@@ -229,54 +225,27 @@ export default function Home() {
           </Box>
           <Box py={15}>
             <Text py={4} color='neutral.grayDark' fontSize='3xs'>
-              Found 12 restaurants
+              Found {arr.length} restaurants
             </Text>
-            <Box>
-              <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
-                <RestaurantCard
-                  img={img1}
-                  title='Burgers & Pizza'
-                  time='40-60 min'
-                  price='$24 min sum'
-                  badgeData={badgeData}
-                />
-                <RestaurantCard
-                  img={img1}
-                  title='Burgers & Pizza'
-                  time='40-60 min'
-                  price='$24 min sum'
-                  badgeData={badgeData}
-                />
-                <RestaurantCard
-                  img={img1}
-                  title='Burgers & Pizza'
-                  time='40-60 min'
-                  price='$24 min sum'
-                  badgeData={badgeData}
-                />
-                <RestaurantCard
-                  img={img1}
-                  title='Burgers & Pizza'
-                  time='40-60 min'
-                  price='$24 min sum'
-                  badgeData={badgeData}
-                />
-                <RestaurantCard
-                  img={img1}
-                  title='Burgers & Pizza'
-                  time='40-60 min'
-                  price='$24 min sum'
-                  badgeData={badgeData}
-                />
-                <RestaurantCard
-                  img={img1}
-                  title='Burgers & Pizza'
-                  time='40-60 min'
-                  price='$24 min sum'
-                  badgeData={badgeData}
-                />
-              </Grid>
-            </Box>
+            {loading && <Box>Loading..</Box>}
+            {!loading && (
+              <Box>
+                <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
+                  {arr.map((item, index) => {
+                    return (
+                      <RestaurantCard
+                        key={index}
+                        img={item.image}
+                        title={item.title}
+                        time='40-60 min'
+                        price='$24 min sum'
+                        badgeData={item.tags}
+                      />
+                    );
+                  })}
+                </Grid>
+              </Box>
+            )}
           </Box>
         </Box>
       </Container>
