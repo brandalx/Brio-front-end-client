@@ -22,7 +22,7 @@ export default function RestaurantCard({ img, title, time, price, badgeData }) {
                     <AiOutlineClockCircle color='#828282' />
                   </Box>
                   <Text color='neutral.gray' fontSize='3xs'>
-                    {time} * {price}
+                    {time} min • ${price} min price
                   </Text>
                 </Box>
                 {badgeData.map((item) => (
