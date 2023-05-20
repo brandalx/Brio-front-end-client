@@ -1,14 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Container, Flex, Text, GridItem, Grid, Image } from '@chakra-ui/react';
 import img1 from '../../assets/images/salad.jpg';
 import burgertest from '../../assets/images/burgertest.png';
 import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
+import { API_URL, handelApiGet } from '../../services/apiServices';
 import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
 export default function Home() {
   const badgeData = [
     { badgeTitle: 'Burger', badgeEmoji: 'hamburger' },
     { badgeTitle: 'Sushi', badgeEmoji: 'sushi' }
   ];
+  // todo: add tag into product into backend model and validation
+
+  const [arr, setAr] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const handleApi = async () => {
+    const url = API_URL + '/restaurants';
+
+    try {
+      const data = await handelApiGet(url);
+      setAr(data);
+      console.log(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    handleApi();
+  }, []);
+
   return (
     <>
       <Container maxW='1110px'>
@@ -68,53 +90,28 @@ export default function Home() {
           <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>
             Nearby restaurants
           </Text>
-          <Box>
-            <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
-              <RestaurantCard
-                img={img1}
-                title='Burgers & Pizza'
-                time='40-60 min'
-                price='$24 min sum'
-                badgeData={badgeData}
-              />
-              <RestaurantCard
-                img={img1}
-                title='Burgers & Pizza'
-                time='40-60 min'
-                price='$24 min sum'
-                badgeData={badgeData}
-              />
-              <RestaurantCard
-                img={img1}
-                title='Burgers & Pizza'
-                time='40-60 min'
-                price='$24 min sum'
-                badgeData={badgeData}
-              />
-              <RestaurantCard
-                img={img1}
-                title='Burgers & Pizza'
-                time='40-60 min'
-                price='$24 min sum'
-                badgeData={badgeData}
-              />
-              <RestaurantCard
-                img={img1}
-                title='Burgers & Pizza'
-                time='40-60 min'
-                price='$24 min sum'
-                badgeData={badgeData}
-              />
-              <RestaurantCard
-                img={img1}
-                title='Burgers & Pizza'
-                time='40-60 min'
-                price='$24 min sum'
-                badgeData={badgeData}
-              />
-            </Grid>
-          </Box>
+
+          {loading && <Box>Loading..</Box>}
+          {!loading && (
+            <Box>
+              <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
+                {arr.map((item, index) => {
+                  return (
+                    <RestaurantCard
+                      key={index}
+                      img={item.image}
+                      title={item.title}
+                      time='40-60 min'
+                      price='$24 min sum'
+                      badgeData={badgeData}
+                    />
+                  );
+                })}
+              </Grid>
+            </Box>
+          )}
         </Box>
+
         <Box py='25px'>
           <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>
             All restaurants
