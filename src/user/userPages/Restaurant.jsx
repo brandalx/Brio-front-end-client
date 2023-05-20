@@ -8,12 +8,14 @@ import { Link } from 'react-router-dom';
 import { API_URL, handelApiGet } from '../../services/apiServices';
 
 export default function Restaurant() {
-  const [arr, setAr] = useState([]);
+  const [restaurantArr, setAr] = useState([]);
+  const [productArr, setProductAr] = useState([]);
   const [loading, setLoading] = useState(true);
-  const handleApi = async () => {
+  const handleRestaurantApi = async () => {
     const url = API_URL + '/restaurants';
 
     try {
+      setLoading(true);
       const data = await handelApiGet(url);
       setAr(data);
       console.log(data);
@@ -23,8 +25,23 @@ export default function Restaurant() {
       console.log(error);
     }
   };
+  const handleProductApi = async () => {
+    const url = API_URL + '/products';
+
+    try {
+      setLoading(true);
+      const data = await handelApiGet(url);
+      setProductAr(data);
+      console.log(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    handleApi();
+    handleRestaurantApi();
+    handleProductApi();
   }, []);
   return (
     <>
@@ -37,7 +54,12 @@ export default function Restaurant() {
                   <Flex alignItems='center'>
                     <GridItem w='100%'>
                       {!loading && (
-                        <Image borderWidth='15px' borderColor='neutral.white' borderRadius='16px' src={arr[0].image} />
+                        <Image
+                          borderWidth='15px'
+                          borderColor='neutral.white'
+                          borderRadius='16px'
+                          src={restaurantArr[0].image}
+                        />
                       )}
                     </GridItem>
                   </Flex>
@@ -45,9 +67,9 @@ export default function Restaurant() {
                     {' '}
                     <Flex flexDirection='column' justifyContent='center' h='100%'>
                       <Text fontSize='xl' fontWeight='extrabold'>
-                        {!loading && arr[0].title}
+                        {!loading && restaurantArr[0].title}
                       </Text>
-                      <Text fontSize='2xs'>{!loading && arr[0].description}</Text>
+                      <Text fontSize='2xs'>{!loading && restaurantArr[0].description}</Text>
 
                       <Box display='flex'>
                         <Box display='flex' alignItems='center' me={2}>
@@ -55,7 +77,7 @@ export default function Restaurant() {
                           <AiOutlineClockCircle color='#828282' />
                         </Box>
                         <Text color='neutral.gray' fontSize='3xs'>
-                          {!loading && arr[0].time} min * ${!loading && arr[0].minprice} min sum
+                          {!loading && restaurantArr[0].time} min * ${!loading && restaurantArr[0].minprice} min sum
                         </Text>
                       </Box>
                     </Flex>
@@ -94,44 +116,21 @@ export default function Restaurant() {
                     templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
                     gap={4}
                   >
-                    <Link to='/restaurant/product'>
-                      <ProductCard
-                        img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-                        title='Nigiri set'
-                        info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
-                            et saepe.'
-                        price='16.80'
-                      />
-                    </Link>
-                    <Link to='/restaurant/product'>
-                      <ProductCard
-                        img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-                        title='Nigiri set'
-                        info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
-                            et saepe.'
-                        price='16.80'
-                      />
-                    </Link>
-
-                    <Link to='/restaurant/product'>
-                      <ProductCard
-                        img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-                        title='Nigiri set'
-                        info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
-                            et saepe.'
-                        price='16.80'
-                      />
-                    </Link>
-
-                    <Link to='/restaurant/product'>
-                      <ProductCard
-                        img='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-                        title='Nigiri set'
-                        info='    Ea his sensibus eleifend, mollis iudicabit omittantur id mel. Et cum ignota euismod corpora,
-                            et saepe.'
-                        price='16.80'
-                      />
-                    </Link>
+                    {!loading &&
+                      productArr.map((item, index) => {
+                        return (
+                          <Box key={index}>
+                            <Link to='/restaurant/product'>
+                              <ProductCard
+                                img={item.image}
+                                title={item.title}
+                                info={item.description}
+                                price={item.price}
+                              />
+                            </Link>
+                          </Box>
+                        );
+                      })}
                   </Grid>
                 </Box>
               </Box>
