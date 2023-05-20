@@ -237,8 +237,8 @@ export default function Home() {
                         key={index}
                         img={item.image}
                         title={item.title}
-                        time='40-60 min'
-                        price='$24 min sum'
+                        time={item.time}
+                        price={item.minprice}
                         badgeData={item.tags}
                       />
                     );

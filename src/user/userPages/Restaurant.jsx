@@ -79,50 +79,57 @@ export default function Restaurant() {
                 <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '0.5fr 1fr' }} gap={4}>
                   <Flex alignItems='center'>
                     <GridItem w='100%'>
-                      {!loading && restaurantArr.length > 0 && (
-                        <Image
-                          borderWidth='15px'
-                          borderColor='neutral.white'
-                          borderRadius='16px'
-                          src={restaurantArr[0].image}
-                        />
-                      )}
+                      <Skeleton borderRadius='16px' isLoaded={!addressLoading}>
+                        {!loading && restaurantArr.length > 0 && (
+                          <Image
+                            borderWidth='15px'
+                            borderColor='neutral.white'
+                            borderRadius='16px'
+                            src={restaurantArr[0].image}
+                          />
+                        )}
+                      </Skeleton>
                     </GridItem>
                   </Flex>
                   <GridItem w='100%'>
                     {' '}
                     <Flex flexDirection='column' justifyContent='center' h='100%'>
-                      <Text fontSize='xl' fontWeight='extrabold'>
-                        {!loading && restaurantArr.length > 0 && restaurantArr[0].title}
-                      </Text>
-                      <Text fontSize='2xs'>
-                        {' '}
-                        {!loading && restaurantArr.length > 0 && restaurantArr[0].description}
-                      </Text>
-
-                      <Box display='flex'>
-                        <Box display='flex' alignItems='center' me={2}>
-                          {' '}
-                          <AiOutlineClockCircle color='#828282' />
-                        </Box>
-                        <Text color='neutral.gray' fontSize='3xs'>
-                          {!loading && restaurantArr.length > 0 && restaurantArr[0].time} min • ${' '}
-                          {!loading && restaurantArr.length > 0 && restaurantArr[0].minprice} min sum
+                      <Skeleton my={2} borderRadius='16px' isLoaded={!addressLoading}>
+                        <Text fontSize='xl' fontWeight='extrabold'>
+                          {!loading && restaurantArr.length > 0 && restaurantArr[0].title}
                         </Text>
-                      </Box>
+                      </Skeleton>
+                      <Skeleton my={2} borderRadius='16px' isLoaded={!addressLoading}>
+                        <Text fontSize='2xs'>
+                          {' '}
+                          {!loading && restaurantArr.length > 0 && restaurantArr[0].description}
+                        </Text>
+                      </Skeleton>
+                      <Skeleton borderRadius='16px' isLoaded={!addressLoading} my={2}>
+                        <Box display='flex'>
+                          <Box display='flex' alignItems='center' me={2}>
+                            {' '}
+                            <AiOutlineClockCircle color='#828282' />
+                          </Box>
+                          <Text color='neutral.gray' fontSize='3xs'>
+                            {!loading && restaurantArr.length > 0 && restaurantArr[0].time} min • ${' '}
+                            {!loading && restaurantArr.length > 0 && restaurantArr[0].minprice} min sum
+                          </Text>
+                        </Box>
+                      </Skeleton>
                     </Flex>
                   </GridItem>
                 </Grid>
               </Flex>
             </GridItem>
             <GridItem w='100%' h='auto'>
-              <Skeleton isLoaded={!addressLoading}>
-                <Flex alignItems='center' h='100%'>
+              <Skeleton borderRadius='16px' isLoaded={!addressLoading} minH='200px' my={2}>
+                <Flex alignItems='center'>
                   <Box w='100%'>
                     {address && (
                       <iframe
                         width='100%'
-                        src={`${REACT_APP_MAPBOX}&zoomwheel=false#15/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
+                        src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
                         title='Monochrome'
                         style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '230px' }}
                       />
@@ -153,12 +160,14 @@ export default function Restaurant() {
                         return (
                           <Box key={index}>
                             <Link to='/restaurant/product'>
-                              <ProductCard
-                                img={item.image}
-                                title={item.title}
-                                info={item.description}
-                                price={item.price}
-                              />
+                              <Skeleton borderRadius='16px' isLoaded={!addressLoading}>
+                                <ProductCard
+                                  img={item.image}
+                                  title={item.title}
+                                  info={item.description}
+                                  price={item.price}
+                                />
+                              </Skeleton>
                             </Link>
                           </Box>
                         );
