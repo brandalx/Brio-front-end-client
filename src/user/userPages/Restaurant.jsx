@@ -1,15 +1,20 @@
-import { Box, Container, Flex, GridItem, Text, Image, Grid } from '@chakra-ui/react';
+import { Box, Container, Flex, GridItem, Text, Skeleton, Image, Grid } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link } from 'react-router-dom';
 import { API_URL, handelApiGet } from '../../services/apiServices';
+import axios from 'axios';
 
 export default function Restaurant() {
   const [restaurantArr, setAr] = useState([]);
   const [productArr, setProductAr] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [address, setAddress] = useState(null);
+  const [addressLoading, setAddressLoading] = useState(true);
+  const REACT_API_opencagedata = process.env.REACT_API_opencagedata;
+  const REACT_APP_MAPBOX = process.env.REACT_API_opencagedata;
   const handleRestaurantApi = async () => {
     const url = API_URL + '/restaurants';
 
@@ -24,6 +29,7 @@ export default function Restaurant() {
       console.log(error);
     }
   };
+
   const handleProductApi = async () => {
     const url = API_URL + '/products';
 
@@ -38,10 +44,31 @@ export default function Restaurant() {
       console.log(error);
     }
   };
+
   useEffect(() => {
     handleRestaurantApi();
     handleProductApi();
   }, []);
+
+  useEffect(() => {
+    if (restaurantArr.length > 0) {
+      handleMapApi();
+    }
+  }, [restaurantArr]);
+
+  const handleMapApi = async () => {
+    try {
+      const placeUrl = `${REACT_API_opencagedata}${restaurantArr[0].location}%20${restaurantArr[0].address}&pretty=1`;
+      const resp = await axios.get(placeUrl);
+      const data = resp.data;
+      setAddress(data);
+      setAddressLoading(false);
+    } catch (error) {
+      console.log(error);
+      setAddressLoading(false);
+    }
+  };
+
   return (
     <>
       <Box background='bg' py='50px'>
@@ -89,21 +116,20 @@ export default function Restaurant() {
               </Flex>
             </GridItem>
             <GridItem w='100%' h='auto'>
-              <Flex alignItems='center' h='100%'>
-                <Box w='100%'>
-                  <iframe
-                    title='map'
-                    src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10752.024000153444!2d-74.0009056026385!3d40.75063980735163!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259ae15b2adcb%3A0x7955420634fd7eba!2s${encodeURIComponent(
-                      restaurantArr.location
-                    )}!5e0!3m2!1sen!2sil!4v1683120634682!5m2!1sen!2sil'`}
-                    width='100%'
-                    style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '230px' }}
-                    allowFullScreen
-                    loading='lazy'
-                    referrerPolicy='no-referrer-when-downgrade'
-                  />
-                </Box>
-              </Flex>
+              <Skeleton isLoaded={!addressLoading}>
+                <Flex alignItems='center' h='100%'>
+                  <Box w='100%'>
+                    {address && (
+                      <iframe
+                        width='100%'
+                        src={`${REACT_APP_MAPBOX}&zoomwheel=false#15/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
+                        title='Monochrome'
+                        style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '230px' }}
+                      />
+                    )}
+                  </Box>
+                </Flex>
+              </Skeleton>
             </GridItem>
           </Grid>
         </Container>
