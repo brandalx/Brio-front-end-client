@@ -1,25 +1,31 @@
-import {
-  Box,
-  Container,
-  Flex,
-  Badge,
-  GridItem,
-  Text,
-  Image,
-  Grid,
-  Heading,
-  Stack,
-  Avatar,
-  Button
-} from '@chakra-ui/react';
-import React from 'react';
+import { Box, Container, Flex, GridItem, Text, Image, Grid } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
 import img1 from '../../assets/images/salad.jpg';
 import { AiOutlineClockCircle } from 'react-icons/ai';
-import Emoji from 'react-emojis';
+
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link } from 'react-router-dom';
+import { API_URL, handelApiGet } from '../../services/apiServices';
 
 export default function Restaurant() {
+  const [arr, setAr] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const handleApi = async () => {
+    const url = API_URL + '/restaurants';
+
+    try {
+      const data = await handelApiGet(url);
+      setAr(data);
+      console.log(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    handleApi();
+  }, []);
   return (
     <>
       <Box background='bg' py='50px'>
@@ -30,19 +36,18 @@ export default function Restaurant() {
                 <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '0.5fr 1fr' }} gap={4}>
                   <Flex alignItems='center'>
                     <GridItem w='100%'>
-                      <Image borderWidth='15px' borderColor='neutral.white' borderRadius='16px' src={img1} />
+                      {!loading && (
+                        <Image borderWidth='15px' borderColor='neutral.white' borderRadius='16px' src={arr[0].image} />
+                      )}
                     </GridItem>
                   </Flex>
                   <GridItem w='100%'>
                     {' '}
                     <Flex flexDirection='column' justifyContent='center' h='100%'>
                       <Text fontSize='xl' fontWeight='extrabold'>
-                        Royal Sushi House
+                        {!loading && arr[0].title}
                       </Text>
-                      <Text fontSize='2xs'>
-                        Veri lobortis contentiones sed ad, duo eu clita dissentiet. Nam primis eligendi salutandi eu, an
-                        deseruisse ullamcorper vis.
-                      </Text>
+                      <Text fontSize='2xs'>{!loading && arr[0].description}</Text>
 
                       <Box display='flex'>
                         <Box display='flex' alignItems='center' me={2}>
@@ -50,7 +55,7 @@ export default function Restaurant() {
                           <AiOutlineClockCircle color='#828282' />
                         </Box>
                         <Text color='neutral.gray' fontSize='3xs'>
-                          40-60 min * $24 min sum
+                          {!loading && arr[0].time} min * ${!loading && arr[0].minprice} min sum
                         </Text>
                       </Box>
                     </Flex>
