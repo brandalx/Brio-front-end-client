@@ -84,19 +84,17 @@ export default function AdressCard({ item, index }) {
             <Box maxW={{ base: '50%', md: '40%' }} py={2} px={2} borderRadius={12}>
               {!addressLoading && (
                 <Box ml='4px' py={'7.5px'} position='relative'>
-                  <iframe
+                  <Image
                     width='100%'
                     src={`  https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${
                       address && address.results[0].bounds.northeast.lng
-                    },${address && address.results[0].bounds.northeast.lat},11/110x105@2x${REACT_APP_MAPBOX_TOKEN}`}
+                    },${address && address.results[0].bounds.northeast.lat},13/250x250@2x${REACT_APP_MAPBOX_TOKEN}`}
                     title='Monochrome'
-                    style={{
-                      borderRadius: '16px',
-                      borderWidth: '5px',
-                      borderColor: 'white',
-                      maxHeight: '90px',
-                      width: '100%'
-                    }}
+                    borderRadius='16px'
+                    borderWidth='5px'
+                    borderColor='white'
+                    maxHeight='90px'
+                    objectFit='cover'
                   />
                 </Box>
               )}
