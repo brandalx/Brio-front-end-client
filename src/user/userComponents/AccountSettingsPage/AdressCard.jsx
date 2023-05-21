@@ -16,7 +16,7 @@ import imagemap from '../../../assets/images/defaultmap.png';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 import { API_URL, handelApiGet } from '../../../services/apiServices';
 import axios from 'axios';
-import { REACT_API_opencagedata, REACT_APP_MAPBOX } from '../../../../env';
+import { REACT_API_opencagedata, REACT_APP_MAPBOX, REACT_APP_MAPBOX_TOKEN } from '../../../../env';
 export default function AdressCard({ item, index }) {
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState(null);
@@ -81,16 +81,16 @@ export default function AdressCard({ item, index }) {
       >
         <Flex justifyContent='space-between'>
           <Flex alignItems='center'>
-            <Box py={2} px={2} borderRadius={12}>
+            <Box maxW={{ base: '50%', md: '30%' }} py={2} px={2} borderRadius={12}>
               {!addressLoading && (
                 <Box ml='4px' py={'7.5px'} position='relative'>
                   <iframe
                     width='100%'
-                    src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address && address.results[0].bounds.northeast.lat}/${
+                    src={`  https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${
                       address && address.results[0].bounds.northeast.lng
-                    }`}
+                    },${address && address.results[0].bounds.northeast.lat},11/110x105@2x${REACT_APP_MAPBOX_TOKEN}`}
                     title='Monochrome'
-                    style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '230px' }}
+                    style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', maxHeight: '90px' }}
                   />
                 </Box>
               )}
