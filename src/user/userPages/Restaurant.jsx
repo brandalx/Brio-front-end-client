@@ -151,6 +151,8 @@ export default function Restaurant() {
                 </Text>
                 <Box>
                   <Grid
+                    gridAutoColumns='1fr'
+                    gridAutoRows='1fr'
                     templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
                     gap={4}
                   >

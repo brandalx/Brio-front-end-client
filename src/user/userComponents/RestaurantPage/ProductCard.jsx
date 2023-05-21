@@ -15,10 +15,22 @@ export default function ProductCard({ img, title, info, price }) {
     }
   };
 
+  const cutInfo = (info) => {
+    const words = info.split(' ');
+
+    if (words.length <= 10) {
+      return info;
+    } else {
+      return words.slice(0, 6).join(' ') + '...';
+    }
+  };
+
+  const cutInfoText = cutInfo(info);
+
   return (
     <>
-      <GridItem w='100%' bg='neutral.white'>
-        <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px'>
+      <GridItem w='100%' h='420px' bg='neutral.white'>
+        <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px' h='100%'>
           <Box>
             <Image borderRadius='16px' w='100%' src={img} h='230px' objectFit='cover' />
           </Box>
@@ -27,7 +39,7 @@ export default function ProductCard({ img, title, info, price }) {
               {title}
             </Text>
             <Text color='neutral.gray' fontSize='3xs'>
-              {info}
+              {cutInfoText}
             </Text>
 
             {priceCount === 1 ? (
