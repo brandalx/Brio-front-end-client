@@ -1,6 +1,29 @@
-import React from 'react';
-import { Box, Text, Flex, Button, Grid, GridItem, FormControl, FormLabel, Input } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Box, Text, Flex, Button, Grid, GridItem, FormControl, FormLabel, Input, Skeleton } from '@chakra-ui/react';
+
+import { API_URL, handelApiGet } from '../../../services/apiServices';
 export default function Security() {
+  const [loading, setLoading] = useState(true);
+  const [arr, setArr] = useState([]);
+
+  const handleApi = async () => {
+    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    try {
+      const data = await handelApiGet(url);
+      setArr(data);
+      console.log(data);
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleApi();
+  }, []);
+
   return (
     <>
       <Box>
@@ -19,14 +42,17 @@ export default function Security() {
                     Phone number
                   </FormLabel>
 
-                  <Input
-                    type='text'
-                    background='neutral.white'
-                    _placeholder={{ color: 'neutral.gray' }}
-                    borderRadius='8px'
-                    fontSize='2xs'
-                    placeholder='(217) 555-0113'
-                  />
+                  <Skeleton borderRadius='16px' isLoaded={!loading}>
+                    <Input
+                      type='phone'
+                      background='neutral.white'
+                      _placeholder={{ color: 'neutral.gray' }}
+                      borderRadius='8px'
+                      fontSize='3xs'
+                      defaultValue={!loading && arr.phone}
+                      placeholder='+123456789'
+                    />
+                  </Skeleton>
                 </FormControl>
               </Box>
 
@@ -81,7 +107,7 @@ export default function Security() {
                   <Input
                     type='text'
                     background='neutral.white'
-                    _placeholder={{ color: 'neutral.gray' }}
+                    _placeholder={{ color: 'neutral.ray' }}
                     borderRadius='8px'
                     fontSize='2xs'
                     placeholder='Enter new password'
