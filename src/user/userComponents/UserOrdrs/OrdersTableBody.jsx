@@ -7,6 +7,7 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Skeleton,
   Tbody,
   Td,
   Tr,
@@ -24,7 +25,7 @@ export default function OrdersTableBody() {
 
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
-
+  let skeletonarr = [1, 2, 3, 4];
   const handleApi = async () => {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
     try {
@@ -174,6 +175,38 @@ export default function OrdersTableBody() {
                     </MenuItem>
                   </MenuList>
                 </Menu>
+              </Td>
+            </Tr>
+          );
+        })}
+      {/*  skeleton */}
+      {loading &&
+        skeletonarr.map((item, index) => {
+          return (
+            <Tr key={index}>
+              <Td>
+                {' '}
+                <Skeleton borderRadius='16px' isLoaded={!loading} minH='20px' w='100%'></Skeleton>
+              </Td>
+              <Td>
+                {' '}
+                <Skeleton borderRadius='12px' isLoaded={!loading} minH='20px' w='100%'></Skeleton>
+              </Td>
+              <Td>
+                {' '}
+                <Skeleton borderRadius='16px' isLoaded={!loading} minH='20px' w='100%'></Skeleton>
+              </Td>
+              <Td>
+                {' '}
+                <Skeleton borderRadius='16px' isLoaded={!loading} minH='20px' w='100%'></Skeleton>
+              </Td>
+              <Td>
+                {' '}
+                <Skeleton borderRadius='16px' isLoaded={!loading} minH='20px' w='100%'></Skeleton>
+              </Td>
+              <Td>
+                {' '}
+                <Skeleton borderRadius='16px' isLoaded={!loading} minH='20px' w='100%'></Skeleton>
               </Td>
             </Tr>
           );
