@@ -11,10 +11,52 @@ import {
   MenuDivider,
   MenuButton
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import imagemap from '../../../assets/images/defaultmap.png';
 import ThreeDots from '../../../assets/svg/ThreeDots';
-export default function AdressCard({ item }) {
+import { API_URL, handelApiGet } from '../../../services/apiServices';
+import axios from 'axios';
+import { REACT_API_opencagedata, REACT_APP_MAPBOX } from '../../../../env';
+export default function AdressCard({ item, index }) {
+  const [loading, setLoading] = useState(true);
+  const [address, setAddress] = useState(null);
+  const [userData, setUserData] = useState([]);
+  const [addressLoading, setAddressLoading] = useState(true);
+
+  const handleUserApi = async () => {
+    const url = API_URL + '/users/6464085ed67f7b944b642799';
+
+    try {
+      const data = await handelApiGet(url);
+      setUserData(data);
+      console.log(data);
+      handleMapApi(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleUserApi();
+  }, []);
+
+  const handleMapApi = async (data) => {
+    try {
+      const placeUrl = `${data.address[index].country}%20${data.address[index].state}%20${data.address[index].city}%20${data.address[index].address1}%20${data.address[index].address2}`;
+      let encodelUrl = encodeURIComponent(placeUrl);
+      let finalUrl = `${REACT_API_opencagedata}${encodelUrl}&pretty=1`;
+      console.log(finalUrl);
+      const resp = await axios.get(finalUrl);
+      const responseData = resp.data;
+      setAddress(responseData);
+      setAddressLoading(false);
+    } catch (error) {
+      console.log(error);
+      setAddressLoading(false);
+    }
+  };
   return (
     <GridItem w='100%'>
       <Box
@@ -40,11 +82,18 @@ export default function AdressCard({ item }) {
         <Flex justifyContent='space-between'>
           <Flex alignItems='center'>
             <Box py={2} px={2} borderRadius={12}>
-              <Box ml='4px' py={'7.5px'} position='relative'>
-                <Box>
-                  <Image maxH='82px' maxW='96px' borderRadius='12px' src={imagemap} />
+              {!addressLoading && (
+                <Box ml='4px' py={'7.5px'} position='relative'>
+                  <iframe
+                    width='100%'
+                    src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address && address.results[0].bounds.northeast.lat}/${
+                      address && address.results[0].bounds.northeast.lng
+                    }`}
+                    title='Monochrome'
+                    style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '230px' }}
+                  />
                 </Box>
-              </Box>
+              )}
             </Box>
             <Box>
               <Heading fontSize='2xs' fontWeight='bold'>

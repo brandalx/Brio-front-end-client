@@ -50,7 +50,7 @@ export default function Adress() {
               <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={6}>
                 {!loading &&
                   addressArr.map((item, index) => {
-                    return <AdressCard key={index} item={item} />;
+                    return <AdressCard key={index} item={item} index={index} />;
                   })}
               </Grid>
             </Box>
