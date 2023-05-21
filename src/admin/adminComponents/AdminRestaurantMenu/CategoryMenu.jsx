@@ -1,31 +1,41 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Box, Button, Divider, GridItem, Heading, Text, useMediaQuery, useDisclosure} from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import {
+    Box,
+    Button,
+    Divider,
+    GridItem,
+    Heading,
+    Text,
+    useMediaQuery,
+    useDisclosure
+} from '@chakra-ui/react';
 import '../../../css/global.css';
 import AddPlus from '../../../assets/svg/AddPlus';
 import theme from '../../../utils/theme';
 import ModalRestaurantMenu from './ModalRestaurantMenu';
-import {API_URL, handleApiGet} from '../../../services/apiServices';
+import { API_URL, handleApiGet } from '../../../services/apiServices';
+import ModalNewCategory from './ModalNewCategory';
 
-export default function CategoryMenu({selectedCategory, onCategoryChange}) {
+export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
     const [dataMain, setData] = useState([]);
     const [isTablet] = useMediaQuery('(max-width: 992px)');
     const [isMobile] = useMediaQuery('(max-width: 576px)');
-    const {isOpen, onOpen, onClose} = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const [selectedItem, setSelectedItem] = useState(null);
 
     const getApi = async (path) => {
         try {
-            let url = `${API_URL}/${path}`; // Update the URL to the desired endpoint
+            let url = `${API_URL}/${path}`;
             let resp = await handleApiGet(url);
             setData(resp);
             console.log(resp);
         } catch (error) {
-            // Handle the error
             console.error('Error fetching data:', error);
         }
     };
+
     useEffect(() => {
-        getApi("categories");
+        getApi('categories');
     }, []);
 
     const handleCategoryClick = (category) => {
@@ -38,7 +48,7 @@ export default function CategoryMenu({selectedCategory, onCategoryChange}) {
             <Text mb="16px" fontSize="sm" fontWeight="semibold" color="neutral.black">
                 Category menu
             </Text>
-            <Box display="flex" flexWrap="wrap" style={{backfaceVisibility: 'initial'}}>
+            <Box display="flex" flexWrap="wrap" style={{ backfaceVisibility: 'initial' }}>
                 {dataMain.map((element) => (
                     <Box
                         display="flex"
@@ -55,14 +65,16 @@ export default function CategoryMenu({selectedCategory, onCategoryChange}) {
                         borderRadius="16px"
                         cursor="pointer"
                         bg={selectedItem === element._id ? theme.colors.primary.light : 'white'}
-                        borderColor={selectedItem === element._id ? theme.colors.primary.default : theme.colors.neutral.grayLightest}
-
+                        borderColor={
+                            selectedItem === element._id
+                                ? theme.colors.primary.default
+                                : theme.colors.neutral.grayLightest
+                        }
                         _hover={{
                             borderColor: theme.colors.primary.default,
                             transition: '450ms',
                             bg: theme.colors.primary.light
                         }}
-
                         onClick={() => handleCategoryClick(element)}
                         maxH="72px"
                     >
@@ -75,23 +87,21 @@ export default function CategoryMenu({selectedCategory, onCategoryChange}) {
                     </Box>
                 ))}
             </Box>
-            <Divider mt="21px"/>
-            <Box width='100%' gap='4' mt='20px' display='flex' justifyContent='space-between'>
-                <Box width='100%' px='5px' border='1px solid #EDEEF2' borderRadius='16px' display='flex'
-                     flexDirection='column'>
-                    <Button width='100%' display='flex' flexDirection='column' h='70px'>
-                        <AddPlus/>
-                        <Text mt='6px'>New category</Text>
+            <Divider mt="21px" />
+            <Box width="100%" gap="4" mt="20px" display="flex" justifyContent="space-between">
+                <Box width="100%" px="5px" border="1px solid #EDEEF2" borderRadius="16px" display="flex" flexDirection="column">
+                    <Button width="100%" display="flex" flexDirection="column" h="70px">
+                        <ModalNewCategory />
                     </Button>
                 </Box>
-                <Box width='100%' border='1px solid #EDEEF2' borderRadius='16px'>
-                    <Button onClick={onOpen} width='100%' display='flex' flexDirection='column' h='70px'>
-                        <AddPlus/>
-                        <Text mt='6px'>New meal item</Text>
+                <Box width="100%" border="1px solid #EDEEF2" borderRadius="16px">
+                    <Button onClick={onOpen} width="100%" display="flex" flexDirection="column" h="70px">
+                        <AddPlus />
+                        <Text mt="6px">New meal item</Text>
                     </Button>
                 </Box>
             </Box>
-            <ModalRestaurantMenu isOpen={isOpen} onOpen={onOpen} onClose={onClose}/>
+            <ModalRestaurantMenu isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
         </GridItem>
     );
 }

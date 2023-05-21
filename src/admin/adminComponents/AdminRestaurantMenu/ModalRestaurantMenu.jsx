@@ -10,10 +10,8 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   ModalOverlay,
   Text,
-  useDisclosure,
   useMediaQuery
 } from '@chakra-ui/react';
 import React from 'react';
