@@ -45,7 +45,7 @@ export default function Adress() {
           <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
             Existing shipping addresses
           </Text>
-          <Skeleton minH='40px' borderRadius='16px' isLoaded={!loading}>
+          <Skeleton minH='100px' borderRadius='16px' isLoaded={!loading}>
             <Box pt={5}>
               <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={6}>
                 {!loading &&
