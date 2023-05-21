@@ -54,68 +54,6 @@ export default function Cart() {
     handleApi();
   }, []);
 
-  let arrMenu = [
-    {
-      image: salad,
-      title: 'Chicken & Ribs Combo',
-      desc: 'Lorem ipsum dolor sit amet, pri atqui facete evertitur an, ea assum solet invidunt vim.',
-      price: 16.8
-    },
-    {
-      image: salad,
-      title: 'Pepperoni Pizza',
-      desc: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      price: 12.5
-    },
-    {
-      image: salad,
-      title: 'Classic Cheeseburger',
-      desc: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      price: 9.99
-    },
-    {
-      image: salad,
-      title: 'Spaghetti Bolognese',
-      desc: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      price: 14.2
-    },
-    {
-      image: salad,
-      title: 'Grilled Ribeye Steak',
-      desc: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
-      price: 22.75
-    }
-  ];
-  let arrAddress = [
-    {
-      country: 'USA',
-      state: 'New York',
-      city: 'New York',
-      address1: '4517 Washington Ave.',
-      address2: 'Manchester, 11004'
-    },
-    {
-      country: 'USA',
-      state: 'New York',
-      city: 'New York',
-      address1: '123 Broadway',
-      address2: 'New York, 10001'
-    },
-    {
-      country: 'USA',
-      state: 'New York',
-      city: 'Brooklyn',
-      address1: '789 Elm Street',
-      address2: 'Brooklyn, 11201'
-    },
-    {
-      country: 'USA',
-      state: 'New York',
-      city: 'Albany',
-      address1: '456 Oak Avenue',
-      address2: 'Albany, 12207'
-    }
-  ];
   const location = useLocation();
   const isDeliveryPage = location.pathname === '/user/cart';
   const isPickupPage = location.pathname === '/user/cart/pickup';
