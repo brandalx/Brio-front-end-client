@@ -17,25 +17,24 @@ import { API_URL, handleApiGet } from '../../../services/apiServices';
 import ModalNewCategory from './ModalNewCategory';
 
 export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
-    const [dataMain, setData] = useState([]);
     const [isTablet] = useMediaQuery('(max-width: 992px)');
     const [isMobile] = useMediaQuery('(max-width: 576px)');
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [selectedItem, setSelectedItem] = useState(null);
 
-    const getApi = async (path) => {
+    const [categories, setCategories] = useState([]);
+
+    const fetchCategories = async () => {
         try {
-            let url = `${API_URL}/${path}`;
-            let resp = await handleApiGet(url);
-            setData(resp);
-            console.log(resp);
+            const response = await handleApiGet(API_URL + '/categories');
+            setCategories(response);
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error fetching categories:', error);
         }
     };
 
     useEffect(() => {
-        getApi('categories');
+        fetchCategories();
     }, []);
 
     const handleCategoryClick = (category) => {
@@ -49,7 +48,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
                 Category menu
             </Text>
             <Box display="flex" flexWrap="wrap" style={{ backfaceVisibility: 'initial' }}>
-                {dataMain.map((element) => (
+                {categories.map((element) => (
                     <Box
                         display="flex"
                         flexDirection="column"
@@ -90,9 +89,15 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
             <Divider mt="21px" />
             <Box width="100%" gap="4" mt="20px" display="flex" justifyContent="space-between">
                 <Box width="100%" px="5px" border="1px solid #EDEEF2" borderRadius="16px" display="flex" flexDirection="column">
-                    <Button width="100%" display="flex" flexDirection="column" h="70px">
-                        <ModalNewCategory />
-                    </Button>
+
+                    <ModalNewCategory
+                        fetchCategories={fetchCategories}
+                        setCategories={setCategories}
+                        width="100%"
+                        display="flex"
+                        flexDirection="column"
+                        h="70px"
+                    />
                 </Box>
                 <Box width="100%" border="1px solid #EDEEF2" borderRadius="16px">
                     <Button onClick={onOpen} width="100%" display="flex" flexDirection="column" h="70px">

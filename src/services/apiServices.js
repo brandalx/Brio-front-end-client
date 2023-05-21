@@ -24,6 +24,23 @@ export const handleApiGet = async (_url) => {
   }
 };
 
+export const handleApiPost = async (_url, data) => {
+  try {
+    const resp = await axios.post(_url, data, {
+      headers: {
+        'x-api-key': localStorage[TOKEN_KEY]
+      }
+    });
+    console.log(resp.data);
+    console.log(data);
+    return resp.data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
 // for post,put,patch,delete methods
 export const handleApiMethod = async (_url, _method, _body = {}) => {
   try {
