@@ -14,14 +14,16 @@ export default function Adress() {
       const data = await handelApiGet(url);
       setArr(data);
       console.log(data);
-      const address = {
-        country: data.address.country,
-        state: data.address.state,
-        city: data.address.city,
-        address1: data.address.address1,
-        address2: data.address.address2
-      };
-      setAddressArr([address]);
+
+      const address = data.address.map((item) => ({
+        country: item.country,
+        state: item.state,
+        city: item.city,
+        address1: item.address1,
+        address2: item.address2
+      }));
+
+      setAddressArr(address);
       setLoading(false);
     } catch (error) {
       setLoading(false);
