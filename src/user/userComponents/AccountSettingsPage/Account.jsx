@@ -48,9 +48,11 @@ export default function Account() {
         </Text>
         <Box pt={5}>
           <Flex alignItems='center'>
-            <Box borderWidth='2px' borderColor='primary.default' me='20px' borderRadius='12px'>
-              <Image borderRadius='10px' boxSize='80px' objectFit='cover' src={arr.avatar} alt='Avatar' />
-            </Box>
+            <Skeleton borderRadius='16px' isLoaded={!loading} me={4}>
+              <Box borderWidth='2px' borderColor='primary.default' me='20px' borderRadius='12px'>
+                <Image borderRadius='10px' boxSize='80px' objectFit='cover' src={arr.avatar} alt='Avatar' />
+              </Box>
+            </Skeleton>
             <Button
               background='neutral.white'
               fontSize='2xs'

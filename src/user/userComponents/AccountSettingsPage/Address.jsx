@@ -1,37 +1,37 @@
-import React from 'react';
-import { Box, Text, Button, Grid, GridItem, FormControl, FormLabel, Input } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Box, Text, Button, Grid, GridItem, FormControl, FormLabel, Input, Skeleton } from '@chakra-ui/react';
 import AdressCard from './AdressCard';
+import { API_URL, handelApiGet } from '../../../services/apiServices';
+
 export default function Adress() {
-  let arr = [
-    {
-      country: 'USA',
-      state: 'New York',
-      city: 'New York',
-      address1: '4517 Washington Ave.',
-      address2: 'Manchester, 11004'
-    },
-    {
-      country: 'USA',
-      state: 'New York',
-      city: 'New York',
-      address1: '123 Broadway',
-      address2: 'New York, 10001'
-    },
-    {
-      country: 'USA',
-      state: 'New York',
-      city: 'Brooklyn',
-      address1: '789 Elm Street',
-      address2: 'Brooklyn, 11201'
-    },
-    {
-      country: 'USA',
-      state: 'New York',
-      city: 'Albany',
-      address1: '456 Oak Avenue',
-      address2: 'Albany, 12207'
+  const [loading, setLoading] = useState(true);
+  const [arr, setArr] = useState([]);
+  const [addressArr, setAddressArr] = useState([]);
+
+  const handleApi = async () => {
+    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    try {
+      const data = await handelApiGet(url);
+      setArr(data);
+      console.log(data);
+      const address = {
+        country: data.address.country,
+        state: data.address.state,
+        city: data.address.city,
+        address1: data.address.address1,
+        address2: data.address.address2
+      };
+      setAddressArr([address]);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
     }
-  ];
+  };
+
+  useEffect(() => {
+    handleApi();
+  }, []);
 
   return (
     <>
@@ -43,14 +43,16 @@ export default function Adress() {
           <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
             Existing shipping addresses
           </Text>
-          <Box pt={5}>
-            <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={6}>
-              {arr.map((item, index) => {
-                return <AdressCard key={index} item={item} />;
-              })}
-            </Grid>
-          </Box>
-
+          <Skeleton minH='40px' borderRadius='16px' isLoaded={!loading}>
+            <Box pt={5}>
+              <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={6}>
+                {!loading &&
+                  addressArr.map((item, index) => {
+                    return <AdressCard key={index} item={item} />;
+                  })}
+              </Grid>
+            </Box>
+          </Skeleton>
           <Box pt={5}>
             <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
               New shipping address
