@@ -1,13 +1,59 @@
-import React from 'react';
-import { Box, Container, Grid, GridItem, Text, Button } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Box, Container, Grid, GridItem, Text, Button, Skeleton } from '@chakra-ui/react';
 import salad from '../../assets/images/salad.jpg';
 import MenuMeal from '../userComponents/Cart/MenuMeal';
 import Delivery from '../userComponents/Cart/Delivery';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import Pickup from '../userComponents/Cart/Pickup';
 import Summary from '../userComponents/Cart/Summary';
+import { API_URL, handelApiGet } from '../../services/apiServices';
 
 export default function Cart() {
+  const [loading, setLoading] = useState(true);
+  const [arr, setAr] = useState([]);
+  const [cartArr, setCartAr] = useState([]);
+  const [mealsArr, setMealsArr] = useState([]);
+  const [addressArr, setAddressArr] = useState([]);
+
+  const handleApi = async () => {
+    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    try {
+      const data = await handelApiGet(url);
+      setAr(data);
+
+      setAddressArr(data.address);
+      handleApiMeals(data);
+      console.log(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  const handleApiMeals = async () => {
+    try {
+      const url = API_URL + '/users/6464085ed67f7b944b642799/cart';
+      const cartData = await handelApiGet(url);
+      console.log(cartData.cart);
+      setCartAr(cartData.cart);
+      let product = await Promise.all(
+        cartData.cart.map(async (item) => {
+          const products = await handelApiGet(API_URL + '/products/' + item.productId);
+          return products;
+        })
+      );
+      setMealsArr(product);
+      console.log(product);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleApi();
+  }, []);
+
   let arrMenu = [
     {
       image: salad,
@@ -84,14 +130,19 @@ export default function Cart() {
           <GridItem w='100%'>
             <Box>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
-                <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                  Menu 4 meals
-                </Text>
-                <Box pt={5}>
-                  {arrMenu.map((item, index) => {
-                    return <MenuMeal key={index} item={item} />;
-                  })}
-                </Box>
+                <Skeleton minH='20px' w='100%' borderRadius='16px' my={2} isLoaded={!loading}>
+                  <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                    Menu {!loading && mealsArr.length} meals
+                  </Text>
+                </Skeleton>
+                <Skeleton minH='60px' w='100%' borderRadius='16px' isLoaded={!loading}>
+                  <Box pt={5}>
+                    {!loading &&
+                      mealsArr.map((item, index) => (
+                        <MenuMeal key={index} item={item} amount={arr.cart[index].productAmount} />
+                      ))}
+                  </Box>
+                </Skeleton>
               </Box>
             </Box>
           </GridItem>
@@ -148,8 +199,22 @@ export default function Cart() {
                 </Grid>
               </Box>
               <Routes>
-                <Route path='/' element={<Delivery item={arrAddress} />} />
-                <Route path='/pickup' element={<Pickup />} />
+                <Route
+                  path='/'
+                  element={
+                    <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
+                      <Delivery item={addressArr} />
+                    </Skeleton>
+                  }
+                />
+                <Route
+                  path='/pickup'
+                  element={
+                    <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
+                      <Pickup />
+                    </Skeleton>
+                  }
+                />
               </Routes>
             </Box>
             <Box py={4}>
