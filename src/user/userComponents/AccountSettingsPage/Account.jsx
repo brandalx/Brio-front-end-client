@@ -11,11 +11,32 @@ import {
   Input,
   Stack,
   Checkbox,
-  Divider
+  Divider,
+  Skeleton
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { API_URL, handelApiGet } from '../../../services/apiServices';
 
 export default function Account() {
+  const [loading, setLoading] = useState(true);
+  const [arr, setAr] = useState([]);
+  const handleApi = async () => {
+    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    try {
+      const data = await handelApiGet(url);
+      setAr(data);
+      console.log(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleApi();
+  }, []);
+
   return (
     <Box>
       <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
@@ -28,13 +49,7 @@ export default function Account() {
         <Box pt={5}>
           <Flex alignItems='center'>
             <Box borderWidth='2px' borderColor='primary.default' me='20px' borderRadius='12px'>
-              <Image
-                borderRadius='10px'
-                boxSize='80px'
-                objectFit='cover'
-                src='https://images.pexels.com/photos/4754648/pexels-photo-4754648.jpeg?auto=compress&cs=tinysrgb&w=800'
-                alt='Avatar'
-              />
+              <Image borderRadius='10px' boxSize='80px' objectFit='cover' src={arr.avatar} alt='Avatar' />
             </Box>
             <Button
               background='neutral.white'
@@ -82,63 +97,74 @@ export default function Account() {
                 <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                   First name
                 </FormLabel>
-
-                <Input
-                  type='text'
-                  background='neutral.white'
-                  _placeholder={{ color: 'neutral.gray' }}
-                  borderRadius='8px'
-                  fontSize='2xs'
-                  placeholder='First name'
-                />
+                <Skeleton borderRadius='16px' isLoaded={!loading}>
+                  <Input
+                    type='text'
+                    background='neutral.white'
+                    _placeholder={{ color: 'neutral.gray' }}
+                    borderRadius='8px'
+                    fontSize='2xs'
+                    defaultValue={!loading && arr.firstname}
+                    placeholder='First name'
+                  />{' '}
+                </Skeleton>
               </FormControl>
             </GridItem>
+
             <GridItem w='100%'>
               <FormControl id='email'>
                 <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                   Last name
                 </FormLabel>
-
-                <Input
-                  type='text'
-                  background='neutral.white'
-                  _placeholder={{ color: 'neutral.gray' }}
-                  borderRadius='8px'
-                  fontSize='2xs'
-                  placeholder='Last name'
-                />
+                <Skeleton borderRadius='16px' isLoaded={!loading}>
+                  <Input
+                    type='text'
+                    background='neutral.white'
+                    _placeholder={{ color: 'neutral.gray' }}
+                    borderRadius='8px'
+                    fontSize='2xs'
+                    defaultValue={!loading && arr.lastname}
+                    placeholder='Last name'
+                  />{' '}
+                </Skeleton>
               </FormControl>
             </GridItem>
+
             <GridItem w='100%'>
               <FormControl id='email'>
                 <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                   Email
                 </FormLabel>
-
-                <Input
-                  type='email'
-                  background='neutral.white'
-                  _placeholder={{ color: 'neutral.gray' }}
-                  borderRadius='8px'
-                  fontSize='2xs'
-                  placeholder='example@gmail.com'
-                />
+                <Skeleton borderRadius='16px' isLoaded={!loading}>
+                  <Input
+                    type='email'
+                    background='neutral.white'
+                    _placeholder={{ color: 'neutral.gray' }}
+                    borderRadius='8px'
+                    fontSize='2xs'
+                    defaultValue={!loading && arr.email}
+                    placeholder='example@gmail.com'
+                  />{' '}
+                </Skeleton>
               </FormControl>
             </GridItem>
+
             <GridItem w='100%'>
               <FormControl id='phone'>
                 <FormLabel fontWeight='semibold' placeholder='+1(217) 555-0113' fontSize='3xs' color='neutral.grayDark'>
                   Phone number
                 </FormLabel>
-
-                <Input
-                  type='phone'
-                  background='neutral.white'
-                  _placeholder={{ color: 'neutral.gray' }}
-                  borderRadius='8px'
-                  fontSize='2xs'
-                  placeholder='name@example.com'
-                />
+                <Skeleton borderRadius='16px' isLoaded={!loading}>
+                  <Input
+                    type='phone'
+                    background='neutral.white'
+                    _placeholder={{ color: 'neutral.gray' }}
+                    borderRadius='8px'
+                    fontSize='2xs'
+                    defaultValue={!loading && arr.phone}
+                    placeholder='+123456789'
+                  />
+                </Skeleton>
               </FormControl>
             </GridItem>
           </Grid>
@@ -148,7 +174,7 @@ export default function Account() {
           <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
             Email notifications
           </Text>
-          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={{ base: 4, md: 6 }}>
+          <Grid mt={4} templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={{ base: 4, md: 6 }}>
             <GridItem w='100%'>
               <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
                 <Flex alignItems='center'>
