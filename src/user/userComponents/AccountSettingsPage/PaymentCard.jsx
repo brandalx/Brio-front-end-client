@@ -11,10 +11,18 @@ import {
   MenuDivider,
   MenuButton
 } from '@chakra-ui/react';
+import visa from '../../../assets/images/visa.png';
+import mastercard from '../../../assets/images/mastercard.png';
 import React from 'react';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 
 export default function PaymentCard({ item }) {
+  let image;
+  if (item.cardtype === 'visa') {
+    image = visa;
+  } else {
+    image = mastercard;
+  }
   return (
     <GridItem w='100%'>
       <Box
@@ -84,7 +92,7 @@ export default function PaymentCard({ item }) {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <Image w='100%' h='25px' src={item.cardtype} />
+            <Image w='100%' h='25px' src={image} />
           </Box>
         </Flex>
       </Box>

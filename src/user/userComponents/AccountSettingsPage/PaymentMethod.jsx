@@ -1,42 +1,40 @@
-import React from 'react';
-import { Box, Button, FormControl, FormLabel, Grid, GridItem, Input, Text } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Box, Button, FormControl, FormLabel, Grid, GridItem, Input, Skeleton, Text } from '@chakra-ui/react';
 
 import PaymentCard from './PaymentCard';
 import visa from '../../../assets/images/visa.png';
 import mastercard from '../../../assets/images/mastercard.png';
+import { API_URL, handelApiGet } from '../../../services/apiServices';
 export default function PaymentMethod() {
-  let arr = [
-    {
-      number: '**** **** **** 4629',
-      expiration: '10/23',
-      cardholder: 'Jane Robertson',
-      cardtype: mastercard
-    },
-    {
-      number: '**** **** **** 6789',
-      expiration: '05/24',
-      cardholder: 'John Smith',
-      cardtype: visa
-    },
-    {
-      number: '**** **** **** 1234',
-      expiration: '12/25',
-      cardholder: 'Sarah Johnson',
-      cardtype: mastercard
-    },
-    {
-      number: '**** **** **** 9876',
-      expiration: '03/26',
-      cardholder: 'Michael Davis',
-      cardtype: visa
-    },
-    {
-      number: '**** **** **** 5555',
-      expiration: '08/27',
-      cardholder: 'Emily Thompson',
-      cardtype: visa
+  const [loading, setLoading] = useState(true);
+  const [arr, setArr] = useState([]);
+  const [cardsArr, setCardsArr] = useState([]);
+
+  const handleApi = async () => {
+    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    try {
+      const data = await handelApiGet(url);
+      setArr(data);
+      console.log(data);
+
+      const cards = data.creditdata.map((card) => ({
+        number: card.paymentMethod,
+        expiration: card.cardNumber,
+        cardholder: card.expirationDate,
+        cardtype: card.cardtype
+      }));
+
+      setCardsArr(cards);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
     }
-  ];
+  };
+
+  useEffect(() => {
+    handleApi();
+  }, []);
 
   return (
     <>
@@ -50,10 +48,24 @@ export default function PaymentMethod() {
           </Text>
           <Box pt={5}>
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={2}>
-              {arr.map((item, index) => {
-                return <PaymentCard key={index} item={item} />;
-              })}
+              {!loading &&
+                cardsArr.map((item, index) => {
+                  return <PaymentCard key={index} item={item} />;
+                })}
             </Grid>
+            {loading && (
+              <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={2}>
+                <GridItem minH='150px' w='100%'>
+                  <Skeleton minH='150px' w='100%' borderRadius='16px' isLoaded={!loading} />
+                </GridItem>
+                <GridItem minH='150px' w='100%'>
+                  <Skeleton minH='150px' w='100%' borderRadius='16px' isLoaded={!loading} />
+                </GridItem>
+                <GridItem minH='150px' w='100%'>
+                  <Skeleton minH='150px' w='100%' borderRadius='16px' isLoaded={!loading} />
+                </GridItem>
+              </Grid>
+            )}
           </Box>
           <Box pt={5}>
             <Text mb='16px' fontSize='xs' fontWeight='bold' color='neutral.black'>
