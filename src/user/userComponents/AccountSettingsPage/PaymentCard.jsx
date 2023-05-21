@@ -92,7 +92,7 @@ export default function PaymentCard({ item }) {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <Image w='100%' h='25px' src={image} />
+            <Image w='auto' h='25px' src={image} />
           </Box>
         </Flex>
       </Box>
