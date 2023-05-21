@@ -6,7 +6,7 @@ export const API_URL = 'http://localhost:3001';
 export const TOKEN_KEY = 'brio-token';
 //to-do : change for another token / add others
 
-export const handelApiGet = async (_url) => {
+export const handleApiGet = async (_url) => {
   // headers: -> sends through a token that sits in the local storage
   // Even if there is no local storage information, we will not get an error
   try {
