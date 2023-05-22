@@ -174,7 +174,9 @@ export default function Cart() {
               </Routes>
             </Box>
             <Box py={4}>
-              <Summary />
+              <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
+                <Summary loading={loading} item={arr} />
+              </Skeleton>
             </Box>
           </GridItem>
         </Grid>

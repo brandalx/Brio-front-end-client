@@ -1,8 +1,11 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Summary() {
+export default function Summary({ item, loading }) {
+  useEffect(() => {
+    console.log(item);
+  });
   return (
     <>
       <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
@@ -16,7 +19,7 @@ export default function Summary() {
               Subtotal
             </Text>
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-              $129.40
+              ${!loading && item.orders[1].paymentSummary.subtotal}
             </Text>
           </Flex>
           <Flex my={4} justifyContent='space-between'>
@@ -24,7 +27,7 @@ export default function Summary() {
               Shipping
             </Text>
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-              $20.00
+              ${!loading && item.orders[1].paymentSummary.shipping}
             </Text>
           </Flex>
           <Flex my={4} justifyContent='space-between'>
@@ -32,7 +35,7 @@ export default function Summary() {
               Total (tax incl.)
             </Text>
             <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
-              $149.40
+              $ {!loading && item.orders[1].totalAmount}
             </Text>
           </Flex>
           <Link to='/user/checkout'>
