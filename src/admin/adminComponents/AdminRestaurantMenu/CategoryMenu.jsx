@@ -7,7 +7,7 @@ import {
     Heading,
     Text,
     useMediaQuery,
-    useDisclosure
+    useDisclosure, Skeleton
 } from '@chakra-ui/react';
 import '../../../css/global.css';
 import AddPlus from '../../../assets/svg/AddPlus';
@@ -17,6 +17,7 @@ import { API_URL, handleApiGet } from '../../../services/apiServices';
 import ModalNewCategory from './ModalNewCategory';
 
 export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
+    const [loading, setLoading] = useState(true)
     const [isTablet] = useMediaQuery('(max-width: 992px)');
     const [isMobile] = useMediaQuery('(max-width: 576px)');
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -28,6 +29,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
         try {
             const response = await handleApiGet(API_URL + '/categories');
             setCategories(response);
+            setLoading(false)
         } catch (error) {
             console.error('Error fetching categories:', error);
         }
@@ -47,8 +49,11 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
             <Text mb="16px" fontSize="sm" fontWeight="semibold" color="neutral.black">
                 Category menu
             </Text>
+            <Skeleton minH="60px" borderRadius='16px' isLoaded={!loading}>
             <Box display="flex" flexWrap="wrap" style={{ backfaceVisibility: 'initial' }}>
+
                 {categories.map((element) => (
+
                     <Box
                         display="flex"
                         flexDirection="column"
@@ -86,6 +91,8 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
                     </Box>
                 ))}
             </Box>
+            </Skeleton>
+
             <Divider mt="21px" />
             <Box width="100%" gap="4" mt="20px" display="flex" justifyContent="space-between">
                 <Box width="100%" px="5px" border="1px solid #EDEEF2" borderRadius="16px" display="flex" flexDirection="column">

@@ -51,7 +51,6 @@ export default function ModalNewCategory({ fetchCategories, setCategories }) {
         }
     };
 
-
     return (
         <>
             <Button onClick={onOpen} width="100%" display="flex" flexDirection="column" h="70px">
