@@ -14,11 +14,19 @@ import {
   useDisclosure,
   useMediaQuery
 } from '@chakra-ui/react';
+import { useForm, Controller } from 'react-hook-form';
 
 export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const [isLilMob] = useMediaQuery('(max-width: 350px)');
+
+  const { control, handleSubmit } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data); // Handle form submission data here
+    onClose(); // Close the modal
+  };
 
   return (
     <>
@@ -56,15 +64,40 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
           <ModalBody overflow='auto' pb={6}>
             <FormControl>
               <FormLabel>Title</FormLabel>
-              <Input placeholder='Title' />
+              <Controller
+                control={control}
+                name='title'
+                defaultValue={item.title}
+                render={({ field }) => <Input {...field} placeholder='Title' />}
+              />
               <FormLabel mt='15px'>Description</FormLabel>
-              <Input placeholder='Description' />
+              <Controller
+                control={control}
+                name='description'
+                defaultValue={item.description}
+                render={({ field }) => <Input {...field} placeholder='Description' />}
+              />
               <FormLabel mt='15px'>Ingredients</FormLabel>
-              <Input placeholder='Ingredients' />
+              <Controller
+                control={control}
+                name='ingredients'
+                defaultValue={item.ingredients}
+                render={({ field }) => <Input {...field} placeholder='Ingredients' />}
+              />
               <FormLabel mt='15px'>Price</FormLabel>
-              <Input placeholder='Price' />
+              <Controller
+                control={control}
+                name='price'
+                defaultValue={item.price}
+                render={({ field }) => <Input {...field} placeholder='Price' />}
+              />
               <FormLabel mt='15px'>Nutritional value</FormLabel>
-              <Input placeholder='Nutritional value' />
+              <Controller
+                control={control}
+                name='nutritionalValue'
+                defaultValue={item.nutritionalValue}
+                render={({ field }) => <Input {...field} placeholder='Nutritional value' />}
+              />
             </FormControl>
           </ModalBody>
           <ModalFooter display='flex' justifyContent={isLilMob ? 'center' : 'end'}>
@@ -97,7 +130,7 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
               p='20px'
               border='1px'
               borderColor='primary.default'
-              onClick={onClose}
+              onClick={handleSubmit(onSubmit)}
             >
               Save
             </Button>
