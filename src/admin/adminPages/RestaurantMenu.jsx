@@ -5,7 +5,7 @@ import ListOfProducts from '../adminComponents/AdminRestaurantMenu/ListOfProduct
 import { Box, Container, Grid, GridItem } from '@chakra-ui/react';
 
 export default function RestaurantMenu() {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('Breakfast menu');
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);

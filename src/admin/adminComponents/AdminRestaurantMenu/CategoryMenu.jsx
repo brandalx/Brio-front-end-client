@@ -1,3 +1,5 @@
+// CategoryMenu.js
+
 import React, { useEffect, useState } from 'react';
 import {
   Box,
@@ -46,7 +48,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
 
   return (
     <GridItem width='100%' overflow='hidden' colSpan={4}>
-      <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
+      <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
         Category menu
       </Text>
       <Skeleton minH='60px' borderRadius='16px' isLoaded={!loading}>
