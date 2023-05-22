@@ -14,7 +14,7 @@ import {
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function PaymentSummary() {
+export default function PaymentSummary({ item, loading }) {
   return (
     <>
       <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
@@ -43,7 +43,7 @@ export default function PaymentSummary() {
             <InputGroup>
               <InputLeftElement pointerEvents='none' fontSize='2xs' color='neutral.gray'>
                 {' '}
-                ${' '}
+                $
               </InputLeftElement>
               <Input
                 type='text'
@@ -63,7 +63,7 @@ export default function PaymentSummary() {
               Subtotal
             </Text>
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-              $129.40
+              ${!loading && item.orders[0].paymentSummary.subtotal}
             </Text>
           </Flex>
           <Flex my={4} justifyContent='space-between'>
@@ -71,7 +71,7 @@ export default function PaymentSummary() {
               Shipping
             </Text>
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-              $20.00
+              ${!loading && item.orders[0].paymentSummary.shipping}
             </Text>
           </Flex>
           <Flex my={4} justifyContent='space-between'>
@@ -79,7 +79,7 @@ export default function PaymentSummary() {
               Tips
             </Text>
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-              $5.00
+              ${!loading && item.orders[0].paymentSummary.tips}
             </Text>
           </Flex>
           <Flex my={4} justifyContent='space-between'>
@@ -87,7 +87,7 @@ export default function PaymentSummary() {
               Discount (coupon)
             </Text>
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-              $0.00
+              ${!loading && item.orders[0].paymentSummary.discount}
             </Text>
           </Flex>
           <Flex my={4} justifyContent='space-between'>
@@ -95,7 +95,7 @@ export default function PaymentSummary() {
               Total (tax incl.)
             </Text>
             <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
-              $149.40
+              ${!loading && item.orders[0].paymentSummary.totalAmount}
             </Text>
           </Flex>
           <Link to='/user/checkout'>

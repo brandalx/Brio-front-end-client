@@ -1,26 +1,4 @@
-import {
-  Box,
-  Text,
-  Icon,
-  Button,
-  Flex,
-  Container,
-  Image,
-  GridItem,
-  Grid,
-  Heading,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  FormControl,
-  FormLabel,
-  Input,
-  Stack,
-  Checkbox,
-  Divider
-} from '@chakra-ui/react';
+import { Box, Text, Icon, Button, Flex, Container, GridItem, Grid } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
@@ -30,41 +8,37 @@ import visa from '../../assets/images/visa.png';
 import mastercard from '../../assets/images/mastercard.png';
 import PaymentSummary from '../userComponents/Checkout/PaymentSummary';
 import NewPaymentMethod from '../userComponents/Checkout/NewPaymentMethod';
+import { API_URL, handelApiGet } from '../../services/apiServices';
 export default function Checkout() {
   const [switcher, setSwitcher] = useState(true);
 
-  let arr = [
-    {
-      number: '**** **** **** 4629',
-      expiration: '10/23',
-      cardholder: 'Jane Robertson',
-      cardtype: mastercard
-    },
-    {
-      number: '**** **** **** 6789',
-      expiration: '05/24',
-      cardholder: 'John Smith',
-      cardtype: visa
-    },
-    {
-      number: '**** **** **** 1234',
-      expiration: '12/25',
-      cardholder: 'Sarah Johnson',
-      cardtype: mastercard
-    },
-    {
-      number: '**** **** **** 9876',
-      expiration: '03/26',
-      cardholder: 'Michael Davis',
-      cardtype: visa
-    },
-    {
-      number: '**** **** **** 5555',
-      expiration: '08/27',
-      cardholder: 'Emily Thompson',
-      cardtype: visa
+  const [loading, setLoading] = useState(true);
+  const [arr, setAr] = useState([]);
+  const [cardsArr, setCardsArr] = useState([]);
+  const handleApi = async () => {
+    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    try {
+      const data = await handelApiGet(url);
+      setAr(data);
+      const cards = data.creditdata.map((card) => ({
+        number: card.paymentMethod,
+        expiration: card.cardNumber,
+        cardholder: card.expirationDate,
+        cardtype: card.cardtype
+      }));
+      setCardsArr(cards);
+      setLoading(false);
+      console.log(data);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
     }
-  ];
+  };
+
+  useEffect(() => {
+    handleApi();
+  }, []);
+
   return (
     <>
       <Box>
@@ -89,9 +63,10 @@ export default function Checkout() {
                     </Box>
 
                     <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr  1fr ' }} gap={2}>
-                      {arr.map((item, index) => {
-                        return <PaymentCard key={index} item={item} />;
-                      })}
+                      {!loading &&
+                        cardsArr.map((item, index) => {
+                          return <PaymentCard key={index} item={item} />;
+                        })}
                       <GridItem w='100%'>
                         <Box
                           onClick={() => setSwitcher(false)}
@@ -151,7 +126,7 @@ export default function Checkout() {
                 </Box>
               </GridItem>
               <GridItem w='100%'>
-                <PaymentSummary />
+                <PaymentSummary item={arr} loading={loading} />
               </GridItem>
             </Grid>
           </Box>
