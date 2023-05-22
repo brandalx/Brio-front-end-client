@@ -18,6 +18,7 @@ import Status from '../../../assets/svg/Status';
 import { arrUsers } from '../../userJSON/ordersList';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 import { API_URL, handelApiGet } from '../../../services/apiServices';
+import colorstatus from './colorsObject.json';
 
 export default function OrdersTableBody() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
@@ -100,19 +101,7 @@ export default function OrdersTableBody() {
               >
                 <Flex alignItems='center'>
                   <Box as='span' me={2}>
-                    <Status
-                      color={
-                        item.status === 'Completed'
-                          ? '#1ABF70'
-                          : item.status === 'In progress'
-                          ? '#4E60FF'
-                          : item.status === 'Canceled'
-                          ? '#FF5C60'
-                          : item.status === 'Suspended'
-                          ? '#FF5C60'
-                          : 'yellow'
-                      }
-                    />
+                    <Status color={colorstatus[item.status] || 'yellow'} />
                   </Box>
                   {item.status}
                 </Flex>

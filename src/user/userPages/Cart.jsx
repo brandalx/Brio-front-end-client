@@ -14,6 +14,7 @@ export default function Cart() {
   const [cartArr, setCartAr] = useState([]);
   const [mealsArr, setMealsArr] = useState([]);
   const [addressArr, setAddressArr] = useState([]);
+  const [restaurant, setRestaurant] = useState([]);
 
   const handleApi = async () => {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
@@ -24,7 +25,6 @@ export default function Cart() {
       setAddressArr(data.address);
       handleApiMeals(data);
       console.log(data);
-      setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -45,6 +45,20 @@ export default function Cart() {
       );
       setMealsArr(product);
       console.log(product);
+      handleApiRestaurant(product[0].restaurantRef);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleApiRestaurant = async (restuarantId) => {
+    try {
+      const url = API_URL + '/restaurants/' + restuarantId;
+      console.log(url);
+      const restaurantData = await handelApiGet(url);
+      console.log(restaurantData);
+      setRestaurant(restaurantData);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -149,7 +163,11 @@ export default function Cart() {
                   path='/pickup'
                   element={
                     <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
-                      <Pickup />
+                      {!loading && (
+                        <Box>
+                          <Pickup item={restaurant} />
+                        </Box>
+                      )}
                     </Skeleton>
                   }
                 />
