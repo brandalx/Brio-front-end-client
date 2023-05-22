@@ -39,8 +39,6 @@ export const handleApiPost = async (_url, data) => {
   }
 };
 
-
-
 // for post,put,patch,delete methods
 export const handleApiMethod = async (_url, _method, _body = {}) => {
   try {

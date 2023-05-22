@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   GridItem,
@@ -7,183 +8,147 @@ import {
   Divider,
   Button,
   useBreakpointValue,
-  useMediaQuery, useDisclosure
+  useMediaQuery,
+  useDisclosure
 } from '@chakra-ui/react';
 import theme from '../../../utils/theme';
-import { arrayProducts } from '../../adminJSON/adminListOfProducts1';
-import { arrayProducts2 } from '../../adminJSON/adminListOfProducts2';
-import { arrayDrinks } from '../../adminJSON/adminListOfProducts';
+import { API_URL, handleApiGet } from '../../../services/apiServices';
+import ModalTextRedactor from './ModalTextRedactor';
 import DragAndDrop from '../../../assets/svg/DragAndDrop';
 import Pen from '../../../assets/svg/Pen';
 import Copy from '../../../assets/svg/Copy';
 import TrashBox from '../../../assets/svg/TrashBox';
-import { useEffect, useState } from 'react';
-import React from 'react';
-import ModalTextRedactor from './ModalTextRedactor'
+
 export default function ListOfProducts({ selectedCategory }) {
   const gridColumns = useBreakpointValue({ base: '1fr', md: '1fr 4fr' });
   const [isMobile] = useMediaQuery('(max-width: 575px)');
   const [isTablet] = useMediaQuery('(max-width: 767px)');
   const [isDek] = useMediaQuery('(min-width: 768px)');
-  const [selectedArray, setSelectedArray] = useState(arrayProducts);
-  const {isOpen, onOpen, onClose} = useDisclosure()
-  const handleSave = (itemId, editedTitle, editedDescription) => {
-    // Обработка сохранения изменений
-    const updatedArray = selectedArray.map((item) => {
-      if (item.id === itemId) {
-        return {
-          ...item,
-          title: editedTitle,
-          description: editedDescription
-        };
-      }
-      return item;
-    });
-    setSelectedArray(updatedArray);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await handleApiGet(API_URL + '/products');
+      setProducts(response);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
   };
 
-
   useEffect(() => {
-    if (selectedCategory === 'Lunch menu' || selectedCategory === 'Dinner menu') {
-      setSelectedArray(arrayProducts2);
-    } else if (selectedCategory === 'Drinks menu') {
-      setSelectedArray(arrayDrinks);
-    } else {
-      setSelectedArray(arrayProducts);
-    }
-  }, [selectedCategory, setSelectedArray]);
+    fetchProducts();
+  }, []);
 
   return (
     <GridItem colSpan={8}>
       <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
         {selectedCategory === null ? 'Breakfast menu' : selectedCategory}
       </Text>
-      {selectedArray.map((item) => {
-        return (
+      {products.map((item) => (
+        <Box
+          key={item._id}
+          display='flex'
+          flexDirection={isTablet ? 'column' : 'row'}
+          mt='30px'
+          flexWrap='wrap'
+          borderRadius='16px'
+          p={isTablet ? '8px' : '16px 16px 16px 12px'}
+          border='1px'
+          borderColor='neutral.grayLightest'
+          gap='12px'
+          gridTemplateColumns={gridColumns}
+        >
           <Box
-            key={item.id}
+            gap={3}
             display='flex'
-            flexDirection={isTablet ? 'column' : 'row'}
-            mt='30px'
-            flexWrap='wrap'
-            borderRadius='16px'
-            p={isTablet ? '8px' : '16px 16px 16px 12px'}
-            border='1px'
-            borderColor='neutral.grayLightest'
-            gap='12px'
-            gridTemplateColumns={gridColumns}
+            flexDirection={isTablet ? 'row' : 'row'}
+            alignItems='start'
+            mb={['16px', '16px', 0]}
           >
             <Box
-              gap={3}
-              display='flex'
-              flexDirection={isTablet ? 'row' : 'row'}
-              alignItems='center'
-              mb={['16px', '16px', 0]}
+              flexShrink={0}
+              width={isMobile ? '200px' : '100px'}
+              height='72px'
+              borderRadius='20px'
+              overflow='hidden'
             >
-              {/*<Box>*/}
-              {/*    <DragAndDrop/>*/}
-              {/*</Box>*/}
-              <Box
-                flexWrap='wrap'
-                position='relative'
-                width={isMobile ? '200px' : '100px'}
-                height='72px'
-                maxW='72px'
-                maxH='72px'
-              >
-                <Image
-                  width='100%'
-                  height='100%'
-                  borderRadius='20px'
-                  src={item.image}
-                  objectFit='cover'
-                  objectPosition='center'
-                />
-              </Box>
-              <Box flexDirection={isMobile ? 'column' : 'row'} display='flex' ml={[3, 3, 0]} alignItems='center'>
-                <Box display='flex' alignItems='start' flexDirection='column'>
-                  <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>
-                    {item.title}
-                  </Heading>
+              <Image width='100%' height='100%' src={item.image} objectFit='cover' objectPosition='center' />
+            </Box>
+            <Box flexDirection='column' display='flex' ml={[3, 3, 0]} alignItems='center'>
+              <Box display='flex' alignItems='start' flexDirection='column'>
+                <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>
+                  {item.title}
+                </Heading>
+                <Box display='flex' alignItems='start'>
                   <Box fontSize='2xs'>{item.description}</Box>
+                  {isDek && (
+                    <Box alignItems='center' justifyContent='center' display='flex' gap={3}>
+                      <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                        ${item.price}
+                      </Text>
+                      <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
+                      <Button onClick={onOpen}>
+                        <Pen />
+                      </Button>
+                      <Copy />
+                      <TrashBox />
+                    </Box>
+                  )}
                 </Box>
-                {isDek && (
-                  <Box alignItems='center' justifyContent='center' display='flex' gap={3}>
-                    <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                      {item.price}
+              </Box>
+              <Box display={isMobile ? 'flex' : 'block'} flexDirection='column'>
+                <Divider mt='20px' mb='16px' />
+                <Box
+                  display='flex'
+                  flexDirection={isMobile ? 'row' : isTablet ? 'row' : 'row'}
+                  justifyContent='space-between'
+                >
+                  <Box display='flex' flexDiretion='column' mb={['16px', '16px', 0]}>
+                    <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>
+                      Ingredients
+                    </Heading>
+                    <Text fontSize='13px' color='neutral.grayDark'>
+                      {item.ingredients}
                     </Text>
-                    <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
-                    <Button onClick={onOpen}>
-                      <Pen />
-                    </Button>
-                    <Copy />
-                    <TrashBox />
                   </Box>
-                )}
+                  <Box p='5px'>
+                    <Heading fontSize='' lineHeight='24px' fontWeight='bold'>
+                      Nutritional value
+                    </Heading>
+                    <Text fontSize='13px' color='neutral.grayDark'>
+                      {item.nutritionals}
+                    </Text>
+                  </Box>
+                </Box>
               </Box>
               <ModalTextRedactor
-                  isOpen={isOpen}
-                  onOpen={onOpen}
-                  onClose={onClose}
-                  title={item.title}
-                  item={item}
-                  description={item.description}
+                isOpen={isOpen}
+                onOpen={onOpen}
+                onClose={onClose}
+                title={item.title}
+                item={item}
+                description={item.description}
               />
-
-
-            </Box>
-            {isTablet && (
-              <Box alignItems='center' justifyContent='center' display='flex' gap={3}>
-                <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                  {item.price}
-                </Text>
-                <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
-                <Button onClick={onOpen}>
-                  <Pen />
-                </Button>
-                <Copy />
-                <TrashBox />
-              </Box>
-
-            )}
-
-            <Box display={isMobile ? 'flex' : 'block'} flexDirection='column'>
-              <Box
-                display='flex'
-                flexDirection={isMobile ? 'column' : isTablet ? 'row' : 'column'}
-                alignItems='center'
-                justifyContent='space-around'
-                gap={4}
-                flexWrap='wrap'
-              ></Box>
-              <Divider mt='20px' mb='16px' />
-
-              <Box
-                display='flex'
-                flexDirection={isMobile ? 'row' : isTablet ? 'row' : 'row'}
-                justifyContent='space-between'
-              >
-                <Box mb={['16px', '16px', 0]}>
-                  <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>
-                    Ingredients
-                  </Heading>
-                  <Text fontSize='13px' color='neutral.grayDark'>
-                    {item.ingredients}
-                  </Text>
-                </Box>
-                <Box>
-                  <Heading fontSize='' lineHeight='24px' fontWeight='bold'>
-                    Nutritional value
-                  </Heading>
-                  <Text fontSize='13px' color='neutral.grayDark'>
-                    {item.nutritionalValue}
-                  </Text>
-                </Box>
-              </Box>
             </Box>
           </Box>
-        );
-      })}
+          {isTablet && (
+            <Box alignItems='center' justifyContent='center' display='flex' gap={3}>
+              <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                ${item.price}
+              </Text>
+              <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
+              <Button onClick={onOpen}>
+                <Pen />
+              </Button>
+              <Copy />
+              <TrashBox />
+            </Box>
+          )}
+        </Box>
+      ))}
     </GridItem>
   );
 }
