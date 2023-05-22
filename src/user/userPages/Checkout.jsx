@@ -1,4 +1,4 @@
-import { Box, Text, Icon, Button, Flex, Container, GridItem, Grid } from '@chakra-ui/react';
+import { Box, Text, Icon, Button, Flex, Container, GridItem, Grid, Skeleton } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
@@ -63,65 +63,77 @@ export default function Checkout() {
                     </Box>
 
                     <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr  1fr ' }} gap={2}>
-                      {!loading &&
-                        cardsArr.map((item, index) => {
-                          return <PaymentCard key={index} item={item} />;
-                        })}
-                      <GridItem w='100%'>
-                        <Box
-                          onClick={() => setSwitcher(false)}
-                          _hover={{
-                            cursor: 'pointer',
-                            transition: 'all 0.3s',
+                      <Skeleton minH='120px' borderRadius='16px' isLoaded={!loading}>
+                        {!loading &&
+                          cardsArr.map((item, index) => {
+                            return <PaymentCard key={index} item={item} />;
+                          })}
+                      </Skeleton>
+                      <Skeleton borderRadius='16px' isLoaded={!loading}>
+                        <GridItem w='100%'>
+                          <Box
+                            onClick={() => setSwitcher(false)}
+                            _hover={{
+                              cursor: 'pointer',
+                              transition: 'all 0.3s',
 
-                            borderColor: 'primary.default'
-                          }}
-                          _active={{
-                            cursor: 'pointer',
-                            transition: 'all 0.3s',
-                            bg: 'primary.light',
-                            borderColor: 'primary.default'
-                          }}
-                          borderRadius='16px'
-                          mb='12px'
-                          p='25px'
-                          transition='all 0.3s'
-                          borderWidth='1px'
-                          bg='neutral.white'
-                        >
-                          <Flex justifyContent='center' alignItems='center'>
-                            <Box display='flex' flexDirection='column' justifyItems='center' alignItems='center'>
-                              <Box
-                                w='24px'
-                                h='24px'
-                                transition='all 0.3s'
-                                borderWidth='1px'
-                                bg='primary.lightest'
-                                _hover={{
-                                  bg: 'primary.light',
-                                  borderColor: 'primary.default',
-                                  transition: 'all 0.3s'
-                                }}
-                                color='black'
-                                borderRadius='full'
-                                position='relative'
-                                display='flex'
-                                alignItems='center'
-                                justifyContent='center'
-                              >
-                                +
+                              borderColor: 'primary.default'
+                            }}
+                            _active={{
+                              cursor: 'pointer',
+                              transition: 'all 0.3s',
+                              bg: 'primary.light',
+                              borderColor: 'primary.default'
+                            }}
+                            borderRadius='16px'
+                            mb='12px'
+                            p='25px'
+                            transition='all 0.3s'
+                            borderWidth='1px'
+                            bg='neutral.white'
+                          >
+                            <Flex justifyContent='center' alignItems='center'>
+                              <Box display='flex' flexDirection='column' justifyItems='center' alignItems='center'>
+                                <Box
+                                  w='24px'
+                                  h='24px'
+                                  transition='all 0.3s'
+                                  borderWidth='1px'
+                                  bg='primary.lightest'
+                                  _hover={{
+                                    bg: 'primary.light',
+                                    borderColor: 'primary.default',
+                                    transition: 'all 0.3s'
+                                  }}
+                                  color='black'
+                                  borderRadius='full'
+                                  position='relative'
+                                  display='flex'
+                                  alignItems='center'
+                                  justifyContent='center'
+                                >
+                                  +
+                                </Box>
+                                <Text
+                                  mt={4}
+                                  fontWeight='bold'
+                                  textAlign='center'
+                                  fontSize='2xs'
+                                  color='neutral.grayDark'
+                                >
+                                  New payment methods
+                                </Text>
                               </Box>
-                              <Text mt={4} fontWeight='bold' textAlign='center' fontSize='2xs' color='neutral.grayDark'>
-                                New payment methods
-                              </Text>
-                            </Box>
-                          </Flex>
-                        </Box>
-                      </GridItem>
+                            </Flex>
+                          </Box>
+                        </GridItem>
+                      </Skeleton>
                     </Grid>
-                    <Box>
-                      <NewPaymentMethod switcher={switcher} />
-                    </Box>
+                    <Skeleton borderRadius='16px' isLoaded={!loading}>
+                      <Box>
+                        <NewPaymentMethod switcher={switcher} />
+                      </Box>
+                    </Skeleton>
                   </Box>
                 </Box>
               </GridItem>
