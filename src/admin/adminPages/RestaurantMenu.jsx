@@ -17,16 +17,18 @@ export default function RestaurantMenu() {
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 3fr' }} gap={6}>
         <GridItem w='100%'>
           <CategoryMenu
-              selectedCategory={selectedCategory}
-              onCategoryChange={handleCategoryChange}
-              categoryCounts={categoryCounts}
-          />        </GridItem>
+            selectedCategory={selectedCategory}
+            onCategoryChange={handleCategoryChange}
+            categoryCounts={categoryCounts}
+          />{' '}
+        </GridItem>
         <GridItem w='100%'>
           <ListOfProducts
-              selectedCategory={selectedCategory}
-              categoryCounts={categoryCounts}
-              setCategoryCounts={setCategoryCounts}
-          />        </GridItem>
+            selectedCategory={selectedCategory}
+            categoryCounts={categoryCounts}
+            setCategoryCounts={setCategoryCounts}
+          />{' '}
+        </GridItem>
       </Grid>
     </Container>
   );

@@ -110,7 +110,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
           </Button>
         </Box>
       </Box>
-      <ModalRestaurantMenu isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <ModalRestaurantMenu categoryName={selectedCategory} isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
     </GridItem>
   );
 }

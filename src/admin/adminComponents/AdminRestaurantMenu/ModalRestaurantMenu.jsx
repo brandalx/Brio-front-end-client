@@ -1,8 +1,6 @@
 import {
   Box,
   Button,
-  FormControl,
-  FormLabel,
   Heading,
   Image,
   Input,
@@ -16,17 +14,79 @@ import {
   Text,
   useMediaQuery
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import '../../../css/global.css';
+import { API_URL, handleApiPost } from '../../../services/apiServices';
 
-export default function ModalRestaurantMenu({ isOpen, onOpen, onClose }) {
-  const { control, handleSubmit } = useForm();
+export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryName }) {
+  const { control, handleSubmit, reset } = useForm();
   const [isLilMob] = useMediaQuery('(max-width: 350px)');
+  const [product, setProduct] = useState('');
+
+  const createProduct = async ( items, price, title, description, ingredients, nutritionals, restaurantRef) => {
+    const payload = {
+      title: title,
+      description: description,
+      image: items, // Updated
+      price: price,
+      ingredients: ingredients, // Updated
+      nutritionals: nutritionals, // Updated
+      categoryName: categoryName,
+      restaurantRef: restaurantRef
+    };
+
+    try {
+      const response = await fetch(API_URL + '/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create product');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error('An error occurred while creating the product: ' + error.message);
+    }
+  };
+
+  const handlePublishProduct = async (data) => {
+    const {price, title, description, ingredients: ingredientsStr, nutritionals: nutritionalsStr, restaurantRef } = data;
+    const ingredients = ingredientsStr.split(',').map((ingredient) => ingredient.trim());
+    const nutritionals = nutritionalsStr.split(',').map((nutritional) => nutritional.trim());
+    const newItemsId = [];
+
+    try {
+      const newProduct = await createProduct(
+          newItemsId,
+          price,
+          title, // Updated
+          description,
+          ingredients,
+          nutritionals,
+          restaurantRef
+      );
+      // Add the new product to the list of products
+      setProduct((prevProducts) => [
+        ...prevProducts,
+        { ...newProduct } // Add the amount field to the new product
+      ]);
+      // If successful, close the modal
+      onClose();
+    } catch (error) {
+      console.error('An error occurred while publishing the category:', error);
+    }
+  };
 
   const onSubmit = (data) => {
-    console.log(data); // Handle form submission data here
-    onClose(); // Close the modal
+    handlePublishProduct(data);
+    reset(); // Reset the form values after submission
   };
 
   return (
@@ -123,7 +183,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose }) {
                 </Text>
                 <Controller
                   control={control}
-                  name='name'
+                  name='title'
                   defaultValue=''
                   render={({ field }) => (
                     <Input {...field} color='neutral.gray' fontSize='2xs' type='text' placeholder='Enter meal name' />
@@ -197,7 +257,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose }) {
                 </Text>
                 <Controller
                   control={control}
-                  name='nutritionalValue'
+                  name='nutritionals'
                   defaultValue=''
                   render={({ field }) => (
                     <Input
@@ -205,7 +265,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose }) {
                       color='neutral.gray'
                       fontSize='2xs'
                       placeholder='Enter meal nutritional value'
-                      type='number'
+                      type='text'
                     />
                   )}
                 />

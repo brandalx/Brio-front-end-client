@@ -19,7 +19,7 @@ import Pen from '../../../assets/svg/Pen';
 import Copy from '../../../assets/svg/Copy';
 import TrashBox from '../../../assets/svg/TrashBox';
 
-export default function ListOfProducts({ selectedCategory,categoryCounts,setCategoryCounts }) {
+export default function ListOfProducts({ selectedCategory, categoryCounts, setCategoryCounts }) {
   const gridColumns = useBreakpointValue({ base: '1fr', md: '1fr 4fr' });
   const [isMobile] = useMediaQuery('(max-width: 575px)');
   const [isTablet] = useMediaQuery('(max-width: 767px)');
@@ -90,7 +90,7 @@ export default function ListOfProducts({ selectedCategory,categoryCounts,setCate
               />
             </Box>
             <Box flex='1'>
-              <Box flexDirection='row' display='flex' ml={[3, 3, 0]} alignItems='start'>
+              <Box flexDirection='row' display='flex' ml={[3, 3, 0]} justifyContent='space-between' alignItems='start'>
                 <Box display={isMobile ? 'flex' : 'none'}>
                   <Box mr='12px'>
                     <Image
@@ -105,7 +105,7 @@ export default function ListOfProducts({ selectedCategory,categoryCounts,setCate
                     />
                   </Box>
                 </Box>
-                <Box display='flex' alignItems='start' flexDirection={isTabletMinMax ? 'row' : 'column'}>
+                <Box  display='flex' alignItems='start' flexDirection={isTabletMinMax ? 'row' : 'column'}>
                   <Box display={isTabletMinMax ? 'flex' : 'none'}>
                     <Box mr='12px'>
                       <Image
@@ -182,7 +182,6 @@ export default function ListOfProducts({ selectedCategory,categoryCounts,setCate
                 </Box>
               </Box>
             </Box>
-            {console.log(item)}
           </Box>
         ))}
     </GridItem>
