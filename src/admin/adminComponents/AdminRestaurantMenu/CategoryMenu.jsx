@@ -19,7 +19,7 @@ import ModalRestaurantMenu from './ModalRestaurantMenu';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import ModalNewCategory from './ModalNewCategory';
 
-export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
+export default function CategoryMenu({ selectedCategory, onCategoryChange, categoryCounts }) {
   const [loading, setLoading] = useState(true);
   const [isTablet] = useMediaQuery('(max-width: 992px)');
   const [isMobile] = useMediaQuery('(max-width: 576px)');
@@ -84,7 +84,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
                 {element.categoryName}
               </Heading>
               <Text fontSize='13px' mt='6px' fontWeight='regular' color='neutral.grayDark'>
-                {element.amount}
+                {categoryCounts[element.categoryName] || 0} {/* Исправление здесь */}
               </Text>
             </Box>
           ))}
