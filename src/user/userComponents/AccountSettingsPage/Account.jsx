@@ -46,10 +46,10 @@ export default function Account() {
 
   const onSubForm = (_bodyData) => {
     console.log(_bodyData);
-    handleUserDataPost(_bodyData);
+    handleUserDataPut(_bodyData);
   };
   const toast = useToast();
-  const handleUserDataPost = async (_bodyData) => {
+  const handleUserDataPut = async (_bodyData) => {
     try {
       // const url = API_URL + "/videos/"+params["id"];
       const url = API_URL + '/users/6464085ed67f7b944b642799/putuserdata';
