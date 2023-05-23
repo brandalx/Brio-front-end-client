@@ -166,7 +166,7 @@ export default function Restaurant() {
                                 <ProductCard
                                   img={item.image}
                                   title={item.title}
-                                  info={item.description}
+                                  description={item.description}
                                   price={item.price}
                                 />
                               </Skeleton>

@@ -13,16 +13,10 @@ import {
 } from '@chakra-ui/react';
 import visa from '../../../assets/images/visa.png';
 import mastercard from '../../../assets/images/mastercard.png';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 
 export default function PaymentCard({ item }) {
-  let image;
-  if (item.cardtype === 'visa') {
-    image = visa;
-  } else {
-    image = mastercard;
-  }
   return (
     <GridItem w='100%'>
       <Box
@@ -49,10 +43,10 @@ export default function PaymentCard({ item }) {
           <Flex alignItems='center'>
             <Box>
               <Heading fontSize='2xs' fontWeight='bold'>
-                {item.number}
+                {item.cardNumber}
               </Heading>
               <Text fontSize='3xs' fontWeight='semibold' color='neutral.grayDark'>
-                {item.expiration}
+                {item.expirationDate}
               </Text>
               <Text fontSize='3xs' color='neutral.grayDark'>
                 {item.cardholder}
@@ -92,7 +86,8 @@ export default function PaymentCard({ item }) {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <Image w='auto' h='25px' src={image} />
+            <Image w='auto' h='25px' src={item.cardType === 'visa' ? visa : mastercard} />
+            {console.log(item)}
           </Box>
         </Flex>
       </Box>

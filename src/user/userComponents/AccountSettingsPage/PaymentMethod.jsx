@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, FormControl, FormLabel, Grid, GridItem, Input, Skeleton, Text } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Grid, GridItem, Input, Select, Skeleton, Text } from '@chakra-ui/react';
 
 import PaymentCard from './PaymentCard';
 import visa from '../../../assets/images/visa.png';
@@ -18,10 +18,12 @@ export default function PaymentMethod() {
       console.log(data);
 
       const cards = data.creditdata.map((card) => ({
-        number: card.paymentMethod,
-        expiration: card.cardNumber,
-        cardholder: card.expirationDate,
-        cardtype: card.cardtype
+        cardNumber: card.cardNumber,
+        cardType: card.cardType,
+        cardholder: card.cardholder,
+        expirationDate: card.expirationDate,
+        paymentMethod: card.paymentMethod,
+        securityCode: card.securityCode
       }));
 
       setCardsArr(cards);
@@ -147,6 +149,23 @@ export default function PaymentMethod() {
               </GridItem>
             </Grid>
           </Box>
+
+          <Box pt={5} mb={3}>
+            <Grid templateColumns='repeat(1, 1fr)' gap={4}>
+              <GridItem w='100%'>
+                <FormControl>
+                  <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                    Card type
+                  </FormLabel>
+                  <Select fontSize='2xs' placeholder='Select country' id='cardtype' defaultValue={'visa'}>
+                    <option value={'visa'}>Visa</option>
+                    <option value={'mastercard'}>Master Card</option>
+                  </Select>
+                </FormControl>
+              </GridItem>
+            </Grid>
+          </Box>
+
           <Box pt={5} display='flex' justifyContent='flex-end'>
             <Button
               w={{ base: '100%', md: 'initial' }}

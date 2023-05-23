@@ -2,7 +2,7 @@ import { Box, GridItem, Image, Text, Button, Flex, Stack, border } from '@chakra
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function ProductCard({ img, title, info, price }) {
+export default function ProductCard({ img, title, description, price }) {
   const [priceCount, setPriceCount] = useState(1);
 
   const handlePriceAdd = () => {
@@ -15,17 +15,17 @@ export default function ProductCard({ img, title, info, price }) {
     }
   };
 
-  const cutInfo = (info) => {
-    const words = info.split(' ');
+  const cutInfo = (description) => {
+    const words = description.split(' ');
 
     if (words.length <= 10) {
-      return info;
+      return description;
     } else {
       return words.slice(0, 6).join(' ') + '...';
     }
   };
 
-  const cutInfoText = cutInfo(info);
+  const cutInfoText = cutInfo(description);
 
   return (
     <>
@@ -39,7 +39,7 @@ export default function ProductCard({ img, title, info, price }) {
               {title}
             </Text>
             <Text color='neutral.gray' fontSize='3xs'>
-              {cutInfoText}
+              {description.length > 0 && cutInfoText}
             </Text>
 
             {priceCount === 1 ? (
