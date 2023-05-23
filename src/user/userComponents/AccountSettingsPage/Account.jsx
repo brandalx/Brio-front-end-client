@@ -12,15 +12,19 @@ import {
   Stack,
   Checkbox,
   Divider,
-  Skeleton
+  Skeleton,
+  Avatar,
+  FormErrorMessage
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { API_URL, handelApiGet } from '../../../services/apiServices';
+import { API_URL, handelApiGet, handleApiMethod } from '../../../services/apiServices';
+import { useForm } from 'react-hook-form';
 
 export default function Account() {
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
-  const handleApi = async () => {
+
+  const handleUserData = async () => {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
     try {
       const data = await handelApiGet(url);
@@ -33,8 +37,33 @@ export default function Account() {
     }
   };
 
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting }
+  } = useForm();
+
+  const onSubForm = (_bodyData) => {
+    console.log(_bodyData);
+    handleUserDataPost(_bodyData);
+  };
+
+  const handleUserDataPost = async (_bodyData) => {
+    try {
+      // const url = API_URL + "/videos/"+params["id"];
+      const url = API_URL + '/users/6464085ed67f7b944b642799/putuserdata';
+      const data = await handleApiMethod(url, 'PUT', _bodyData);
+      if (data.acknowledged === true) {
+        console.log('success');
+      }
+    } catch (error) {
+      console.log(error);
+      alert('error occured');
+    }
+  };
+
   useEffect(() => {
-    handleApi();
+    handleUserData();
   }, []);
 
   return (
@@ -50,7 +79,13 @@ export default function Account() {
           <Flex alignItems='center'>
             <Skeleton borderRadius='16px' isLoaded={!loading} me={4}>
               <Box borderWidth='2px' borderColor='primary.default' me='20px' borderRadius='12px'>
-                <Image borderRadius='10px' boxSize='80px' objectFit='cover' src={arr.avatar} alt='Avatar' />
+                <Avatar
+                  borderRadius='10px'
+                  boxSize='80px'
+                  objectFit='cover'
+                  src={arr.avatar || ''}
+                  name={`${arr.firstname} ${arr.lastname}`}
+                />
               </Box>
             </Skeleton>
             <Button
@@ -92,195 +127,205 @@ export default function Account() {
             </Button>
           </Flex>
         </Box>
-        <Box pt={5}>
-          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr ' }} gap={6}>
-            <GridItem w='100%'>
-              <FormControl id='name'>
-                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                  First name
-                </FormLabel>
-                <Skeleton borderRadius='16px' isLoaded={!loading}>
-                  <Input
-                    type='text'
-                    background='neutral.white'
-                    _placeholder={{ color: 'neutral.gray' }}
-                    borderRadius='8px'
-                    fontSize='2xs'
-                    defaultValue={!loading && arr.firstname}
-                    placeholder='First name'
-                  />{' '}
-                </Skeleton>
-              </FormControl>
-            </GridItem>
 
-            <GridItem w='100%'>
-              <FormControl id='email'>
-                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                  Last name
-                </FormLabel>
-                <Skeleton borderRadius='16px' isLoaded={!loading}>
-                  <Input
-                    type='text'
-                    background='neutral.white'
-                    _placeholder={{ color: 'neutral.gray' }}
-                    borderRadius='8px'
-                    fontSize='2xs'
-                    defaultValue={!loading && arr.lastname}
-                    placeholder='Last name'
-                  />{' '}
-                </Skeleton>
-              </FormControl>
-            </GridItem>
+        <form onSubmit={handleSubmit(onSubForm)}>
+          <Box pt={5}>
+            <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr ' }} gap={6}>
+              <GridItem w='100%'>
+                <FormControl id='firstname' isInvalid={errors.firstname}>
+                  <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                    First name
+                  </FormLabel>
+                  <Skeleton borderRadius='16px' isLoaded={!loading}>
+                    <Input
+                      id='firstname'
+                      {...register('firstname', {
+                        required: true,
+                        minLength: { value: 4, message: 'Minimum length should be 4' }
+                      })}
+                      type='text'
+                      background='neutral.white'
+                      _placeholder={{ color: 'neutral.gray' }}
+                      borderRadius='8px'
+                      fontSize='2xs'
+                      // defaultValue={!loading && arr.firstname}
+                      placeholder='First name'
+                    />{' '}
+                    <FormErrorMessage>{errors.firstname && errors.firstname.message}</FormErrorMessage>
+                  </Skeleton>
+                </FormControl>
+              </GridItem>
 
-            <GridItem w='100%'>
-              <FormControl id='email'>
-                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                  Email
-                </FormLabel>
-                <Skeleton borderRadius='16px' isLoaded={!loading}>
-                  <Input
-                    type='email'
-                    background='neutral.white'
-                    _placeholder={{ color: 'neutral.gray' }}
-                    borderRadius='8px'
-                    fontSize='2xs'
-                    defaultValue={!loading && arr.email}
-                    placeholder='example@gmail.com'
-                  />{' '}
-                </Skeleton>
-              </FormControl>
-            </GridItem>
+              <GridItem w='100%'>
+                <FormControl id='lastname' isInvalid={errors.lastname}>
+                  <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                    Last name
+                  </FormLabel>
+                  <Skeleton borderRadius='16px' isLoaded={!loading}>
+                    <Input
+                      id='lastname'
+                      {...register('lastname', {
+                        required: true,
+                        minLength: { value: 4, message: 'Minimum length should be 4' }
+                      })}
+                      type='text'
+                      background='neutral.white'
+                      _placeholder={{ color: 'neutral.gray' }}
+                      borderRadius='8px'
+                      fontSize='2xs'
+                      // defaultValue={!loading && arr.lastname}
+                      placeholder='Last name'
+                    />{' '}
+                    <FormErrorMessage>{errors.lastname && errors.lastname.message}</FormErrorMessage>
+                  </Skeleton>
+                </FormControl>
+              </GridItem>
 
-            <GridItem w='100%'>
-              <FormControl id='phone'>
-                <FormLabel fontWeight='semibold' placeholder='+1(217) 555-0113' fontSize='3xs' color='neutral.grayDark'>
-                  Phone number
-                </FormLabel>
-                <Skeleton borderRadius='16px' isLoaded={!loading}>
-                  <Input
-                    type='phone'
-                    background='neutral.white'
-                    _placeholder={{ color: 'neutral.gray' }}
-                    borderRadius='8px'
-                    fontSize='2xs'
-                    defaultValue={!loading && arr.phone}
-                    placeholder='+123456789'
-                  />
-                </Skeleton>
-              </FormControl>
-            </GridItem>
-          </Grid>
-        </Box>
+              <GridItem w='100%'>
+                <FormControl id='email' isInvalid={errors.email}>
+                  <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                    Email
+                  </FormLabel>
+                  <Skeleton borderRadius='16px' isLoaded={!loading}>
+                    <Input
+                      id='email'
+                      {...register('email', {
+                        required: true,
 
-        <Box pt={5}>
-          <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-            Email notifications
-          </Text>
-          <Grid mt={4} templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={{ base: 4, md: 6 }}>
-            <GridItem w='100%'>
-              <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
-                <Flex alignItems='center'>
-                  <Checkbox mr='2'>
-                    <Text color='neutral.black' fontSize='2xs'>
-                      New deals
-                    </Text>
-                  </Checkbox>
-                </Flex>
-              </Stack>
-              <Stack mt={4} direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
-                <Flex alignItems='center'>
-                  <Checkbox iconColor='neutral.white' mr='2'>
-                    <Text color='neutral.black' fontSize='2xs'>
-                      Password changes
-                    </Text>
-                  </Checkbox>
-                </Flex>
-              </Stack>
-            </GridItem>
+                        pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Enter valid email' },
 
-            <GridItem w='100%'>
-              <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
-                <Flex alignItems='center'>
-                  <Checkbox mr='2'>
-                    <Text color='neutral.black' fontSize='2xs'>
-                      New restaurants
-                    </Text>
-                  </Checkbox>
-                </Flex>
-              </Stack>
-            </GridItem>
-            <GridItem w='100%'>
-              <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
-                <Flex alignItems='center'>
-                  <Checkbox mr='2'>
-                    <Text color='neutral.black' fontSize='2xs'>
-                      Special offers
-                    </Text>
-                  </Checkbox>
-                </Flex>
-              </Stack>
-            </GridItem>
-            <GridItem w='100%'>
-              <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
-                <Flex alignItems='center'>
-                  <Checkbox mr='2'>
-                    <Text color='neutral.black' fontSize='2xs'>
-                      Order statuses
-                    </Text>
-                  </Checkbox>
-                </Flex>
-              </Stack>
-            </GridItem>
-            <GridItem w='100%'>
-              <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
-                <Flex alignItems='center'>
-                  <Checkbox mr='2'>
-                    <Text color='neutral.black' fontSize='2xs'>
-                      Newsletter
-                    </Text>
-                  </Checkbox>
-                </Flex>
-              </Stack>
-            </GridItem>
-          </Grid>
-        </Box>
-        <Divider pt={8} />
-        <Box pt={5}>
-          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
-            <GridItem w='100%'>
-              <Button
-                w={{ base: '100%', md: 'initial' }}
-                background='neutral.white'
-                fontSize='2xs'
-                fontWeight='bold'
-                variant='solid'
-                color='error.default'
-                borderWidth='1px'
-                borderColor='error.default'
-                _hover={{
-                  background: 'error.default',
-                  color: 'neutral.white',
-                  borderWidth: '1px',
-                  borderColor: 'error.default'
-                }}
-                py={5}
-                me='20px'
-              >
-                Log out
-              </Button>
-            </GridItem>
+                        minLength: { value: 4, message: 'Minimum length should be 4' }
+                      })}
+                      type='email'
+                      background='neutral.white'
+                      _placeholder={{ color: 'neutral.gray' }}
+                      borderRadius='8px'
+                      fontSize='2xs'
+                      // defaultValue={!loading && arr.email}
+                      placeholder='example@gmail.com'
+                    />{' '}
+                    <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+                  </Skeleton>
+                </FormControl>
+              </GridItem>
 
-            <GridItem w='100%'>
-              <Flex flexDirection={{ base: 'row' }}>
+              <GridItem w='100%'>
+                <FormControl id='phone' isInvalid={errors.phone}>
+                  <FormLabel
+                    fontWeight='semibold'
+                    placeholder='+1(217) 555-0113'
+                    fontSize='3xs'
+                    color='neutral.grayDark'
+                  >
+                    Phone number
+                  </FormLabel>
+                  <Skeleton borderRadius='16px' isLoaded={!loading}>
+                    <Input
+                      id='phone'
+                      {...register('phone', {
+                        required: true,
+                        minLength: { value: 4, message: 'Minimum length should be 4' }
+                      })}
+                      type='phone'
+                      background='neutral.white'
+                      _placeholder={{ color: 'neutral.gray' }}
+                      borderRadius='8px'
+                      fontSize='2xs'
+                      // defaultValue={!loading && arr.phone}
+                      placeholder='+123456789'
+                    />
+                    <FormErrorMessage fontSize='xs'>{errors.phone && errors.phone.message}</FormErrorMessage>
+                  </Skeleton>
+                </FormControl>
+              </GridItem>
+            </Grid>
+          </Box>
+
+          <Box pt={5}>
+            <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+              Email notifications
+            </Text>
+            <Grid mt={4} templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={{ base: 4, md: 6 }}>
+              <GridItem w='100%'>
+                <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                  <Flex alignItems='center'>
+                    <Checkbox mr='2'>
+                      <Text color='neutral.black' fontSize='2xs'>
+                        New deals
+                      </Text>
+                    </Checkbox>
+                  </Flex>
+                </Stack>
+                <Stack mt={4} direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                  <Flex alignItems='center'>
+                    <Checkbox iconColor='neutral.white' mr='2'>
+                      <Text color='neutral.black' fontSize='2xs'>
+                        Password changes
+                      </Text>
+                    </Checkbox>
+                  </Flex>
+                </Stack>
+              </GridItem>
+
+              <GridItem w='100%'>
+                <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                  <Flex alignItems='center'>
+                    <Checkbox mr='2'>
+                      <Text color='neutral.black' fontSize='2xs'>
+                        New restaurants
+                      </Text>
+                    </Checkbox>
+                  </Flex>
+                </Stack>
+              </GridItem>
+              <GridItem w='100%'>
+                <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                  <Flex alignItems='center'>
+                    <Checkbox mr='2'>
+                      <Text color='neutral.black' fontSize='2xs'>
+                        Special offers
+                      </Text>
+                    </Checkbox>
+                  </Flex>
+                </Stack>
+              </GridItem>
+              <GridItem w='100%'>
+                <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                  <Flex alignItems='center'>
+                    <Checkbox mr='2'>
+                      <Text color='neutral.black' fontSize='2xs'>
+                        Order statuses
+                      </Text>
+                    </Checkbox>
+                  </Flex>
+                </Stack>
+              </GridItem>
+              <GridItem w='100%'>
+                <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                  <Flex alignItems='center'>
+                    <Checkbox mr='2'>
+                      <Text color='neutral.black' fontSize='2xs'>
+                        Newsletter
+                      </Text>
+                    </Checkbox>
+                  </Flex>
+                </Stack>
+              </GridItem>
+            </Grid>
+          </Box>
+          <Divider pt={8} />
+          <Box pt={5}>
+            <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
+              <GridItem w='100%'>
                 <Button
-                  w={{ base: '50%', md: 'initial' }}
+                  w={{ base: '100%', md: 'initial' }}
                   background='neutral.white'
                   fontSize='2xs'
                   fontWeight='bold'
                   variant='solid'
-                  color='neutral.gray'
+                  color='error.default'
                   borderWidth='1px'
-                  borderColor='neutral.gray'
+                  borderColor='error.default'
                   _hover={{
                     background: 'error.default',
                     color: 'neutral.white',
@@ -290,30 +335,57 @@ export default function Account() {
                   py={5}
                   me='20px'
                 >
-                  Discard changes
+                  Log out
                 </Button>
-                <Button
-                  w={{ base: '50%', md: 'initial' }}
-                  background='primary.default'
-                  fontWeight='bold'
-                  variant='solid'
-                  color='neutral.white'
-                  borderWidth='1px'
-                  borderColor='neutral.white'
-                  _hover={{
-                    background: 'neutral.white',
-                    color: 'primary.default',
-                    borderWidth: '1px',
-                    borderColor: 'primary.default'
-                  }}
-                  py={5}
-                >
-                  Save changes
-                </Button>
-              </Flex>
-            </GridItem>
-          </Grid>
-        </Box>
+              </GridItem>
+
+              <GridItem w='100%'>
+                <Flex flexDirection={{ base: 'row' }}>
+                  <Button
+                    w={{ base: '50%', md: 'initial' }}
+                    background='neutral.white'
+                    fontSize='2xs'
+                    fontWeight='bold'
+                    variant='solid'
+                    color='neutral.gray'
+                    borderWidth='1px'
+                    borderColor='neutral.gray'
+                    _hover={{
+                      background: 'error.default',
+                      color: 'neutral.white',
+                      borderWidth: '1px',
+                      borderColor: 'error.default'
+                    }}
+                    py={5}
+                    me='20px'
+                  >
+                    Discard changes
+                  </Button>
+                  <Button
+                    isLoading={isSubmitting}
+                    type='submit'
+                    w={{ base: '50%', md: 'initial' }}
+                    background='primary.default'
+                    fontWeight='bold'
+                    variant='solid'
+                    color='neutral.white'
+                    borderWidth='1px'
+                    borderColor='neutral.white'
+                    _hover={{
+                      background: 'neutral.white',
+                      color: 'primary.default',
+                      borderWidth: '1px',
+                      borderColor: 'primary.default'
+                    }}
+                    py={5}
+                  >
+                    Save changes
+                  </Button>
+                </Flex>
+              </GridItem>
+            </Grid>
+          </Box>
+        </form>
       </Box>
     </Box>
   );
