@@ -14,7 +14,8 @@ import {
   Divider,
   Skeleton,
   Avatar,
-  FormErrorMessage
+  FormErrorMessage,
+  useToast
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { API_URL, handelApiGet, handleApiMethod } from '../../../services/apiServices';
@@ -47,18 +48,42 @@ export default function Account() {
     console.log(_bodyData);
     handleUserDataPost(_bodyData);
   };
-
+  const toast = useToast();
   const handleUserDataPost = async (_bodyData) => {
     try {
       // const url = API_URL + "/videos/"+params["id"];
       const url = API_URL + '/users/6464085ed67f7b944b642799/putuserdata';
       const data = await handleApiMethod(url, 'PUT', _bodyData);
       if (data.acknowledged === true) {
-        console.log('success');
+        toast({
+          title: 'Account info updated.',
+          description: "We've updated your account info.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+        handleUserData();
       }
     } catch (error) {
       console.log(error);
-      alert('error occured');
+
+      if (error.response && error.response.data && error.response.data.err && error.response.data.err.code === 11000) {
+        toast({
+          title: 'Such email already exists',
+          description: `Error when updating your account info. The email you provided already exists in the system.`,
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      } else {
+        toast({
+          title: 'Error when updating your info',
+          description: 'Error when updating your account info.',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      }
     }
   };
 
@@ -76,6 +101,11 @@ export default function Account() {
           Personal information
         </Text>
         <Box pt={5}>
+          <Skeleton borderRadius='16px' isLoaded={!loading} minHeight='20px' my={2} w='50%'>
+            <Text fontSize='md' fontWeight='black' color='neutral.darkGray'>
+              {!loading && `${arr.firstname} ${arr.lastname}`}
+            </Text>
+          </Skeleton>
           <Flex alignItems='center'>
             <Skeleton borderRadius='16px' isLoaded={!loading} me={4}>
               <Box borderWidth='2px' borderColor='primary.default' me='20px' borderRadius='12px'>
@@ -141,7 +171,7 @@ export default function Account() {
                       id='firstname'
                       {...register('firstname', {
                         required: true,
-                        minLength: { value: 4, message: 'Minimum length should be 4' }
+                        minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
                       background='neutral.white'
@@ -151,7 +181,9 @@ export default function Account() {
                       // defaultValue={!loading && arr.firstname}
                       placeholder='First name'
                     />{' '}
-                    <FormErrorMessage>{errors.firstname && errors.firstname.message}</FormErrorMessage>
+                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                      {errors.firstname && errors.firstname.message}
+                    </FormErrorMessage>
                   </Skeleton>
                 </FormControl>
               </GridItem>
@@ -166,7 +198,7 @@ export default function Account() {
                       id='lastname'
                       {...register('lastname', {
                         required: true,
-                        minLength: { value: 4, message: 'Minimum length should be 4' }
+                        minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
                       background='neutral.white'
@@ -176,7 +208,9 @@ export default function Account() {
                       // defaultValue={!loading && arr.lastname}
                       placeholder='Last name'
                     />{' '}
-                    <FormErrorMessage>{errors.lastname && errors.lastname.message}</FormErrorMessage>
+                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                      {errors.lastname && errors.lastname.message}
+                    </FormErrorMessage>
                   </Skeleton>
                 </FormControl>
               </GridItem>
@@ -194,7 +228,7 @@ export default function Account() {
 
                         pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Enter valid email' },
 
-                        minLength: { value: 4, message: 'Minimum length should be 4' }
+                        minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='email'
                       background='neutral.white'
@@ -204,7 +238,9 @@ export default function Account() {
                       // defaultValue={!loading && arr.email}
                       placeholder='example@gmail.com'
                     />{' '}
-                    <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                      {errors.email && errors.email.message}
+                    </FormErrorMessage>
                   </Skeleton>
                 </FormControl>
               </GridItem>
@@ -224,7 +260,7 @@ export default function Account() {
                       id='phone'
                       {...register('phone', {
                         required: true,
-                        minLength: { value: 4, message: 'Minimum length should be 4' }
+                        minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='phone'
                       background='neutral.white'
@@ -234,7 +270,9 @@ export default function Account() {
                       // defaultValue={!loading && arr.phone}
                       placeholder='+123456789'
                     />
-                    <FormErrorMessage fontSize='xs'>{errors.phone && errors.phone.message}</FormErrorMessage>
+                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                      {errors.phone && errors.phone.message}
+                    </FormErrorMessage>
                   </Skeleton>
                 </FormControl>
               </GridItem>
