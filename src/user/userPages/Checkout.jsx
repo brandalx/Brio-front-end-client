@@ -77,6 +77,7 @@ export default function Checkout() {
                       <GridItem w='100%'>
                         <Skeleton borderRadius='16px' isLoaded={!loading}>
                           <Box
+                            h={{ base: 'initial', lg: '130px' }}
                             onClick={() => setSwitcher(false)}
                             _hover={{
                               cursor: 'pointer',
