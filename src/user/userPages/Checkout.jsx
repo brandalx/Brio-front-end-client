@@ -21,10 +21,12 @@ export default function Checkout() {
       const data = await handelApiGet(url);
       setAr(data);
       const cards = data.creditdata.map((card) => ({
-        number: card.paymentMethod,
-        expiration: card.cardNumber,
-        cardholder: card.expirationDate,
-        cardtype: card.cardtype
+        cardNumber: card.cardNumber,
+        cardType: card.cardType,
+        cardholder: card.cardholder,
+        expirationDate: card.expirationDate,
+        paymentMethod: card.paymentMethod,
+        securityCode: card.securityCode
       }));
       setCardsArr(cards);
       setLoading(false);

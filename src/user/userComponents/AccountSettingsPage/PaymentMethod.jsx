@@ -81,7 +81,7 @@ export default function PaymentMethod() {
                   </FormLabel>
 
                   <Input
-                    type='text'
+                    type='password'
                     background='neutral.white'
                     _placeholder={{ color: 'neutral.gray' }}
                     borderRadius='8px'
@@ -118,7 +118,7 @@ export default function PaymentMethod() {
                   </FormLabel>
 
                   <Input
-                    type='text'
+                    type='password'
                     background='neutral.white'
                     _placeholder={{ color: 'neutral.gray' }}
                     borderRadius='8px'
@@ -157,7 +157,7 @@ export default function PaymentMethod() {
                   <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                     Card type
                   </FormLabel>
-                  <Select fontSize='2xs' placeholder='Select country' id='cardtype' defaultValue={'visa'}>
+                  <Select required fontSize='2xs' placeholder='Select country' id='cardtype' defaultValue={'visa'}>
                     <option value={'visa'}>Visa</option>
                     <option value={'mastercard'}>Master Card</option>
                   </Select>
@@ -168,6 +168,7 @@ export default function PaymentMethod() {
 
           <Box pt={5} display='flex' justifyContent='flex-end'>
             <Button
+              type='submit'
               w={{ base: '100%', md: 'initial' }}
               background='neutral.white'
               fontSize='2xs'

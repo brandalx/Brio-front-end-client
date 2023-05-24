@@ -30,7 +30,7 @@ export default function NewPaymentMethod({ switcher }) {
 
                 <Input
                   isDisabled={switcher}
-                  type='text'
+                  type='password'
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
@@ -64,7 +64,7 @@ export default function NewPaymentMethod({ switcher }) {
 
                 <Input
                   isDisabled={switcher}
-                  type='text'
+                  type='password'
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
