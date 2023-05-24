@@ -23,15 +23,16 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
   const { control, handleSubmit, reset } = useForm();
   const [isLilMob] = useMediaQuery('(max-width: 350px)');
   const [product, setProduct] = useState('');
+  const [image, setImage] = useState(null);
 
-  const createProduct = async ( items, price, title, description, ingredients, nutritionals, restaurantRef) => {
+  const createProduct = async (items, price, title, description, ingredients, nutritionals, restaurantRef) => {
     const payload = {
       title: title,
       description: description,
-      image: items, // Updated
+      image: items, // Обновлено
       price: price,
-      ingredients: ingredients, // Updated
-      nutritionals: nutritionals, // Updated
+      ingredients: ingredients,
+      nutritionals: nutritionals,
       categoryName: categoryName,
       restaurantRef: restaurantRef
     };
@@ -57,16 +58,15 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
   };
 
   const handlePublishProduct = async (data) => {
-    const {price, title, description, ingredients: ingredientsStr, nutritionals: nutritionalsStr, restaurantRef } = data;
+    const { price, title, description, ingredients: ingredientsStr, nutritionals: nutritionalsStr, restaurantRef } = data;
     const ingredients = ingredientsStr.split(',').map((ingredient) => ingredient.trim());
     const nutritionals = nutritionalsStr.split(',').map((nutritional) => nutritional.trim());
-    const newItemsId = [];
 
     try {
       const newProduct = await createProduct(
-          newItemsId,
+          image, // Используйте значение image
           price,
-          title, // Updated
+          title,
           description,
           ingredients,
           nutritionals,
@@ -88,6 +88,12 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
     handlePublishProduct(data);
     reset(); // Reset the form values after submission
   };
+
+  const handleImageChange = (event) => {
+    setImage(URL.createObjectURL(event.target.files[0]));
+  };
+
+
 
   return (
     <Modal
@@ -139,13 +145,14 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
                 maxH='88px'
               >
                 <Image
-                  width='100%'
-                  height='100%'
-                  borderRadius='20px'
-                  src='https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg'
-                  objectFit='cover'
-                  objectPosition='center'
+                    width='100%'
+                    height='100%'
+                    borderRadius='20px'
+                    src={image || 'https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg'}
+                    objectFit='cover'
+                    objectPosition='center'
                 />
+
               </Box>
             </Box>
             <Box
@@ -167,8 +174,10 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
                 border='1px'
                 borderColor='primary.default'
                 color='primary.default'
+
               >
-                Change
+                <Input type='file' accept='image/*' onChange={handleImageChange} />
+
               </Button>
               <Text color='neutral.gray' fontWeight='bold'>
                 Remove

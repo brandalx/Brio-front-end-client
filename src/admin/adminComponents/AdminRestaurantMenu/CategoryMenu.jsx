@@ -84,7 +84,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
                 {element.categoryName}
               </Heading>
               <Text fontSize='13px' mt='6px' fontWeight='regular' color='neutral.grayDark'>
-                {categoryCounts[element.categoryName] || 0} {/* Исправление здесь */}
+                {categoryCounts[element.categoryName] || 0}
               </Text>
             </Box>
           ))}
