@@ -162,23 +162,36 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
               alignItems='center'
               gap={6}
             >
-              <Button
-                _hover={{
-                  background: 'primary.default',
-                  color: 'neutral.white',
-                  borderWidth: '1px',
-                  borderColor: 'primary.default'
-                }}
-                w='84px'
-                h='44px'
-                border='1px'
-                borderColor='primary.default'
-                color='primary.default'
 
-              >
-                <Input type='file' accept='image/*' onChange={handleImageChange} />
+              <Box>
+                <label htmlFor="imageUpload" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                  <Button
+                      cursor='pointer'
+                      _hover={{
+                        background: 'primary.default',
+                        color: 'neutral.white',
+                        borderWidth: '1px',
+                        borderColor: 'primary.default'
+                      }}
+                      w='84px'
+                      h='44px'
+                      border='1px'
+                      borderColor='primary.default'
+                      color='primary.default'
+                      as="span">
+                    Change
+                  </Button>
+                  <Input
+                      id="imageUpload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      style={{ display: 'none' }}
+                  />
+                </label>
+              </Box>
 
-              </Button>
+
               <Text color='neutral.gray' fontWeight='bold'>
                 Remove
               </Text>
