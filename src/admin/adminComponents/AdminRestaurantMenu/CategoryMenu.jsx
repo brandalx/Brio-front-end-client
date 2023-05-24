@@ -51,7 +51,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
       <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
         Category menu
       </Text>
-      <Skeleton minH='60px' borderRadius='16px' isLoaded={!loading}>
+      <Skeleton minH='150px' maxH='300px' borderRadius='16px' isLoaded={!loading}>
         <Box display='flex' flexWrap='wrap' style={{ backfaceVisibility: 'initial' }}>
           {categories.map((element) => (
             <Box
