@@ -37,6 +37,10 @@ export default function Checkout() {
     }
   };
 
+  const updateCreditCard = (newCardData) => {
+    setCardsArr((prevCardsArr) => [...prevCardsArr, newCardData]);
+  };
+
   useEffect(() => {
     handleApi();
   }, []);
@@ -65,14 +69,13 @@ export default function Checkout() {
                     </Box>
 
                     <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr  1fr ' }} gap={2}>
-                      <Skeleton minH='120px' borderRadius='16px' isLoaded={!loading}>
-                        {!loading &&
-                          cardsArr.map((item, index) => {
-                            return <PaymentCard key={index} item={item} />;
-                          })}
-                      </Skeleton>
-                      <Skeleton borderRadius='16px' isLoaded={!loading}>
-                        <GridItem w='100%'>
+                      {!loading &&
+                        cardsArr.map((item, index) => {
+                          return <PaymentCard loading={loading} key={index} item={item} />;
+                        })}
+
+                      <GridItem w='100%'>
+                        <Skeleton borderRadius='16px' isLoaded={!loading}>
                           <Box
                             onClick={() => setSwitcher(false)}
                             _hover={{
@@ -128,12 +131,22 @@ export default function Checkout() {
                               </Box>
                             </Flex>
                           </Box>
+                        </Skeleton>
+                      </GridItem>
+                      {loading && (
+                        <GridItem w='100%'>
+                          <Skeleton h='110px' borderRadius='16px' isLoaded={!loading}></Skeleton>
                         </GridItem>
-                      </Skeleton>
+                      )}
+                      {loading && (
+                        <GridItem w='100%' mt={{ base: 4, lg: 0 }}>
+                          <Skeleton h='110px' borderRadius='16px' isLoaded={!loading}></Skeleton>
+                        </GridItem>
+                      )}
                     </Grid>
                     <Skeleton borderRadius='16px' isLoaded={!loading}>
                       <Box>
-                        <NewPaymentMethod switcher={switcher} />
+                        <NewPaymentMethod switcher={switcher} updateCreditCard={updateCreditCard} />
                       </Box>
                     </Skeleton>
                   </Box>
