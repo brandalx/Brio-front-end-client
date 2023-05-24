@@ -10,6 +10,14 @@ body {
   width: 100% !important;
 }
 
+.header-links-organize {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+}
+
 .wrapper {
   overflow: hidden;
 }
