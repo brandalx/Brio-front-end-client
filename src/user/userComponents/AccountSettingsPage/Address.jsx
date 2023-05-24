@@ -68,7 +68,8 @@ export default function Adress() {
           duration: 9000,
           isClosable: true
         });
-        setAddressArr(..._bodyData);
+
+        updateAddress(_bodyData);
       }
     } catch (error) {
       console.log(error);
@@ -91,6 +92,10 @@ export default function Adress() {
         });
       }
     }
+  };
+
+  const updateAddress = (newAddressData) => {
+    setAddressArr((prevCardsArr) => [...prevCardsArr, newAddressData]);
   };
 
   useEffect(() => {
