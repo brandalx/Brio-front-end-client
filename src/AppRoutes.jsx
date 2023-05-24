@@ -21,6 +21,7 @@ import AccountSettings from './user/userPages/AccountSettings';
 import Cart from './user/userPages/Cart';
 import Checkout from './user/userPages/Checkout';
 import UserOrders from './user/userPages/UserOrders';
+import Order from './user/userPages/Order';
 
 export default function AppRoutes() {
   return (
@@ -45,6 +46,7 @@ export default function AppRoutes() {
                 <Route path='/user/cart/*' element={<Cart />} />
                 <Route path='/user/checkout/' element={<Checkout />} />
                 <Route path='/user/orders' element={<UserOrders />} />
+                <Route path='/user/order' element={<Order />} />
                 <Route path='/restaurant' element={<Restaurant />} />
                 <Route path='/restaurant/product' element={<Product />} />
 
