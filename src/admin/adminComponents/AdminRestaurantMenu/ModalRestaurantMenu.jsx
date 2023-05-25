@@ -58,19 +58,26 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
   };
 
   const handlePublishProduct = async (data) => {
-    const { price, title, description, ingredients: ingredientsStr, nutritionals: nutritionalsStr, restaurantRef } = data;
+    const {
+      price,
+      title,
+      description,
+      ingredients: ingredientsStr,
+      nutritionals: nutritionalsStr,
+      restaurantRef
+    } = data;
     const ingredients = ingredientsStr.split(',').map((ingredient) => ingredient.trim());
     const nutritionals = nutritionalsStr.split(',').map((nutritional) => nutritional.trim());
 
     try {
       const newProduct = await createProduct(
-          image, // Используйте значение image
-          price,
-          title,
-          description,
-          ingredients,
-          nutritionals,
-          restaurantRef
+        image, // Используйте значение image
+        price,
+        title,
+        description,
+        ingredients,
+        nutritionals,
+        restaurantRef
       );
       // Add the new product to the list of products
       setProduct((prevProducts) => [
@@ -92,8 +99,6 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
   const handleImageChange = (event) => {
     setImage(URL.createObjectURL(event.target.files[0]));
   };
-
-
 
   return (
     <Modal
@@ -145,14 +150,13 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
                 maxH='88px'
               >
                 <Image
-                    width='100%'
-                    height='100%'
-                    borderRadius='20px'
-                    src={image || 'https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg'}
-                    objectFit='cover'
-                    objectPosition='center'
+                  width='100%'
+                  height='100%'
+                  borderRadius='20px'
+                  src={image || 'https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg'}
+                  objectFit='cover'
+                  objectPosition='center'
                 />
-
               </Box>
             </Box>
             <Box
@@ -162,35 +166,34 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
               alignItems='center'
               gap={6}
             >
-
               <Box>
-                <label htmlFor="imageUpload" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <label htmlFor='imageUpload' style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                   <Button
-                      cursor='pointer'
-                      _hover={{
-                        background: 'primary.default',
-                        color: 'neutral.white',
-                        borderWidth: '1px',
-                        borderColor: 'primary.default'
-                      }}
-                      w='84px'
-                      h='44px'
-                      border='1px'
-                      borderColor='primary.default'
-                      color='primary.default'
-                      as="span">
+                    cursor='pointer'
+                    _hover={{
+                      background: 'primary.default',
+                      color: 'neutral.white',
+                      borderWidth: '1px',
+                      borderColor: 'primary.default'
+                    }}
+                    w='84px'
+                    h='44px'
+                    border='1px'
+                    borderColor='primary.default'
+                    color='primary.default'
+                    as='span'
+                  >
                     Change
                   </Button>
                   <Input
-                      id="imageUpload"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      style={{ display: 'none' }}
+                    id='imageUpload'
+                    type='file'
+                    accept='image/*'
+                    onChange={handleImageChange}
+                    style={{ display: 'none' }}
                   />
                 </label>
               </Box>
-
 
               <Text color='neutral.gray' fontWeight='bold'>
                 Remove

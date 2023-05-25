@@ -105,7 +105,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                     />
                   </Box>
                 </Box>
-                <Box  display='flex' alignItems='start' flexDirection={isTabletMinMax ? 'row' : 'column'}>
+                <Box display='flex' alignItems='start' flexDirection={isTabletMinMax ? 'row' : 'column'}>
                   <Box display={isTabletMinMax ? 'flex' : 'none'}>
                     <Box mr='12px'>
                       <Image
