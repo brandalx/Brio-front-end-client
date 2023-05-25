@@ -21,7 +21,7 @@ import {
 import 'react-image-gallery/styles/css/image-gallery.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaChevronLeft } from 'react-icons/fa';
-
+import Location from '../../assets/svg/Location';
 import ImageGallery from 'react-image-gallery';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link } from 'react-router-dom';
@@ -30,8 +30,11 @@ import Menu from '../userComponents/Order/Menu';
 import Pickup from '../userComponents/Cart/Pickup';
 import PaymentDetails from '../userComponents/Order/PaymentDetails';
 import OrderStatus from '../../assets/svg/OrderStatus';
+import colorstatus from '../userComponents/UserOrdrs/colorsObject.json';
+import Status from '../../assets/svg/Status';
+import Calendar from '../../assets/svg/Calendar';
 export default function Order() {
-  const [placed, setPlaces] = useState(false);
+  const [placed, setPlaces] = useState(true);
   const [prepared, setPrepared] = useState(false);
   const [delivery, setDelivery] = useState(false);
   const [delivered, setDelivered] = useState(false);
@@ -45,35 +48,108 @@ export default function Order() {
         <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '2fr 1fr' }} gap={5}>
           <GridItem w='100%'>
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
-              <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                Order status
-              </Text>
-
-              <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr 1fr 1fr' }} gap={6}>
-                <GridItem w='100%' h='10' bg='blue.500'>
+              <Flex w='100%' justifyContent='space-between'>
+                <Box w='100%'>
+                  <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                    Order status
+                  </Text>
+                  {/* replace after fetch */}
+                  {/* <Status color={colorstatus[item.status] || 'yellow'} /> */}
+                  <Box mt={3}>
+                    <Box display='flex' alignItems='center'>
+                      {' '}
+                      <Status color={colorstatus['In progress'] || 'yellow'} />
+                      <Text ms={2} color='neutral.black' fontSize='2xs'>
+                        In progress
+                      </Text>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box w='100%' textAlign='end' display='flex' flexDir='column' alignItems='end'>
+                  <Box display='flex' alignItems='center'>
+                    <Text me={2} color='neutral.gray' fontSize='2xs'>
+                      Bahama Breeze
+                    </Text>
+                    <Box>
+                      <Location />
+                    </Box>
+                  </Box>
+                  <Box mt={3} display='flex' alignItems='center'>
+                    <Text me={2} color='neutral.gray' fontSize='2xs'>
+                      21 September 2020, 05:51 am
+                    </Text>
+                    <Box>
+                      <Calendar />
+                    </Box>
+                  </Box>
+                </Box>
+              </Flex>
+              <Grid mt={5} templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr 1fr 1fr 1fr 1fr 1fr' }} gap={2}>
+                <GridItem w='100%' b>
                   <Box>
                     <OrderStatus istrue={placed} number={1} />
-                    Order placed <br /> 23:14
+                    <Box mt={4}>
+                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                        Order placed
+                      </Text>
+                      <Text color='neutral.black' fontSize='3xs'>
+                        23:14
+                      </Text>
+                    </Box>
                   </Box>
                 </GridItem>
-                <GridItem w='100%' h='10' bg='blue.500'>
+                <GridItem w='100%'>
+                  <Box h='100%' display='flex' alignItems='center' pb='70px'>
+                    <Divider borderWidth='2px' borderColor={placed ? '#1ABF70' : 'neutral.gray'} />
+                  </Box>
+                </GridItem>
+                <GridItem w='100%'>
                   <Box>
                     <OrderStatus istrue={prepared} number={2} />
-                    Order being prepared <br /> 23:23
+                    <Box mt={4}>
+                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                        Order being prepared
+                      </Text>
+                      <Text color='neutral.black' fontSize='3xs'>
+                        23:23
+                      </Text>
+                    </Box>
                   </Box>
                 </GridItem>
-                <GridItem w='100%' h='10' bg='blue.500'>
+                <GridItem w='100%'>
+                  <Box h='100%' display='flex' alignItems='center' pb='70px'>
+                    <Divider borderWidth='2px' borderColor={delivery ? '#1ABF70' : 'neutral.gray'} />
+                  </Box>
+                </GridItem>
+                <GridItem w='100%'>
                   <Box>
                     <OrderStatus istrue={delivery} number={3} />
-                    Out for delivery <br />
-                    23:39
+                    <Box mt={4}>
+                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                        Out for delivery
+                      </Text>
+                      <Text color='neutral.black' fontSize='3xs'>
+                        23:39
+                      </Text>
+                    </Box>
                   </Box>
                 </GridItem>
-                <GridItem w='100%' h='10' bg='blue.500'>
+                <GridItem w='100%'>
+                  <Box h='100%' display='flex' alignItems='center' pb='70px'>
+                    <Divider borderWidth='2px' borderColor={delivered ? '#1ABF70' : 'neutral.gray'} />
+                  </Box>
+                </GridItem>
+                <GridItem w='100%'>
                   <Box>
                     <OrderStatus istrue={delivered} number={4} />
-                    Delivered <br />
-                    23:57 approx
+                    <Box mt={4}>
+                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                        Delivered
+                      </Text>
+                      <Text color='neutral.black' fontSize='3xs'>
+                        23:57 approx
+                      </Text>
+                    </Box>
                   </Box>
                 </GridItem>
               </Grid>
