@@ -19,22 +19,28 @@ export default function Menu() {
   //   const cutInfoText = cutInfo(info);
   return (
     <>
-      <Box>
+      <Box pt={4}>
         <Grid templateColumns={{ base: '1fr', md: '1fr 1fr ' }} gap={4}>
           <GridItem w='100%'>
             <Box display='flex' alignItems='center'>
               <Box me={2}>
-                <Image borderRadius='12px' maxH='72px' maxW='72px' src='' alt='image' />
+                <Image
+                  borderRadius='12px'
+                  maxH='72px'
+                  maxW='72px'
+                  src='https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                  alt='image'
+                />
               </Box>
               <Box>
                 <Box>
                   <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
-                    title
+                    Burger Big Smoke
                   </Text>
                 </Box>
                 <Box>
                   <Text color='neutral.grayDark' fontSize='2xs'>
-                    desc
+                    Introducing the sizzling Burger Big Smoke! Sink your teeth into this...
                   </Text>
                 </Box>
               </Box>
@@ -44,11 +50,11 @@ export default function Menu() {
             <Box
               h='100%'
               display='flex'
-              alignItems='center'
-              alignContent='center'
+              alignItems={{ base: 'flex-end', md: 'center' }}
+              alignContent='flex-end'
               justifyContent={{ base: 'center', md: 'flex-end' }}
             >
-              <Grid templateColumns='0.8fr 0.8fr 0.4fr' gap={4}>
+              <Grid templateColumns='1fr 1fr ' gap={4}>
                 <GridItem w='100%'>
                   {' '}
                   <Box display='flex' alignItems='center'>
@@ -64,9 +70,6 @@ export default function Menu() {
                       $12.40
                     </Text>
                   </Box>
-                </GridItem>
-                <GridItem w='100%' mt={1}>
-                  <TrashBox color='#C7C8D2' />
                 </GridItem>
               </Grid>
             </Box>

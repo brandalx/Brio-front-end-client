@@ -1,19 +1,31 @@
 import React from 'react';
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import PaymentCard from '../AccountSettingsPage/PaymentCard';
 
 export default function PaymentDetails() {
   return (
     <Box>
-      <Text fontSize='xs' fontWeight='bold' color='neutral.black'></Text>
-      <Box>Card will be here</Box>
+      <Text mb={4} fontSize='xs' fontWeight='bold' color='neutral.black'>
+        Payment details
+      </Text>
+      <Box>
+        <PaymentCard
+          item={{
+            cardNumber: '1234 5678 9012 3456',
+            expirationDate: '12/24',
+            cardholder: 'John Doe',
+            cardType: 'visa'
+          }}
+        />
+      </Box>
       <Box>
         <Flex my={4} justifyContent='space-between'>
           <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
             Subtotal
           </Text>
           <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-            $
+            $100
           </Text>
         </Flex>
         <Flex my={4} justifyContent='space-between'>
@@ -21,7 +33,23 @@ export default function PaymentDetails() {
             Shipping
           </Text>
           <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-            $
+            $10
+          </Text>
+        </Flex>
+        <Flex my={4} justifyContent='space-between'>
+          <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
+            Tips
+          </Text>
+          <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
+            $5
+          </Text>
+        </Flex>
+        <Flex my={4} justifyContent='space-between'>
+          <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
+            Discount (coupon)
+          </Text>
+          <Text fontWeight='semibold' fontSize='3xs' color='error.default'>
+            $-10
           </Text>
         </Flex>
         <Flex my={4} justifyContent='space-between'>
@@ -29,30 +57,9 @@ export default function PaymentDetails() {
             Total (tax incl.)
           </Text>
           <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
-            $
+            $105
           </Text>
         </Flex>
-        <Link to='/user/checkout'>
-          <Button
-            w='100%'
-            background='primary.default'
-            fontSize='2xs'
-            fontWeight='bold'
-            variant='solid'
-            color='neutral.white'
-            borderWidth='1px'
-            borderColor='primary.default'
-            _hover={{
-              background: 'neutral.white',
-              color: 'primary.default',
-              borderWidth: '1px',
-              borderColor: 'primary.default'
-            }}
-            py={5}
-          >
-            Proceed to checkout
-          </Button>
-        </Link>
       </Box>
     </Box>
   );

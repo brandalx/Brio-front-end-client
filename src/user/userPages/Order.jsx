@@ -84,75 +84,86 @@ export default function Order() {
                   </Box>
                 </Box>
               </Flex>
-              <Grid mt={5} templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr 1fr 1fr 1fr 1fr 1fr' }} gap={2}>
-                <GridItem w='100%' b>
+              <Grid mt={5} templateColumns='0.2fr 1fr 0.2fr 1fr 0.2fr 1fr 0.2fr' gap={2}>
+                <GridItem w='fit-content'>
                   <Box>
                     <OrderStatus istrue={placed} number={1} />
-                    <Box mt={4}>
-                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
-                        Order placed
-                      </Text>
-                      <Text color='neutral.black' fontSize='3xs'>
-                        23:14
-                      </Text>
-                    </Box>
                   </Box>
                 </GridItem>
                 <GridItem w='100%'>
-                  <Box h='100%' display='flex' alignItems='center' pb='70px'>
+                  <Box h='100%' display='flex' alignItems='center'>
                     <Divider borderWidth='2px' borderColor={placed ? '#1ABF70' : 'neutral.gray'} />
                   </Box>
                 </GridItem>
                 <GridItem w='100%'>
                   <Box>
                     <OrderStatus istrue={prepared} number={2} />
-                    <Box mt={4}>
-                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
-                        Order being prepared
-                      </Text>
-                      <Text color='neutral.black' fontSize='3xs'>
-                        23:23
-                      </Text>
-                    </Box>
                   </Box>
                 </GridItem>
                 <GridItem w='100%'>
-                  <Box h='100%' display='flex' alignItems='center' pb='70px'>
+                  <Box h='100%' display='flex' alignItems='center'>
                     <Divider borderWidth='2px' borderColor={delivery ? '#1ABF70' : 'neutral.gray'} />
                   </Box>
                 </GridItem>
                 <GridItem w='100%'>
                   <Box>
                     <OrderStatus istrue={delivery} number={3} />
-                    <Box mt={4}>
-                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
-                        Out for delivery
-                      </Text>
-                      <Text color='neutral.black' fontSize='3xs'>
-                        23:39
-                      </Text>
-                    </Box>
                   </Box>
                 </GridItem>
                 <GridItem w='100%'>
-                  <Box h='100%' display='flex' alignItems='center' pb='70px'>
+                  <Box h='100%' display='flex' alignItems='center'>
                     <Divider borderWidth='2px' borderColor={delivered ? '#1ABF70' : 'neutral.gray'} />
                   </Box>
                 </GridItem>
                 <GridItem w='100%'>
                   <Box>
                     <OrderStatus istrue={delivered} number={4} />
-                    <Box mt={4}>
-                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
-                        Delivered
-                      </Text>
-                      <Text color='neutral.black' fontSize='3xs'>
-                        23:57 approx
-                      </Text>
-                    </Box>
                   </Box>
                 </GridItem>
               </Grid>
+
+              <Flex justifyContent='space-between'>
+                <Box>
+                  <Box mt={4}>
+                    <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                      Order placed
+                    </Text>
+                    <Text color='neutral.black' fontSize='3xs'>
+                      23:14
+                    </Text>
+                  </Box>
+                </Box>
+                <Box>
+                  <Box mt={4}>
+                    <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                      Order being prepared
+                    </Text>
+                    <Text color='neutral.black' fontSize='3xs'>
+                      23:23
+                    </Text>
+                  </Box>
+                </Box>
+                <Box>
+                  <Box mt={4}>
+                    <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                      Out for delivery
+                    </Text>
+                    <Text color='neutral.black' fontSize='3xs'>
+                      23:39
+                    </Text>
+                  </Box>
+                </Box>
+                <Box>
+                  <Box mt={4}>
+                    <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                      Delivered
+                    </Text>
+                    <Text color='neutral.black' fontSize='3xs'>
+                      23:57 approx
+                    </Text>
+                  </Box>
+                </Box>
+              </Flex>
             </Box>
 
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
@@ -172,7 +183,12 @@ export default function Order() {
               <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
                 Shipping address
               </Text>
-              <Pickup />
+              <Pickup
+                item={{
+                  location: 'California',
+                  address: '3891 Ranchview Dr. Richardson, 62639'
+                }}
+              />
             </Box>
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
               <PaymentDetails />
