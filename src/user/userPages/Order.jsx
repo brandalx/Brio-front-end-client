@@ -42,9 +42,14 @@ export default function Order() {
   return (
     <Box>
       <Container maxW='1110px'>
-        <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
-          My cart
-        </Text>
+        <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
+          <Flex alignItems='center'>
+            <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+            <Text color='neutral.black' fontSize='xs'>
+              <Link to='/user/orders'> My orders</Link>
+            </Text>
+          </Flex>
+        </Button>
         <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '2fr 1fr' }} gap={5}>
           <GridItem w='100%'>
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>

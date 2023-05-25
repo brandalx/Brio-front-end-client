@@ -19,6 +19,7 @@ import { arrUsers } from '../../userJSON/ordersList';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 import { API_URL, handelApiGet } from '../../../services/apiServices';
 import colorstatus from './colorsObject.json';
+import { Link } from 'react-router-dom';
 
 export default function OrdersTableBody() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
@@ -61,13 +62,9 @@ export default function OrdersTableBody() {
         arr.map((item) => {
           const formattedDate = formatDate(item.creationDate);
           return (
-            <Tr
-              key={item.orderId}
-              transition='all 0.2s'
-              _hover={{ bg: 'bg', transition: 'all 0.2s', cursor: 'pointer' }}
-            >
+            <Tr key={item._id} transition='all 0.2s' _hover={{ bg: 'bg', transition: 'all 0.2s', cursor: 'pointer' }}>
               <Td pl={isMobile ? '10px' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-                {item.orderId}
+                {item._id.substring(item._id.length - 6, item._id.length)}
               </Td>
               <Td
                 justifyContent='start'
@@ -119,7 +116,7 @@ export default function OrdersTableBody() {
                 fontWeight='bold'
                 color='neutral.black'
               >
-                ${item.totalAmount}
+                ${item.paymentSummary.totalAmount}
               </Td>
               <Td
                 position={isMobile ? 'relative' : ''}
@@ -146,7 +143,10 @@ export default function OrdersTableBody() {
                   </MenuButton>
 
                   <MenuList>
-                    <MenuItem fontWeight='medium'>More info</MenuItem>
+                    {' '}
+                    <Link to='/user/order'>
+                      <MenuItem fontWeight='medium'>More info</MenuItem>{' '}
+                    </Link>
                     <MenuDivider />
                     <MenuItem
                       m={0}
