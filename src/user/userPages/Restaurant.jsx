@@ -14,7 +14,7 @@ export default function Restaurant() {
   const [productArr, setProductAr] = useState([]);
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState(null);
-  const [addressLoading, setAddressLoading] = useState(true);
+
   const params = useParams();
 
   const handleRestaurantApi = async () => {
@@ -63,18 +63,36 @@ export default function Restaurant() {
     }
   }, [restaurantArr]);
 
+  const handleLoadings = () => {
+    if (restaurantArr && productArr && address) {
+      setLoading(false);
+    }
+  };
+  const [showOops, setShowOops] = useState(false);
+
+  useEffect(() => {
+    // Simulate delay for loading the product array
+    setTimeout(() => {
+      if (!loading && productArr.length === 0) {
+        setShowOops(true);
+      }
+    }, 500); // Adjust the delay time as needed
+  }, [loading, productArr]);
+
   const handleMapApi = async () => {
     try {
       const placeUrl = `${REACT_API_opencagedata}${restaurantArr.location}%20${restaurantArr.address}&pretty=1`;
       const resp = await axios.get(placeUrl);
       const data = resp.data;
       setAddress(data);
-      setAddressLoading(false);
     } catch (error) {
       console.log(error);
-      setAddressLoading(false);
+      setLoading(false);
     }
   };
+  useEffect(() => {
+    handleLoadings();
+  }, [restaurantArr, productArr, address]);
 
   return (
     <>
@@ -86,30 +104,28 @@ export default function Restaurant() {
                 <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '0.5fr 1fr' }} gap={4}>
                   <Flex alignItems='center'>
                     <GridItem w='100%'>
-                      <Skeleton borderRadius='16px' isLoaded={!addressLoading}>
-                        {!loading && (
-                          <Image
-                            borderWidth='15px'
-                            borderColor='neutral.white'
-                            borderRadius='16px'
-                            src={restaurantArr.image}
-                          />
-                        )}
+                      <Skeleton borderRadius='16px' isLoaded={!loading}>
+                        <Image
+                          borderWidth='15px'
+                          borderColor='neutral.white'
+                          borderRadius='16px'
+                          src={restaurantArr.image}
+                        />
                       </Skeleton>
                     </GridItem>
                   </Flex>
                   <GridItem w='100%'>
                     {' '}
                     <Flex flexDirection='column' justifyContent='center' h='100%'>
-                      <Skeleton my={2} borderRadius='16px' isLoaded={!addressLoading}>
+                      <Skeleton my={2} borderRadius='16px' isLoaded={!loading}>
                         <Text fontSize='xl' fontWeight='extrabold'>
-                          {!loading && restaurantArr.title}
+                          {restaurantArr.title}
                         </Text>
                       </Skeleton>
-                      <Skeleton my={2} borderRadius='16px' isLoaded={!addressLoading}>
-                        <Text fontSize='2xs'> {!loading && restaurantArr.description}</Text>
+                      <Skeleton my={2} borderRadius='16px' isLoaded={!loading}>
+                        <Text fontSize='2xs'> {restaurantArr.description}</Text>
                       </Skeleton>
-                      <Skeleton borderRadius='16px' isLoaded={!addressLoading} my={2}>
+                      <Skeleton borderRadius='16px' isLoaded={!loading} my={2}>
                         <Box display='flex'>
                           <Box display='flex' alignItems='center' me={2}>
                             {' '}
@@ -126,7 +142,7 @@ export default function Restaurant() {
               </Flex>
             </GridItem>
             <GridItem w='100%' h='auto'>
-              <Skeleton borderRadius='16px' isLoaded={!addressLoading} minH='200px' my={2}>
+              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' my={2}>
                 <Flex alignItems='center'>
                   <Box w='100%'>
                     {address && (
@@ -159,69 +175,80 @@ export default function Restaurant() {
                     templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
                     gap={4}
                   >
-                    {!loading && productArr.length > 0
-                      ? productArr.map((item, index) => {
-                          return (
-                            <Box key={index}>
-                              <Skeleton borderRadius='16px' isLoaded={!addressLoading}>
-                                <ProductCard
-                                  _id={item._id}
-                                  img={item.image}
-                                  title={item.title}
-                                  description={item.description}
-                                  price={item.price}
-                                />
-                              </Skeleton>
-                            </Box>
-                          );
-                        })
-                      : !loading && (
-                          <Skeleton borderRadius='16px' isLoaded={!addressLoading} minH='200px'>
-                            <Box minH='300px' py={5} my={5}>
-                              <Box position='absolute' textAlign='center' w='100%'>
-                                <Box>
-                                  <Box>
-                                    <Flex alignItems='center' justifyContent='center'>
-                                      <Logo />
-                                      <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='1'>
-                                        Brio
-                                      </Text>
-                                    </Flex>
-                                  </Box>
-                                </Box>
-
-                                <Text fontSize='2xl' fontWeight='extrabold' color='primary.default'>
-                                  Ooops
-                                </Text>
-                                <Text fontSize='sm' fontWeight='bold' color='neutral.grayDark'>
-                                  Sorry! This Restaurant does not have any products yet...
-                                </Text>
-                                <Link to='/'>
-                                  <Button
-                                    mt={5}
-                                    px={5}
-                                    borderRadius={100}
-                                    background='primary.default'
-                                    fontWeight='bold'
-                                    variant='solid'
-                                    color='neutral.white'
-                                    borderWidth='1px'
-                                    borderColor='neutral.white'
-                                    _hover={{
-                                      background: 'neutral.white',
-                                      color: 'primary.default',
-                                      borderWidth: '1px',
-                                      borderColor: 'primary.default'
-                                    }}
-                                    py={5}
-                                  >
-                                    Back to home
-                                  </Button>
-                                </Link>
+                    {!loading ? (
+                      productArr.length > 0 ? (
+                        productArr.map((item, index) => (
+                          <Box key={index}>
+                            <Skeleton borderRadius='16px' isLoaded={!loading}>
+                              <ProductCard
+                                _id={item._id}
+                                img={item.image}
+                                title={item.title}
+                                description={item.description}
+                                price={item.price}
+                              />
+                            </Skeleton>
+                          </Box>
+                        ))
+                      ) : showOops ? (
+                        <Box minH='300px' py={5} my={5} textAlign='center'>
+                          <Flex flexDirection='column' alignItems='center' justifyContent='center' height='100%'>
+                            <Box>
+                              <Box>
+                                <Flex alignItems='center' justifyContent='center'>
+                                  <Logo />
+                                  <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='1'>
+                                    Brio
+                                  </Text>
+                                </Flex>
                               </Box>
                             </Box>
-                          </Skeleton>
-                        )}
+                            <Box mt={4}>
+                              <Text fontSize='2xl' fontWeight='extrabold' color='primary.default'>
+                                Ooops
+                              </Text>
+                              <Text fontSize='sm' fontWeight='bold' color='neutral.grayDark'>
+                                Sorry! This Restaurant does not have any products yet...
+                              </Text>
+                              <Link to='/'>
+                                <Button
+                                  mt={5}
+                                  px={5}
+                                  borderRadius={100}
+                                  background='primary.default'
+                                  fontWeight='bold'
+                                  variant='solid'
+                                  color='neutral.white'
+                                  borderWidth='1px'
+                                  borderColor='neutral.white'
+                                  _hover={{
+                                    background: 'neutral.white',
+                                    color: 'primary.default',
+                                    borderWidth: '1px',
+                                    borderColor: 'primary.default'
+                                  }}
+                                  py={5}
+                                >
+                                  Back to home
+                                </Button>
+                              </Link>
+                            </Box>
+                          </Flex>
+                        </Box>
+                      ) : (
+                        <>
+                          <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                          <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                          <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                        </>
+                      )
+                    ) : (
+                      <>
+                        <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                        <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                        <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                      </>
+                    )}
                   </Grid>
                 </Box>
               </Box>
