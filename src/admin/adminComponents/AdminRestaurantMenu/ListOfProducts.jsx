@@ -8,13 +8,11 @@ import {
   Divider,
   Button,
   useBreakpointValue,
-  useMediaQuery,
-  useDisclosure
+  useMediaQuery
 } from '@chakra-ui/react';
 import theme from '../../../utils/theme';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import ModalTextRedactor from './ModalTextRedactor';
-import DragAndDrop from '../../../assets/svg/DragAndDrop';
 import Pen from '../../../assets/svg/Pen';
 import Copy from '../../../assets/svg/Copy';
 import TrashBox from '../../../assets/svg/TrashBox';
@@ -25,9 +23,9 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
   const [isTablet] = useMediaQuery('(max-width: 767px)');
   const [isTabletMinMax] = useMediaQuery('(min-width: 576px) and (max-width: 767px)');
   const [isDek] = useMediaQuery('(min-width: 768px)');
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const fetchProducts = async () => {
     try {
@@ -133,7 +131,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                       ${item.price}
                     </Text>
                     <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
-                    <Button onClick={onOpen}>
+                    <Button onClick={() => setSelectedProduct(item)}>
                       <Pen />
                     </Button>
                     <Copy />
@@ -147,7 +145,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                     ${item.price}
                   </Text>
                   <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
-                  <Button onClick={onOpen}>
+                  <Button onClick={() => setSelectedProduct(item)}>
                     <Pen />
                   </Button>
                   <Copy />
@@ -155,14 +153,9 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                 </Box>
               )}
               <Divider mt='20px' mb='16px' />
-              <ModalTextRedactor
-                isOpen={isOpen}
-                onOpen={onOpen}
-                onClose={onClose}
-                title={item.title}
-                item={item}
-                description={item.description}
-              />
+              {selectedProduct === item && (
+                <ModalTextRedactor isOpen={true} onClose={() => setSelectedProduct(null)} item={item} />
+              )}
               <Box display='flex' flexDirection='row' justifyContent='space-between'>
                 <Box mb={['16px', '16px', 0]}>
                   <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>

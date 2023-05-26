@@ -15,6 +15,8 @@ import {
   useMediaQuery
 } from '@chakra-ui/react';
 import { useForm, Controller } from 'react-hook-form';
+import { API_URL } from '../../../services/apiServices';
+import axios from 'axios';
 
 export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
   const initialRef = React.useRef(null);
@@ -24,8 +26,24 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
   const { control, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data); // Handle form submission data here
-    onClose(); // Close the modal
+    // Объединение данных формы с константными данными и отправка PATCH-запроса
+    const combinedData = {
+      ...data,
+      _id: item._id, // use the item's _id
+      restaurantRef: item.restaurantRef, // use the item's restaurantRef
+      categoryName: item.categoryName, // use the item's categoryName
+      image: item.image // use the item's images
+    };
+
+    axios
+      .patch(`http://localhost:3001/products/${item._id}`, combinedData)
+      .then((response) => {
+        console.log(response);
+        onClose(); // Close the modal
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (

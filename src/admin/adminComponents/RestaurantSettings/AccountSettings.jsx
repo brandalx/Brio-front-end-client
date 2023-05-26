@@ -14,9 +14,29 @@ import {
   Checkbox,
   Divider
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { API_URL, handleApiGet } from '../../../services/apiServices';
 
 export default function AccountSettings() {
+  const [restaurant, setRestaurant] = useState([]);
+
+  const fetchOrders = async () => {
+    try {
+      const response = await handleApiGet(API_URL + '/restaurants');
+      setRestaurant(response);
+      console.log(restaurant);
+      console.log(response);
+
+      // setLoading(false);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
   return (
     <Box>
       <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>

@@ -39,6 +39,22 @@ export const handleApiPost = async (_url, data) => {
   }
 };
 
+export const handleApiPatch = async (url, data) => {
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Could not fetch ${url}, status: ${response.status}`);
+  }
+
+  return await response.json();
+};
+
 // for post,put,patch,delete methods
 export const handleApiMethod = async (_url, _method, _body = {}) => {
   try {

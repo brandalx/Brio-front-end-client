@@ -1,8 +1,17 @@
 import {
-  Box, Button,
+  Box,
+  Button,
   Flex,
   IconButton,
-  Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Skeleton,
+  Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Skeleton,
   Table,
   TableCaption,
   TableContainer,
@@ -28,11 +37,9 @@ export default function OrdersTableBody() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedOrder, setSelectedOrder] = React.useState(null);
 
-
   const onClose = () => setIsOpen(false);
   const fetchOrders = async () => {
     try {
-
       const response = await handleApiGet(API_URL + '/users/getAllUsers');
 
       setOrdersOfUsers(response);
@@ -51,7 +58,6 @@ export default function OrdersTableBody() {
     <Tbody>
       {Array.isArray(ordersOfUsers) &&
         ordersOfUsers.map((user) => {
-
           return user.orders.map((order) => {
             return (
               <Tr
@@ -59,9 +65,20 @@ export default function OrdersTableBody() {
                 transition='all 0.2s'
                 _hover={{ bg: 'bg', transition: 'all 0.2s', cursor: 'pointer' }}
               >
-                <Td pl={isMobile ? '10px' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+                <Td
+                  pl={isMobile ? '10px' : ''}
+                  pt='19.5px'
+                  pb='19.5px'
+                  fontSize='2xs'
+                  color='neutral.grayDark'
+                  textOverflow='ellipsis'
+                  overflow='hidden'
+                  whiteSpace='nowrap'
+                  maxW='100px'
+                >
                   {order.orderId}
                 </Td>
+
                 <Td
                   justifyContent='start'
                   flexDirection='row-reverse'
@@ -91,8 +108,11 @@ export default function OrdersTableBody() {
                   {order.creationDate}
                 </Td>
                 <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-                  {order.creationTime}
+                  {new Date(order.creationTime).toDateString() +
+                    ' ' +
+                    new Date(order.creationTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </Td>
+
                 <Td
                   pr={isMobile ? '0' : ''}
                   pl={isMobile ? '5px' : ''}
@@ -134,64 +154,62 @@ export default function OrdersTableBody() {
                   {order.paymentSummary.totalAmount} {/* here's the total amount spent per order */}
                 </Td>
                 <Td
-                    position={isMobile ? 'relative' : ''}
-                    right={isMobile ? '10px' : '0'}
-                    pl={0}
-                    pr={0}
-                    pt='10px'
-                    pb='10px'
-                    fontSize='2xs'
-                    fontWeight='bold'
-                    color='neutral.black'
+                  position={isMobile ? 'relative' : ''}
+                  right={isMobile ? '10px' : '0'}
+                  pl={0}
+                  pr={0}
+                  pt='10px'
+                  pb='10px'
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  color='neutral.black'
                 >
                   <IconButton
-                      icon={<ThreeDots />}
-                      onClick={() => {
-                        if (order.status === 'Canceled') {
-                          setIsOpen(true);
-                          setSelectedOrder(order);
-                        }
-                      }}
+                    icon={<ThreeDots />}
+                    onClick={() => {
+                      if (order.status === 'Canceled') {
+                        setIsOpen(true);
+                        setSelectedOrder(order);
+                      }
+                    }}
                   />
-                  <Modal
-                      blockScrollOnMount={false}
-                      isOpen={isOpen}
-                      onClose={onClose}
-                      zIndex='9999999'
-                  >
+                  <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
                     <ModalOverlay
-                        width='100%'
-                        sx={{
-                          position: 'fixed',
-                          top: '0',
-                          left: '0',
-                          width: '100%',
-                          height: '100%',
-                          zIndex: '10',
-                          bg: 'rgba(0,0,0,0.6)',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center'
-                        }}
+                      width='100%'
+                      sx={{
+                        position: 'fixed',
+                        top: '0',
+                        left: '0',
+                        width: '100%',
+                        height: '100%',
+                        zIndex: '10',
+                        bg: 'rgba(0,0,0,0.6)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
                     />
 
                     <ModalContent
-                        position='relative'
-                        boxSizing='content-box'
-                        width={['100%', '100%', '100%', '540px']}
-                        maxW='96%'
-                        MaxH='568px'
+                      position='relative'
+                      boxSizing='content-box'
+                      width={['100%', '100%', '100%', '540px']}
+                      maxW='96%'
+                      MaxH='568px'
                     >
                       <ModalHeader>Order Details</ModalHeader>
                       <ModalCloseButton />
-                      <ModalBody>
-                        {/* Display order details here */}
-                      </ModalBody>
+                      <ModalBody>{/* Display order details here */}</ModalBody>
                       <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={onClose}>
+                        <Button colorScheme='blue' mr={3} onClick={onClose}>
                           Close
                         </Button>
-                        <Button variant="ghost" onClick={() => { /* re-order request logic */ }}>
+                        <Button
+                          variant='ghost'
+                          onClick={() => {
+                            /* re-order request logic */
+                          }}
+                        >
                           Re-Order
                         </Button>
                       </ModalFooter>
@@ -203,5 +221,5 @@ export default function OrdersTableBody() {
           });
         })}
     </Tbody>
-);
+  );
 }
