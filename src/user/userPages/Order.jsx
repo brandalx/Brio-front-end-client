@@ -24,7 +24,7 @@ import { FaChevronLeft } from 'react-icons/fa';
 import Location from '../../assets/svg/Location';
 import ImageGallery from 'react-image-gallery';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { API_URL, handelApiGet } from '../../services/apiServices';
 import Menu from '../userComponents/Order/Menu';
 import Pickup from '../userComponents/Cart/Pickup';
@@ -42,17 +42,18 @@ export default function Order() {
   const [userArr, setUserArr] = useState([]);
   const [ordersArr, setOrdersArr] = useState([]);
   const [restaurantArr, setRestaurantArr] = useState([]);
+  const params = useParams();
   const handleApi = async () => {
     const userurl = API_URL + '/users/6464085ed67f7b944b642799';
-    const orderurl = API_URL + '/orders/64700fceffe3ac434de74548';
-
-    const restauranturl = API_URL + '/restaurants/646677ee6b29f689804a2855';
+    const orderurl = API_URL + '/orders/' + params['id'];
 
     try {
       // const data = await handelApiGet(userurl);
       const user = await handelApiGet(userurl);
       const order = await handelApiGet(orderurl);
-
+      const restauranturl = API_URL + '/restaurants/' + order.restaurantRef;
+      console.log('here is');
+      console.log(restauranturl);
       const restaurant = await handelApiGet(restauranturl);
       setUserArr(user);
       setOrdersArr(order);
@@ -137,11 +138,9 @@ export default function Order() {
                     <Skeleton my={2} minH='10px' w='25%' borderRadius='16px' isLoaded={!loading}>
                       <Box display='flex' alignItems='center'>
                         {' '}
-                        {!loading && (
-                          <Status color={colorstatus[findOrder('64700fceffe3ac434de74548').status] || 'yellow'} />
-                        )}
+                        {!loading && <Status color={colorstatus[findOrder(params['id']).status] || 'yellow'} />}
                         <Text ms={2} color='neutral.black' fontSize='2xs'>
-                          {!loading && findOrder('64700fceffe3ac434de74548').status}
+                          {!loading && findOrder(params['id']).status}
                         </Text>
                       </Box>
                     </Skeleton>
@@ -291,7 +290,7 @@ export default function Order() {
             </Box>
             <Skeleton minH='250px' borderRadius='16px' isLoaded={!loading}>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
-                {!loading && <PaymentDetails orders={findOrder('64700fceffe3ac434de74548')} item={userArr} />}
+                {!loading && <PaymentDetails orders={findOrder(params['id'])} item={userArr} />}
               </Box>
             </Skeleton>
           </GridItem>

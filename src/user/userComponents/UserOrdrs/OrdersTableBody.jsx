@@ -158,7 +158,7 @@ export default function OrdersTableBody() {
 
                   <MenuList>
                     {' '}
-                    <Link to='/user/order'>
+                    <Link to={'/user/order/' + item._id}>
                       <MenuItem fontWeight='medium'>More info</MenuItem>{' '}
                     </Link>
                     <MenuDivider />
