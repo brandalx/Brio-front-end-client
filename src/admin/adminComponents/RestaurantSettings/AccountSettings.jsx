@@ -19,22 +19,32 @@ import { API_URL, handleApiGet } from '../../../services/apiServices';
 
 export default function AccountSettings() {
   const [restaurant, setRestaurant] = useState([]);
-
-  const fetchOrders = async () => {
+  const [image, setImage] = useState(null);
+  const handleImageChange = (event) => {
+    setImage(URL.createObjectURL(event.target.files[0]));
+  };
+  const fetchRestaurants = async () => {
     try {
       const response = await handleApiGet(API_URL + '/restaurants');
       setRestaurant(response);
-      console.log(restaurant);
-      console.log(response);
-
-      // setLoading(false);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error fetching restaurants:', error);
     }
   };
 
   useEffect(() => {
-    fetchOrders();
+    console.log(restaurant);
+
+    fetchRestaurants();
+  }, []);
+
+  useEffect(() => {
+    console.log(restaurant);
+  }, [restaurant]);
+
+  useEffect(() => {
+    fetchRestaurants();
+    console.log(restaurant[0]);
   }, []);
 
   return (
@@ -53,29 +63,42 @@ export default function AccountSettings() {
                 borderRadius='10px'
                 boxSize='80px'
                 objectFit='cover'
-                src='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                src={
+                  image ||
+                  (restaurant.length > 0
+                    ? restaurant[0].image
+                    : 'https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg')
+                }
                 alt='Avatar'
               />
             </Box>
-            <Button
-              background='neutral.white'
-              fontSize='2xs'
-              fontWeight='bold'
-              variant='solid'
-              color='primary.default'
-              borderWidth='1px'
-              borderColor='primary.default'
-              _hover={{
-                background: 'primary.default',
-                color: 'neutral.white',
-                borderWidth: '1px',
-                borderColor: 'primary.default'
-              }}
-              py={5}
-              me='20px'
-            >
-              Change
-            </Button>
+            <label htmlFor='imageUpload' style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <Button
+                cursor='pointer'
+                _hover={{
+                  background: 'primary.default',
+                  color: 'neutral.white',
+                  borderWidth: '1px',
+                  borderColor: 'primary.default'
+                }}
+                w='84px'
+                h='44px'
+                border='1px'
+                borderColor='primary.default'
+                color='primary.default'
+                as='span'
+                mr='10px'
+              >
+                Change
+              </Button>
+              <Input
+                id='imageUpload'
+                type='file'
+                accept='image/*'
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
+            </label>
             <Button
               borderColor='neutral.white'
               borderWidth='1px'
@@ -110,7 +133,7 @@ export default function AccountSettings() {
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  placeholder='Restaurant Name'
+                  defaultValue={restaurant.length > 0 ? restaurant[0].title : ''}
                 />
               </FormControl>
             </GridItem>
@@ -122,11 +145,11 @@ export default function AccountSettings() {
 
                 <Input
                   type='email'
+                  defaultValue={restaurant.length > 0 ? restaurant[0].email : ''}
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  placeholder='example@gmail.com'
                 />
               </FormControl>
             </GridItem>
@@ -142,7 +165,7 @@ export default function AccountSettings() {
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  placeholder='name@example.com'
+                  defaultValue={restaurant.length > 0 ? restaurant[0].phoneNumber[0] : ''}
                 />
               </FormControl>
             </GridItem>
@@ -153,7 +176,7 @@ export default function AccountSettings() {
             <GridItem w='100%'>
               <FormControl id='name'>
                 <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                  Restaurant name
+                  Address
                 </FormLabel>
 
                 <Textarea
@@ -162,19 +185,14 @@ export default function AccountSettings() {
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  placeholder='Restaurant Adress'
+                  defaultValue={restaurant.length > 0 ? restaurant[0].address : ''}
                 />
               </FormControl>
             </GridItem>
 
             <GridItem w='100%'>
               <FormControl id='phone'>
-                <FormLabel
-                  fontWeight='semibold'
-                  placeholder='Restaurant desciption'
-                  fontSize='3xs'
-                  color='neutral.grayDark'
-                >
+                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                   Description
                 </FormLabel>
 
@@ -184,7 +202,7 @@ export default function AccountSettings() {
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  placeholder='name@example.com'
+                  defaultValue={restaurant.length > 0 ? restaurant[0].description : ''}
                 />
               </FormControl>
             </GridItem>
