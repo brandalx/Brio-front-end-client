@@ -34,13 +34,86 @@ import colorstatus from '../userComponents/UserOrdrs/colorsObject.json';
 import Status from '../../assets/svg/Status';
 import Calendar from '../../assets/svg/Calendar';
 export default function Order() {
-  const [placed, setPlaces] = useState(true);
+  const [placed, setPlaced] = useState(true);
   const [prepared, setPrepared] = useState(false);
   const [delivery, setDelivery] = useState(false);
   const [delivered, setDelivered] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [userArr, setUserArr] = useState([]);
+  const [ordersArr, setOrdersArr] = useState([]);
+  const [restaurantArr, setRestaurantArr] = useState([]);
+  const handleApi = async () => {
+    const userurl = API_URL + '/users/6464085ed67f7b944b642799';
+    const orderurl = API_URL + '/orders/64700fceffe3ac434de74548';
+
+    const restauranturl = API_URL + '/restaurants/646677ee6b29f689804a2855';
+
+    try {
+      // const data = await handelApiGet(userurl);
+      const user = await handelApiGet(userurl);
+      const order = await handelApiGet(orderurl);
+
+      const restaurant = await handelApiGet(restauranturl);
+      setUserArr(user);
+      setOrdersArr(order);
+      setRestaurantArr(restaurant);
+      console.log(user);
+      console.log(order);
+      console.log(restaurant);
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  const findOrder = (orderId) => {
+    const order = userArr.orders.find((item) => item.orderId === orderId);
+    if (order) {
+      return order.status;
+    } else {
+      return 'Status error';
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+    return formattedDate;
+  };
+
+  useEffect(() => {
+    handleApi();
+  }, []);
+
+  const updateState = () => {
+    if (placed && !prepared) {
+      setPrepared(true);
+    } else if (placed && prepared && !delivery) {
+      setDelivery(true);
+    } else if (placed && prepared && delivery && !delivered) {
+      setDelivered(true);
+    }
+  };
+
+  useEffect(() => {
+    const timer = setInterval(updateState, 60 * 1000);
+
+    return () => clearInterval(timer);
+  }, [placed, prepared, delivery, delivered]);
+  function formatTime(date) {
+    const options = { hour12: true, hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    return new Date(date).toLocaleTimeString('en-US', options);
+  }
 
   return (
     <Box>
+      {/* some of the data here is still be static and will changed in the future */}
       <Container maxW='1110px'>
         <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
           <Flex alignItems='center'>
@@ -65,7 +138,7 @@ export default function Order() {
                       {' '}
                       <Status color={colorstatus['In progress'] || 'yellow'} />
                       <Text ms={2} color='neutral.black' fontSize='2xs'>
-                        In progress
+                        {!loading && findOrder('64700fceffe3ac434de74548')}
                       </Text>
                     </Box>
                   </Box>
@@ -73,7 +146,8 @@ export default function Order() {
                 <Box w='100%' textAlign='end' display='flex' flexDir='column' alignItems='end'>
                   <Box display='flex' alignItems='center'>
                     <Text me={2} color='neutral.gray' fontSize='2xs'>
-                      Bahama Breeze
+                      {/* for second release will still static after that will changed to dynamic according on picked address id */}
+                      {!loading && userArr.address[0].city}
                     </Text>
                     <Box>
                       <Location />
@@ -81,7 +155,7 @@ export default function Order() {
                   </Box>
                   <Box mt={3} display='flex' alignItems='center'>
                     <Text me={2} color='neutral.gray' fontSize='2xs'>
-                      21 September 2020, 05:51 am
+                      {!loading && formatDate(ordersArr.orderedTime)}
                     </Text>
                     <Box>
                       <Calendar />
@@ -134,7 +208,7 @@ export default function Order() {
                       Order placed
                     </Text>
                     <Text color='neutral.black' fontSize='3xs'>
-                      23:14
+                      {placed ? formatTime(Date.now()) : ''}
                     </Text>
                   </Box>
                 </Box>
