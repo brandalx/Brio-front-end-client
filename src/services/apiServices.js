@@ -39,21 +39,28 @@ export const handleApiPost = async (_url, data) => {
   }
 };
 
-export const handleApiPatch = async (url, data) => {
-  const response = await fetch(url, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
+// apiServices.js
 
-  if (!response.ok) {
-    throw new Error(`Could not fetch ${url}, status: ${response.status}`);
+export const handleApiDelete = async (url) => {
+  try {
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error deleting product');
+    }
+
+    // Return the response if needed
+    return response.json();
+  } catch (error) {
+    throw new Error(error.message);
   }
-
-  return await response.json();
 };
+
 
 // for post,put,patch,delete methods
 export const handleApiMethod = async (_url, _method, _body = {}) => {
