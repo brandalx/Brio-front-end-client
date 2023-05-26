@@ -102,7 +102,7 @@ export default function Order() {
   };
 
   useEffect(() => {
-    const timer = setInterval(updateState, 60 * 1000);
+    const timer = setInterval(updateState, 60 * 100);
 
     return () => clearInterval(timer);
   }, [placed, prepared, delivery, delivered]);

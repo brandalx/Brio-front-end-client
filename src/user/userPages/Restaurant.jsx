@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { API_URL, handelApiGet } from '../../services/apiServices';
 import axios from 'axios';
 import { REACT_API_opencagedata, REACT_APP_MAPBOX } from '../../../env';
@@ -14,9 +14,10 @@ export default function Restaurant() {
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState(null);
   const [addressLoading, setAddressLoading] = useState(true);
+  const params = useParams();
 
   const handleRestaurantApi = async () => {
-    const url = API_URL + '/restaurants';
+    const url = API_URL + '/restaurants/' + params['id'];
 
     try {
       setLoading(true);
@@ -48,17 +49,17 @@ export default function Restaurant() {
   useEffect(() => {
     handleRestaurantApi();
     handleProductApi();
-  }, []);
+  }, [params]);
 
   useEffect(() => {
-    if (restaurantArr.length > 0) {
+    if (restaurantArr) {
       handleMapApi();
     }
   }, [restaurantArr]);
 
   const handleMapApi = async () => {
     try {
-      const placeUrl = `${REACT_API_opencagedata}${restaurantArr[0].location}%20${restaurantArr[0].address}&pretty=1`;
+      const placeUrl = `${REACT_API_opencagedata}${restaurantArr.location}%20${restaurantArr.address}&pretty=1`;
       const resp = await axios.get(placeUrl);
       const data = resp.data;
       setAddress(data);
@@ -80,12 +81,12 @@ export default function Restaurant() {
                   <Flex alignItems='center'>
                     <GridItem w='100%'>
                       <Skeleton borderRadius='16px' isLoaded={!addressLoading}>
-                        {!loading && restaurantArr.length > 0 && (
+                        {!loading && (
                           <Image
                             borderWidth='15px'
                             borderColor='neutral.white'
                             borderRadius='16px'
-                            src={restaurantArr[0].image}
+                            src={restaurantArr.image}
                           />
                         )}
                       </Skeleton>
@@ -96,14 +97,11 @@ export default function Restaurant() {
                     <Flex flexDirection='column' justifyContent='center' h='100%'>
                       <Skeleton my={2} borderRadius='16px' isLoaded={!addressLoading}>
                         <Text fontSize='xl' fontWeight='extrabold'>
-                          {!loading && restaurantArr.length > 0 && restaurantArr[0].title}
+                          {!loading && restaurantArr.title}
                         </Text>
                       </Skeleton>
                       <Skeleton my={2} borderRadius='16px' isLoaded={!addressLoading}>
-                        <Text fontSize='2xs'>
-                          {' '}
-                          {!loading && restaurantArr.length > 0 && restaurantArr[0].description}
-                        </Text>
+                        <Text fontSize='2xs'> {!loading && restaurantArr.description}</Text>
                       </Skeleton>
                       <Skeleton borderRadius='16px' isLoaded={!addressLoading} my={2}>
                         <Box display='flex'>
@@ -112,8 +110,7 @@ export default function Restaurant() {
                             <AiOutlineClockCircle color='#828282' />
                           </Box>
                           <Text color='neutral.gray' fontSize='3xs'>
-                            {!loading && restaurantArr.length > 0 && restaurantArr[0].time} min • ${' '}
-                            {!loading && restaurantArr.length > 0 && restaurantArr[0].minprice} min sum
+                            {!loading && restaurantArr.time} min • $ {!loading && restaurantArr.minprice} min sum
                           </Text>
                         </Box>
                       </Skeleton>

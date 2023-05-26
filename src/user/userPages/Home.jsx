@@ -99,6 +99,7 @@ export default function Home() {
                     <Box key={index}>
                       <Skeleton borderRadius='16px' isLoaded={!loading}>
                         <RestaurantCard
+                          _id={item._id}
                           img={item.image}
                           title={item.title}
                           time={item.time}
