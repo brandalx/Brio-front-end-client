@@ -71,7 +71,7 @@ export default function Order() {
   const findOrder = (orderId) => {
     const order = userArr.orders.find((item) => item.orderId === orderId);
     if (order) {
-      return order.status;
+      return order;
     } else {
       return 'Status error';
     }
@@ -137,9 +137,11 @@ export default function Order() {
                     <Skeleton my={2} minH='10px' w='25%' borderRadius='16px' isLoaded={!loading}>
                       <Box display='flex' alignItems='center'>
                         {' '}
-                        {!loading && <Status color={colorstatus[findOrder('64700fceffe3ac434de74548')] || 'yellow'} />}
+                        {!loading && (
+                          <Status color={colorstatus[findOrder('64700fceffe3ac434de74548').status] || 'yellow'} />
+                        )}
                         <Text ms={2} color='neutral.black' fontSize='2xs'>
-                          {!loading && findOrder('64700fceffe3ac434de74548')}
+                          {!loading && findOrder('64700fceffe3ac434de74548').status}
                         </Text>
                       </Box>
                     </Skeleton>
@@ -287,9 +289,11 @@ export default function Order() {
                 }}
               />
             </Box>
-            <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
-              <PaymentDetails />
-            </Box>
+            <Skeleton minH='250px' borderRadius='16px' isLoaded={!loading}>
+              <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
+                {!loading && <PaymentDetails orders={findOrder('64700fceffe3ac434de74548')} item={userArr} />}
+              </Box>
+            </Skeleton>
           </GridItem>
         </Grid>
       </Container>

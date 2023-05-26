@@ -3,7 +3,8 @@ import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import PaymentCard from '../AccountSettingsPage/PaymentCard';
 
-export default function PaymentDetails() {
+export default function PaymentDetails({ item, orders }) {
+  console.log(orders);
   return (
     <Box>
       <Text mb={4} fontSize='xs' fontWeight='bold' color='neutral.black'>
@@ -25,7 +26,7 @@ export default function PaymentDetails() {
             Subtotal
           </Text>
           <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-            $100
+            $ {orders.paymentSummary.subtotal}
           </Text>
         </Flex>
         <Flex my={4} justifyContent='space-between'>
@@ -33,7 +34,7 @@ export default function PaymentDetails() {
             Shipping
           </Text>
           <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-            $10
+            $ {orders.paymentSummary.shipping}
           </Text>
         </Flex>
         <Flex my={4} justifyContent='space-between'>
@@ -41,7 +42,7 @@ export default function PaymentDetails() {
             Tips
           </Text>
           <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-            $5
+            $ {orders.paymentSummary.tips}
           </Text>
         </Flex>
         <Flex my={4} justifyContent='space-between'>
@@ -49,7 +50,7 @@ export default function PaymentDetails() {
             Discount (coupon)
           </Text>
           <Text fontWeight='semibold' fontSize='3xs' color='error.default'>
-            $-10
+            $ {orders.paymentSummary.discount}
           </Text>
         </Flex>
         <Flex my={4} justifyContent='space-between'>
@@ -57,7 +58,7 @@ export default function PaymentDetails() {
             Total (tax incl.)
           </Text>
           <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
-            $105
+            $ {orders.paymentSummary.totalAmount}
           </Text>
         </Flex>
       </Box>
