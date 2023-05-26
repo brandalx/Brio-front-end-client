@@ -335,12 +335,14 @@ export default function Order() {
               <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
                 Shipping address
               </Text>
-              <Pickup
-                item={{
-                  location: restaurantArr.location,
-                  address: restaurantArr.address
-                }}
-              />
+              {!loading && (
+                <Pickup
+                  item={{
+                    location: restaurantArr.location,
+                    address: restaurantArr.address
+                  }}
+                />
+              )}
             </Box>
             <Skeleton minH='250px' borderRadius='16px' isLoaded={!loading}>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
