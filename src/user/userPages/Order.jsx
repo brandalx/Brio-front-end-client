@@ -132,11 +132,11 @@ export default function Order() {
                     Order status
                   </Text>
                   {/* replace after fetch */}
-                  {/* <Status color={colorstatus[item.status] || 'yellow'} /> */}
+
                   <Box mt={3}>
                     <Box display='flex' alignItems='center'>
                       {' '}
-                      <Status color={colorstatus['In progress'] || 'yellow'} />
+                      {!loading && <Status color={colorstatus[findOrder('64700fceffe3ac434de74548')] || 'yellow'} />}
                       <Text ms={2} color='neutral.black' fontSize='2xs'>
                         {!loading && findOrder('64700fceffe3ac434de74548')}
                       </Text>
@@ -208,6 +208,7 @@ export default function Order() {
                       Order placed
                     </Text>
                     <Text color='neutral.black' fontSize='3xs'>
+                      {/* todo: checkif order already delivered */}
                       {placed ? formatTime(Date.now()) : ''}
                     </Text>
                   </Box>
@@ -218,7 +219,7 @@ export default function Order() {
                       Order being prepared
                     </Text>
                     <Text color='neutral.black' fontSize='3xs'>
-                      23:23
+                      {prepared ? formatTime(Date.now()) : ''}
                     </Text>
                   </Box>
                 </Box>
@@ -228,7 +229,7 @@ export default function Order() {
                       Out for delivery
                     </Text>
                     <Text color='neutral.black' fontSize='3xs'>
-                      23:39
+                      {delivery ? formatTime(Date.now()) : ''}
                     </Text>
                   </Box>
                 </Box>
@@ -238,7 +239,7 @@ export default function Order() {
                       Delivered
                     </Text>
                     <Text color='neutral.black' fontSize='3xs'>
-                      23:57 approx
+                      {delivered ? formatTime(Date.now()) : ''}
                     </Text>
                   </Box>
                 </Box>
@@ -247,13 +248,21 @@ export default function Order() {
 
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
               <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                Menu 4 meals
+                Menu {!loading && ordersArr.products.length} meals
               </Text>
 
               <Box pt={5}>
-                <Menu />
-                <Menu />
-                <Menu />
+                {loading && (
+                  <Box>
+                    <Skeleton h='60px' borderRadius='16px' isLoaded={!loading} my={2} />
+                    <Skeleton h='60px' borderRadius='16px' isLoaded={!loading} my={2} />
+                    <Skeleton h='60px' borderRadius='16px' isLoaded={!loading} my={2} />
+                  </Box>
+                )}
+                {!loading &&
+                  ordersArr.products.map((item, key) => {
+                    return <Menu key={key} item={item} />;
+                  })}
               </Box>
             </Box>
           </GridItem>
