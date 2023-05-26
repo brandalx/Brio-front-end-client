@@ -27,18 +27,32 @@ export default function OrdersTableBody() {
 
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
+  const [restaurantar, setRestaurantar] = useState([]);
   let skeletonarr = [1, 2, 3, 4];
   const handleApi = async () => {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
+    const urlrestaurant = API_URL + '/restaurants';
     try {
       const data = await handelApiGet(url);
+      const datarestaurants = await handelApiGet(urlrestaurant);
       setArr(data.orders);
+      setRestaurantar(datarestaurants);
       console.log(data);
+      console.log(datarestaurants);
 
       setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log(error);
+    }
+  };
+
+  const getRestaurantName = (id) => {
+    const restaurant = restaurantar.find((restaurant) => restaurant.id === id);
+    if (restaurant) {
+      return restaurant.title;
+    } else {
+      return 'User not found';
     }
   };
 
@@ -78,7 +92,7 @@ export default function OrdersTableBody() {
                 fontWeight='semibold'
               >
                 <Box bg='neutral.grayLightest' borderRadius='100px' px={4} py={1}>
-                  {item.restaurant}
+                  {getRestaurantName()}
                 </Box>
               </Td>
               <Td pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
