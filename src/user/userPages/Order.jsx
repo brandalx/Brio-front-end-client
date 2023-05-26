@@ -134,33 +134,40 @@ export default function Order() {
                   {/* replace after fetch */}
 
                   <Box mt={3}>
-                    <Box display='flex' alignItems='center'>
-                      {' '}
-                      {!loading && <Status color={colorstatus[findOrder('64700fceffe3ac434de74548')] || 'yellow'} />}
-                      <Text ms={2} color='neutral.black' fontSize='2xs'>
-                        {!loading && findOrder('64700fceffe3ac434de74548')}
-                      </Text>
-                    </Box>
+                    <Skeleton my={2} minH='10px' w='25%' borderRadius='16px' isLoaded={!loading}>
+                      <Box display='flex' alignItems='center'>
+                        {' '}
+                        {!loading && <Status color={colorstatus[findOrder('64700fceffe3ac434de74548')] || 'yellow'} />}
+                        <Text ms={2} color='neutral.black' fontSize='2xs'>
+                          {!loading && findOrder('64700fceffe3ac434de74548')}
+                        </Text>
+                      </Box>
+                    </Skeleton>
                   </Box>
                 </Box>
                 <Box w='100%' textAlign='end' display='flex' flexDir='column' alignItems='end'>
-                  <Box display='flex' alignItems='center'>
-                    <Text me={2} color='neutral.gray' fontSize='2xs'>
-                      {/* for second release will still static after that will changed to dynamic according on picked address id */}
-                      {!loading && userArr.address[0].city}
-                    </Text>
-                    <Box>
-                      <Location />
+                  <Skeleton my={2} borderRadius='16px' h='10px' isLoaded={!loading}>
+                    <Box display='flex' alignItems='center'>
+                      <Text me={2} color='neutral.gray' fontSize='2xs'>
+                        {/* for second release will still static after that will changed to dynamic according on picked address id */}
+                        {!loading && userArr.address[0].city}
+                      </Text>
+
+                      <Box>
+                        <Location />
+                      </Box>
                     </Box>
-                  </Box>
-                  <Box mt={3} display='flex' alignItems='center'>
-                    <Text me={2} color='neutral.gray' fontSize='2xs'>
-                      {!loading && formatDate(ordersArr.orderedTime)}
-                    </Text>
-                    <Box>
-                      <Calendar />
+                  </Skeleton>
+                  <Skeleton h='10px' my={2} borderRadius='16px' isLoaded={!loading}>
+                    <Box mt={3} display='flex' alignItems='center'>
+                      <Text me={2} color='neutral.gray' fontSize='2xs'>
+                        {!loading && formatDate(ordersArr.orderedTime)}
+                      </Text>
+                      <Box>
+                        <Calendar />
+                      </Box>
                     </Box>
-                  </Box>
+                  </Skeleton>
                 </Box>
               </Flex>
               <Grid mt={5} templateColumns='0.2fr 1fr 0.2fr 1fr 0.2fr 1fr 0.2fr' gap={2}>
@@ -247,9 +254,11 @@ export default function Order() {
             </Box>
 
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
-              <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                Menu {!loading && ordersArr.products.length} meals
-              </Text>
+              <Skeleton borderRadius='16px' isLoaded={!loading}>
+                <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                  Menu {!loading && ordersArr.products.length} meals
+                </Text>
+              </Skeleton>
 
               <Box pt={5}>
                 {loading && (
