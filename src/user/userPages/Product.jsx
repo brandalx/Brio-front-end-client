@@ -24,21 +24,27 @@ import { FaChevronLeft } from 'react-icons/fa';
 
 import ImageGallery from 'react-image-gallery';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { API_URL, handelApiGet } from '../../services/apiServices';
 export default function Product() {
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const thumbnailPosition = isLargerThanMd ? 'left' : 'bottom';
+  const params = useParams();
   const [arr, setAr] = useState([]);
   const [productsArr, setProductsAr] = useState([]);
   const [loading, setLoading] = useState(true);
   const [imageArr, setImageArr] = useState([]);
+  const [restaurant, setRestaurant] = useState([]);
   const handleAProductApi = async () => {
-    const url = API_URL + '/products';
+    // const url = API_URL + '/products';
+
     try {
-      const data = await handelApiGet(url);
-      setProductsAr(data);
-      let productdata = data[0];
+      if (loading === false) {
+        setLoading(true);
+      }
+
+      const urlprod = API_URL + '/products/' + params['id'];
+      const productdata = await handelApiGet(urlprod);
       setAr(productdata);
 
       const images = productdata.image.map((item) => ({
@@ -46,6 +52,20 @@ export default function Product() {
         thumbnail: item
       }));
 
+      const urlrestuarant = API_URL + '/restaurants/' + productdata.restaurantRef;
+      const data2 = await handelApiGet(urlrestuarant);
+      setRestaurant(data2);
+
+      const tempProductArr = [];
+
+      for (const item of data2.products) {
+        const url = API_URL + '/products/' + item;
+        const datanew = await handelApiGet(url);
+        tempProductArr.push(datanew);
+      }
+
+      const finalProducts = tempProductArr.filter((item) => item._id !== params['id']);
+      setProductsAr(finalProducts);
       setImageArr(images);
       setLoading(false);
     } catch (error) {
@@ -56,7 +76,7 @@ export default function Product() {
 
   useEffect(() => {
     handleAProductApi();
-  }, []);
+  }, [params]);
 
   return (
     <>
@@ -66,7 +86,7 @@ export default function Product() {
             <Flex alignItems='center'>
               <Icon as={FaChevronLeft} mr={1} boxSize={4} />
               <Text color='neutral.black' fontSize='xs'>
-                <Link to='/restaurant'> Back to Restaurant Page</Link>
+                <Link to={'/restaurant/' + arr.restaurantRef}> Back to Restaurant Page</Link>
               </Text>
             </Flex>
           </Button>
@@ -209,16 +229,15 @@ export default function Product() {
                   productsArr.map((item, index) => {
                     return (
                       <Box key={index}>
-                        <Link to='/restaurant/product'>
-                          <Skeleton borderRadius='16px' isLoaded={!loading}>
-                            <ProductCard
-                              img={item.image}
-                              title={item.title}
-                              description={item.description}
-                              price={item.price}
-                            />
-                          </Skeleton>
-                        </Link>
+                        <Skeleton borderRadius='16px' isLoaded={!loading}>
+                          <ProductCard
+                            _id={item._id}
+                            img={item.image}
+                            title={item.title}
+                            description={item.description}
+                            price={item.price}
+                          />
+                        </Skeleton>
                       </Box>
                     );
                   })}

@@ -163,16 +163,15 @@ export default function Restaurant() {
                       ? productArr.map((item, index) => {
                           return (
                             <Box key={index}>
-                              <Link to='/restaurant/product'>
-                                <Skeleton borderRadius='16px' isLoaded={!addressLoading}>
-                                  <ProductCard
-                                    img={item.image}
-                                    title={item.title}
-                                    description={item.description}
-                                    price={item.price}
-                                  />
-                                </Skeleton>
-                              </Link>
+                              <Skeleton borderRadius='16px' isLoaded={!addressLoading}>
+                                <ProductCard
+                                  _id={item._id}
+                                  img={item.image}
+                                  title={item.title}
+                                  description={item.description}
+                                  price={item.price}
+                                />
+                              </Skeleton>
                             </Box>
                           );
                         })

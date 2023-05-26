@@ -50,7 +50,7 @@ export default function AppRoutes() {
                 <Route path='/user/order' element={<Order />} />
                 <Route path='/restaurant/' element={<Restaurants />} />
                 <Route path='/restaurant/:id' element={<Restaurant />} />
-                <Route path='/restaurant/product' element={<Product />} />
+                <Route path='/restaurant/product/:id' element={<Product />} />
 
                 {/* ----------ALL ADMIN ROUTES------------ */}
                 <Route path='/admin/restaurant/dashboard' element={<RestaurantDashboard />} />

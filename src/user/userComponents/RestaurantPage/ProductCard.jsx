@@ -2,7 +2,7 @@ import { Box, GridItem, Image, Text, Button, Flex, Stack, border } from '@chakra
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function ProductCard({ img, title, description, price }) {
+export default function ProductCard({ img, title, description, price, _id }) {
   const [priceCount, setPriceCount] = useState(1);
 
   const handlePriceAdd = () => {
@@ -28,7 +28,7 @@ export default function ProductCard({ img, title, description, price }) {
   const cutInfoText = cutInfo(description);
 
   return (
-    <>
+    <Link to={`/restaurant/product/${_id}`}>
       <GridItem w='100%' h='420px' bg='neutral.white'>
         <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px' h='100%'>
           <Box>
@@ -143,6 +143,6 @@ export default function ProductCard({ img, title, description, price }) {
           </Stack>
         </Box>
       </GridItem>
-    </>
+    </Link>
   );
 }
