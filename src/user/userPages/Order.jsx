@@ -117,7 +117,7 @@ export default function Order() {
 
   useEffect(() => {
     const currentOrder = findOrder2(params['id']);
-    if (currentOrder.status === 'Canceled') {
+    if (currentOrder.status === 'Canceled' || currentOrder.status === 'Completed') {
       setPlaced(true);
       setPrepared(true);
       setDelivery(true);
@@ -138,6 +138,7 @@ export default function Order() {
       setDelivered(true);
     }
   }, [userArr]);
+  // todo: post time when each time step update happens
   function formatTime(date) {
     const options = { hour12: true, hour: 'numeric', minute: 'numeric', second: 'numeric' };
     return new Date(date).toLocaleTimeString('en-US', options);
