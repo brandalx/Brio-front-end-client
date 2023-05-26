@@ -1,4 +1,4 @@
-import { Box, Container, Flex, GridItem, Text, Skeleton, Image, Grid } from '@chakra-ui/react';
+import { Box, Container, Flex, GridItem, Text, Skeleton, Image, Grid, Button } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 
@@ -7,6 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 import { API_URL, handelApiGet } from '../../services/apiServices';
 import axios from 'axios';
 import { REACT_API_opencagedata, REACT_APP_MAPBOX } from '../../../env';
+import Logo from '../../assets/svg/Logo';
 
 export default function Restaurant() {
   const [restaurantArr, setAr] = useState([]);
@@ -23,6 +24,7 @@ export default function Restaurant() {
       setLoading(true);
       const data = await handelApiGet(url);
       setAr(data);
+      await handleProductApi(data);
       console.log(data);
       setLoading(false);
     } catch (error) {
@@ -30,15 +32,20 @@ export default function Restaurant() {
       console.log(error);
     }
   };
-
-  const handleProductApi = async () => {
-    const url = API_URL + '/products';
-
+  const handleProductApi = async (data) => {
     try {
       setLoading(true);
-      const data = await handelApiGet(url);
-      setProductAr(data);
+
+      const tempProductArr = [];
+      console.log('data');
       console.log(data);
+      for (const item of data.products) {
+        const url = API_URL + '/products/' + item;
+        const datanew = await handelApiGet(url);
+        tempProductArr.push(datanew);
+      }
+
+      setProductAr(tempProductArr);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -48,7 +55,6 @@ export default function Restaurant() {
 
   useEffect(() => {
     handleRestaurantApi();
-    handleProductApi();
   }, [params]);
 
   useEffect(() => {
@@ -153,24 +159,70 @@ export default function Restaurant() {
                     templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
                     gap={4}
                   >
-                    {!loading &&
-                      productArr.length > 0 &&
-                      productArr.map((item, index) => {
-                        return (
-                          <Box key={index}>
-                            <Link to='/restaurant/product'>
-                              <Skeleton borderRadius='16px' isLoaded={!addressLoading}>
-                                <ProductCard
-                                  img={item.image}
-                                  title={item.title}
-                                  description={item.description}
-                                  price={item.price}
-                                />
-                              </Skeleton>
-                            </Link>
-                          </Box>
-                        );
-                      })}
+                    {!loading && productArr.length > 0
+                      ? productArr.map((item, index) => {
+                          return (
+                            <Box key={index}>
+                              <Link to='/restaurant/product'>
+                                <Skeleton borderRadius='16px' isLoaded={!addressLoading}>
+                                  <ProductCard
+                                    img={item.image}
+                                    title={item.title}
+                                    description={item.description}
+                                    price={item.price}
+                                  />
+                                </Skeleton>
+                              </Link>
+                            </Box>
+                          );
+                        })
+                      : !loading && (
+                          <Skeleton borderRadius='16px' isLoaded={!addressLoading} minH='200px'>
+                            <Box minH='300px' py={5} my={5}>
+                              <Box position='absolute' textAlign='center' w='100%'>
+                                <Box>
+                                  <Box>
+                                    <Flex alignItems='center' justifyContent='center'>
+                                      <Logo />
+                                      <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='1'>
+                                        Brio
+                                      </Text>
+                                    </Flex>
+                                  </Box>
+                                </Box>
+
+                                <Text fontSize='2xl' fontWeight='extrabold' color='primary.default'>
+                                  Ooops
+                                </Text>
+                                <Text fontSize='sm' fontWeight='bold' color='neutral.grayDark'>
+                                  Sorry! This Restaurant does not have any products yet...
+                                </Text>
+                                <Link to='/'>
+                                  <Button
+                                    mt={5}
+                                    px={5}
+                                    borderRadius={100}
+                                    background='primary.default'
+                                    fontWeight='bold'
+                                    variant='solid'
+                                    color='neutral.white'
+                                    borderWidth='1px'
+                                    borderColor='neutral.white'
+                                    _hover={{
+                                      background: 'neutral.white',
+                                      color: 'primary.default',
+                                      borderWidth: '1px',
+                                      borderColor: 'primary.default'
+                                    }}
+                                    py={5}
+                                  >
+                                    Back to home
+                                  </Button>
+                                </Link>
+                              </Box>
+                            </Box>
+                          </Skeleton>
+                        )}
                   </Grid>
                 </Box>
               </Box>
