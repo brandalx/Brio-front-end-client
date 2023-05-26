@@ -337,8 +337,8 @@ export default function Order() {
               </Text>
               <Pickup
                 item={{
-                  location: 'California',
-                  address: '3891 Ranchview Dr. Richardson, 62639'
+                  location: restaurantArr.location,
+                  address: restaurantArr.address
                 }}
               />
             </Box>
