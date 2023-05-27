@@ -1,8 +1,22 @@
 import { Box, Button, Grid, GridItem, Text, Image, Divider } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import TrashBox from '../../../assets/svg/TrashBox';
 
-export default function MenuMeal({ item }) {
+export default function MenuMeal({ item, amount }) {
+  let info = item.description;
+  const cutInfo = (info) => {
+    const words = info.split(' ');
+
+    if (words.length <= 10) {
+      return info;
+    } else {
+      return words.slice(0, 10).join(' ') + '...';
+    }
+  };
+  useEffect(() => {
+    console.log(amount);
+  }, []);
+  const cutInfoText = cutInfo(info);
   return (
     <>
       <Box>
@@ -20,7 +34,7 @@ export default function MenuMeal({ item }) {
                 </Box>
                 <Box>
                   <Text color='neutral.grayDark' fontSize='2xs'>
-                    {item.desc}
+                    {cutInfoText}
                   </Text>
                 </Box>
               </Box>
@@ -50,7 +64,7 @@ export default function MenuMeal({ item }) {
                     </Button>
 
                     <Text fontSize='2xs' color='neutral.gray' fontWeight='bold' px={3}>
-                      1
+                      {amount}
                     </Text>
                     <Button
                       background='neutral.grayLightest'
@@ -68,7 +82,7 @@ export default function MenuMeal({ item }) {
                   <Box w='100%' display='flex' justifyContent='center'>
                     {' '}
                     <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
-                      $ {item.price}
+                      $ {item.price * amount}
                     </Text>
                   </Box>
                 </GridItem>

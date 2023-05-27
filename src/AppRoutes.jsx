@@ -21,6 +21,8 @@ import AccountSettings from './user/userPages/AccountSettings';
 import Cart from './user/userPages/Cart';
 import Checkout from './user/userPages/Checkout';
 import UserOrders from './user/userPages/UserOrders';
+import Order from './user/userPages/Order';
+import Restaurants from './user/userPages/Restaurants';
 
 export default function AppRoutes() {
   return (
@@ -45,8 +47,10 @@ export default function AppRoutes() {
                 <Route path='/user/cart/*' element={<Cart />} />
                 <Route path='/user/checkout/' element={<Checkout />} />
                 <Route path='/user/orders' element={<UserOrders />} />
-                <Route path='/restaurant' element={<Restaurant />} />
-                <Route path='/restaurant/product' element={<Product />} />
+                <Route path='/user/order/:id' element={<Order />} />
+                <Route path='/restaurant/' element={<Restaurants />} />
+                <Route path='/restaurant/:id' element={<Restaurant />} />
+                <Route path='/restaurant/product/:id' element={<Product />} />
 
                 {/* ----------ALL ADMIN ROUTES------------ */}
                 <Route path='/admin/restaurant/dashboard' element={<RestaurantDashboard />} />

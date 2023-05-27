@@ -36,6 +36,7 @@ build/
 # backend frameworks
 *.pyc
 _pycache_/
+.env
 env.js
 #parcel
 yarn.lock

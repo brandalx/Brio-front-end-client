@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   chakra,
@@ -22,19 +22,43 @@ import {
   MenuDivider,
   MenuList,
   Menu,
-  MenuButton
+  MenuButton,
+  Skeleton
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
 
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import Logo from '../../assets/svg/Logo';
 import { Link, useLocation } from 'react-router-dom';
+import { API_URL, handelApiGet } from '../../services/apiServices';
 
 export default function Navbar() {
   const bg = useColorModeValue('white', 'gray.800');
   const mobileNav = useDisclosure();
   const location = useLocation();
   const isInCart = location.pathname.startsWith('/user/cart');
+
+  const [loading, setLoading] = useState(true);
+  const [arr, setArr] = useState([]);
+  const [cartLen, setCartLen] = useState(0);
+  const handleApi = async () => {
+    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    try {
+      const data = await handelApiGet(url);
+      setArr(data);
+      console.log(data);
+
+      setCartLen(data.cart.length);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleApi();
+  }, []);
 
   return (
     <>
@@ -111,164 +135,184 @@ export default function Navbar() {
                 </Button>
 
                 <HStack spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
-                  <Box
-                    borderColor={isInCart ? 'primary.default' : 'neutral.white'}
-                    borderWidth='1px'
-                    ml='4px'
-                    bg='primary.lightest'
-                    _hover={{ bg: 'primary.light' }}
-                    color='black'
-                    px={'8px'}
-                    py={'7.5px'}
-                    borderRadius='16px'
-                    position='relative'
-                  >
+                  <Skeleton borderRadius='16px' isLoaded={!loading}>
                     <Box
-                      position='absolute'
-                      top='-2px'
-                      right='-4px'
-                      bg='primary.default'
-                      h='20px'
-                      w='20px'
-                      borderRadius='8px'
-                      display='flex'
-                      alignItems='center'
-                      justifyContent='center'
-                      fontSize='xs'
-                      fontWeight='semibold'
-                      color='white'
-                      textAlign='center'
-                      minWidth='20px'
+                      borderColor={isInCart ? 'primary.default' : 'neutral.white'}
+                      borderWidth='1px'
+                      ml='4px'
+                      bg='primary.lightest'
+                      _hover={{ bg: 'primary.light' }}
+                      color='black'
+                      px={'8px'}
+                      py={'7.5px'}
+                      borderRadius='16px'
+                      position='relative'
                     >
-                      0
-                    </Box>
-                    <Menu>
-                      <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                        <IconShoppingBag color='#4E60FF' />
-                      </MenuButton>
+                      <Box
+                        position='absolute'
+                        top='-2px'
+                        right='-4px'
+                        bg='primary.default'
+                        h='20px'
+                        w='20px'
+                        borderRadius='8px'
+                        display='flex'
+                        alignItems='center'
+                        justifyContent='center'
+                        fontSize='xs'
+                        fontWeight='semibold'
+                        color='white'
+                        textAlign='center'
+                        minWidth='20px'
+                      >
+                        {!loading && cartLen}
+                      </Box>
+                      <Menu>
+                        <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                          <IconShoppingBag color='#4E60FF' />
+                        </MenuButton>
 
+                        <MenuList>
+                          <Link to='user/cart'>
+                            {' '}
+                            <MenuItem fontWeight='medium'>My cart</MenuItem>
+                          </Link>
+                        </MenuList>
+                      </Menu>
+                    </Box>
+                  </Skeleton>
+                  <Skeleton borderRadius='16px' isLoaded={!loading}>
+                    <Menu>
+                      <Box
+                        borderWidth='2px'
+                        borderColor='neutral.white'
+                        transition='all 0.3s'
+                        _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
+                        borderRadius='2xl'
+                        display='flex'
+                        alignItems='center'
+                      >
+                        <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                          <Avatar
+                            py='2px'
+                            borderRadius='xl'
+                            size='md'
+                            name={!loading && arr.firstname + ' ' + arr.lastname}
+                            src={(!loading && arr.avatar) || null}
+                          />{' '}
+                        </MenuButton>
+                      </Box>
                       <MenuList>
-                        <Link to='user/cart'>
+                        <Link to='/user/account'>
                           {' '}
-                          <MenuItem fontWeight='medium'>My cart</MenuItem>
+                          <MenuItem fontWeight='medium'>Settings</MenuItem>
+                        </Link>
+                        <MenuDivider />
+                        <Link to='/login'>
+                          <MenuItem
+                            m={0}
+                            h='100%'
+                            background='neutral.white'
+                            variant='solid'
+                            color='error.default'
+                            _hover={{
+                              background: 'error.default',
+                              color: 'neutral.white'
+                            }}
+                            fontWeight='medium'
+                          >
+                            Log Out
+                          </MenuItem>
                         </Link>
                       </MenuList>
                     </Menu>
-                  </Box>
-
-                  <Menu>
-                    <Box
-                      borderWidth='2px'
-                      borderColor='neutral.white'
-                      transition='all 0.3s'
-                      _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
-                      borderRadius='2xl'
-                      display='flex'
-                      alignItems='center'
-                    >
-                      <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                        <Avatar
-                          py='2px'
-                          borderRadius='xl'
-                          size='md'
-                          name='Prosper Otemuyiwa'
-                          src='https://bit.ly/prosper-baba'
-                        />{' '}
-                      </MenuButton>
-                    </Box>
-                    <MenuList>
-                      <Link to='/user/account'>
-                        {' '}
-                        <MenuItem fontWeight='medium'>Settings</MenuItem>
-                      </Link>
-                      <MenuDivider />
-                      <Link to='/login'>
-                        <MenuItem
-                          m={0}
-                          h='100%'
-                          background='neutral.white'
-                          variant='solid'
-                          color='error.default'
-                          _hover={{
-                            background: 'error.default',
-                            color: 'neutral.white'
-                          }}
-                          fontWeight='medium'
-                        >
-                          Log Out
-                        </MenuItem>
-                      </Link>
-                    </MenuList>
-                  </Menu>
+                  </Skeleton>
                 </HStack>
               </HStack>
 
               <Box display={{ base: 'inline-flex', md: 'none' }}>
                 <HStack display='flex' alignItems='center' spacing={4}>
-                  <Box
-                    borderColor={isInCart ? 'primary.default' : 'neutral.white'}
-                    borderWidth='1px'
-                    ml='4px'
-                    bg='neutral.grayLightest'
-                    color='black'
-                    px={'8px'}
-                    py={'8px'}
-                    borderRadius='16px'
-                    position='relative'
-                  >
+                  <Skeleton borderRadius='16px' isLoaded={!loading}>
                     <Box
-                      position='absolute'
-                      top='-2px'
-                      right='-4px'
-                      bg='primary.default'
-                      h='18px'
-                      w='18px'
-                      borderRadius='8px'
-                      display='flex'
-                      alignItems='center'
-                      justifyContent='center'
-                      fontSize='xs'
-                      fontWeight='semibold'
-                      color='white'
-                      textAlign='center'
+                      borderColor={isInCart ? 'primary.default' : 'neutral.white'}
+                      borderWidth='1px'
+                      ml='4px'
+                      bg='neutral.grayLightest'
+                      color='black'
+                      px={'8px'}
+                      py={'8px'}
+                      borderRadius='16px'
+                      position='relative'
                     >
-                      0
+                      <Box
+                        position='absolute'
+                        top='-2px'
+                        right='-4px'
+                        bg='primary.default'
+                        h='18px'
+                        w='18px'
+                        borderRadius='8px'
+                        display='flex'
+                        alignItems='center'
+                        justifyContent='center'
+                        fontSize='xs'
+                        fontWeight='semibold'
+                        color='white'
+                        textAlign='center'
+                      >
+                        {!loading && cartLen}
+                      </Box>
+                      <Menu>
+                        <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                          <IconShoppingBag color='#4E60FF' />
+                        </MenuButton>
+                        <MenuList>
+                          <Link to='user/cart'>
+                            {' '}
+                            <MenuItem fontWeight='medium'>My cart</MenuItem>
+                          </Link>
+                        </MenuList>
+                      </Menu>
                     </Box>
+                  </Skeleton>
+                  <Skeleton borderRadius='16px' isLoaded={!loading}>
                     <Menu>
-                      <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                        <IconShoppingBag color='#4E60FF' />
+                      <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                        <Avatar
+                          py='2px'
+                          borderRadius='xl'
+                          size='md'
+                          name={!loading && arr.firstname + ' ' + arr.lastname}
+                          src={(!loading && arr.avatar) || null}
+                        />{' '}
                       </MenuButton>
+
                       <MenuList>
-                        <Link to='user/cart'>
+                        <Link to='/user/account'>
                           {' '}
-                          <MenuItem fontWeight='medium'>My cart</MenuItem>
+                          <MenuItem fontWeight='medium'>Settings</MenuItem>
+                        </Link>
+
+                        <MenuDivider />
+                        <Link to='/login'>
+                          <MenuItem
+                            m={0}
+                            h='100%'
+                            background='neutral.white'
+                            variant='solid'
+                            color='error.default'
+                            _hover={{
+                              background: 'error.default',
+                              color: 'neutral.white'
+                            }}
+                            fontWeight='medium'
+                          >
+                            Log Out
+                          </MenuItem>
                         </Link>
                       </MenuList>
                     </Menu>
-                  </Box>
-                  <Menu>
-                    <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                      <Avatar
-                        py='2px'
-                        borderRadius='xl'
-                        size='md'
-                        name='Prosper Otemuyiwa'
-                        src='https://bit.ly/prosper-baba'
-                      />{' '}
-                    </MenuButton>
-
-                    <MenuList>
-                      <Link to='/user/account'>
-                        {' '}
-                        <MenuItem fontWeight='medium'>Settings</MenuItem>
-                      </Link>
-
-                      <MenuDivider />
-                      <Link to='/login'>
-                        <MenuItem fontWeight='medium'> Log Out</MenuItem>
-                      </Link>
-                    </MenuList>
-                  </Menu>
+                  </Skeleton>
                   <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest' />
                   <IconButton
                     display={{ base: 'flex', md: 'none' }}
