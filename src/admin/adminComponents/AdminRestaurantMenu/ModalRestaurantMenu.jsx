@@ -10,16 +10,95 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   ModalOverlay,
   Text,
-  useDisclosure,
   useMediaQuery
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import '../../../css/global.css';
-export default function ModalRestaurantMenu({ isOpen, onOpen, onClose }) {
+import { API_URL, handleApiPost } from '../../../services/apiServices';
+
+export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryName }) {
+  const { control, handleSubmit, reset } = useForm();
   const [isLilMob] = useMediaQuery('(max-width: 350px)');
+  const [product, setProduct] = useState('');
+  const [image, setImage] = useState(null);
+
+  const createProduct = async (items, price, title, description, ingredients, nutritionals, restaurantRef) => {
+    const payload = {
+      title: title,
+      description: description,
+      image: items, // Обновлено
+      price: price,
+      ingredients: ingredients,
+      nutritionals: nutritionals,
+      categoryName: categoryName,
+      restaurantRef: restaurantRef
+    };
+
+    try {
+      const response = await fetch(API_URL + '/admin/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create product');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error('An error occurred while creating the product: ' + error.message);
+    }
+  };
+
+  const handlePublishProduct = async (data) => {
+    const {
+      price,
+      title,
+      description,
+      ingredients: ingredientsStr,
+      nutritionals: nutritionalsStr,
+      restaurantRef
+    } = data;
+    const ingredients = ingredientsStr.split(',').map((ingredient) => ingredient.trim());
+    const nutritionals = nutritionalsStr.split(',').map((nutritional) => nutritional.trim());
+
+    try {
+      const newProduct = await createProduct(
+        image, // Используйте значение image
+        price,
+        title,
+        description,
+        ingredients,
+        nutritionals,
+        restaurantRef
+      );
+      // Add the new product to the list of products
+      setProduct((prevProducts) => [
+        ...prevProducts,
+        { ...newProduct } // Add the amount field to the new product
+      ]);
+      // If successful, close the modal
+      onClose();
+    } catch (error) {
+      console.error('An error occurred while publishing the category:', error);
+    }
+  };
+
+  const onSubmit = (data) => {
+    handlePublishProduct(data);
+    reset(); // Reset the form values after submission
+  };
+
+  const handleImageChange = (event) => {
+    setImage(URL.createObjectURL(event.target.files[0]));
+  };
 
   return (
     <Modal
@@ -74,7 +153,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose }) {
                   width='100%'
                   height='100%'
                   borderRadius='20px'
-                  src='https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg'
+                  src={image || 'https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg'}
                   objectFit='cover'
                   objectPosition='center'
                 />
@@ -87,21 +166,35 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose }) {
               alignItems='center'
               gap={6}
             >
-              <Button
-                _hover={{
-                  background: 'primary.default',
-                  color: 'neutral.white',
-                  borderWidth: '1px',
-                  borderColor: 'primary.default'
-                }}
-                w='84px'
-                h='44px'
-                border='1px'
-                borderColor='primary.default'
-                color='primary.default'
-              >
-                Change
-              </Button>
+              <Box>
+                <label htmlFor='imageUpload' style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                  <Button
+                    cursor='pointer'
+                    _hover={{
+                      background: 'primary.default',
+                      color: 'neutral.white',
+                      borderWidth: '1px',
+                      borderColor: 'primary.default'
+                    }}
+                    w='84px'
+                    h='44px'
+                    border='1px'
+                    borderColor='primary.default'
+                    color='primary.default'
+                    as='span'
+                  >
+                    Change
+                  </Button>
+                  <Input
+                    id='imageUpload'
+                    type='file'
+                    accept='image/*'
+                    onChange={handleImageChange}
+                    style={{ display: 'none' }}
+                  />
+                </label>
+              </Box>
+
               <Text color='neutral.gray' fontWeight='bold'>
                 Remove
               </Text>
@@ -113,13 +206,33 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose }) {
                 <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>
                   Name
                 </Text>
-                <Input color='neutral.gray' fontSize='2xs' type='text' placeholder='Enter meal name' name='name' />
+                <Controller
+                  control={control}
+                  name='title'
+                  defaultValue=''
+                  render={({ field }) => (
+                    <Input {...field} color='neutral.gray' fontSize='2xs' type='text' placeholder='Enter meal name' />
+                  )}
+                />
               </InputGroup>
               <InputGroup mt='20px' display='flex' flexDirection='column'>
                 <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>
                   Price
                 </Text>
-                <Input color='neutral.gray' fontSize='2xs' placeholder='Enter meal price' type='number' name='price' />
+                <Controller
+                  control={control}
+                  name='price'
+                  defaultValue=''
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      color='neutral.gray'
+                      fontSize='2xs'
+                      placeholder='Enter meal price'
+                      type='number'
+                    />
+                  )}
+                />
               </InputGroup>
             </Box>
             <Box display='flex' flexDirection='row' gap={3}>
@@ -127,12 +240,19 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose }) {
                 <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>
                   Description
                 </Text>
-                <Input
-                  color='neutral.gray'
-                  fontSize='2xs'
-                  type='text'
-                  placeholder='Enter meal description'
-                  name='name'
+                <Controller
+                  control={control}
+                  name='description'
+                  defaultValue=''
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      color='neutral.gray'
+                      fontSize='2xs'
+                      type='text'
+                      placeholder='Enter meal description'
+                    />
+                  )}
                 />
               </InputGroup>
             </Box>
@@ -141,24 +261,38 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose }) {
                 <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>
                   Ingredients
                 </Text>
-                <Input
-                  color='neutral.gray'
-                  fontSize='2xs'
-                  placeholder='Enter meal ingredients'
-                  type='text'
-                  name='name'
+                <Controller
+                  control={control}
+                  name='ingredients'
+                  defaultValue=''
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      color='neutral.gray'
+                      fontSize='2xs'
+                      placeholder='Enter meal ingredients'
+                      type='text'
+                    />
+                  )}
                 />
               </InputGroup>
               <InputGroup display='flex' flexDirection='column'>
                 <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>
                   Nutritional value
                 </Text>
-                <Input
-                  color='neutral.gray'
-                  fontSize='2xs'
-                  placeholder='Enter meal nutritional value'
-                  type='number'
-                  name='price'
+                <Controller
+                  control={control}
+                  name='nutritionals'
+                  defaultValue=''
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      color='neutral.gray'
+                      fontSize='2xs'
+                      placeholder='Enter meal nutritional value'
+                      type='text'
+                    />
+                  )}
                 />
               </InputGroup>
             </Box>
@@ -194,6 +328,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose }) {
             p='20px'
             border='1px'
             borderColor='primary.default'
+            onClick={handleSubmit(onSubmit)}
           >
             Publish meal item
           </Button>
