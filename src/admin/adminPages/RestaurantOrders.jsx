@@ -1,7 +1,5 @@
 import React from 'react';
-import RestaurantOrdersList from "../adminComponents/RestaurantOrders/RestaurantOrdersList";
+import RestaurantOrdersList from '../adminComponents/RestaurantOrders/RestaurantOrdersList';
 export default function RestaurantOrders() {
-  return (
-      <RestaurantOrdersList/>
-  )
+  return <RestaurantOrdersList />;
 }

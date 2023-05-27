@@ -25,6 +25,7 @@ import Logo from '../../assets/svg/Logo';
 import { Link, Link as RouterLink } from 'react-router-dom';
 import Notification from '../../assets/svg/Notification';
 import { AiOutlineMenu } from 'react-icons/ai';
+import '../../css/global.css';
 
 export default function AdminNavbar() {
   const bg = useColorModeValue('white', 'gray.800');
@@ -67,8 +68,9 @@ export default function AdminNavbar() {
 
               <HStack display='flex' alignItems='center' spacing={1}>
                 {/* Deckstop Navbar */}
-                <HStack spacing={5} mr={0} display={{ base: 'none', md: 'inline-flex' }}>
-                  <Button
+                <HStack spacing={3} mr={0} display={{ base: 'none', md: 'inline-flex' }}>
+                  <Box
+                    as={Button}
                     color='neutral.black'
                     fontWeight='bold'
                     fontSize='2xs'
@@ -77,11 +79,12 @@ export default function AdminNavbar() {
                       color: 'primary.default'
                     }}
                   >
-                    <Link fontSize='fontSizes.2xs' to='/admin/restaurant/dashboard'>
+                    <Link className='header-links-organize' fontSize='fontSizes.2xs' to='/admin/restaurant/dashboard'>
                       Dashboard
                     </Link>
-                  </Button>
-                  <Button
+                  </Box>
+                  <Box
+                    as={Button}
                     color='neutral.black'
                     fontWeight='bold'
                     fontSize='2xs'
@@ -90,11 +93,12 @@ export default function AdminNavbar() {
                       color: 'primary.default'
                     }}
                   >
-                    <Link fontSize='fontSizes.2xs' to='/admin/restaurant/orders'>
+                    <Link className='header-links-organize' fontSize='fontSizes.2xs' to='/admin/restaurant/orders'>
                       Orders
                     </Link>
-                  </Button>
-                  <Button
+                  </Box>
+                  <Box
+                    as={Button}
                     color='neutral.black'
                     fontWeight='bold'
                     fontSize='2xs'
@@ -103,9 +107,12 @@ export default function AdminNavbar() {
                       color: 'primary.default'
                     }}
                   >
-                    <Link to='/admin/restaurant/customers'>Customers</Link>
-                  </Button>
-                  <Button
+                    <Link className='header-links-organize' to='/admin/restaurant/customers'>
+                      Customers
+                    </Link>
+                  </Box>
+                  <Box
+                    as={Button}
                     color='neutral.black'
                     fontWeight='bold'
                     fontSize='2xs'
@@ -114,11 +121,12 @@ export default function AdminNavbar() {
                       color: 'primary.default'
                     }}
                   >
-                    <Link fontSize='fontSizes.2xs' to='/admin/restaurant/menu'>
+                    <Link className='header-links-organize' fontSize='fontSizes.2xs' to='/admin/restaurant/menu'>
                       Menu
                     </Link>
-                  </Button>
-                  <Button
+                  </Box>
+                  <Box
+                    as={Button}
                     color='neutral.black'
                     fontWeight='bold'
                     fontSize='2xs'
@@ -127,8 +135,10 @@ export default function AdminNavbar() {
                       color: 'primary.default'
                     }}
                   >
-                    <Link to='/admin/restaurant/promotions'>Promotions</Link>
-                  </Button>
+                    <Link className='header-links-organize' to='/admin/restaurant/promotions'>
+                      Promotions
+                    </Link>
+                  </Box>
 
                   <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest' />
                   <HStack spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
