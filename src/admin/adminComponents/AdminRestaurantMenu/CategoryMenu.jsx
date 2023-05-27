@@ -17,10 +17,6 @@ import ModalRestaurantMenu from './ModalRestaurantMenu';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import ModalNewCategory from './ModalNewCategory';
 
-// ...
-
-// ...
-
 export default function CategoryMenu({ selectedCategory, onCategoryChange, categoryCounts }) {
   const [loading, setLoading] = useState(true);
   const [isTablet] = useMediaQuery('(max-width: 992px)');
@@ -49,73 +45,72 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
   };
 
   return (
-      <GridItem width='100%' overflow='hidden' colSpan={4}>
-        <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
-          Category menu
-        </Text>
-        {loading ? (
-            <Skeleton minH='150px' maxH='300px' borderRadius='16px' />
-        ) : (
-            <Box display='grid' gridTemplateColumns='1fr'>
-              {categories.map((element) => (
-                  <Box
-                      display='flex'
-                      flexDirection='column'
-                      justifyContent='center'
-                      alignItems='start'
-                      key={element._id}
-                      ml={isMobile ? 0 : isTablet ? '8px' : 0}
-                      mr={isMobile ? 0 : isTablet ? '8px' : 0}
-                      width={isMobile ? '100%' : isTablet ? '46%' : '100%'}
-                      mb='12px'
-                      p='10px'
-                      border='2px'
-                      borderRadius='16px'
-                      cursor='pointer'
-                      bg={selectedItem === element._id ? theme.colors.primary.light : 'white'}
-                      borderColor={
-                        selectedItem === element._id ? theme.colors.primary.default : theme.colors.neutral.grayLightest
-                      }
-                      _hover={{
-                        borderColor: theme.colors.primary.default,
-                        transition: '450ms',
-                        bg: theme.colors.primary.light
-                      }}
-                      onClick={() => handleCategoryClick(element)}
-                      maxH='72px'
-                  >
-                    <Heading fontSize='2xs' fontWeight='bold' color='neutral.black'>
-                      {element.categoryName.length > 0 ? element.categoryName : 'N/A'}
-                    </Heading>
-                    <Text fontSize='13px' mt='6px' fontWeight='regular' color='neutral.grayDark'>
-                      {categoryCounts[element.categoryName] || 0}
-                    </Text>
-                  </Box>
-              ))}
+    <GridItem width='100%' overflow='hidden' colSpan={4}>
+      <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
+        Category menu
+      </Text>
+      {loading ? (
+        <Skeleton minH='150px' maxH='300px' borderRadius='16px' />
+      ) : (
+        <Box w='100%' display='flex' flexDirection='column'>
+          {categories.map((element) => (
+            <Box
+              display='flex'
+              flexDirection='column'
+              justifyContent='center'
+              alignItems='start'
+              key={element._id}
+              ml={isMobile ? 0 : isTablet ? '8px' : 0}
+              mr={isMobile ? 0 : isTablet ? '8px' : 0}
+              width={isMobile ? '100%' : isTablet ? '98%' : '100%'}
+              mb='12px'
+              p='10px'
+              border='2px'
+              borderRadius='16px'
+              cursor='pointer'
+              bg={selectedItem === element._id ? theme.colors.primary.light : 'white'}
+              borderColor={
+                selectedItem === element._id ? theme.colors.primary.default : theme.colors.neutral.grayLightest
+              }
+              _hover={{
+                borderColor: theme.colors.primary.default,
+                transition: '450ms',
+                bg: theme.colors.primary.light
+              }}
+              onClick={() => handleCategoryClick(element)}
+              maxH='72px'
+            >
+              <Heading fontSize='2xs' fontWeight='bold' color='neutral.black'>
+                {element.categoryName.length > 0 ? element.categoryName : 'N/A'}
+              </Heading>
+              <Text fontSize='13px' mt='6px' fontWeight='regular' color='neutral.grayDark'>
+                {categoryCounts[element.categoryName] || 0}
+              </Text>
             </Box>
-        )}
-
-        <Divider mt='21px' />
-        <Box width='100%' gap='4' mt='20px' display='flex' justifyContent='space-between'>
-          <Box width='100%' px='5px' border='1px solid #EDEEF2' borderRadius='16px' display='flex' flexDirection='column'>
-            <ModalNewCategory
-                fetchCategories={fetchCategories}
-                setCategories={setCategories}
-                width='100%'
-                display='flex'
-                flexDirection='column'
-                h='70px'
-            />
-          </Box>
-          <Box width='100%' border='1px solid #EDEEF2' borderRadius='16px'>
-            <Button onClick={onOpen} width='100%' display='flex' flexDirection='column' h='70px'>
-              <AddPlus />
-              <Text mt='6px'>New meal item</Text>
-            </Button>
-          </Box>
+          ))}
         </Box>
-        <ModalRestaurantMenu categoryName={selectedCategory} isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
-      </GridItem>
+      )}
+
+      <Divider mt='21px' />
+      <Box width='100%' gap='4' mt='20px' display='flex' justifyContent='space-between'>
+        <Box width='100%' px='5px' border='1px solid #EDEEF2' borderRadius='16px' display='flex' flexDirection='column'>
+          <ModalNewCategory
+            fetchCategories={fetchCategories}
+            setCategories={setCategories}
+            width='100%'
+            display='flex'
+            flexDirection='column'
+            h='70px'
+          />
+        </Box>
+        <Box width='100%' border='1px solid #EDEEF2' borderRadius='16px'>
+          <Button onClick={onOpen} width='100%' display='flex' flexDirection='column' h='70px'>
+            <AddPlus />
+            <Text mt='6px'>New meal item</Text>
+          </Button>
+        </Box>
+      </Box>
+      <ModalRestaurantMenu categoryName={selectedCategory} isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+    </GridItem>
   );
 }
-

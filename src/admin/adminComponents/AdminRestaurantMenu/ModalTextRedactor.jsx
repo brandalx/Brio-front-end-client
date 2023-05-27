@@ -102,15 +102,15 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
                 defaultValue={item.ingredients}
                 render={({ field }) => <Input {...field} placeholder='Ingredients' />}
               />
-                <FormLabel mt='15px'>Price</FormLabel>
-                <Controller
-                    control={control}
-                    name='price'
-                    defaultValue={item.price}
-                    render={({ field }) => <Input {...field} placeholder='Price' type="number" />}
-                />
+              <FormLabel mt='15px'>Price</FormLabel>
+              <Controller
+                control={control}
+                name='price'
+                defaultValue={item.price}
+                render={({ field }) => <Input {...field} placeholder='Price' type='number' />}
+              />
 
-                <FormLabel mt='15px'>Nutritional value</FormLabel>
+              <FormLabel mt='15px'>Nutritional value</FormLabel>
               <Controller
                 control={control}
                 name='nutritionalValue'

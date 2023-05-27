@@ -47,7 +47,6 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
     }
   };
 
-
   const updateCategoryCounts = () => {
     const counts = {};
 
