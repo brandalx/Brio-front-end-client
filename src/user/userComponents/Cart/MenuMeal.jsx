@@ -82,7 +82,7 @@ export default function MenuMeal({ item, amount }) {
                   <Box w='100%' display='flex' justifyContent='center'>
                     {' '}
                     <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
-                      $ {item.price}
+                      $ {item.price * amount}
                     </Text>
                   </Box>
                 </GridItem>

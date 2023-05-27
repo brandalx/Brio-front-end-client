@@ -19,7 +19,7 @@ export default function Summary({ item, loading }) {
               Subtotal
             </Text>
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-              ${!loading && item.orders[1].paymentSummary.subtotal}
+              ${!loading && item.orders[0].paymentSummary.subtotal}
             </Text>
           </Flex>
           <Flex my={4} justifyContent='space-between'>
@@ -27,7 +27,7 @@ export default function Summary({ item, loading }) {
               Shipping
             </Text>
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-              ${!loading && item.orders[1].paymentSummary.shipping}
+              ${!loading && item.orders[0].paymentSummary.shipping}
             </Text>
           </Flex>
           <Flex my={4} justifyContent='space-between'>
@@ -35,7 +35,7 @@ export default function Summary({ item, loading }) {
               Total (tax incl.)
             </Text>
             <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
-              $ {!loading && item.orders[1].totalAmount}
+              $ {!loading && item.orders[0].paymentSummary.totalAmount}
             </Text>
           </Flex>
           <Link to='/user/checkout'>

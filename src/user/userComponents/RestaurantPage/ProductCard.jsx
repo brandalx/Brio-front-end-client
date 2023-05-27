@@ -1,8 +1,10 @@
-import { Box, GridItem, Image, Text, Button, Flex, Stack, border } from '@chakra-ui/react';
+import { Box, GridItem, Image, Text, Button, Flex, Stack, border, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL, handleApiMethod } from '../../../services/apiServices';
 
 export default function ProductCard({ img, title, description, price, _id }) {
+  const toast = useToast();
   const [priceCount, setPriceCount] = useState(1);
 
   const handlePriceAdd = () => {
@@ -26,27 +28,116 @@ export default function ProductCard({ img, title, description, price, _id }) {
   };
 
   const cutInfoText = cutInfo(description);
+  let postToCart = async () => {
+    try {
+      let cartObject = {
+        productId: _id,
+        productAmount: priceCount
+      };
+      const url = API_URL + '/users/6464085ed67f7b944b642799/posttocart';
+      const data = await handleApiMethod(url, 'POST', cartObject);
+      if (data.msg === true) {
+        toast({
+          title: 'Product added.',
+          description: "We've added this product into your cart.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast({
+        title: 'Error when adding new product',
+        description: 'Error when adding new product into your cart',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+    }
+  };
 
   return (
-    <Link to={`/restaurant/product/${_id}`}>
-      <GridItem w='100%' h='420px' bg='neutral.white'>
-        <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px' h='100%'>
+    <GridItem w='100%' h='420px' bg='neutral.white'>
+      <Box p={2} bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='16px' h='100%'>
+        <Link to={`/restaurant/product/${_id}`}>
           <Box>
             <Image borderRadius='16px' w='100%' src={img} h='230px' objectFit='cover' />
           </Box>
-          <Stack>
-            <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
-              {title}
-            </Text>
-            <Text color='neutral.gray' fontSize='3xs'>
-              {description.length > 0 && cutInfoText}
-            </Text>
+        </Link>
+        <Stack>
+          <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
+            {title}
+          </Text>
+          <Text color='neutral.gray' fontSize='3xs'>
+            {description.length > 0 && cutInfoText}
+          </Text>
 
-            {priceCount === 1 ? (
-              <>
-                <Flex justifyContent='space-between' alignItems='center'>
-                  <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                    $ {price}
+          {priceCount === 1 ? (
+            <>
+              <Flex justifyContent='space-between' alignItems='center'>
+                <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                  $ {price}
+                </Text>
+                <Button
+                  onClick={handlePriceAdd}
+                  background='primary.light'
+                  _hover={{ background: 'primary.default', color: 'neutral.white', cursor: 'pointer' }}
+                  borderRadius='100px'
+                  py='10px'
+                  px='10px'
+                  fontSize='md'
+                  color='primary.default'
+                >
+                  +
+                </Button>
+              </Flex>
+
+              <Button
+                onClick={postToCart}
+                rightIcon={<Text fontSize='md'>+</Text>}
+                background='primary.default'
+                fontWeight='bold'
+                variant='solid'
+                color='neutral.white'
+                borderWidth='1px'
+                borderColor='neutral.white'
+                _hover={{
+                  background: 'neutral.white',
+                  color: 'primary.default',
+                  borderWidth: '1px',
+                  borderColor: 'primary.default'
+                }}
+                py={5}
+              >
+                Add to cart
+              </Button>
+            </>
+          ) : (
+            <Stack w='100%'>
+              <Flex justifyContent='space-between' alignItems='center' w='100%'>
+                <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                  $ {(price * priceCount).toFixed(2)}
+                </Text>
+                <Box display='flex' alignItems='center'>
+                  <Button
+                    onClick={handlePriceMinus}
+                    background='neutral.grayLightest'
+                    borderRadius='100px'
+                    py='10px'
+                    px='10px'
+                    fontSize='md'
+                    border='1px'
+                    borderColor='neutral.white'
+                    color='neutral.gray'
+                    _hover={{ color: 'primary.default', border: '1px', borderColor: 'primary.default' }}
+                  >
+                    -
+                  </Button>
+
+                  <Text color='neutral.gray' fontWeight='bold' px={3}>
+                    {priceCount}
                   </Text>
                   <Button
                     onClick={handlePriceAdd}
@@ -60,89 +151,31 @@ export default function ProductCard({ img, title, description, price, _id }) {
                   >
                     +
                   </Button>
-                </Flex>
-
-                <Button
-                  rightIcon={<Text fontSize='md'>+</Text>}
-                  background='primary.default'
-                  fontWeight='bold'
-                  variant='solid'
-                  color='neutral.white'
-                  borderWidth='1px'
-                  borderColor='neutral.white'
-                  _hover={{
-                    background: 'neutral.white',
-                    color: 'primary.default',
-                    borderWidth: '1px',
-                    borderColor: 'primary.default'
-                  }}
-                  py={5}
-                >
-                  Add to cart
-                </Button>
-              </>
-            ) : (
-              <Stack w='100%'>
-                <Flex justifyContent='space-between' alignItems='center' w='100%'>
-                  <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                    $ {(price * priceCount).toFixed(2)}
-                  </Text>
-                  <Box display='flex' alignItems='center'>
-                    <Button
-                      onClick={handlePriceMinus}
-                      background='neutral.grayLightest'
-                      borderRadius='100px'
-                      py='10px'
-                      px='10px'
-                      fontSize='md'
-                      border='1px'
-                      borderColor='neutral.white'
-                      color='neutral.gray'
-                      _hover={{ color: 'primary.default', border: '1px', borderColor: 'primary.default' }}
-                    >
-                      -
-                    </Button>
-
-                    <Text color='neutral.gray' fontWeight='bold' px={3}>
-                      {priceCount}
-                    </Text>
-                    <Button
-                      onClick={handlePriceAdd}
-                      background='primary.light'
-                      _hover={{ background: 'primary.default', color: 'neutral.white', cursor: 'pointer' }}
-                      borderRadius='100px'
-                      py='10px'
-                      px='10px'
-                      fontSize='md'
-                      color='primary.default'
-                    >
-                      +
-                    </Button>
-                  </Box>
-                </Flex>
-                <Button
-                  rightIcon={<Text fontSize='md'>+</Text>}
-                  background='primary.default'
-                  fontWeight='bold'
-                  variant='solid'
-                  color='neutral.white'
-                  borderWidth='1px'
-                  borderColor='neutral.white'
-                  _hover={{
-                    background: 'neutral.white',
-                    color: 'primary.default',
-                    borderWidth: '1px',
-                    borderColor: 'primary.default'
-                  }}
-                  py={5}
-                >
-                  Add to cart
-                </Button>
-              </Stack>
-            )}
-          </Stack>
-        </Box>
-      </GridItem>
-    </Link>
+                </Box>
+              </Flex>
+              <Button
+                onClick={postToCart}
+                rightIcon={<Text fontSize='md'>+</Text>}
+                background='primary.default'
+                fontWeight='bold'
+                variant='solid'
+                color='neutral.white'
+                borderWidth='1px'
+                borderColor='neutral.white'
+                _hover={{
+                  background: 'neutral.white',
+                  color: 'primary.default',
+                  borderWidth: '1px',
+                  borderColor: 'primary.default'
+                }}
+                py={5}
+              >
+                Add to cart
+              </Button>
+            </Stack>
+          )}
+        </Stack>
+      </Box>
+    </GridItem>
   );
 }
