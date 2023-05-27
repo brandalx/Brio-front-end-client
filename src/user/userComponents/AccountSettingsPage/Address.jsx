@@ -13,7 +13,7 @@ import {
   FormErrorMessage
 } from '@chakra-ui/react';
 import AdressCard from './AdressCard';
-import { API_URL, handelApiGet, handleApiMethod } from '../../../services/apiServices';
+import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
 
 export default function Adress() {
@@ -24,7 +24,7 @@ export default function Adress() {
   const handleApi = async () => {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
     try {
-      const data = await handelApiGet(url);
+      const data = await handleApiGet(url);
       setArr(data);
       console.log(data);
 

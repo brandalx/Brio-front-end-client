@@ -30,7 +30,7 @@ import { IconShoppingBag } from '@tabler/icons-react';
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import Logo from '../../assets/svg/Logo';
 import { Link, useLocation } from 'react-router-dom';
-import { API_URL, handelApiGet } from '../../services/apiServices';
+import { API_URL, handleApiGet } from '../../services/apiServices';
 
 export default function Navbar() {
   const bg = useColorModeValue('white', 'gray.800');
@@ -44,7 +44,7 @@ export default function Navbar() {
   const handleApi = async () => {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
     try {
-      const data = await handelApiGet(url);
+      const data = await handleApiGet(url);
       setArr(data);
       console.log(data);
 

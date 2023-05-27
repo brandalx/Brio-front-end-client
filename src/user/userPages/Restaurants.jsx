@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Container, Flex, Text, GridItem, Grid, Image, Skeleton } from '@chakra-ui/react';
 import burgertest from '../../assets/images/burgertest.png';
 import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
-import { API_URL, handelApiGet } from '../../services/apiServices';
+import { API_URL, handleApiGet } from '../../services/apiServices';
 import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
 export default function Restaurants() {
   // todo: add tag into product into backend model and validation
@@ -13,7 +13,7 @@ export default function Restaurants() {
     const url = API_URL + '/restaurants';
 
     try {
-      const data = await handelApiGet(url);
+      const data = await handleApiGet(url);
       setAr(data);
       console.log(data);
       setLoading(false);

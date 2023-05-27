@@ -8,7 +8,7 @@ import visa from '../../assets/images/visa.png';
 import mastercard from '../../assets/images/mastercard.png';
 import PaymentSummary from '../userComponents/Checkout/PaymentSummary';
 import NewPaymentMethod from '../userComponents/Checkout/NewPaymentMethod';
-import { API_URL, handelApiGet } from '../../services/apiServices';
+import { API_URL, handleApiGet } from '../../services/apiServices';
 export default function Checkout() {
   const [switcher, setSwitcher] = useState(true);
 
@@ -18,7 +18,7 @@ export default function Checkout() {
   const handleApi = async () => {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
     try {
-      const data = await handelApiGet(url);
+      const data = await handleApiGet(url);
       setAr(data);
       const cards = data.creditdata.map((card) => ({
         cardNumber: card.cardNumber,

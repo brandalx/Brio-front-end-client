@@ -25,7 +25,7 @@ import { FaChevronLeft } from 'react-icons/fa';
 import ImageGallery from 'react-image-gallery';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useParams } from 'react-router-dom';
-import { API_URL, handelApiGet } from '../../services/apiServices';
+import { API_URL, handleApiGet } from '../../services/apiServices';
 export default function Product() {
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const thumbnailPosition = isLargerThanMd ? 'left' : 'bottom';
@@ -44,7 +44,7 @@ export default function Product() {
       }
 
       const urlprod = API_URL + '/products/' + params['id'];
-      const productdata = await handelApiGet(urlprod);
+      const productdata = await handleApiGet(urlprod);
       setAr(productdata);
 
       const images = productdata.image.map((item) => ({
@@ -53,14 +53,14 @@ export default function Product() {
       }));
 
       const urlrestuarant = API_URL + '/restaurants/' + productdata.restaurantRef;
-      const data2 = await handelApiGet(urlrestuarant);
+      const data2 = await handleApiGet(urlrestuarant);
       setRestaurant(data2);
 
       const tempProductArr = [];
 
       for (const item of data2.products) {
         const url = API_URL + '/products/' + item;
-        const datanew = await handelApiGet(url);
+        const datanew = await handleApiGet(url);
         tempProductArr.push(datanew);
       }
 

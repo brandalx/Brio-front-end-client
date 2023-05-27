@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Text, Flex, Button, Grid, GridItem, FormControl, FormLabel, Input, Skeleton } from '@chakra-ui/react';
 
-import { API_URL, handelApiGet } from '../../../services/apiServices';
+import { API_URL, handleApiGet } from '../../../services/apiServices';
 export default function Security() {
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
@@ -9,7 +9,7 @@ export default function Security() {
   const handleApi = async () => {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
     try {
-      const data = await handelApiGet(url);
+      const data = await handleApiGet(url);
       setArr(data);
       console.log(data);
 

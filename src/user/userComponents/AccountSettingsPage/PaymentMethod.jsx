@@ -4,7 +4,7 @@ import { Box, Button, FormControl, FormLabel, Grid, GridItem, Input, Select, Ske
 import PaymentCard from './PaymentCard';
 import visa from '../../../assets/images/visa.png';
 import mastercard from '../../../assets/images/mastercard.png';
-import { API_URL, handelApiGet } from '../../../services/apiServices';
+import { API_URL, handleApiGet } from '../../../services/apiServices';
 import NewPaymentMethod from '../Checkout/NewPaymentMethod';
 export default function PaymentMethod() {
   const [loading, setLoading] = useState(true);
@@ -14,7 +14,7 @@ export default function PaymentMethod() {
   const handleApi = async () => {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
     try {
-      const data = await handelApiGet(url);
+      const data = await handleApiGet(url);
       setArr(data);
       console.log(data);
 

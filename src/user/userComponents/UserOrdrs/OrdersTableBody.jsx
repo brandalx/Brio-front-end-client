@@ -17,7 +17,7 @@ import React, { useEffect, useState } from 'react';
 import Status from '../../../assets/svg/Status';
 import { arrUsers } from '../../userJSON/ordersList';
 import ThreeDots from '../../../assets/svg/ThreeDots';
-import { API_URL, handelApiGet } from '../../../services/apiServices';
+import { API_URL, handleApiGet } from '../../../services/apiServices';
 import colorstatus from './colorsObject.json';
 import { Link } from 'react-router-dom';
 
@@ -33,8 +33,8 @@ export default function OrdersTableBody() {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
     const urlrestaurant = API_URL + '/restaurants';
     try {
-      const data = await handelApiGet(url);
-      const datarestaurants = await handelApiGet(urlrestaurant);
+      const data = await handleApiGet(url);
+      const datarestaurants = await handleApiGet(urlrestaurant);
       setArr(data.orders);
       setRestaurantar(datarestaurants);
       console.log(data);

@@ -18,7 +18,7 @@ import {
   useToast
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { API_URL, handelApiGet, handleApiMethod } from '../../../services/apiServices';
+import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
 
 export default function Account() {
@@ -28,7 +28,7 @@ export default function Account() {
   const handleUserData = async () => {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
     try {
-      const data = await handelApiGet(url);
+      const data = await handleApiGet(url);
       setAr(data);
       console.log(data);
       setLoading(false);

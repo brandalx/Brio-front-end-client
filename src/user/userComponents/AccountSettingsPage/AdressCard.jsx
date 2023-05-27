@@ -15,7 +15,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import imagemap from '../../../assets/images/defaultmap.png';
 import ThreeDots from '../../../assets/svg/ThreeDots';
-import { API_URL, handelApiGet } from '../../../services/apiServices';
+import { API_URL, handleApiGet } from '../../../services/apiServices';
 import addressError from '../../../assets/images/addressError.jpg';
 import axios from 'axios';
 import { REACT_API_opencagedata, REACT_APP_MAPBOX, REACT_APP_MAPBOX_TOKEN } from '../../../../env';
@@ -30,7 +30,7 @@ export default function AdressCard({ item, index }) {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
 
     try {
-      const data = await handelApiGet(url);
+      const data = await handleApiGet(url);
       setUserData(data);
       console.log(data);
       handleMapApi(data);

@@ -25,7 +25,7 @@ import Location from '../../assets/svg/Location';
 import ImageGallery from 'react-image-gallery';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useParams } from 'react-router-dom';
-import { API_URL, handelApiGet } from '../../services/apiServices';
+import { API_URL, handleApiGet } from '../../services/apiServices';
 import Menu from '../userComponents/Order/Menu';
 import Pickup from '../userComponents/Cart/Pickup';
 import PaymentDetails from '../userComponents/Order/PaymentDetails';
@@ -48,13 +48,13 @@ export default function Order() {
     const orderurl = API_URL + '/orders/' + params['id'];
 
     try {
-      // const data = await handelApiGet(userurl);
-      const user = await handelApiGet(userurl);
-      const order = await handelApiGet(orderurl);
+      // const data = await handleApiGet(userurl);
+      const user = await handleApiGet(userurl);
+      const order = await handleApiGet(orderurl);
       const restauranturl = API_URL + '/restaurants/' + order.restaurantRef;
       console.log('here is');
       console.log(restauranturl);
-      const restaurant = await handelApiGet(restauranturl);
+      const restaurant = await handleApiGet(restauranturl);
       setUserArr(user);
       setOrdersArr(order);
       setRestaurantArr(restaurant);

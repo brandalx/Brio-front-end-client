@@ -4,7 +4,7 @@ import { AiOutlineClockCircle } from 'react-icons/ai';
 
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useParams } from 'react-router-dom';
-import { API_URL, handelApiGet } from '../../services/apiServices';
+import { API_URL, handleApiGet } from '../../services/apiServices';
 import axios from 'axios';
 import { REACT_API_opencagedata, REACT_APP_MAPBOX } from '../../../env';
 import Logo from '../../assets/svg/Logo';
@@ -22,7 +22,7 @@ export default function Restaurant() {
 
     try {
       setLoading(true);
-      const data = await handelApiGet(url);
+      const data = await handleApiGet(url);
       setAr(data);
       await handleProductApi(data);
       console.log(data);
@@ -41,7 +41,7 @@ export default function Restaurant() {
       console.log(data);
       for (const item of data.products) {
         const url = API_URL + '/products/' + item;
-        const datanew = await handelApiGet(url);
+        const datanew = await handleApiGet(url);
         tempProductArr.push(datanew);
       }
 

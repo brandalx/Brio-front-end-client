@@ -6,7 +6,7 @@ import Delivery from '../userComponents/Cart/Delivery';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import Pickup from '../userComponents/Cart/Pickup';
 import Summary from '../userComponents/Cart/Summary';
-import { API_URL, handelApiGet } from '../../services/apiServices';
+import { API_URL, handleApiGet } from '../../services/apiServices';
 
 export default function Cart() {
   const [loading, setLoading] = useState(true);
@@ -19,7 +19,7 @@ export default function Cart() {
   const handleApi = async () => {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
     try {
-      const data = await handelApiGet(url);
+      const data = await handleApiGet(url);
       setAr(data);
 
       setAddressArr(data.address);
@@ -34,12 +34,12 @@ export default function Cart() {
   const handleApiMeals = async () => {
     try {
       const url = API_URL + '/users/6464085ed67f7b944b642799/cart';
-      const cartData = await handelApiGet(url);
+      const cartData = await handleApiGet(url);
       console.log(cartData.cart);
       setCartAr(cartData.cart);
       let product = await Promise.all(
         cartData.cart.map(async (item) => {
-          const products = await handelApiGet(API_URL + '/products/' + item.productId);
+          const products = await handleApiGet(API_URL + '/products/' + item.productId);
           return products;
         })
       );
@@ -55,7 +55,7 @@ export default function Cart() {
     try {
       const url = API_URL + '/restaurants/' + restuarantId;
       console.log(url);
-      const restaurantData = await handelApiGet(url);
+      const restaurantData = await handleApiGet(url);
       console.log(restaurantData);
       setRestaurant(restaurantData);
       setLoading(false);

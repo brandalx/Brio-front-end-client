@@ -1,7 +1,7 @@
 import { Box, Button, Grid, GridItem, Text, Image, Divider, Skeleton } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import TrashBox from '../../../assets/svg/TrashBox';
-import { API_URL, handelApiGet } from '../../../services/apiServices';
+import { API_URL, handleApiGet } from '../../../services/apiServices';
 
 export default function Menu({ item }) {
   const [producAr, setProductAr] = useState([]);
@@ -10,8 +10,8 @@ export default function Menu({ item }) {
     const url = API_URL + '/products/' + item.productRef;
     console.log(url);
     try {
-      // const data = await handelApiGet(userurl);
-      const product = await handelApiGet(url);
+      // const data = await handleApiGet(userurl);
+      const product = await handleApiGet(url);
 
       setProductAr(product);
 
