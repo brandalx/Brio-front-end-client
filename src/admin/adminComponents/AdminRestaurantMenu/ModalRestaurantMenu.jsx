@@ -38,7 +38,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
     };
 
     try {
-      const response = await fetch(API_URL + '/products', {
+      const response = await fetch(API_URL + '/admin/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

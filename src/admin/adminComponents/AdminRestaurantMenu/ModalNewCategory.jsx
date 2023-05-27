@@ -26,7 +26,7 @@ export default function ModalNewCategory({ fetchCategories, setCategories }) {
 
   const createNewCategory = async (name, items) => {
     const amount = 0;
-    return await handleApiPost(API_URL + '/categories', {
+    return await handleApiPost(API_URL + '/admin/categories', {
       categoryName: name,
       items,
       amount

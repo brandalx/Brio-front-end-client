@@ -46,8 +46,8 @@ export const handleApiDelete = async (url) => {
     const response = await fetch(url, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json',
-      },
+        'Content-Type': 'application/json'
+      }
     });
 
     if (!response.ok) {
@@ -60,7 +60,6 @@ export const handleApiDelete = async (url) => {
     throw new Error(error.message);
   }
 };
-
 
 // for post,put,patch,delete methods
 export const handleApiMethod = async (_url, _method, _body = {}) => {

@@ -36,7 +36,7 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
     };
 
     axios
-      .patch(`http://localhost:3001/products/${item._id}`, combinedData)
+      .patch(`http://localhost:3001/admin/products/${item._id}`, combinedData)
       .then((response) => {
         console.log(response);
         onClose(); // Close the modal
@@ -102,14 +102,15 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
                 defaultValue={item.ingredients}
                 render={({ field }) => <Input {...field} placeholder='Ingredients' />}
               />
-              <FormLabel mt='15px'>Price</FormLabel>
-              <Controller
-                control={control}
-                name='price'
-                defaultValue={item.price}
-                render={({ field }) => <Input {...field} placeholder='Price' />}
-              />
-              <FormLabel mt='15px'>Nutritional value</FormLabel>
+                <FormLabel mt='15px'>Price</FormLabel>
+                <Controller
+                    control={control}
+                    name='price'
+                    defaultValue={item.price}
+                    render={({ field }) => <Input {...field} placeholder='Price' type="number" />}
+                />
+
+                <FormLabel mt='15px'>Nutritional value</FormLabel>
               <Controller
                 control={control}
                 name='nutritionalValue'
