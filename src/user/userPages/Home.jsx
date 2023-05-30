@@ -4,11 +4,13 @@ import burgertest from '../../assets/images/burgertest.png';
 import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
+import Preloader from '../../components/Loaders/preloader';
 export default function Home() {
   // todo: add tag into product into backend model and validation
 
   const [arr, setAr] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [scrollEnabled, setScrollEnabled] = useState(false);
   const handleApi = async () => {
     const url = API_URL + '/restaurants';
 
@@ -26,8 +28,19 @@ export default function Home() {
     handleApi();
   }, []);
 
+  useEffect(() => {
+    if (loading) {
+      document.body.style.overflow = 'hidden';
+      setScrollEnabled(false);
+    } else {
+      document.body.style.overflow = 'auto';
+      setScrollEnabled(true);
+    }
+  }, [loading]);
+
   return (
     <>
+      <Preloader loading={loading} />
       <Container maxW='1110px'>
         <Box>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
