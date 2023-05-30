@@ -6,10 +6,14 @@ import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useParams } from 'react-router-dom';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 import axios from 'axios';
-import { REACT_API_opencagedata, REACT_APP_MAPBOX } from '../../../env';
+
 import Logo from '../../assets/svg/Logo';
 
 export default function Restaurant() {
+  const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
+  const REACT_APP_opencagedata = import.meta.env.VITE_OPENCAGEDATA;
+  const REACT_APP_MAPBOX = import.meta.env.VITE_MAPBOX;
+  const REACT_APP_MAPBOX_TOKEN = import.meta.env.VITE_MAPBOXTOKEN;
   const [restaurantArr, setAr] = useState([]);
   const [productArr, setProductAr] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -81,7 +85,7 @@ export default function Restaurant() {
 
   const handleMapApi = async () => {
     try {
-      const placeUrl = `${REACT_API_opencagedata}${restaurantArr.location}%20${restaurantArr.address}&pretty=1`;
+      const placeUrl = `${REACT_APP_opencagedata}${restaurantArr.location}%20${restaurantArr.address}&pretty=1`;
       const resp = await axios.get(placeUrl);
       const data = resp.data;
       setAddress(data);

@@ -1,15 +1,19 @@
 import { Box, Text, Image, Skeleton } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import defaultmap from '../../../assets/images/defaultmap.png';
-import { REACT_API_opencagedata, REACT_APP_MAPBOX } from '../../../../env';
+
 import axios from 'axios';
 export default function Pickup({ item }) {
   const [address, setAddress] = useState(null);
   const [addressLoading, setAddressLoading] = useState(true);
+  const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
+  const REACT_APP_opencagedata = import.meta.env.VITE_OPENCAGEDATA;
+  const REACT_APP_MAPBOX = import.meta.env.VITE_MAPBOX;
+  const REACT_APP_MAPBOX_TOKEN = import.meta.env.VITE_MAPBOXTOKEN;
 
   const handleMapApi = async () => {
     try {
-      const placeUrl = `${REACT_API_opencagedata}${item.location}%20${item.address}&pretty=1`;
+      const placeUrl = `${REACT_APP_opencagedata}${item.location}%20${item.address}&pretty=1`;
       const resp = await axios.get(placeUrl);
       const data = resp.data;
       setAddress(data);

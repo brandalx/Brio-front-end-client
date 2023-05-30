@@ -18,8 +18,13 @@ import ThreeDots from '../../../assets/svg/ThreeDots';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import addressError from '../../../assets/images/addressError.jpg';
 import axios from 'axios';
-import { REACT_API_opencagedata, REACT_APP_MAPBOX, REACT_APP_MAPBOX_TOKEN } from '../../../../env';
+
 export default function AdressCard({ item, index }) {
+  const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
+  const REACT_APP_opencagedata = import.meta.env.VITE_OPENCAGEDATA;
+  const REACT_APP_MAPBOX = import.meta.env.VITE_MAPBOX;
+  const REACT_APP_MAPBOX_TOKEN = import.meta.env.VITE_MAPBOXTOKEN;
+
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState(null);
   const [userData, setUserData] = useState([]);
@@ -50,7 +55,7 @@ export default function AdressCard({ item, index }) {
     try {
       const placeUrl = `${data.address[index].country}%20${data.address[index].state}%20${data.address[index].city}%20${data.address[index].address1}%20${data.address[index].address2}`;
       let encodelUrl = encodeURIComponent(placeUrl);
-      let finalUrl = `${REACT_API_opencagedata}${encodelUrl}&pretty=1`;
+      let finalUrl = `${REACT_APP_opencagedata}${encodelUrl}&pretty=1`;
       console.log(finalUrl);
       const resp = await axios.get(finalUrl);
       const responseData = resp.data;
