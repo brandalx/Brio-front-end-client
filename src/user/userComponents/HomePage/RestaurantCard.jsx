@@ -4,13 +4,13 @@ import Emoji from 'react-emojis';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
-export default function RestaurantCard({ img, title, time, price, badgeData }) {
+export default function RestaurantCard({ img, title, time, price, badgeData, _id }) {
   return (
     <>
-      <Link to='/restaurant'>
+      <Link to={`/restaurant/${_id}`}>
         <GridItem w='100%' bg='neutral.white'>
           <Box bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='lg'>
-            <Image src={img} roundedTop='lg' />
+            <Image src={img} roundedTop='lg' h='230px' objectFit='cover' />
 
             <Box p='6'>
               <Box>
@@ -22,7 +22,7 @@ export default function RestaurantCard({ img, title, time, price, badgeData }) {
                     <AiOutlineClockCircle color='#828282' />
                   </Box>
                   <Text color='neutral.gray' fontSize='3xs'>
-                    {time} * {price}
+                    {time} min • ${price} min price
                   </Text>
                 </Box>
                 {badgeData.map((item) => (

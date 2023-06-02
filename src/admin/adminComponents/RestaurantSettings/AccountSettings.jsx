@@ -14,9 +14,59 @@ import {
   Checkbox,
   Divider
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { API_URL, handleApiGet } from '../../../services/apiServices';
+import axios from 'axios';
 
 export default function AccountSettings() {
+  const [restaurant, setRestaurant] = useState([]);
+  const [image, setImage] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phoneNumber: '',
+    address: '',
+    description: ''
+  });
+
+  const handleImageChange = (event) => {
+    setImage(URL.createObjectURL(event.target.files[0]));
+  };
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const updatedRestaurantData = {
+        ...restaurant[0], // Keep existing fields from the restaurant data
+        ...formData // Update fields with new form data
+      };
+
+      const response = await axios.patch(`${API_URL}/admin/restaurants/${restaurant[0]._id}`, updatedRestaurantData);
+      console.log(response.data);
+      // Perform any additional actions, such as showing a success message or refreshing the data
+    } catch (error) {
+      console.error('Error updating restaurant information:', error);
+      // Handle the error, e.g., display an error message to the user
+    }
+  };
+
+  const fetchRestaurants = async () => {
+    try {
+      const response = await handleApiGet(API_URL + '/admin/restaurants');
+      setRestaurant(response);
+      if (response.length > 0) {
+        const { title, email, phoneNumber, address, description } = response[0];
+        setFormData({ name: title, email, phoneNumber: phoneNumber, address, description }); // <-- Изменено с 'phone' на 'phoneNumber'
+      }
+    } catch (error) {
+      console.error('Error fetching restaurants:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRestaurants();
+  }, []);
+
   return (
     <Box>
       <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
@@ -33,29 +83,42 @@ export default function AccountSettings() {
                 borderRadius='10px'
                 boxSize='80px'
                 objectFit='cover'
-                src='https://images.pexels.com/photos/2323398/pexels-photo-2323398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                src={
+                  image ||
+                  (restaurant.length > 0
+                    ? restaurant[0].image
+                    : 'https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg')
+                }
                 alt='Avatar'
               />
             </Box>
-            <Button
-              background='neutral.white'
-              fontSize='2xs'
-              fontWeight='bold'
-              variant='solid'
-              color='primary.default'
-              borderWidth='1px'
-              borderColor='primary.default'
-              _hover={{
-                background: 'primary.default',
-                color: 'neutral.white',
-                borderWidth: '1px',
-                borderColor: 'primary.default'
-              }}
-              py={5}
-              me='20px'
-            >
-              Change
-            </Button>
+            <label htmlFor='imageUpload' style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <Button
+                cursor='pointer'
+                _hover={{
+                  background: 'primary.default',
+                  color: 'neutral.white',
+                  borderWidth: '1px',
+                  borderColor: 'primary.default'
+                }}
+                w='84px'
+                h='44px'
+                border='1px'
+                borderColor='primary.default'
+                color='primary.default'
+                as='span'
+                mr='10px'
+              >
+                Change
+              </Button>
+              <Input
+                id='imageUpload'
+                type='file'
+                accept='image/*'
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
+            </label>
             <Button
               borderColor='neutral.white'
               borderWidth='1px'
@@ -90,7 +153,8 @@ export default function AccountSettings() {
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  placeholder='Restaurant Name'
+                  defaultValue={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
               </FormControl>
             </GridItem>
@@ -102,11 +166,12 @@ export default function AccountSettings() {
 
                 <Input
                   type='email'
+                  defaultValue={formData.email}
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  placeholder='example@gmail.com'
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
               </FormControl>
             </GridItem>
@@ -122,7 +187,8 @@ export default function AccountSettings() {
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  placeholder='name@example.com'
+                  defaultValue={formData.phoneNumber} // <-- Изменено с 'phone' на 'phoneNumber'
+                  onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
                 />
               </FormControl>
             </GridItem>
@@ -131,9 +197,9 @@ export default function AccountSettings() {
         <Box pt={5}>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
             <GridItem w='100%'>
-              <FormControl id='name'>
+              <FormControl id='address'>
                 <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                  Restaurant name
+                  Address
                 </FormLabel>
 
                 <Textarea
@@ -142,19 +208,15 @@ export default function AccountSettings() {
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  placeholder='Restaurant Adress'
+                  defaultValue={formData.address}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 />
               </FormControl>
             </GridItem>
 
             <GridItem w='100%'>
-              <FormControl id='phone'>
-                <FormLabel
-                  fontWeight='semibold'
-                  placeholder='Restaurant desciption'
-                  fontSize='3xs'
-                  color='neutral.grayDark'
-                >
+              <FormControl id='description'>
+                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                   Description
                 </FormLabel>
 
@@ -164,7 +226,8 @@ export default function AccountSettings() {
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  placeholder='name@example.com'
+                  defaultValue={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 />
               </FormControl>
             </GridItem>
@@ -277,6 +340,7 @@ export default function AccountSettings() {
                     borderColor: 'primary.default'
                   }}
                   py={5}
+                  onClick={onSubmit}
                 >
                   Save changes
                 </Button>

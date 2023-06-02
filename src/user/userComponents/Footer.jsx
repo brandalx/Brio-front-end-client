@@ -5,6 +5,7 @@ import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import Logo from '../../assets/svg/Logo';
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
   return (
     <footer className='page-header' style={{ background: theme.colors.neutral.black }}>
       <Box>
@@ -18,7 +19,7 @@ export default function Footer() {
                 </Text>
               </Box>
               <Text color='neutral.gray' fontSize='3xs'>
-                © 2022 Brio - Bringing food really on-time
+                © {new Date().getFullYear()} Brio - Bringing food really on-time
               </Text>
               <Stack direction={'row'} spacing={6} color='neutral.white'>
                 <FaTwitter />

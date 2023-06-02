@@ -80,6 +80,7 @@ const fonts = {
 };
 const fontSizes = {
   '3xs': '0.75rem', //12px
+  '2.5xs': '0.8125rem', //13px
   '2xs': '0.875rem', //14px
   xs: '1.125rem', //18px
   sm: ' 1.25rem', //20px

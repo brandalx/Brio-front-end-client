@@ -1,81 +1,107 @@
-import React, { useState } from 'react';
-import { Box, Button, Divider, GridItem, Heading, Text, useMediaQuery, useDisclosure } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Button,
+  Divider,
+  GridItem,
+  Heading,
+  Text,
+  useMediaQuery,
+  useDisclosure,
+  Skeleton
+} from '@chakra-ui/react';
 import '../../../css/global.css';
 import AddPlus from '../../../assets/svg/AddPlus';
 import theme from '../../../utils/theme';
 import ModalRestaurantMenu from './ModalRestaurantMenu';
+import { API_URL, handleApiGet } from '../../../services/apiServices';
+import ModalNewCategory from './ModalNewCategory';
 
-export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
-  const arr = [
-    { id: 1, title: 'Breakfast menu', amount: 17 },
-    { id: 2, title: 'Lunch menu', amount: 27 },
-    {
-      id: 3,
-      title: 'Dinner menu',
-      amount: 12
-    },
-    { id: 4, title: 'Drinks menu', amount: 15 }
-  ];
+export default function CategoryMenu({ selectedCategory, onCategoryChange, categoryCounts }) {
+  const [loading, setLoading] = useState(true);
   const [isTablet] = useMediaQuery('(max-width: 992px)');
   const [isMobile] = useMediaQuery('(max-width: 576px)');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [activeButton, setActiveButton] = useState(1);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [categories, setCategories] = useState([]);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await handleApiGet(API_URL + '/admin/categories');
+      setCategories(response);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const handleCategoryClick = (category) => {
-    onCategoryChange(category.title);
-    setActiveButton((prevButton) => (prevButton === category.id ? 0 : category.id));
+    onCategoryChange(category.categoryName);
+    setSelectedItem(category._id);
   };
 
   return (
     <GridItem width='100%' overflow='hidden' colSpan={4}>
-      <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
+      <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
         Category menu
       </Text>
-      <Box display='flex' flexWrap='wrap' style={{ backfaceVisibility: 'initial' }}>
-        {arr.map((element) => {
-          return (
+      {loading ? (
+        <Skeleton minH='150px' maxH='300px' borderRadius='16px' />
+      ) : (
+        <Box w='100%' display='flex' flexDirection='column'>
+          {categories.map((element) => (
             <Box
               display='flex'
               flexDirection='column'
               justifyContent='center'
               alignItems='start'
-              key={element.id}
+              key={element._id}
               ml={isMobile ? 0 : isTablet ? '8px' : 0}
               mr={isMobile ? 0 : isTablet ? '8px' : 0}
-              width={isMobile ? '100%' : isTablet ? '46%' : '100%'}
+              width={isMobile ? '100%' : isTablet ? '98%' : '100%'}
               mb='12px'
               p='10px'
               border='2px'
               borderRadius='16px'
               cursor='pointer'
-              bg={activeButton === element.id ? 'primary.light' : 'white'}
+              bg={selectedItem === element._id ? theme.colors.primary.light : 'white'}
               borderColor={
-                activeButton === element.id ? theme.colors.primary.default : theme.colors.neutral.grayLightest
+                selectedItem === element._id ? theme.colors.primary.default : theme.colors.neutral.grayLightest
               }
               _hover={{
                 borderColor: theme.colors.primary.default,
-                transition: '450ms'
+                transition: '450ms',
+                bg: theme.colors.primary.light
               }}
               onClick={() => handleCategoryClick(element)}
               maxH='72px'
             >
               <Heading fontSize='2xs' fontWeight='bold' color='neutral.black'>
-                {element.title}
+                {element.categoryName.length > 0 ? element.categoryName : 'N/A'}
               </Heading>
               <Text fontSize='13px' mt='6px' fontWeight='regular' color='neutral.grayDark'>
-                {element.amount}
+                {categoryCounts[element.categoryName] || 0}
               </Text>
             </Box>
-          );
-        })}
-      </Box>
+          ))}
+        </Box>
+      )}
+
       <Divider mt='21px' />
       <Box width='100%' gap='4' mt='20px' display='flex' justifyContent='space-between'>
         <Box width='100%' px='5px' border='1px solid #EDEEF2' borderRadius='16px' display='flex' flexDirection='column'>
-          <Button width='100%' display='flex' flexDirection='column' h='70px'>
-            <AddPlus />
-            <Text mt='6px'>New category</Text>
-          </Button>
+          <ModalNewCategory
+            fetchCategories={fetchCategories}
+            setCategories={setCategories}
+            width='100%'
+            display='flex'
+            flexDirection='column'
+            h='70px'
+          />
         </Box>
         <Box width='100%' border='1px solid #EDEEF2' borderRadius='16px'>
           <Button onClick={onOpen} width='100%' display='flex' flexDirection='column' h='70px'>
@@ -84,7 +110,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange }) {
           </Button>
         </Box>
       </Box>
-      <ModalRestaurantMenu isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <ModalRestaurantMenu categoryName={selectedCategory} isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
     </GridItem>
   );
 }

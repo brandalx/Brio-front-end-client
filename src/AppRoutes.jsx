@@ -17,6 +17,12 @@ import Login from './user/userPages/Login';
 import RestaurantMenu from './admin/adminPages/RestaurantMenu';
 import RestaurantSettings from './admin/adminPages/RestaurantSettings';
 import Page404 from './user/userPages/Page404';
+import AccountSettings from './user/userPages/AccountSettings';
+import Cart from './user/userPages/Cart';
+import Checkout from './user/userPages/Checkout';
+import UserOrders from './user/userPages/UserOrders';
+import Order from './user/userPages/Order';
+import Restaurants from './user/userPages/Restaurants';
 
 export default function AppRoutes() {
   return (
@@ -37,11 +43,18 @@ export default function AppRoutes() {
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<Login />} />
 
-                <Route path='/restaurant' element={<Restaurant />} />
-                <Route path='/restaurant/product' element={<Product />} />
+                <Route path='/user/account/*' element={<AccountSettings />} />
+                <Route path='/user/cart/*' element={<Cart />} />
+                <Route path='/user/checkout/' element={<Checkout />} />
+                <Route path='/user/orders' element={<UserOrders />} />
+                <Route path='/user/order/:id' element={<Order />} />
+                <Route path='/restaurant/' element={<Restaurants />} />
+                <Route path='/restaurant/:id' element={<Restaurant />} />
+                <Route path='/restaurant/product/:id' element={<Product />} />
+
                 {/* ----------ALL ADMIN ROUTES------------ */}
                 <Route path='/admin/restaurant/dashboard' element={<RestaurantDashboard />} />
-                {/*<Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />*/}
+                <Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />
                 <Route path='/admin/restaurant/menu' element={<RestaurantMenu />} />
                 <Route path='/admin/restaurant/settings/*' element={<RestaurantSettings />} />
                 <Route path='/*' element={<Page404 />} />

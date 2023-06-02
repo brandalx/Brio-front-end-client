@@ -5,7 +5,8 @@ import ListOfProducts from '../adminComponents/AdminRestaurantMenu/ListOfProduct
 import { Box, Container, Grid, GridItem } from '@chakra-ui/react';
 
 export default function RestaurantMenu() {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('Breakfast menu');
+  const [categoryCounts, setCategoryCounts] = useState({});
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
@@ -15,10 +16,18 @@ export default function RestaurantMenu() {
     <Container maxW='1110px' pb='50px'>
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 3fr' }} gap={6}>
         <GridItem w='100%'>
-          <CategoryMenu selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
+          <CategoryMenu
+            selectedCategory={selectedCategory}
+            onCategoryChange={handleCategoryChange}
+            categoryCounts={categoryCounts}
+          />{' '}
         </GridItem>
         <GridItem w='100%'>
-          <ListOfProducts selectedCategory={selectedCategory} />
+          <ListOfProducts
+            selectedCategory={selectedCategory}
+            categoryCounts={categoryCounts}
+            setCategoryCounts={setCategoryCounts}
+          />{' '}
         </GridItem>
       </Grid>
     </Container>
