@@ -23,6 +23,7 @@ import Checkout from './user/userPages/Checkout';
 import UserOrders from './user/userPages/UserOrders';
 import Order from './user/userPages/Order';
 import Restaurants from './user/userPages/Restaurants';
+import Forgotpassword from './user/userPages/ForgotPassword';
 
 export default function AppRoutes() {
   return (
@@ -36,12 +37,14 @@ export default function AppRoutes() {
 
               <Route path='/*' element={<Header />} />
               <Route path='/login/*' element={<div />} />
+              <Route path='/recoverpassword/*' element={<div />} />
             </Routes>
             <Main>
               <Routes>
                 {/* ----------ALL USERS ROUTES------------ */}
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<Login />} />
+                <Route path='/recoverpassword' element={<Forgotpassword />} />
 
                 <Route path='/user/account/*' element={<AccountSettings />} />
                 <Route path='/user/cart/*' element={<Cart />} />
@@ -64,6 +67,7 @@ export default function AppRoutes() {
               <Route path='/*' element={<Footer />} />
               <Route path='/admin/*' element={<AdminFooter />} />
               <Route path='/login/*' element={<div />} />
+              <Route path='/recoverpassword/*' element={<div />} />
             </Routes>
           </div>
         </BrowserRouter>

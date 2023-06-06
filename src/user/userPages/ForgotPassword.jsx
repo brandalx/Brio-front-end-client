@@ -15,14 +15,16 @@ import {
   InputGroup,
   InputRightElement,
   Grid,
-  GridItem
+  GridItem,
+  Icon
 } from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
+import { FaChevronLeft } from 'react-icons/fa';
 
-export default function Login() {
+export default function ForgotPassword() {
   return (
     <>
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
@@ -46,15 +48,26 @@ export default function Login() {
                 </Box>
 
                 <Box>
+                  <Box pb={10} w='100%' display='flex' justifyItems='flex-startx'>
+                    <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
+                      <Flex alignItems='center'>
+                        <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+                        <Text color='neutral.black' fontSize='xs'>
+                          <Link to='/login'> Back to login</Link>
+                        </Text>
+                      </Flex>
+                    </Button>
+                  </Box>
                   <Box>
-                    <Text fontSize='2xl' fontWeight='bold' color='neutral.black'>
-                      Login
+                    <Text fontSize='xl' fontWeight='extrabold' color='neutral.black'>
+                      Forgot Password
                     </Text>
                     <Text fontSize='2xs' color='neutral.grayDark'>
-                      Sign in with your data that you entered during your registration.
+                      Enter the email associated with your account and we’ll send an email with instructions to reset
+                      your password.
                     </Text>
                   </Box>
-                  <Box mt='40px'>
+                  <Box mt='20px'>
                     <Stack spacing={4}>
                       <FormControl id='email'>
                         <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
@@ -70,30 +83,8 @@ export default function Login() {
                           placeholder='name@example.com'
                         />
                       </FormControl>
-                      <FormControl id='password'>
-                        <FormLabel color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                          Password
-                        </FormLabel>
 
-                        <Input
-                          type='password'
-                          background='neutral.white'
-                          _placeholder={{ color: 'neutral.gray' }}
-                          borderRadius='8px'
-                          fontSize='2xs'
-                          placeholder='min. 8 characters'
-                        />
-                      </FormControl>
                       <Stack spacing={10}>
-                        <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
-                          <Flex alignItems='center'>
-                            <Checkbox mr='2'>
-                              <Text color='neutral.black' fontSize='2xs'>
-                                Keep me logged in
-                              </Text>
-                            </Checkbox>
-                          </Flex>
-                        </Stack>
                         <Link to='/'>
                           <Button
                             w='100%'
@@ -111,25 +102,8 @@ export default function Login() {
                             }}
                             py={5}
                           >
-                            Login
+                            Send instructions
                           </Button>
-                        </Link>
-
-                        <Link to='/recoverpassword'>
-                          <Box display='flex' justifyItems='center'>
-                            <Text
-                              w='100%'
-                              mx='auto'
-                              textAlign='center'
-                              fontSize='2xs'
-                              fontWeight='bold'
-                              as='span'
-                              color='primary.default'
-                              _hover={{ textDecor: 'underline', cursor: 'pointer' }}
-                            >
-                              Forgot password
-                            </Text>{' '}
-                          </Box>
                         </Link>
                       </Stack>
                     </Stack>
@@ -138,7 +112,7 @@ export default function Login() {
 
                 <Box textAlign='center' py={6}>
                   <Text>
-                    Don’t have an account?{' '}
+                    Do you have any questions?
                     <Link to='/#'>
                       {' '}
                       <Text
@@ -148,7 +122,7 @@ export default function Login() {
                         color='primary.default'
                         _hover={{ textDecor: 'underline' }}
                       >
-                        Sign up
+                        FAQ
                       </Text>{' '}
                     </Link>
                   </Text>
