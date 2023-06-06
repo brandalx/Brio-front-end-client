@@ -139,7 +139,7 @@ export default function Login() {
                 <Box textAlign='center' py={6}>
                   <Text>
                     Don’t have an account?{' '}
-                    <Link to='/#'>
+                    <Link to='/signup'>
                       {' '}
                       <Text
                         fontSize='2xs'

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Logo() {
+export default function Logo({ color = '#4E60FF' }) {
   return (
     <svg width={29} height={24} viewBox='0 0 29 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path
@@ -12,8 +12,8 @@ export default function Logo() {
       />
       <defs>
         <linearGradient id='paint0_linear_1_80' x1='20.5' y1='10.5' x2='-7.5' y2='10.5' gradientUnits='userSpaceOnUse'>
-          <stop stopColor='#4E60FF' />
-          <stop offset={1} stopColor='#4E60FF' stopOpacity={0} />
+          <stop stopColor={color} />
+          <stop offset={1} stopColor={color} stopOpacity={0} />
         </linearGradient>
       </defs>
     </svg>
