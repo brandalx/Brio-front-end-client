@@ -1,9 +1,10 @@
 import { Box, Button, Stack, Text } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import SignUpOptionsArr from './SignUpOptions';
 import { Link } from 'react-router-dom';
 
 export default function SignUpMain() {
+  const [option, setOption] = useState();
   return (
     <Box>
       <Box>
@@ -18,11 +19,12 @@ export default function SignUpMain() {
         <Box mt='40px'>
           <Stack spacing={4}>
             <Box>
-              <SignUpOptionsArr />
+              <SignUpOptionsArr setOption={setOption} option={option} />
             </Box>
             <Stack spacing={10}>
-              <Link to='/'>
+              <Link to={option}>
                 <Button
+                  isDisabled={!option ? true : false}
                   w='100%'
                   background='primary.default'
                   fontWeight='bold'

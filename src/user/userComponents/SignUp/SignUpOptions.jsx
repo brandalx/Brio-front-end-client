@@ -5,6 +5,7 @@ import Users from '../../../assets/svg/Users';
 import Restaurants from '../../../assets/svg/Restaurants';
 import theme from '../../../utils/theme';
 import { Link, useLocation } from 'react-router-dom';
+
 function SignUpOptions({ element, isSelected, onItemSelected }) {
   const [isHovered, setIsHovered] = useState(false);
   const Icon = element.icon;
@@ -18,8 +19,8 @@ function SignUpOptions({ element, isSelected, onItemSelected }) {
   }, []);
 
   const handleClick = useCallback(() => {
-    onItemSelected(element.id);
-  }, [onItemSelected, element.id]);
+    onItemSelected(element.link); // Pass element.link instead of element.id
+  }, [onItemSelected, element.link]);
 
   let location = useLocation();
   function normalizePath(path) {
@@ -29,9 +30,9 @@ function SignUpOptions({ element, isSelected, onItemSelected }) {
   useEffect(() => {
     const normalizedPath = normalizePath(location.pathname);
     if (normalizedPath === '/signup/restaurant') {
-      onItemSelected(1);
+      onItemSelected('restaurant'); // Pass 'restaurant' instead of 1
     } else if (normalizedPath === '/signup/personal') {
-      onItemSelected(2);
+      onItemSelected('personal'); // Pass 'personal' instead of 2
     }
   }, [location.pathname]);
 
@@ -72,7 +73,7 @@ function SignUpOptions({ element, isSelected, onItemSelected }) {
   );
 }
 
-export default function SignUpOptionsArr() {
+export default function SignUpOptionsArr({ setOption }) {
   const arr = [
     {
       id: 1,
@@ -91,21 +92,23 @@ export default function SignUpOptionsArr() {
   ];
 
   const [selectedItem, setSelectedItem] = useState(null);
-
-  const handleItemSelected = useCallback((itemId) => {
-    setSelectedItem(itemId);
-  }, []);
+  const handleItemSelected = useCallback(
+    (link) => {
+      setSelectedItem(link); // Set the selected link as the selectedItem
+      setOption(link);
+    },
+    [setOption]
+  );
 
   return (
     <Box>
       {arr.map((element) => (
-        <Link to={element.link} key={element.id}>
-          <SignUpOptions
-            element={element}
-            isSelected={selectedItem === element.id}
-            onItemSelected={handleItemSelected}
-          />
-        </Link>
+        <SignUpOptions
+          key={element.id}
+          element={element}
+          isSelected={selectedItem === element.link}
+          onItemSelected={handleItemSelected}
+        />
       ))}
     </Box>
   );
