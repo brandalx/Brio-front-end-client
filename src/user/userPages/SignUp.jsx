@@ -80,8 +80,7 @@ export default function SignUp() {
 
                 {option2 && (
                   <>
-                    <Route path='/restaurant' element={<PersonalDetails type='Restaurant' />} />
-                    <Route path='/personal' element={<PersonalDetails type='Personal' />} />
+                    <Route path='/personal' element={<PersonalDetails type={option2} />} />
                   </>
                 )}
                 <Route path='/*' element={<RedirectHandler setRedirect={setShouldRedirectTo404} />} />

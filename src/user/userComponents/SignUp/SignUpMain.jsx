@@ -27,7 +27,7 @@ export default function SignUpMain({ SetOption2 }) {
             </Box>
 
             <Stack spacing={10}>
-              <Link to={option}>
+              <Link to='/signup/personal'>
                 <Button
                   isDisabled={!option ? true : false}
                   w='100%'

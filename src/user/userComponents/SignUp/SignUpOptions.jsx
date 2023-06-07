@@ -19,8 +19,8 @@ function SignUpOptions({ element, isSelected, onItemSelected }) {
   }, []);
 
   const handleClick = useCallback(() => {
-    onItemSelected(element.link); // Pass element.link instead of element.id
-  }, [onItemSelected, element.link]);
+    onItemSelected(element.type); // Pass element.link instead of element.id
+  }, [onItemSelected, element.type]);
 
   let location = useLocation();
   function normalizePath(path) {
@@ -29,10 +29,8 @@ function SignUpOptions({ element, isSelected, onItemSelected }) {
 
   useEffect(() => {
     const normalizedPath = normalizePath(location.pathname);
-    if (normalizedPath === '/signup/restaurant') {
-      onItemSelected('restaurant'); // Pass 'restaurant' instead of 1
-    } else if (normalizedPath === '/signup/personal') {
-      onItemSelected('personal'); // Pass 'personal' instead of 2
+    if (normalizedPath === '/signup/personal') {
+      onItemSelected('personal'); // Pass 'restaurant' instead of 1
     }
   }, [location.pathname]);
 
@@ -80,22 +78,23 @@ export default function SignUpOptionsArr({ setOption }) {
       title: 'Restaurant',
       description: 'Manage your own restaurant',
       icon: Restaurants,
-      link: 'restaurant'
+
+      type: 'restaurant'
     },
     {
       id: 2,
       title: 'Personal',
       description: 'Keep your orders in one place',
       icon: Users,
-      link: 'personal'
+      type: 'personal'
     }
   ];
 
   const [selectedItem, setSelectedItem] = useState(null);
   const handleItemSelected = useCallback(
-    (link) => {
-      setSelectedItem(link); // Set the selected link as the selectedItem
-      setOption(link);
+    (type) => {
+      setSelectedItem(type); // Set the selected link as the selectedItem
+      setOption(type);
     },
     [setOption]
   );
@@ -106,7 +105,7 @@ export default function SignUpOptionsArr({ setOption }) {
         <SignUpOptions
           key={element.id}
           element={element}
-          isSelected={selectedItem === element.link}
+          isSelected={selectedItem === element.type}
           onItemSelected={handleItemSelected}
         />
       ))}

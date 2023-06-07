@@ -100,7 +100,7 @@ export default function PersonalDetails({ type }) {
                 </FormControl>
                 <Stack spacing={10}>
                   <Box>
-                    <Link to='/'>
+                    <Link to='/signup/personal'>
                       <Button
                         isDisabled={!isValid()}
                         w='100%'
