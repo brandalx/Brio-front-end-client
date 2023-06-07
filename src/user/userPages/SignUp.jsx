@@ -17,14 +17,18 @@ import {
   Grid,
   GridItem
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import SignUpOptionsArr from '../userComponents/SignUp/SignUpOptions';
+import Page404 from '../userPages/Page404';
 import SignUpMain from '../userComponents/SignUp/SignUpMain';
+import PersonalDetails from '../userComponents/SignUp/PersonalDetails';
 
 export default function SignUp() {
+  const [option2, SetOption2] = useState();
+  useEffect(() => {}, [option2]);
   return (
     <>
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
@@ -57,9 +61,15 @@ export default function SignUp() {
 
               <Box>
                 <Routes>
-                  <Route path='/' element={<SignUpMain />} />
-                  <Route path='/restaurant/*' element={<div> restauran options </div>} />
-                  <Route path='/personal/*' element={<div> users options </div>} />
+                  <Route path='/' element={<SignUpMain SetOption2={SetOption2} />} />
+
+                  {option2 && (
+                    <>
+                      <Route path='/restaurant' element={<PersonalDetails type='restaurant' />} />
+                      <Route path='/personal' element={<PersonalDetails type='personal' />} />
+                    </>
+                  )}
+                  <Route path='*' element={<Page404 />} />
                 </Routes>
               </Box>
 

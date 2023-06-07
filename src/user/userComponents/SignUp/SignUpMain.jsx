@@ -1,10 +1,14 @@
 import { Box, Button, Stack, Text } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SignUpOptionsArr from './SignUpOptions';
-import { Link } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
+import PersonalDetails from './PersonalDetails';
 
-export default function SignUpMain() {
+export default function SignUpMain({ SetOption2 }) {
   const [option, setOption] = useState();
+  useEffect(() => {
+    SetOption2(option);
+  }, [option]);
   return (
     <Box>
       <Box>
@@ -21,6 +25,7 @@ export default function SignUpMain() {
             <Box>
               <SignUpOptionsArr setOption={setOption} option={option} />
             </Box>
+
             <Stack spacing={10}>
               <Link to={option}>
                 <Button
