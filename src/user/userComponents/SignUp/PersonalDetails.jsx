@@ -9,7 +9,7 @@ export default function PersonalDetails({ type }) {
   //     }}
   //   })
   useEffect(() => {
-    console.log('hello world');
+    console.log(type);
   }, []);
-  return <div>PersonalDetails</div>;
+  return <div>{type}</div>;
 }
