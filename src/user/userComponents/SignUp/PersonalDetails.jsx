@@ -18,9 +18,10 @@ import {
   GridItem
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import Logo from '../../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
+import AdditionalInfo from './AdditionalInfo';
 
 export default function PersonalDetails({ type }) {
   const [email, setEmail] = useState('');
@@ -100,7 +101,7 @@ export default function PersonalDetails({ type }) {
                 </FormControl>
                 <Stack spacing={10}>
                   <Box>
-                    <Link to='/signup/personal'>
+                    <Link to='/signup/personal/info'>
                       <Button
                         isDisabled={!isValid()}
                         w='100%'

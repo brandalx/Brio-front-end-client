@@ -25,6 +25,7 @@ import SignUpOptionsArr from '../userComponents/SignUp/SignUpOptions';
 import Page404 from '../userPages/Page404';
 import SignUpMain from '../userComponents/SignUp/SignUpMain';
 import PersonalDetails from '../userComponents/SignUp/PersonalDetails';
+import AdditionalInfo from '../userComponents/SignUp/AdditionalInfo';
 function RedirectHandler({ setRedirect }) {
   useEffect(() => {
     setRedirect(true);
@@ -81,6 +82,7 @@ export default function SignUp() {
                 {option2 && (
                   <>
                     <Route path='/personal' element={<PersonalDetails type={option2} />} />
+                    <Route path='/personal/info' element={<AdditionalInfo />} />
                   </>
                 )}
                 <Route path='/*' element={<RedirectHandler setRedirect={setShouldRedirectTo404} />} />
