@@ -50,14 +50,8 @@ export default function SignUp() {
 
   return (
     <>
-      <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
-        <GridItem
-          maxW='550px'
-          display={{ base: 'none', md: 'inline-flex' }}
-          w='100%'
-          bg='linear-gradient(to right, #B2D1FF, #697BFF)'
-          h='100vh'
-        >
+      <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 2fr' }} gap={0}>
+        <GridItem className='css-selector1' display={{ base: 'none', md: 'inline-flex' }} h='100vh'>
           <Box mx='auto' py={6}>
             <Flex>
               <Box title='Homepage' display='flex' alignItems='center'>
@@ -74,8 +68,14 @@ export default function SignUp() {
           </Box>
         </GridItem>
         <GridItem w='100%' h='100vh'>
-          <Flex h='100%' w='100' justifyContent='center'>
-            <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
+          <Flex h='100%' justifyContent={{ base: 'center', md: 'flex-start' }}>
+            <Flex
+              ms={{ base: '0px', md: '100px', lg: '250px' }}
+              flexDir='column'
+              justifyContent='space-between'
+              h='100%'
+              maxWidth='350px'
+            >
               <Box py={6}></Box>
 
               <Routes>
@@ -92,9 +92,9 @@ export default function SignUp() {
               </Routes>
 
               <Box textAlign='center' py={6}>
-                <Text>
+                <Text w='100%'>
                   Already have an account?
-                  <Link to='/login'>
+                  <Link to='/login' w='100%'>
                     {' '}
                     <Text
                       fontSize='2xs'
