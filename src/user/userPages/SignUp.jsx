@@ -26,21 +26,23 @@ import Page404 from '../userPages/Page404';
 import SignUpMain from '../userComponents/SignUp/SignUpMain';
 import PersonalDetails from '../userComponents/SignUp/PersonalDetails';
 import AdditionalInfo from '../userComponents/SignUp/AdditionalInfo';
+import Confirmation from '../userComponents/SignUp/Confirmation';
 function RedirectHandler({ setRedirect }) {
   useEffect(() => {
     setRedirect(true);
   }, [setRedirect]);
-
+  setRedirect(false);
   return null;
 }
 export default function SignUp() {
-  const [option2, SetOption2] = useState();
+  const [option2, SetOption2] = useState(null);
   const [shouldRedirectTo404, setShouldRedirectTo404] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (shouldRedirectTo404) {
-      navigate('/page404');
+      navigate('/signup');
+      SetOption2(null);
     }
   }, [shouldRedirectTo404, navigate]);
 
@@ -83,6 +85,7 @@ export default function SignUp() {
                   <>
                     <Route path='/personal' element={<PersonalDetails type={option2} />} />
                     <Route path='/personal/info' element={<AdditionalInfo />} />
+                    <Route path='/personal/info/confirmation' element={<Confirmation />} />
                   </>
                 )}
                 <Route path='/*' element={<RedirectHandler setRedirect={setShouldRedirectTo404} />} />

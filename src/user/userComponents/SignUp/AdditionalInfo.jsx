@@ -33,20 +33,7 @@ export default function AdditionalInfo() {
     <>
       <Flex h='100%' w='100' justifyContent='center'>
         <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
-          <Box py={6}>
-            <Flex>
-              <Box title='Homepage' display='flex' alignItems='center'>
-                <Link to='/'>
-                  {' '}
-                  <Logo />
-                </Link>
-                <VisuallyHidden>Brio</VisuallyHidden>
-              </Box>
-              <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='2'>
-                <Link to='/'> Brio</Link>
-              </Text>
-            </Flex>
-          </Box>
+          <Box></Box>
 
           <Box>
             <Box>
