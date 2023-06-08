@@ -18,19 +18,20 @@ import ThreeDots from '../../../assets/svg/ThreeDots';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import addressError from '../../../assets/images/addressError.jpg';
 import axios from 'axios';
+import { OpenStreetMapProvider } from 'leaflet-geosearch';
 
 export default function AdressCard({ item, index }) {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
   const REACT_APP_opencagedata = import.meta.env.VITE_OPENCAGEDATA;
   const REACT_APP_MAPBOX = import.meta.env.VITE_MAPBOX;
   const REACT_APP_MAPBOX_TOKEN = import.meta.env.VITE_MAPBOXTOKEN;
-
+  const [key, setKey] = useState(2222);
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState(null);
   const [userData, setUserData] = useState([]);
   const [addressLoading, setAddressLoading] = useState(true);
   const [isAddress, setIsAddress] = useState(true);
-
+  const streetProvider = new OpenStreetMapProvider();
   const handleUserApi = async () => {
     const url = API_URL + '/users/6464085ed67f7b944b642799';
 
@@ -51,21 +52,21 @@ export default function AdressCard({ item, index }) {
     handleUserApi();
   }, []);
 
-  const handleMapApi = async (data) => {
+  const handleMapApi = async (datasearch) => {
     try {
-      const placeUrl = `${data.address[index].country}%20${data.address[index].state}%20${data.address[index].city}%20${data.address[index].address1}%20${data.address[index].address2}`;
-      let encodelUrl = encodeURIComponent(placeUrl);
-      let finalUrl = `${REACT_APP_opencagedata}${encodelUrl}&pretty=1`;
-      console.log(finalUrl);
-      const resp = await axios.get(finalUrl);
-      const responseData = resp.data;
-      setAddress(responseData);
+      const placeUrl = `${datasearch.address[index].country} ${datasearch.address[index].state} ${datasearch.address[index].city} ${datasearch.address[index].address1} ${datasearch.address[index].address2}`;
 
-      if (responseData.results.length === 0) {
-        setIsAddress(false);
-      }
-      console.log(responseData);
+      const data = await streetProvider.search({ query: placeUrl });
 
+      setAddress([data[0].y, data[0].x]);
+
+      // if (responseData.results.length === 0) {
+      //   setIsAddress(false);
+      // }
+      // console.log(responseData);
+
+      // setPosAr([data[0].y, data[0].x]);
+      // setKey(Date.now());
       console.log(isAddress);
       setAddressLoading(false);
     } catch (error) {
@@ -108,12 +109,8 @@ export default function AdressCard({ item, index }) {
                     <Image
                       width='100%'
                       src={
-                        address &&
-                        address.results[0] &&
-                        address.results[0].bounds &&
-                        address.results[0].bounds.northeast &&
-                        address.results[0].bounds.northeast.lng
-                          ? `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${address.results[0].bounds.northeast.lng},${address.results[0].bounds.northeast.lat},13/250x250@2x${REACT_APP_MAPBOX_TOKEN}`
+                        address
+                          ? `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${address[1]},${address[0]},13/250x250@2x${REACT_APP_MAPBOX_TOKEN}`
                           : addressError
                       }
                       title='Monochrome'
