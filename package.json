@@ -38,6 +38,7 @@
     "@tabler/icons-react": "^2.17.0",
     "axios": "^1.4.0",
     "buffer": "^5.5.0",
+    "chakra-ui": "^0.3.9",
     "chart.js": "^4.3.0",
     "framer-motion": "^10.12.10",
     "mongodb": "^5.5.0",
