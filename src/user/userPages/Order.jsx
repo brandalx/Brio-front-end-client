@@ -158,7 +158,7 @@ export default function Order() {
         </Button>
         <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '2fr 1fr' }} gap={5}>
           <GridItem w='100%'>
-            <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
+            <Box borderRadius='16px' borderWidth='1px' py={{ base: '50px', md: '20px' }} px='10px' my={5}>
               <Flex w='100%' justifyContent='space-between'>
                 <Box w='100%'>
                   <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
