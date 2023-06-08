@@ -12,22 +12,15 @@ import {
   ModalHeader,
   ModalOverlay,
   Skeleton,
-  Table,
-  TableCaption,
-  TableContainer,
   Tbody,
   Td,
-  Th,
-  Thead,
   Tr,
   useMediaQuery
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import Status from '../../../assets/svg/Status';
-import { arrUsers } from '../../adminJSON/adminListOfUsers';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
-import { IoMdArrowForward } from 'react-icons/all';
 
 export default function OrdersTableBody() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
