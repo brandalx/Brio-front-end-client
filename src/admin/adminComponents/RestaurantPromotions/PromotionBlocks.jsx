@@ -32,7 +32,8 @@ export default function PromotionBlocks() {
                                     <Box marginRight='10px'>
                                         <Box textAlign='center' border='1px' borderRadius='full' width='53px'
                                              height='24px' borderColor='success.default'>
-                                            <Text color='success.default' fontWeight='semibold' p='3px' fontSize='3xs'>Active</Text>
+                                            <Text color='success.default' fontWeight='semibold' p='3px'
+                                                  fontSize='3xs'>Active</Text>
                                         </Box>
                                         <Text fontWeight='bold' fontSize='2xs'>
                                             {promotion.discountDetails}
@@ -51,17 +52,20 @@ export default function PromotionBlocks() {
                                 <Box display='flex' flexDirection='column'>
                                     <Box>
                                         <Box display='flex' flexDirection='row' alignItems='center' mt='4px'>
-                                          <ValidThrough/>
-                                            <Text marginLeft='6px' color='neutral.gray' fontSize='3xs' fontWeight='semibold'>Valid through</Text>
+                                            <ValidThrough/>
+                                            <Text marginLeft='6px' color='neutral.gray' fontSize='3xs'
+                                                  fontWeight='semibold'>Valid through</Text>
                                         </Box>
-                                    <Text color='neutral.black' fontSize='2.5xs'>{promotion.availableDate}</Text>
+                                        <Text color='neutral.black'
+                                              fontSize='2.5xs'>{promotion.availableDate} {promotion.discountDays.length > 0 ? "(" + promotion.discountDays.join(', ') + " only)" : ''}</Text>
                                     </Box>
                                     <Box>
                                         <Box display='flex' flexDirection='row' alignItems='center' mt='4px'>
                                             <Location w={12} h={12}/>
-                                            <Text marginLeft='6px' color='neutral.gray' fontSize='3xs' fontWeight='semibold'>Restaurant</Text>
+                                            <Text marginLeft='6px' color='neutral.gray' fontSize='3xs'
+                                                  fontWeight='semibold'>Restaurant</Text>
                                         </Box>
-                                     <Text color='neutral.black'>{promotion.restaurantName}</Text>
+                                        <Text color='neutral.black'>{promotion.restaurantName}</Text>
                                     </Box>
                                 </Box>
                             </Box>

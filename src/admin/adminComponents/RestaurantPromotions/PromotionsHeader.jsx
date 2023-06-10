@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
-import {Box, Button, Container, Text} from "@chakra-ui/react";
+import {Box, Button, Container, Text, useDisclosure} from "@chakra-ui/react";
 import ModalCreatePromotion from "./ModalCreatePromotion";
 
-export default function PromotionsHeader({modal}) {
+export default function PromotionsHeader() {
     const [active, setActive] = useState('active');
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
         <Box>
@@ -28,11 +29,11 @@ export default function PromotionsHeader({modal}) {
                         }}
                         width='150px'
                         height='44px'
-                        onClick={()=>{}}
+                        onClick={onOpen}
                     >
                         Create promotion
                     </Button>
-                    <ModalCreatePromotion isOpen={true}/>
+                    <ModalCreatePromotion isOpen={isOpen} onOpen={onOpen} onClose={onClose}/>
                 </Box>
                 <Box backgroundColor='neutral.grayLightest' borderRadius='6px' mb='16px' mt='16px' pt='7px' pb='7px' display='flex' justifyContent='space-around'>
                     <Button fontWeight='bold' fontSize='2xs' ml='4px' p='13px' w='100%' h='100%' color={active === 'active' ? 'white' : 'neutral.grayDark'} backgroundColor={active === 'active' ? 'neutral.black' : 'primary.grayLightest'} onClick={() => setActive('active')}>Active</Button>
