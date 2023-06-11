@@ -1,8 +1,8 @@
 import { Container, Table, TableContainer, Th, Thead, Tr, useMediaQuery } from '@chakra-ui/react';
 import React from 'react';
-import OrdersTableBody from './OrdersTableBody';
+import CustomersTable from './CustomersTable';
 
-export default function RestaurantOrdersList() {
+export default function RestaurantCustomersList() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
   const [isMobile] = useMediaQuery('(max-width: 575px)');
 
@@ -11,25 +11,8 @@ export default function RestaurantOrdersList() {
       <TableContainer overflowX='hidden' borderWidth='1px' borderRadius='lg' borderColor='gray.200'>
         <Table size='sm' variant='simple' colorScheme='gray' borderRadius='md' borderColor='gray.200'>
           <Thead bg='neutral.background'>
-            <Tr borderBottom='1.8px solid #C7C8D2'>
-              <Th
-                pl={isMobile ? '10px' : ''}
-                pt='19.5px'
-                pb='19.5px'
-                color='neutral.gray'
-                fontSize='2.5xs'
-                fontWeight='bold'
-                textTransform='none'
-              >
-                Order ID
-              </Th>
-              <Th
-                display={isTablet ? 'none' : ''}
-                color='neutral.gray'
-                fontSize='2.5xs'
-                fontWeight='bold'
-                textTransform='none'
-              >
+            <Tr borderBottom='1.8px solid #C7C8D2' height='56px'>
+              <Th color='neutral.gray' fontSize='2.5xs' fontWeight='bold' textTransform='none'>
                 Customer
               </Th>
               <Th
@@ -39,7 +22,7 @@ export default function RestaurantOrdersList() {
                 fontWeight='bold'
                 textTransform='none'
               >
-                Address
+                Phone number
               </Th>
               <Th
                 display={isTablet ? 'none' : ''}
@@ -48,25 +31,26 @@ export default function RestaurantOrdersList() {
                 fontWeight='bold'
                 textTransform='none'
               >
-                Creation date
+                Email address
               </Th>
               <Th
-                display={isTablet ? 'none' : ''}
+                display={isMobile ? 'none' : ''}
                 color='neutral.gray'
                 fontSize='2.5xs'
                 fontWeight='bold'
                 textTransform='none'
               >
-                Creation time
+                Last ordered date
               </Th>
               <Th
+                display={isTablet ? 'none' : ''}
                 pl={isMobile ? '5px' : ''}
                 color='neutral.gray'
                 fontSize='2.5xs'
                 fontWeight='bold'
                 textTransform='none'
               >
-                Status
+                Total orders
               </Th>
               <Th
                 pl={isMobile ? '0' : ''}
@@ -77,12 +61,12 @@ export default function RestaurantOrdersList() {
                 textTransform='none'
                 textAlign='center'
               >
-                Total amount
+                Total spent
               </Th>
               <Th color='neutral.gray' fontSize='2.5xs' fontWeight='bold' isNumeric></Th>
             </Tr>
           </Thead>
-          <OrdersTableBody />
+          <CustomersTable />
         </Table>
       </TableContainer>
     </Container>

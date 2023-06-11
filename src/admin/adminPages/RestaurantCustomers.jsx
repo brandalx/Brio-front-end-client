@@ -1,5 +1,6 @@
 import React from 'react';
-import RestaurantOrdersList from '../adminComponents/RestaurantOrders/RestaurantOrdersList';
+import RestaurantCustomersList from '../adminComponents/RestaurantCustomers/RestaurantCustomersList';
+
 export default function RestaurantCustomers() {
-  return <RestaurantOrdersList />;
+  return <RestaurantCustomersList />;
 }
