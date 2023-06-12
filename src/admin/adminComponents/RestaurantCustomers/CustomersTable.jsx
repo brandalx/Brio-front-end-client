@@ -21,7 +21,7 @@ import React, { useEffect, useState } from 'react';
 import Status from '../../../assets/svg/Status';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 
 export default function CustomersTable() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
@@ -29,14 +29,28 @@ export default function CustomersTable() {
   const [ordersOfUsers, setOrdersOfUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = React.useState(false);
-  const [selectedOrder, setSelectedOrder] = React.useState(null);
   const options = { year: 'numeric', month: 'short', day: 'numeric' };
   const [isBetween] = useMediaQuery('(min-width: 576px) and (max-width: 600px)');
   const navigate = useNavigate();
-  const handleCheckAccount = (userId) => {
-    navigate(`/admin/restaurant/customers/${userId}`);
+
+
+  const [openModalId, setOpenModalId] = useState(null);
+  const handleOpenModal = (userId) => {
+    setIsOpen(true);
+    setOpenModalId(userId);
   };
-  const onClose = () => setIsOpen(false);
+
+  const handleCheckAccount = () => {
+    if (openModalId) {
+      navigate(`/admin/restaurant/customers/${openModalId}`);
+    }
+  };
+
+  const onClose = () => {
+    setIsOpen(false);
+    setOpenModalId(null);
+  };
+
   const fetchOrders = async () => {
     try {
       const response = await handleApiGet(API_URL + '/users/getAllUsers');
@@ -135,7 +149,7 @@ export default function CustomersTable() {
                 fontWeight='bold'
                 color='neutral.black'
               >
-                <IconButton icon={<ThreeDots />} onClick={() => setIsOpen(true)} />
+                <IconButton icon={<ThreeDots />} onClick={() => handleOpenModal(user._id)} />
                 <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
                   <ModalOverlay
                     width='100%'
@@ -167,9 +181,8 @@ export default function CustomersTable() {
                       <Button colorScheme='blue' mr={3} onClick={onClose}>
                         Close
                       </Button>
-                      <Button variant='ghost' onClick={() => handleCheckAccount(user._id)}>
-                        Check customers account
-                      </Button>
+                      <Button variant='ghost' onClick={handleCheckAccount}>Check customers account</Button>
+
                     </ModalFooter>
                   </ModalContent>
                 </Modal>
