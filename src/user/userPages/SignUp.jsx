@@ -15,10 +15,12 @@ import {
   InputGroup,
   InputRightElement,
   Grid,
-  GridItem
+  GridItem,
+  Skeleton,
+  Divider
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import SignUpOptionsArr from '../userComponents/SignUp/SignUpOptions';
@@ -27,6 +29,8 @@ import SignUpMain from '../userComponents/SignUp/SignUpMain';
 import PersonalDetails from '../userComponents/SignUp/PersonalDetails';
 import AdditionalInfo from '../userComponents/SignUp/AdditionalInfo';
 import Confirmation from '../userComponents/SignUp/Confirmation';
+import OrderStatus from '../../assets/svg/OrderStatus';
+import SignupStatus from '../../assets/svg/SignupStatus';
 function RedirectHandler({ setRedirect }) {
   useEffect(() => {
     setRedirect(true);
@@ -35,6 +39,8 @@ function RedirectHandler({ setRedirect }) {
   return null;
 }
 export default function SignUp() {
+  const location = useLocation();
+  const currentUrl = location.pathname;
   const [option2, SetOption2] = useState(null);
   const [shouldRedirectTo404, setShouldRedirectTo404] = useState(false);
   const navigate = useNavigate();
@@ -45,6 +51,22 @@ export default function SignUp() {
       SetOption2(null);
     }
   }, [shouldRedirectTo404, navigate]);
+  const [isStatus, setIsStatus] = useState(1);
+
+  useEffect(() => {
+    if (currentUrl === '/signup') {
+      setIsStatus(1);
+    }
+    if (currentUrl === '/signup/personal') {
+      setIsStatus(2);
+    }
+    if (currentUrl === '/signup/personal/info') {
+      setIsStatus(3);
+    }
+    if (currentUrl === '/signup/personal/info/confirmation') {
+      setIsStatus(4);
+    }
+  }, [currentUrl]);
 
   useEffect(() => {}, [option2]);
 
@@ -76,7 +98,85 @@ export default function SignUp() {
               h='100%'
               maxWidth='350px'
             >
-              <Box py={6}></Box>
+              <Box minWidth={{ base: '300px', md: '400px', lg: '600px' }} py={6}>
+                <Grid mt={5} templateColumns='0.2fr 1fr 0.2fr 1fr 0.2fr 1fr 0.2fr' gap={2}>
+                  <GridItem w='fit-content'>
+                    <Box>
+                      <SignupStatus color={isStatus >= 1 ? '#4e60ff' : undefined} />
+                    </Box>
+                  </GridItem>
+
+                  <GridItem w='100%'>
+                    <Box h='100%' display='flex' alignItems='center'>
+                      <Divider borderWidth='1px' borderColor={isStatus > 1 ? '#1ABF70' : undefined} />
+                    </Box>
+                  </GridItem>
+                  <GridItem w='100%'>
+                    <Box>
+                      <SignupStatus color={isStatus > 1 ? '#4e60ff' : undefined} />
+                    </Box>
+                  </GridItem>
+                  <GridItem w='100%'>
+                    <Box h='100%' display='flex' alignItems='center'>
+                      <Divider borderWidth='1px' borderColor={isStatus > 2 ? '#1ABF70' : undefined} />
+                    </Box>
+                  </GridItem>
+                  <GridItem w='100%'>
+                    <Box>
+                      <SignupStatus color={isStatus > 2 ? '#4e60ff' : undefined} />
+                    </Box>
+                  </GridItem>
+                  <GridItem w='100%'>
+                    <Box h='100%' display='flex' alignItems='center'>
+                      <Divider borderWidth='1px' borderColor={isStatus > 3 ? '#1ABF70' : undefined} />
+                    </Box>
+                  </GridItem>
+                  <GridItem w='100%'>
+                    <Box>
+                      <SignupStatus color={isStatus >= 4 ? '#4e60ff' : undefined} />
+                    </Box>
+                  </GridItem>
+                </Grid>
+
+                <Flex justifyContent='space-between' my={4}>
+                  <Box>
+                    <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
+                      <Box mt={4} textAlign='center'>
+                        <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                          Account <br /> type
+                        </Text>
+                      </Box>
+                    </Skeleton>
+                  </Box>
+                  <Box>
+                    <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
+                      <Box mt={4} textAlign='center'>
+                        <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                          Personal <br /> details
+                        </Text>
+                      </Box>
+                    </Skeleton>
+                  </Box>
+                  <Box>
+                    <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
+                      <Box mt={4} textAlign='center'>
+                        <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                          Additional <br /> info
+                        </Text>
+                      </Box>
+                    </Skeleton>
+                  </Box>
+                  <Box>
+                    <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
+                      <Box mt={4}>
+                        <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                          Confirmation
+                        </Text>
+                      </Box>
+                    </Skeleton>
+                  </Box>
+                </Flex>
+              </Box>
 
               <Routes>
                 <Route path='/' element={<SignUpMain SetOption2={SetOption2} />} />
