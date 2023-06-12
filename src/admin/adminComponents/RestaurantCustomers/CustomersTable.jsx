@@ -21,6 +21,7 @@ import React, { useEffect, useState } from 'react';
 import Status from '../../../assets/svg/Status';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
+import { useNavigate } from 'react-router-dom';
 
 export default function CustomersTable() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
@@ -31,7 +32,10 @@ export default function CustomersTable() {
   const [selectedOrder, setSelectedOrder] = React.useState(null);
   const options = { year: 'numeric', month: 'short', day: 'numeric' };
   const [isBetween] = useMediaQuery('(min-width: 576px) and (max-width: 600px)');
-
+  const navigate = useNavigate();
+  const handleCheckAccount = (userId) => {
+    navigate(`/admin/restaurant/customers/${userId}`);
+  };
   const onClose = () => setIsOpen(false);
   const fetchOrders = async () => {
     try {
@@ -92,7 +96,9 @@ export default function CustomersTable() {
                 {user.email}
               </Td>
               <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-                {new Date(mostRecentOrder.creationTime).toLocaleDateString('en-US', options)}
+                {mostRecentOrder &&
+                  mostRecentOrder.creationTime &&
+                  new Date(mostRecentOrder.creationTime).toLocaleDateString('en-US', options)}
               </Td>
 
               <Td
@@ -102,8 +108,7 @@ export default function CustomersTable() {
                 pt='10px'
                 pb='10px'
                 fontSize='2.5xs'
-                color='neutral.black'
-                fontWeight='semibold'
+                color='neutral.grayDark'
               >
                 {user.orders.length}
               </Td>
@@ -130,7 +135,7 @@ export default function CustomersTable() {
                 fontWeight='bold'
                 color='neutral.black'
               >
-                <IconButton icon={<ThreeDots />} onClick={() => {}} />
+                <IconButton icon={<ThreeDots />} onClick={() => setIsOpen(true)} />
                 <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
                   <ModalOverlay
                     width='100%'
@@ -155,15 +160,15 @@ export default function CustomersTable() {
                     maxW='96%'
                     MaxH='568px'
                   >
-                    <ModalHeader>Order Details</ModalHeader>
+                    <ModalHeader>Customers details</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>{/* Display order details here */}</ModalBody>
                     <ModalFooter>
                       <Button colorScheme='blue' mr={3} onClick={onClose}>
                         Close
                       </Button>
-                      <Button variant='ghost' onClick={() => {}}>
-                        Re-Order
+                      <Button variant='ghost' onClick={() => handleCheckAccount(user._id)}>
+                        Check customers account
                       </Button>
                     </ModalFooter>
                   </ModalContent>
