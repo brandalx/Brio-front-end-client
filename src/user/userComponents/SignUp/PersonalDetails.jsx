@@ -48,6 +48,38 @@ export default function PersonalDetails({ type }) {
             </Box>
             <Box mt='20px'>
               <Stack spacing={4}>
+                <FormControl id='firstname'>
+                  <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                    First name
+                  </FormLabel>
+
+                  <Input
+                    required
+                    type='text'
+                    background='neutral.white'
+                    _placeholder={{ color: 'neutral.gray' }}
+                    borderRadius='8px'
+                    fontSize='2xs'
+                    placeholder='John'
+                  />
+                </FormControl>
+
+                <FormControl id='firstname'>
+                  <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                    Last name
+                  </FormLabel>
+
+                  <Input
+                    required
+                    type='text'
+                    background='neutral.white'
+                    _placeholder={{ color: 'neutral.gray' }}
+                    borderRadius='8px'
+                    fontSize='2xs'
+                    placeholder='Doe'
+                  />
+                </FormControl>
+
                 <FormControl id='email'>
                   <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                     Email
