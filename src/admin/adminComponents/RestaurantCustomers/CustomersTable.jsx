@@ -21,7 +21,7 @@ import React, { useEffect, useState } from 'react';
 import Status from '../../../assets/svg/Status';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function CustomersTable() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
@@ -32,7 +32,6 @@ export default function CustomersTable() {
   const options = { year: 'numeric', month: 'short', day: 'numeric' };
   const [isBetween] = useMediaQuery('(min-width: 576px) and (max-width: 600px)');
   const navigate = useNavigate();
-
 
   const [openModalId, setOpenModalId] = useState(null);
   const handleOpenModal = (userId) => {
@@ -181,8 +180,9 @@ export default function CustomersTable() {
                       <Button colorScheme='blue' mr={3} onClick={onClose}>
                         Close
                       </Button>
-                      <Button variant='ghost' onClick={handleCheckAccount}>Check customers account</Button>
-
+                      <Button variant='ghost' onClick={handleCheckAccount}>
+                        Check customers account
+                      </Button>
                     </ModalFooter>
                   </ModalContent>
                 </Modal>

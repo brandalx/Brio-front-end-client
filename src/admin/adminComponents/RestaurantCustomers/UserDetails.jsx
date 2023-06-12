@@ -22,7 +22,7 @@ export default function UserDetails() {
         </Box>
         <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(12, 1fr)' }} gap={6}>
           <Box gridColumn={{ base: 'span 1', md: 'span 4' }}>
-            <CustomerProfile/>
+            <CustomerProfile />
           </Box>
           <Box gridColumn={{ base: 'span 1', md: 'span 8' }}>
             <RecentOrders />
