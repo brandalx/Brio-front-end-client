@@ -30,7 +30,7 @@ export default function CustomersTable() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedOrder, setSelectedOrder] = React.useState(null);
   const options = { year: 'numeric', month: 'short', day: 'numeric' };
-  const [isBetween] = useMediaQuery('(min-width: 576px) and (max-width: 584px)');
+  const [isBetween] = useMediaQuery('(min-width: 576px) and (max-width: 600px)');
 
   const onClose = () => setIsOpen(false);
   const fetchOrders = async () => {
@@ -120,8 +120,8 @@ export default function CustomersTable() {
                 ${user.orders.reduce((sum, order) => sum + order.paymentSummary.totalAmount, 0)}
               </Td>
               <Td
-                position={isBetween ? 'relative' : ''}
-                left={isMobile || isBetween ? '0' : '20px'}
+                position='relative'
+                left={isMobile || isBetween ? '-20px' : '0'}
                 pl={0}
                 pr={0}
                 pt='10px'
