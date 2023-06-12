@@ -98,7 +98,7 @@ export default function SignUp() {
               h='100%'
               maxWidth='350px'
             >
-              <Box minWidth={{ base: '300px', md: '400px', lg: '600px' }} py={6}>
+              <Box minWidth={{ base: '300px', md: '400px', lg: '400px' }} py={6}>
                 <Grid mt={5} templateColumns='0.2fr 1fr 0.2fr 1fr 0.2fr 1fr 0.2fr' gap={2}>
                   <GridItem w='fit-content'>
                     <Box>
