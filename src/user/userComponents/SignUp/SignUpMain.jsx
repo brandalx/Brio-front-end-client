@@ -4,10 +4,15 @@ import SignUpOptionsArr from './SignUpOptions';
 import { Link, Route, Routes } from 'react-router-dom';
 import PersonalDetails from './PersonalDetails';
 
-export default function SignUpMain({ SetOption2 }) {
+export default function SignUpMain({ SetOption2, mainBody }) {
   const [option, setOption] = useState();
   useEffect(() => {
     SetOption2(option);
+
+    mainBody((prevState) => ({
+      ...prevState,
+      type: option
+    }));
   }, [option]);
   return (
     <Box>

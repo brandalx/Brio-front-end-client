@@ -23,7 +23,7 @@ import Logo from '../../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import AdditionalInfo from './AdditionalInfo';
 
-export default function PersonalDetails({ type }) {
+export default function PersonalDetails({ type, setMainBody, mainBody }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

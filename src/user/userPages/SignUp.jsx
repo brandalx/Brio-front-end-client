@@ -42,6 +42,15 @@ export default function SignUp() {
   const location = useLocation();
   const currentUrl = location.pathname;
   const [option2, SetOption2] = useState(null);
+  const [mainBody, setMainBody] = useState({
+    type: '',
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: '',
+    confirmpassword: '',
+    phone: ''
+  });
   const [shouldRedirectTo404, setShouldRedirectTo404] = useState(false);
   const navigate = useNavigate();
 
@@ -179,13 +188,16 @@ export default function SignUp() {
               </Box>
 
               <Routes>
-                <Route path='/' element={<SignUpMain SetOption2={SetOption2} />} />
+                <Route path='/' element={<SignUpMain mainBody={setMainBody} SetOption2={SetOption2} />} />
 
                 {option2 && (
                   <>
-                    <Route path='/personal' element={<PersonalDetails type={option2} />} />
-                    <Route path='/personal/info' element={<AdditionalInfo />} />
-                    <Route path='/personal/info/confirmation' element={<Confirmation />} />
+                    <Route
+                      path='/personal'
+                      element={<PersonalDetails setMainBody={setMainBody} mainBody={mainBody} type={option2} />}
+                    />
+                    <Route path='/personal/info' element={<AdditionalInfo mainBody={setMainBody} />} />
+                    <Route path='/personal/info/confirmation' element={<Confirmation mainBody={setMainBody} />} />
                   </>
                 )}
                 <Route path='/*' element={<RedirectHandler setRedirect={setShouldRedirectTo404} />} />
