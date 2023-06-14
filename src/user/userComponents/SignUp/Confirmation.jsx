@@ -15,19 +15,52 @@ import {
   InputGroup,
   InputRightElement,
   Grid,
-  GridItem
+  GridItem,
+  useToast
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import { API_URL, handleApiMethod } from '../../../services/apiServices';
 
-export default function Confirmation() {
+export default function Confirmation({ mainBody }) {
   const navigate = useNavigate();
-
+  useEffect(() => {
+    console.log(mainBody);
+  }, []);
   const handleGoBack = () => {
     navigate(-1); // Go back one step in the history
+  };
+
+  const toast = useToast();
+  const handlePostUser = async (_bodyData) => {
+    try {
+      // const url = API_URL + "/videos/"+params["id"];
+      const url = API_URL + '/users/new';
+      const data = await handleApiMethod(url, 'POST', _bodyData);
+      if (data._id) {
+        toast({
+          title: 'Account successfuly created.',
+          description: 'Login to begin use our service.',
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+        navigate('/login');
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast({
+        title: 'Error when creating new account',
+        description: 'Error when creating your account. PLease,  try again',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+    }
   };
   return (
     <>
@@ -41,12 +74,13 @@ export default function Confirmation() {
                 Confirmation
               </Text>
               <Text fontSize='2xs' color='neutral.grayDark'>
-                Enter your security code that we sent to your phone
+                {/* Enter your security code that we sent to your phone */}
+                Click approve to finish registration
               </Text>
             </Box>
             <Box mt='20px'>
               <Stack spacing={4}>
-                <FormControl id='phone'>
+                {/* <FormControl id='phone'>
                   <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                     Confirmation code
                   </FormLabel>
@@ -59,10 +93,10 @@ export default function Confirmation() {
                     fontSize='2xs'
                     placeholder='XXX - XXX - XXX'
                   />
-                </FormControl>
+                </FormControl> */}
 
                 <Stack spacing={10}>
-                  <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                  {/* <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
                     <Flex alignItems='center'>
                       <Checkbox mr='2'>
                         <Text color='neutral.black' fontSize='2xs'>
@@ -70,11 +104,12 @@ export default function Confirmation() {
                         </Text>
                       </Checkbox>
                     </Flex>
-                  </Stack>
+                  </Stack> */}
                   <Box>
                     <Link to='/login'>
                       <Button
                         isDisabled={false}
+                        onClick={() => handlePostUser(mainBody)}
                         w='100%'
                         background='primary.default'
                         fontWeight='bold'
