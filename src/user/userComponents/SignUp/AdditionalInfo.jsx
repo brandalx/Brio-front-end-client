@@ -17,18 +17,21 @@ import {
   Grid,
   GridItem
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
-export default function AdditionalInfo() {
+export default function AdditionalInfo({ mainBody, setMainBody }) {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
     navigate(-1); // Go back one step in the history
   };
+  useEffect(() => {
+    console.log(mainBody);
+  }, [mainBody, setMainBody]);
   return (
     <>
       <Flex h='100%' w='100' justifyContent='center'>

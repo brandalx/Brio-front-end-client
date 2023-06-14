@@ -196,8 +196,14 @@ export default function SignUp() {
                       path='/personal'
                       element={<PersonalDetails setMainBody={setMainBody} mainBody={mainBody} type={option2} />}
                     />
-                    <Route path='/personal/info' element={<AdditionalInfo mainBody={setMainBody} />} />
-                    <Route path='/personal/info/confirmation' element={<Confirmation mainBody={setMainBody} />} />
+                    <Route
+                      path='/personal/info'
+                      element={<AdditionalInfo setMainBody={setMainBody} mainBody={mainBody} />}
+                    />
+                    <Route
+                      path='/personal/info/confirmation'
+                      element={<Confirmation setMainBody={setMainBody} mainBody={mainBody} />}
+                    />
                   </>
                 )}
                 <Route path='/*' element={<RedirectHandler setRedirect={setShouldRedirectTo404} />} />
