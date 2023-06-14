@@ -16,13 +16,15 @@ import {
   InputRightElement,
   Grid,
   GridItem,
-  FormErrorMessage
+  FormErrorMessage,
+  useToast
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
+import { API_URL, handleApiMethod } from '../../services/apiServices';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -35,10 +37,38 @@ export default function Login() {
   } = useForm();
   const onSubForm = (_bodyData) => {
     console.log(_bodyData);
-
-    navigate('/');
+    handleLogin(_bodyData);
   };
   const isValid = () => email.length > 5 && password.length > 5;
+
+  const toast = useToast();
+  const handleLogin = async (_bodyData) => {
+    try {
+      // const url = API_URL + "/videos/"+params["id"];
+      const url = API_URL + '/users/login';
+      const data = await handleApiMethod(url, 'POST', _bodyData);
+      if (data.token) {
+        toast({
+          title: 'Successful login.',
+          description: 'Welcome to brio!.',
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+        navigate('/');
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast({
+        title: 'Error trying to log in.',
+        description: 'Error when trying to log in. Check your data and try again',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+    }
+  };
   return (
     <>
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
