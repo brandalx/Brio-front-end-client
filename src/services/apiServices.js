@@ -6,7 +6,7 @@ export const API_URL = urlbackend;
 
 //maintainable for fast change
 
-export const TOKEN_KEY = 'brio-token';
+export const TOKEN_KEY = 'x-api-key';
 //to-do : change for another token / add others
 
 export const handleApiGet = async (_url) => {

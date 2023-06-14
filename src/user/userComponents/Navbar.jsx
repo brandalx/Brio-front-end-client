@@ -23,14 +23,15 @@ import {
   MenuList,
   Menu,
   MenuButton,
-  Skeleton
+  Skeleton,
+  useToast
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
 
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import Logo from '../../assets/svg/Logo';
-import { Link, useLocation } from 'react-router-dom';
-import { API_URL, handleApiGet } from '../../services/apiServices';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 
 export default function Navbar() {
   const bg = useColorModeValue('white', 'gray.800');
@@ -55,11 +56,22 @@ export default function Navbar() {
       console.log(error);
     }
   };
-
+  const toast = useToast();
+  const navigate = useNavigate();
   useEffect(() => {
     handleApi();
   }, []);
-
+  const onLogOut = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    navigate('/login');
+    toast({
+      title: 'Loggin out.',
+      description: 'Successfuly logged out!',
+      status: 'success',
+      duration: 9000,
+      isClosable: true
+    });
+  };
   return (
     <>
       <Container maxW='1110px'>
@@ -207,23 +219,27 @@ export default function Navbar() {
                           {' '}
                           <MenuItem fontWeight='medium'>Settings</MenuItem>
                         </Link>
-                        <MenuDivider />
-                        <Link to='/login'>
-                          <MenuItem
-                            m={0}
-                            h='100%'
-                            background='neutral.white'
-                            variant='solid'
-                            color='error.default'
-                            _hover={{
-                              background: 'error.default',
-                              color: 'neutral.white'
-                            }}
-                            fontWeight='medium'
-                          >
-                            Log Out
-                          </MenuItem>
-                        </Link>
+                        {localStorage[TOKEN_KEY] && (
+                          <>
+                            <MenuDivider />
+
+                            <MenuItem
+                              onClick={onLogOut}
+                              m={0}
+                              h='100%'
+                              background='neutral.white'
+                              variant='solid'
+                              color='error.default'
+                              _hover={{
+                                background: 'error.default',
+                                color: 'neutral.white'
+                              }}
+                              fontWeight='medium'
+                            >
+                              Log Out
+                            </MenuItem>
+                          </>
+                        )}
                       </MenuList>
                     </Menu>
                   </Skeleton>
@@ -293,23 +309,27 @@ export default function Navbar() {
                           <MenuItem fontWeight='medium'>Settings</MenuItem>
                         </Link>
 
-                        <MenuDivider />
-                        <Link to='/login'>
-                          <MenuItem
-                            m={0}
-                            h='100%'
-                            background='neutral.white'
-                            variant='solid'
-                            color='error.default'
-                            _hover={{
-                              background: 'error.default',
-                              color: 'neutral.white'
-                            }}
-                            fontWeight='medium'
-                          >
-                            Log Out
-                          </MenuItem>
-                        </Link>
+                        {localStorage[TOKEN_KEY] && (
+                          <>
+                            <MenuDivider />
+
+                            <MenuItem
+                              onClick={onLogOut}
+                              m={0}
+                              h='100%'
+                              background='neutral.white'
+                              variant='solid'
+                              color='error.default'
+                              _hover={{
+                                background: 'error.default',
+                                color: 'neutral.white'
+                              }}
+                              fontWeight='medium'
+                            >
+                              Log Out
+                            </MenuItem>
+                          </>
+                        )}
                       </MenuList>
                     </Menu>
                   </Skeleton>

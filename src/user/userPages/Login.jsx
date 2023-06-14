@@ -24,7 +24,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
-import { API_URL, handleApiMethod } from '../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiMethod } from '../../services/apiServices';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -55,6 +55,7 @@ export default function Login() {
           duration: 9000,
           isClosable: true
         });
+        localStorage.setItem(TOKEN_KEY, data.token);
         navigate('/');
       }
     } catch (error) {
