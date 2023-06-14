@@ -50,143 +50,139 @@ export default function CustomerTableBody() {
   }, []);
 
   return (
-      <Tbody>
-        {user && Array.isArray(user.orders) &&
-            user.orders.map((order) => (
-                <Tr
-                    key={order._id}
-                    transition='all 0.2s'
-                    _hover={{ bg: 'bg', transition: 'all 0.2s', cursor: 'pointer' }}
-                >
-                <Td
-                  pl={isMobile ? '10px' : ''}
-                  pt='19.5px'
-                  pb='19.5px'
-                  fontSize='2xs'
-                  color='neutral.grayDark'
-                  textOverflow='ellipsis'
-                  overflow='hidden'
-                  whiteSpace='nowrap'
-                  maxW='100px'
-                >
-                  {order.orderId}
-                </Td>
-                <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-                  {
-                    new Date(order.creationTime).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
-                  }
-                </Td>
-                <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-                  {
-                    new Date(order.creationTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-                  }
-                </Td>
-                <Td
-                  pr={isMobile ? '0' : ''}
-                  pl={isMobile ? '5px' : ''}
-                  pt='10px'
-                  pb='10px'
-                  fontSize='2.5xs'
-                  color='neutral.black'
-                  fontWeight='semibold'
-                >
-                  <Flex alignItems='center'>
-                    <Box as='span' me={2}>
-                      <Status
-                        color={
-                          order.status === 'Completed'
-                            ? '#1ABF70'
-                            : order.status === 'In progress'
-                            ? '#4E60FF'
-                            : order.status === 'Canceled'
-                            ? '#FF5C60'
-                            : order.status === 'Suspended'
-                            ? '#FF5C60'
-                            : 'yellow'
-                        }
-                      />
-                    </Box>
-                    {order.status}
-                  </Flex>
-                </Td>
-                <Td
-                  pl={isMobile ? '0' : ''}
-                  pr={isMobile ? '0' : ''}
-                  textAlign='center'
-                  pt='10px'
-                  pb='10px'
-                  fontSize='2.5xs'
-                  color='neutral.black'
-                  fontWeight='semibold'
-                >
-                  ${order.paymentSummary.totalAmount}
-                </Td>
-                <Td
-                  position={isMobile ? 'relative' : ''}
-                  right={isMobile ? '10px' : '0'}
-                  pl={0}
-                  pr={0}
-                  pt='10px'
-                  pb='10px'
-                  fontSize='2xs'
-                  fontWeight='bold'
-                  color='neutral.black'
-                >
-                  <IconButton
-                    icon={<ThreeDots />}
-                    onClick={() => {
-                      if (order.status === 'Canceled') {
-                        setIsOpen(true);
-                        setSelectedOrder(order);
-                      }
-                    }}
+    <Tbody>
+      {user &&
+        Array.isArray(user.orders) &&
+        user.orders.map((order) => (
+          <Tr key={order._id} transition='all 0.2s' _hover={{ bg: 'bg', transition: 'all 0.2s', cursor: 'pointer' }}>
+            <Td
+              pl={isMobile ? '10px' : ''}
+              pt='19.5px'
+              pb='19.5px'
+              fontSize='2xs'
+              color='neutral.grayDark'
+              textOverflow='ellipsis'
+              overflow='hidden'
+              whiteSpace='nowrap'
+              maxW='100px'
+            >
+              {order.orderId}
+            </Td>
+            <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+              {new Date(order.creationTime).toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+              })}
+            </Td>
+            <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+              {new Date(order.creationTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+            </Td>
+            <Td
+              pr={isMobile ? '0' : ''}
+              pl={isMobile ? '5px' : ''}
+              pt='10px'
+              pb='10px'
+              fontSize='2.5xs'
+              color='neutral.black'
+              fontWeight='semibold'
+            >
+              <Flex alignItems='center'>
+                <Box as='span' me={2}>
+                  <Status
+                    color={
+                      order.status === 'Completed'
+                        ? '#1ABF70'
+                        : order.status === 'In progress'
+                        ? '#4E60FF'
+                        : order.status === 'Canceled'
+                        ? '#FF5C60'
+                        : order.status === 'Suspended'
+                        ? '#FF5C60'
+                        : 'yellow'
+                    }
                   />
-                  <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
-                    <ModalOverlay
-                      width='100%'
-                      sx={{
-                        position: 'fixed',
-                        top: '0',
-                        left: '0',
-                        width: '100%',
-                        height: '100%',
-                        zIndex: '10',
-                        bg: 'rgba(0,0,0,0.6)',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    />
+                </Box>
+                {order.status}
+              </Flex>
+            </Td>
+            <Td
+              pl={isMobile ? '0' : ''}
+              pr={isMobile ? '0' : ''}
+              textAlign='center'
+              pt='10px'
+              pb='10px'
+              fontSize='2.5xs'
+              color='neutral.black'
+              fontWeight='semibold'
+            >
+              ${order.paymentSummary.totalAmount}
+            </Td>
+            <Td
+              position={isMobile ? 'relative' : ''}
+              right={isMobile ? '10px' : '0'}
+              pl={0}
+              pr={0}
+              pt='10px'
+              pb='10px'
+              fontSize='2xs'
+              fontWeight='bold'
+              color='neutral.black'
+            >
+              <IconButton
+                icon={<ThreeDots />}
+                onClick={() => {
+                  if (order.status === 'Canceled') {
+                    setIsOpen(true);
+                    setSelectedOrder(order);
+                  }
+                }}
+              />
+              <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
+                <ModalOverlay
+                  width='100%'
+                  sx={{
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    zIndex: '10',
+                    bg: 'rgba(0,0,0,0.6)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                />
 
-                    <ModalContent
-                      position='relative'
-                      boxSizing='content-box'
-                      width={['100%', '100%', '100%', '540px']}
-                      maxW='96%'
-                      MaxH='568px'
+                <ModalContent
+                  position='relative'
+                  boxSizing='content-box'
+                  width={['100%', '100%', '100%', '540px']}
+                  maxW='96%'
+                  MaxH='568px'
+                >
+                  <ModalHeader>Order Details</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>{/* Display order details here */}</ModalBody>
+                  <ModalFooter>
+                    <Button colorScheme='blue' mr={3} onClick={onClose}>
+                      Close
+                    </Button>
+                    <Button
+                      variant='ghost'
+                      onClick={() => {
+                        /* re-order request logic */
+                      }}
                     >
-                      <ModalHeader>Order Details</ModalHeader>
-                      <ModalCloseButton />
-                      <ModalBody>{/* Display order details here */}</ModalBody>
-                      <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={onClose}>
-                          Close
-                        </Button>
-                        <Button
-                          variant='ghost'
-                          onClick={() => {
-                            /* re-order request logic */
-                          }}
-                        >
-                          Re-Order
-                        </Button>
-                      </ModalFooter>
-                    </ModalContent>
-                  </Modal>
-                </Td>
-              </Tr>
-            ))
-          }
+                      Re-Order
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </Td>
+          </Tr>
+        ))}
     </Tbody>
   );
 }

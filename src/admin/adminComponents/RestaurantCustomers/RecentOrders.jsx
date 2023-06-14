@@ -1,6 +1,6 @@
 import React from 'react';
-import CustomerOrdersList from "./customersTableComps/CustomerOrdersList";
+import CustomerOrdersList from './customersTableComps/CustomerOrdersList';
 
 export default function RecentOrders() {
-      return <CustomerOrdersList />;
+  return <CustomerOrdersList />;
 }

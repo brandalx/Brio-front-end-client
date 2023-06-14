@@ -135,8 +135,16 @@ export default function CustomersTable() {
                 color='neutral.black'
                 fontWeight='semibold'
               >
-                ${user.orders.reduce((sum, order) => sum + order.paymentSummary.totalAmount, 0)}
+                $
+                {user.orders.reduce((sum, order) => {
+                  if (order.status !== 'Canceled') {
+                    return sum + order.paymentSummary.totalAmount;
+                  } else {
+                    return sum;
+                  }
+                }, 0)}
               </Td>
+
               <Td
                 position='relative'
                 left={isMobile || isBetween ? '-20px' : '0'}
