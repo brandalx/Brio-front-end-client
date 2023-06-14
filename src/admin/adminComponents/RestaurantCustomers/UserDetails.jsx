@@ -20,11 +20,11 @@ export default function UserDetails() {
             </Text>
           </Link>
         </Box>
-        <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(12, 1fr)' }} gap={6}>
-          <Box gridColumn={{ base: 'span 1', md: 'span 4' }}>
+        <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(12, 1fr)' }} gap={6}>
+          <Box gridColumn={{ base: 'span 1', lg: 'span 4' }} order={{ base: '0', lg: '0' }}>
             <CustomerProfile />
           </Box>
-          <Box gridColumn={{ base: 'span 1', md: 'span 8' }}>
+          <Box gridColumn={{ base: 'span 1', lg: 'span 8' }} order={{ base: '1', lg: '1' }}>
             <RecentOrders />
           </Box>
         </Grid>

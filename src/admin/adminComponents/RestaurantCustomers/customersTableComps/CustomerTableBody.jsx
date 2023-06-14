@@ -31,6 +31,7 @@ export default function CustomerTableBody() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedOrder, setSelectedOrder] = React.useState(null);
   const { userId } = useParams();
+  const [isDekstop] = useMediaQuery('(min-width: 1200px)');
 
   const onClose = () => setIsOpen(false);
   const fetchOrders = async () => {
@@ -68,14 +69,26 @@ export default function CustomerTableBody() {
             >
               {order.orderId}
             </Td>
-            <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+            <Td
+              display={{ base: 'none', sm: 'table-cell' }}
+              pt='19.5px'
+              pb='19.5px'
+              fontSize='2xs'
+              color='neutral.grayDark'
+            >
               {new Date(order.creationTime).toLocaleDateString('en-US', {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
               })}
             </Td>
-            <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+            <Td
+              display={{ base: 'none', md: 'table-cell' }}
+              pt='19.5px'
+              pb='19.5px'
+              fontSize='2xs'
+              color='neutral.grayDark'
+            >
               {new Date(order.creationTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
             </Td>
             <Td

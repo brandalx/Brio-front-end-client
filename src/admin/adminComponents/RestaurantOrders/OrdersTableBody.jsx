@@ -85,12 +85,7 @@ export default function OrdersTableBody() {
                 >
                   {user.firstname} {user.lastname}
                   <Box mr='12px' w='42px' h='42px'>
-                    <Image
-                      w='100%'
-                      h='100%'
-                      borderRadius='full'
-                      src='https://images.pexels.com/photos/354951/pexels-photo-354951.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-                    />
+                    <Image w='100%' h='100%' borderRadius='full' src={user.avatar} />
                   </Box>
                 </Td>
                 <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>

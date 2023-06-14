@@ -5,6 +5,7 @@ import CustomerTableBody from './CustomerTableBody';
 export default function CustomerOrdersList() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
   const [isMobile] = useMediaQuery('(max-width: 575px)');
+  const [isDekstop] = useMediaQuery('(min-width: 1200px)');
 
   return (
     <Container maxW='1132px' pb='50px'>
@@ -24,7 +25,7 @@ export default function CustomerOrdersList() {
                 Order ID
               </Th>
               <Th
-                display={isTablet ? 'none' : ''}
+                display={{ base: 'none', sm: 'table-cell' }}
                 color='neutral.gray'
                 fontSize='2.5xs'
                 fontWeight='bold'
@@ -33,7 +34,7 @@ export default function CustomerOrdersList() {
                 Creation date
               </Th>
               <Th
-                display={isMobile ? 'none' : ''}
+                display={{ base: 'none', md: 'table-cell' }}
                 color='neutral.gray'
                 fontSize='2.5xs'
                 fontWeight='bold'
