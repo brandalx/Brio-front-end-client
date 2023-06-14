@@ -74,7 +74,7 @@ export default function CustomerProfile() {
               </Text>
               <Box>
                 <Text color='neutral.black' fontWeight='normal' fontSize='sm'>
-                  {user.address[0][1]}
+
                 </Text>
               </Box>
             </Box>
