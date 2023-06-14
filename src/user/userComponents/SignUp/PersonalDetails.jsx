@@ -38,7 +38,6 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
     formState: { errors, isSubmitting }
   } = useForm();
   const onSubForm = (_bodyData) => {
-    console.log('test');
     console.log(_bodyData);
     setMainBody((prevState) => ({
       ...prevState,

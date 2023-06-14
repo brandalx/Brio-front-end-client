@@ -15,14 +15,30 @@ import {
   InputGroup,
   InputRightElement,
   Grid,
-  GridItem
+  GridItem,
+  FormErrorMessage
 } from '@chakra-ui/react';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
+import { useForm } from 'react-hook-form';
 
 export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting }
+  } = useForm();
+  const onSubForm = (_bodyData) => {
+    console.log(_bodyData);
+
+    navigate('/');
+  };
+  const isValid = () => email.length > 5 && password.length > 5;
   return (
     <>
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
@@ -55,34 +71,55 @@ export default function Login() {
                     </Text>
                   </Box>
                   <Box mt='40px'>
-                    <Stack spacing={4}>
-                      <FormControl id='email'>
+                    <form onSubmit={handleSubmit(onSubForm)}>
+                      <Stack spacing={4}></Stack>
+                      <FormControl id='email' isInvalid={errors.email}>
                         <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                           Email
                         </FormLabel>
 
                         <Input
+                          id='email'
+                          {...register('email', {
+                            required: true,
+                            minLength: { value: 2, message: 'Minimum length should be 2' }
+                          })}
                           type='email'
                           background='neutral.white'
                           _placeholder={{ color: 'neutral.gray' }}
                           borderRadius='8px'
                           fontSize='2xs'
                           placeholder='name@example.com'
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
                         />
+                        <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                          {errors.email && errors.email.message}
+                        </FormErrorMessage>
                       </FormControl>
-                      <FormControl id='password'>
+                      <FormControl id='password' isInvalid={errors.password}>
                         <FormLabel color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
                           Password
                         </FormLabel>
 
                         <Input
+                          {...register('password', {
+                            required: true,
+                            minLength: { value: 2, message: 'Minimum length should be 5' }
+                          })}
+                          id='password'
                           type='password'
                           background='neutral.white'
                           _placeholder={{ color: 'neutral.gray' }}
                           borderRadius='8px'
                           fontSize='2xs'
                           placeholder='min. 8 characters'
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
                         />
+                        <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                          {errors.password && errors.password.message}
+                        </FormErrorMessage>
                       </FormControl>
                       <Stack spacing={10}>
                         <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
@@ -94,26 +131,27 @@ export default function Login() {
                             </Checkbox>
                           </Flex>
                         </Stack>
-                        <Link to='/'>
-                          <Button
-                            w='100%'
-                            background='primary.default'
-                            fontWeight='bold'
-                            variant='solid'
-                            color='neutral.white'
-                            borderWidth='1px'
-                            borderColor='neutral.white'
-                            _hover={{
-                              background: 'neutral.white',
-                              color: 'primary.default',
-                              borderWidth: '1px',
-                              borderColor: 'primary.default'
-                            }}
-                            py={5}
-                          >
-                            Login
-                          </Button>
-                        </Link>
+
+                        <Button
+                          isDisabled={!isValid()}
+                          type='submit'
+                          w='100%'
+                          background='primary.default'
+                          fontWeight='bold'
+                          variant='solid'
+                          color='neutral.white'
+                          borderWidth='1px'
+                          borderColor='neutral.white'
+                          _hover={{
+                            background: 'neutral.white',
+                            color: 'primary.default',
+                            borderWidth: '1px',
+                            borderColor: 'primary.default'
+                          }}
+                          py={5}
+                        >
+                          Login
+                        </Button>
 
                         <Link to='/recoverpassword'>
                           <Box display='flex' justifyItems='center'>
@@ -132,7 +170,7 @@ export default function Login() {
                           </Box>
                         </Link>
                       </Stack>
-                    </Stack>
+                    </form>
                   </Box>
                 </Box>
 
