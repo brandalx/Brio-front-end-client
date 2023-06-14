@@ -29,7 +29,7 @@ export default function ModalNoteRedactor({ isOpen, onClose, user, fetchUser, us
 
         await handleApiPost(API_URL + '/users/' + userId + '/notes', { notes: data.notes });
         fetchUser();
-        console.log(data);
+        onClose()
       } catch (error) {
         console.error('Error updating note:', error);
       }
@@ -84,18 +84,16 @@ export default function ModalNoteRedactor({ isOpen, onClose, user, fetchUser, us
           </ModalBody>
           <ModalFooter display='flex' justifyContent={isLilMob ? 'center' : 'end'}>
             <Button
-              p='20px'
-              h='40px'
-              m='0 5px'
-              fontWeight='500'
-              fontSize='16px'
-              lineHeight='22px'
-              sx={{
-                background: '#44BB6E',
-                borderRadius: '6px',
-                color: 'white',
-                boxShadow: '0px 1px 6px rgba(0, 0, 0, 0.1)'
-              }}
+                _hover={{
+                    background: 'primary.default',
+                    color: 'neutral.white',
+                    borderWidth: '1px',
+                    borderColor: 'primary.default'
+                }}
+                color='primary.default'
+                p='20px'
+                border='1px'
+                borderColor='primary.default'
               onClick={handleSubmit(handleNoteSubmit)}
             >
               Save
