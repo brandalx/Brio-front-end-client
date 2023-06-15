@@ -30,7 +30,7 @@ export default function OrdersTableBody() {
   const [restaurantar, setRestaurantar] = useState([]);
   let skeletonarr = [1, 2, 3, 4];
   const handleApi = async () => {
-    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    const url = API_URL + '/users/info/user';
     const urlrestaurant = API_URL + '/restaurants';
     try {
       const data = await handleApiGet(url);

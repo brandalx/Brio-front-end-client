@@ -42,6 +42,7 @@ export default function Navbar() {
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
   const [cartLen, setCartLen] = useState(0);
+  const [srcav, setSrcav] = useState();
   const randomarr = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
 
   const getRandomNumber = (min, max) => {
@@ -50,8 +51,7 @@ export default function Navbar() {
 
   const genavatar = () => {
     const rand = getRandomNumber(0, 6);
-
-    return randomarr[rand];
+    setSrcav(randomarr[rand]);
   };
   const handleApi = async () => {
     const url = API_URL + '/users/info/user';
@@ -71,6 +71,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   useEffect(() => {
     handleApi();
+    genavatar();
   }, []);
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
@@ -239,7 +240,7 @@ export default function Navbar() {
                               borderRadius='3xl'
                               size='md'
                               name={'Anonimus'}
-                              src={'/assets/avatars/' + genavatar()}
+                              src={'/assets/avatars/' + srcav}
                             />{' '}
                           </MenuButton>
                         </Box>
@@ -296,12 +297,12 @@ export default function Navbar() {
                         </>
                       ) : (
                         <MenuList>
-                          <Link to='/login'>
+                          <Link to='/signup'>
                             {' '}
                             <MenuItem fontWeight='medium'>Sign up</MenuItem>
                           </Link>
 
-                          <Link to='/signup'>
+                          <Link to='/login'>
                             {' '}
                             <MenuItem fontWeight='medium'>Log in</MenuItem>
                           </Link>
@@ -314,63 +315,96 @@ export default function Navbar() {
 
               <Box display={{ base: 'inline-flex', md: 'none' }}>
                 <HStack display='flex' alignItems='center' spacing={4}>
-                  <Skeleton borderRadius='16px' isLoaded={!loading}>
-                    <Box
-                      borderColor={isInCart ? 'primary.default' : 'neutral.white'}
-                      borderWidth='1px'
-                      ml='4px'
-                      bg='neutral.grayLightest'
-                      color='black'
-                      px={'8px'}
-                      py={'8px'}
-                      borderRadius='16px'
-                      position='relative'
-                    >
-                      <Box
-                        position='absolute'
-                        top='-2px'
-                        right='-4px'
-                        bg='primary.default'
-                        h='18px'
-                        w='18px'
-                        borderRadius='8px'
-                        display='flex'
-                        alignItems='center'
-                        justifyContent='center'
-                        fontSize='xs'
-                        fontWeight='semibold'
-                        color='white'
-                        textAlign='center'
-                      >
-                        {!loading && cartLen}
-                      </Box>
-                      <Menu>
-                        <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                          <IconShoppingBag color='#4E60FF' />
-                        </MenuButton>
-                        <MenuList>
-                          <Link to='user/cart'>
-                            {' '}
-                            <MenuItem fontWeight='medium'>My cart</MenuItem>
-                          </Link>
-                        </MenuList>
-                      </Menu>
-                    </Box>
-                  </Skeleton>
+                  {localStorage[TOKEN_KEY] && (
+                    <>
+                      <Skeleton borderRadius='16px' isLoaded={!loading}>
+                        <Box
+                          borderColor={isInCart ? 'primary.default' : 'neutral.white'}
+                          borderWidth='1px'
+                          ml='4px'
+                          bg='neutral.grayLightest'
+                          color='black'
+                          px={'8px'}
+                          py={'8px'}
+                          borderRadius='16px'
+                          position='relative'
+                        >
+                          <Box
+                            position='absolute'
+                            top='-2px'
+                            right='-4px'
+                            bg='primary.default'
+                            h='18px'
+                            w='18px'
+                            borderRadius='8px'
+                            display='flex'
+                            alignItems='center'
+                            justifyContent='center'
+                            fontSize='xs'
+                            fontWeight='semibold'
+                            color='white'
+                            textAlign='center'
+                          >
+                            {!loading && cartLen}
+                          </Box>
+
+                          <Menu>
+                            <MenuButton
+                              as={Button}
+                              p='6px'
+                              rounded={'full'}
+                              variant={'link'}
+                              cursor={'pointer'}
+                              minW={0}
+                            >
+                              <IconShoppingBag color='#4E60FF' />
+                            </MenuButton>
+                            <MenuList>
+                              <Link to='user/cart'>
+                                {' '}
+                                <MenuItem fontWeight='medium'>My cart</MenuItem>
+                              </Link>
+                            </MenuList>
+                          </Menu>
+                        </Box>
+                      </Skeleton>
+                    </>
+                  )}
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                     <Menu>
-                      <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                        <Avatar
-                          py='2px'
-                          borderRadius='xl'
-                          size='md'
-                          name={!loading && arr.firstname + ' ' + arr.lastname}
-                          src={(!loading && arr.avatar) || null}
-                        />{' '}
-                      </MenuButton>
+                      {!localStorage[TOKEN_KEY] && (
+                        <Box
+                          borderWidth='2px'
+                          borderColor='neutral.white'
+                          transition='all 0.3s'
+                          _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
+                          borderRadius='2xl'
+                          display='flex'
+                          alignItems='center'
+                        >
+                          <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                            <Avatar
+                              py='2px'
+                              borderRadius='3xl'
+                              size='md'
+                              name={'Anonimus'}
+                              src={'/assets/avatars/' + srcav}
+                            />{' '}
+                          </MenuButton>
+                        </Box>
+                      )}
 
                       {localStorage[TOKEN_KEY] ? (
                         <>
+                          <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                            <Avatar
+                              py='2px'
+                              borderRadius='xl'
+                              size='md'
+                              name={!loading && arr.firstname + ' ' + arr.lastname}
+                              src={(!loading && arr.avatar) || null}
+                            />{' '}
+                          </MenuButton>
                           <MenuList>
                             <Link to='/user/account'>
                               {' '}
@@ -469,9 +503,11 @@ export default function Navbar() {
                     <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
                       <Link to='#'>Deals </Link>
                     </Button>
-                    <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                      <Link to='/user/orders'>My orders</Link>
-                    </Button>
+                    {localStorage[TOKEN_KEY] && (
+                      <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
+                        <Link to='/user/orders'>My orders</Link>
+                      </Button>
+                    )}
                     <Box my='8px' display='flex' justifyItems='center'>
                       <InputGroup size='sm' fontSize='md' w='60%' mx='auto'>
                         <InputRightElement pointerEvents='none'>

@@ -17,12 +17,13 @@ export default function Cart() {
   const [restaurant, setRestaurant] = useState([]);
 
   const handleApi = async () => {
-    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    const url = API_URL + '/users/info/user';
     try {
       const data = await handleApiGet(url);
       setAr(data);
 
       setAddressArr(data.address);
+
       handleApiMeals(data);
       console.log(data);
     } catch (error) {
@@ -31,9 +32,10 @@ export default function Cart() {
     }
   };
 
-  const handleApiMeals = async () => {
+  const handleApiMeals = async (_data) => {
+    let id = _data._id;
     try {
-      const url = API_URL + '/users/6464085ed67f7b944b642799/cart';
+      const url = API_URL + `/users/${id}/cart`;
       const cartData = await handleApiGet(url);
       console.log(cartData.cart);
       setCartAr(cartData.cart);

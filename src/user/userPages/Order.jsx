@@ -44,7 +44,7 @@ export default function Order() {
   const [restaurantArr, setRestaurantArr] = useState([]);
   const params = useParams();
   const handleApi = async () => {
-    const userurl = API_URL + '/users/6464085ed67f7b944b642799';
+    const userurl = API_URL + '/users/info/user';
     const orderurl = API_URL + '/orders/' + params['id'];
 
     try {
