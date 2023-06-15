@@ -22,7 +22,7 @@ export default function Adress() {
   const [addressArr, setAddressArr] = useState([]);
 
   const handleApi = async () => {
-    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    const url = API_URL + '/users/info/user';
     try {
       const data = await handleApiGet(url);
       setArr(data);
@@ -58,7 +58,7 @@ export default function Adress() {
   const handleUserAddressPost = async (_bodyData) => {
     try {
       // const url = API_URL + "/videos/"+params["id"];
-      const url = API_URL + '/users/6464085ed67f7b944b642799/postuseraddress';
+      const url = API_URL + '/users/postuseraddress';
       const data = await handleApiMethod(url, 'POST', _bodyData);
       if (data.msg === true) {
         toast({

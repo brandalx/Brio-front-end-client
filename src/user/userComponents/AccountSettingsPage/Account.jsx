@@ -26,7 +26,7 @@ export default function Account() {
   const [arr, setAr] = useState([]);
 
   const handleUserData = async () => {
-    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    const url = API_URL + '/users/info/user';
     try {
       const data = await handleApiGet(url);
       setAr(data);

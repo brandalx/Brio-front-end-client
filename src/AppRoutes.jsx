@@ -26,6 +26,7 @@ import Restaurants from './user/userPages/Restaurants';
 import Forgotpassword from './user/userPages/ForgotPassword';
 import SignUp from './user/userPages/SignUp';
 import PersonalDetails from './user/userComponents/SignUp/PersonalDetails';
+import { TOKEN_KEY } from './services/apiServices';
 
 export default function AppRoutes() {
   return (
@@ -53,12 +54,15 @@ export default function AppRoutes() {
 
                 {/* <Route path='/personal' element={<PersonalDetails />} />
                 <Route path='/personal' element={<PersonalDetails />} /> */}
-
-                <Route path='/user/account/*' element={<AccountSettings />} />
-                <Route path='/user/cart/*' element={<Cart />} />
-                <Route path='/user/checkout/' element={<Checkout />} />
-                <Route path='/user/orders' element={<UserOrders />} />
-                <Route path='/user/order/:id' element={<Order />} />
+                {localStorage[TOKEN_KEY] && (
+                  <>
+                    <Route path='/user/account/*' element={<AccountSettings />} />
+                    <Route path='/user/cart/*' element={<Cart />} />
+                    <Route path='/user/checkout/' element={<Checkout />} />
+                    <Route path='/user/orders' element={<UserOrders />} />
+                    <Route path='/user/order/:id' element={<Order />} />
+                  </>
+                )}
                 <Route path='/restaurant/' element={<Restaurants />} />
                 <Route path='/restaurant/:id' element={<Restaurant />} />
                 <Route path='/restaurant/product/:id' element={<Product />} />
