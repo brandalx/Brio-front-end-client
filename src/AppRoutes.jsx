@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import Home from './user/userPages/Home';
 
 import { globalContext } from './context/globalContext';
@@ -26,9 +26,20 @@ import Restaurants from './user/userPages/Restaurants';
 import Forgotpassword from './user/userPages/ForgotPassword';
 import SignUp from './user/userPages/SignUp';
 import PersonalDetails from './user/userComponents/SignUp/PersonalDetails';
+
 import { TOKEN_KEY } from './services/apiServices';
+import { useCheckToken } from './services/token';
 
 export default function AppRoutes() {
+  const isTokenExpired = useCheckToken();
+
+  // useEffect(() => {
+  //   if (isTokenExpired) {
+  //   }
+  // }, [isTokenExpired]);
+  useEffect(() => {
+    isTokenExpired;
+  }, [isTokenExpired]);
   return (
     <>
       <globalContext.Provider value={{}}>

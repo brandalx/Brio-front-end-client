@@ -32,8 +32,14 @@ import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import Logo from '../../assets/svg/Logo';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
-
+import { useCheckToken } from '../../services/token';
 export default function Navbar() {
+  const isTokenExpired = useCheckToken();
+
+  useEffect(() => {
+    if (isTokenExpired) {
+    }
+  }, [isTokenExpired]);
   const bg = useColorModeValue('white', 'gray.800');
   const mobileNav = useDisclosure();
   const location = useLocation();
