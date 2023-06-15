@@ -16,6 +16,20 @@ export default function PromotionBlocks() {
     }
   };
 
+  function getPromotionStatus(startDate, endDate) {
+    const now = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (now < start) {
+      return 'Scheduled';
+    } else if (now > end) {
+      return 'Expired';
+    } else {
+      return 'Active';
+    }
+  }
+
   useEffect(() => {
     fetchPromotions();
   }, []);

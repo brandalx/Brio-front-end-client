@@ -94,6 +94,7 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
     // Convert dates to Date objects
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
+    console.log(startDateObj + ' ' + endDateObj);
 
     // Проверка корректности дат
     if (startDateObj > endDateObj) {
@@ -124,6 +125,9 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
 
   const onSubmit = (data) => {
     handlePublishPromotion({ ...data, discountDays: days });
+    console.log(data);
+    console.log(data.endDate);
+    console.log(data.startDate);
     reset();
     setDays([]);
   };
