@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Box,
   Text,
@@ -17,9 +17,11 @@ import {
 import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+
 export default function Security() {
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
+  const password = useRef({});
 
   const handleApi = async () => {
     const url = API_URL + '/users/info/user';
@@ -27,7 +29,6 @@ export default function Security() {
       const data = await handleApiGet(url);
       setArr(data);
       console.log(data);
-
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -42,7 +43,8 @@ export default function Security() {
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    getValues
   } = useForm();
 
   const onSubForm = (_bodyData) => {
@@ -53,13 +55,12 @@ export default function Security() {
   const toast = useToast();
   const handlePostUser = async (_bodyData) => {
     try {
-      // const url = API_URL + "/videos/"+params["id"];
       const url = API_URL + '/users/security';
       const data = await handleApiMethod(url, 'PUT', _bodyData);
       console.log(data);
       if (data.modifiedCount) {
         toast({
-          title: 'User data successfuly updated.',
+          title: 'User data successfully updated.',
           description: 'We have updated your info.',
           status: 'success',
           duration: 9000,
@@ -71,7 +72,7 @@ export default function Security() {
 
       toast({
         title: 'Error when updating your info',
-        description: 'Error when updating your info. PLease,  try again',
+        description: `Error when updating your info. ${error.response.data.err}. Please, try again`,
         status: 'error',
         duration: 9000,
         isClosable: true
@@ -150,7 +151,7 @@ export default function Security() {
                         required: true,
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
-                      type='text'
+                      type='password'
                       background='neutral.white'
                       _placeholder={{ color: 'neutral.gray' }}
                       borderRadius='8px'
@@ -169,12 +170,12 @@ export default function Security() {
                     </FormLabel>
 
                     <Input
+                      isInvalid={errors.password}
                       {...register('password', {
                         required: true,
-                        minLength: { value: 2, message: 'Minimum length should be 2' }
+                        minLength: { value: 8, message: 'Password must have at least 8 characters' }
                       })}
-                      isInvalid={errors.password}
-                      type='text'
+                      type='password'
                       background='neutral.white'
                       _placeholder={{ color: 'neutral.ray' }}
                       borderRadius='8px'
@@ -198,12 +199,13 @@ export default function Security() {
                     </FormLabel>
 
                     <Input
+                      isInvalid={errors.confirmpassword}
                       {...register('confirmpassword', {
                         required: true,
-                        minLength: { value: 2, message: 'Minimum length should be 2' }
+                        minLength: { value: 2, message: 'Minimum length should be 2' },
+                        validate: (value) => value === getValues('password') || 'The passwords do not match'
                       })}
-                      isInvalid={errors.confirmpassword}
-                      type='text'
+                      type='password'
                       background='neutral.white'
                       _placeholder={{ color: 'neutral.gray' }}
                       borderRadius='8px'

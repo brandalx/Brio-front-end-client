@@ -33,7 +33,7 @@ export default function AdressCard({ item, index }) {
   const [isAddress, setIsAddress] = useState(true);
   const streetProvider = new OpenStreetMapProvider();
   const handleUserApi = async () => {
-    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    const url = API_URL + '/users/info/user';
 
     try {
       const data = await handleApiGet(url);
