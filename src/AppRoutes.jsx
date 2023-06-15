@@ -26,6 +26,10 @@ import Restaurants from './user/userPages/Restaurants';
 import Forgotpassword from './user/userPages/ForgotPassword';
 import SignUp from './user/userPages/SignUp';
 import PersonalDetails from './user/userComponents/SignUp/PersonalDetails';
+import RestaurantPromotions from './admin/adminPages/RestaurantPromotions';
+import RestaurantCustomers from './admin/adminPages/RestaurantCustomers';
+import UserDetails from './admin/adminComponents/RestaurantCustomers/UserDetails';
+
 
 import { TOKEN_KEY } from './services/apiServices';
 import { useCheckToken } from './services/token';
@@ -74,6 +78,9 @@ export default function AppRoutes({ isToken }) {
                 <Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />
                 <Route path='/admin/restaurant/menu' element={<RestaurantMenu />} />
                 <Route path='/admin/restaurant/settings/*' element={<RestaurantSettings />} />
+                <Route path='/admin/restaurant/promotions' element={<RestaurantPromotions />} />
+                <Route path='/admin/restaurant/customers' element={<RestaurantCustomers />} />
+                <Route path='/admin/restaurant/customers/:userId' element={<UserDetails />} />
                 <Route path='/*' element={<Page404 />} />
               </Routes>
             </Main>
