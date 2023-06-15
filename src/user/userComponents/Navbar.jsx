@@ -277,10 +277,10 @@ export default function Navbar() {
                       {localStorage[TOKEN_KEY] ? (
                         <>
                           <MenuList>
-                            <Link to='/user/account'>
+                            <a href='/user/account'>
                               {' '}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
-                            </Link>
+                            </a>
 
                             <MenuDivider />
 

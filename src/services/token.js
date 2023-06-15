@@ -24,33 +24,3 @@ export const useCheckToken = () => {
 
   return false;
 };
-
-export function removeTokenIfExpired() {
-  if (isTokenExpired(localStorage[TOKEN_KEY])) {
-    localStorage.removeItem(TOKEN_KEY);
-  }
-}
-
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
-export async function getUserData() {
-  try {
-    const response = await axios.get('/api/user/data', {
-      headers: {
-        Authorization: `Bearer ${localStorage[TOKEN_KEY]}`
-      }
-    });
-    const data = response.data;
-    // Use your data
-  } catch (error) {
-    if (error.response && error.response.status === 401) {
-      // If token is invalid
-      localStorage.removeItem(TOKEN_KEY);
-    }
-    // Handle error
-    console.error(error);
-  }
-}
-
-getUserData();

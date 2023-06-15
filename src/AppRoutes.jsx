@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import Home from './user/userPages/Home';
 
@@ -30,19 +30,10 @@ import PersonalDetails from './user/userComponents/SignUp/PersonalDetails';
 import { TOKEN_KEY } from './services/apiServices';
 import { useCheckToken } from './services/token';
 
-export default function AppRoutes() {
-  const isTokenExpired = useCheckToken();
-
-  // useEffect(() => {
-  //   if (isTokenExpired) {
-  //   }
-  // }, [isTokenExpired]);
-  useEffect(() => {
-    isTokenExpired;
-  }, [isTokenExpired]);
+export default function AppRoutes({ isToken }) {
   return (
     <>
-      <globalContext.Provider value={{}}>
+      <globalContext.Provider value={{ isToken }}>
         {/* TODO: pass global values in value obj */}
         <BrowserRouter>
           <div className='wrapper'>
@@ -65,7 +56,7 @@ export default function AppRoutes() {
 
                 {/* <Route path='/personal' element={<PersonalDetails />} />
                 <Route path='/personal' element={<PersonalDetails />} /> */}
-                {localStorage[TOKEN_KEY] && (
+                {isToken && (
                   <>
                     <Route path='/user/account/*' element={<AccountSettings />} />
                     <Route path='/user/cart/*' element={<Cart />} />
