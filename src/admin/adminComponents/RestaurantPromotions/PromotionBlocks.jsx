@@ -20,6 +20,30 @@ export default function PromotionBlocks() {
     fetchPromotions();
   }, []);
 
+  function formatDate(dateString) {
+    const monthNames = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
+
+    return `${day} ${monthNames[monthIndex]}, ${year}`;
+  }
+
   return (
     <Box>
       <Container maxW='1110px'>
@@ -73,7 +97,7 @@ export default function PromotionBlocks() {
                       </Text>
                     </Box>
                     <Text color='neutral.black' fontSize='2.5xs'>
-                      {promotion.availableDate}{' '}
+                      {formatDate(promotion.startDate)} – {formatDate(promotion.endDate)}
                       {promotion.discountDays.length > 0 ? '(' + promotion.discountDays.join(', ') + ' only)' : ''}
                     </Text>
                   </Box>
