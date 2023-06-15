@@ -23,6 +23,9 @@ import Checkout from './user/userPages/Checkout';
 import UserOrders from './user/userPages/UserOrders';
 import Order from './user/userPages/Order';
 import Restaurants from './user/userPages/Restaurants';
+import RestaurantPromotions from './admin/adminPages/RestaurantPromotions';
+import RestaurantCustomers from './admin/adminPages/RestaurantCustomers';
+import UserDetails from './admin/adminComponents/RestaurantCustomers/UserDetails';
 
 export default function AppRoutes() {
   return (
@@ -57,6 +60,9 @@ export default function AppRoutes() {
                 <Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />
                 <Route path='/admin/restaurant/menu' element={<RestaurantMenu />} />
                 <Route path='/admin/restaurant/settings/*' element={<RestaurantSettings />} />
+                <Route path='/admin/restaurant/promotions' element={<RestaurantPromotions />} />
+                <Route path='/admin/restaurant/customers' element={<RestaurantCustomers />} />
+                <Route path='/admin/restaurant/customers/:userId' element={<UserDetails />} />
                 <Route path='/*' element={<Page404 />} />
               </Routes>
             </Main>

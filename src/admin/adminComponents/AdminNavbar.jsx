@@ -141,7 +141,7 @@ export default function AdminNavbar() {
                   </Box>
 
                   <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest' />
-                  <HStack spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
+                  <Flex spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
                     <Box
                       ml='4px'
                       bg='neutral.grayLightest'
@@ -183,7 +183,7 @@ export default function AdminNavbar() {
                     </Box>
 
                     <Menu>
-                      <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                      <MenuButton ml='15px' as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                         <Avatar
                           py='2px'
                           borderRadius='xl'
@@ -200,7 +200,7 @@ export default function AdminNavbar() {
                         <MenuItem fontWeight='medium'>Event</MenuItem>
                       </MenuList>
                     </Menu>
-                  </HStack>
+                  </Flex>
                 </HStack>
                 {/* Mobile navbar */}
                 <Box display={{ base: 'inline-flex', md: 'none' }}>
