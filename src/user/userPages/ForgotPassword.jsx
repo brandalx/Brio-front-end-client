@@ -16,15 +16,33 @@ import {
   InputRightElement,
   Grid,
   GridItem,
-  Icon
+  Icon,
+  useToast
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaChevronLeft } from 'react-icons/fa';
 
 export default function ForgotPassword() {
+  const toast = useToast();
+  const emailRef = useRef();
+  // const [state, handleSubmit] = useForm('xpzeyzgq');
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    const email = emailRef.current.value;
+
+    if (emailRef.length < 5) {
+      emailRef.current.style.borderColor = 'red';
+      return;
+    } else {
+      emailRef.current.style.borderColor = 'green';
+    }
+
+    // handleSubmit(event);
+  };
   return (
     <>
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
@@ -68,45 +86,50 @@ export default function ForgotPassword() {
                     </Text>
                   </Box>
                   <Box mt='20px'>
-                    <Stack spacing={4}>
-                      <FormControl id='email'>
-                        <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                          Email
-                        </FormLabel>
+                    <form onSubmit={onSubmit}>
+                      <Stack spacing={4}>
+                        <FormControl id='email'>
+                          <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                            Email
+                          </FormLabel>
 
-                        <Input
-                          type='email'
-                          background='neutral.white'
-                          _placeholder={{ color: 'neutral.gray' }}
-                          borderRadius='8px'
-                          fontSize='2xs'
-                          placeholder='name@example.com'
-                        />
-                      </FormControl>
+                          <Input
+                            ref={emailRef}
+                            id='name'
+                            required
+                            type='email'
+                            background='neutral.white'
+                            _placeholder={{ color: 'neutral.gray' }}
+                            borderRadius='8px'
+                            fontSize='2xs'
+                            placeholder='name@example.com'
+                          />
+                        </FormControl>
 
-                      <Stack spacing={10}>
-                        <Link to='/'>
-                          <Button
-                            w='100%'
-                            background='primary.default'
-                            fontWeight='bold'
-                            variant='solid'
-                            color='neutral.white'
-                            borderWidth='1px'
-                            borderColor='neutral.white'
-                            _hover={{
-                              background: 'neutral.white',
-                              color: 'primary.default',
-                              borderWidth: '1px',
-                              borderColor: 'primary.default'
-                            }}
-                            py={5}
-                          >
-                            Send instructions
-                          </Button>
-                        </Link>
+                        <Stack spacing={10}>
+                          <Link to='/'>
+                            <Button
+                              w='100%'
+                              background='primary.default'
+                              fontWeight='bold'
+                              variant='solid'
+                              color='neutral.white'
+                              borderWidth='1px'
+                              borderColor='neutral.white'
+                              _hover={{
+                                background: 'neutral.white',
+                                color: 'primary.default',
+                                borderWidth: '1px',
+                                borderColor: 'primary.default'
+                              }}
+                              py={5}
+                            >
+                              Send instructions
+                            </Button>
+                          </Link>
+                        </Stack>
                       </Stack>
-                    </Stack>
+                    </form>
                   </Box>
                 </Box>
 
