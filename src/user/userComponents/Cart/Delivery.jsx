@@ -1,20 +1,35 @@
 import { Box, Text, Button } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import AdressCard from '../AccountSettingsPage/AdressCard';
+import NewPaymentMethod from '../Checkout/NewPaymentMethod';
+import NewAddress from './NewAddress';
+
 export default function Delivery({ item }) {
+  const [shown, isShown] = useState(false);
+  const [AddressArrSend, SetAddressArrSend] = useState([]);
+  const [combinedAddresses, setCombinedAddresses] = useState(item); // added this state variable
+
+  useEffect(() => {
+    // update combinedAddresses whenever AddressArrSend changes
+    setCombinedAddresses((prevAddresses) => [...prevAddresses, ...AddressArrSend]);
+  }, [AddressArrSend]);
+
   return (
     <Box py={4}>
       <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
         Select your shipping adress
       </Text>
       <Box>
-        {item &&
-          item.map((item, index) => {
+        {combinedAddresses &&
+          combinedAddresses.map((item, index) => {
             return <AdressCard key={index} item={item} index={index} />;
           })}
       </Box>
       <Button
+        onClick={() => {
+          isShown(shown ? false : true);
+        }}
         w='100%'
         background='primary.light'
         fontSize='2xs'
@@ -31,8 +46,10 @@ export default function Delivery({ item }) {
         }}
         py={5}
       >
-        Add new shipping address
+        {shown ? <Box>Hide</Box> : <Box>Add new shipping address</Box>}
       </Button>
+
+      {shown && <NewAddress SetAddressArrSend={SetAddressArrSend} AddressArrSend={AddressArrSend} />}
     </Box>
   );
 }

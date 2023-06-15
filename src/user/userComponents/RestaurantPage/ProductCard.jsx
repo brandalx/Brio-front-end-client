@@ -1,12 +1,25 @@
 import { Box, GridItem, Image, Text, Button, Flex, Stack, border, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { API_URL, handleApiMethod } from '../../../services/apiServices';
+import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 
 export default function ProductCard({ img, title, description, price, _id }) {
   const toast = useToast();
+  const [userar, setUserAr] = useState([]);
   const [priceCount, setPriceCount] = useState(1);
-
+  const handleApi = async () => {
+    const url = API_URL + '/users/info/user';
+    try {
+      const data = await handleApiGet(url);
+      setUserAr(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    handleApi();
+  }, []);
   const handlePriceAdd = () => {
     setPriceCount(priceCount + 1);
   };
@@ -34,7 +47,7 @@ export default function ProductCard({ img, title, description, price, _id }) {
         productId: _id,
         productAmount: priceCount
       };
-      const url = API_URL + '/users/6464085ed67f7b944b642799/posttocart';
+      const url = API_URL + `/users/${userar._id}/posttocart`;
       const data = await handleApiMethod(url, 'POST', cartObject);
       if (data.msg === true) {
         toast({

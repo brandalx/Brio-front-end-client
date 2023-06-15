@@ -10,7 +10,7 @@ export default function RestaurantCard({ img, title, time, price, badgeData, _id
       <Link to={`/restaurant/${_id}`}>
         <GridItem w='100%' bg='neutral.white'>
           <Box bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='lg'>
-            <Image src={img} roundedTop='lg' h='230px' objectFit='cover' />
+            <Image src={img} roundedTop='lg' h='230px' objectFit='cover' w='100%' />
 
             <Box p='6'>
               <Box>

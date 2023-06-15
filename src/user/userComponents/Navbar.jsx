@@ -23,16 +23,23 @@ import {
   MenuList,
   Menu,
   MenuButton,
-  Skeleton
+  Skeleton,
+  useToast
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
 
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import Logo from '../../assets/svg/Logo';
-import { Link, useLocation } from 'react-router-dom';
-import { API_URL, handleApiGet } from '../../services/apiServices';
-
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
+import { useCheckToken } from '../../services/token';
 export default function Navbar() {
+  const isTokenExpired = useCheckToken();
+
+  useEffect(() => {
+    if (isTokenExpired) {
+    }
+  }, [isTokenExpired]);
   const bg = useColorModeValue('white', 'gray.800');
   const mobileNav = useDisclosure();
   const location = useLocation();
@@ -41,8 +48,19 @@ export default function Navbar() {
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
   const [cartLen, setCartLen] = useState(0);
+  const [srcav, setSrcav] = useState();
+  const randomarr = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
+
+  const getRandomNumber = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  const genavatar = () => {
+    const rand = getRandomNumber(0, 6);
+    setSrcav(randomarr[rand]);
+  };
   const handleApi = async () => {
-    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    const url = API_URL + '/users/info/user';
     try {
       const data = await handleApiGet(url);
       setArr(data);
@@ -55,11 +73,23 @@ export default function Navbar() {
       console.log(error);
     }
   };
-
+  const toast = useToast();
+  const navigate = useNavigate();
   useEffect(() => {
     handleApi();
+    genavatar();
   }, []);
-
+  const onLogOut = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    navigate('/login');
+    toast({
+      title: 'Loggin out.',
+      description: 'Successfuly logged out!',
+      status: 'success',
+      duration: 9000,
+      isClosable: true
+    });
+  };
   return (
     <>
       <Container maxW='1110px'>
@@ -119,112 +149,171 @@ export default function Navbar() {
                 >
                   Deals
                 </Button>
-                <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
-                <Button
-                  color='neutral.black'
-                  fontWeight='bold'
-                  fontSize='2xs'
-                  _hover={{
-                    textDecoration: 'none',
-                    color: 'primary.default'
-                  }}
-                >
-                  <Link fontSize='fontSizes.2xs' to='/user/orders'>
-                    My orders
-                  </Link>
-                </Button>
+                {localStorage[TOKEN_KEY] && (
+                  <>
+                    <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
+
+                    <Button
+                      color='neutral.black'
+                      fontWeight='bold'
+                      fontSize='2xs'
+                      _hover={{
+                        textDecoration: 'none',
+                        color: 'primary.default'
+                      }}
+                    >
+                      <Link fontSize='fontSizes.2xs' to='/user/orders'>
+                        My orders
+                      </Link>
+                    </Button>
+                  </>
+                )}
 
                 <HStack spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
-                  <Skeleton borderRadius='16px' isLoaded={!loading}>
-                    <Box
-                      borderColor={isInCart ? 'primary.default' : 'neutral.white'}
-                      borderWidth='1px'
-                      ml='4px'
-                      bg='primary.lightest'
-                      _hover={{ bg: 'primary.light' }}
-                      color='black'
-                      px={'8px'}
-                      py={'7.5px'}
-                      borderRadius='16px'
-                      position='relative'
-                    >
-                      <Box
-                        position='absolute'
-                        top='-2px'
-                        right='-4px'
-                        bg='primary.default'
-                        h='20px'
-                        w='20px'
-                        borderRadius='8px'
-                        display='flex'
-                        alignItems='center'
-                        justifyContent='center'
-                        fontSize='xs'
-                        fontWeight='semibold'
-                        color='white'
-                        textAlign='center'
-                        minWidth='20px'
-                      >
-                        {!loading && cartLen}
-                      </Box>
-                      <Menu>
-                        <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                          <IconShoppingBag color='#4E60FF' />
-                        </MenuButton>
+                  {localStorage[TOKEN_KEY] && (
+                    <>
+                      <Skeleton borderRadius='16px' isLoaded={!loading}>
+                        <Box
+                          borderColor={isInCart ? 'primary.default' : 'neutral.white'}
+                          borderWidth='1px'
+                          ml='4px'
+                          bg='primary.lightest'
+                          _hover={{ bg: 'primary.light' }}
+                          color='black'
+                          px={'8px'}
+                          py={'7.5px'}
+                          borderRadius='16px'
+                          position='relative'
+                        >
+                          <Box
+                            position='absolute'
+                            top='-2px'
+                            right='-4px'
+                            bg='primary.default'
+                            h='20px'
+                            w='20px'
+                            borderRadius='8px'
+                            display='flex'
+                            alignItems='center'
+                            justifyContent='center'
+                            fontSize='xs'
+                            fontWeight='semibold'
+                            color='white'
+                            textAlign='center'
+                            minWidth='20px'
+                          >
+                            {!loading && cartLen}
+                          </Box>
+                          <Menu>
+                            <MenuButton
+                              as={Button}
+                              p='6px'
+                              rounded={'full'}
+                              variant={'link'}
+                              cursor={'pointer'}
+                              minW={0}
+                            >
+                              <IconShoppingBag color='#4E60FF' />
+                            </MenuButton>
 
-                        <MenuList>
-                          <Link to='user/cart'>
-                            {' '}
-                            <MenuItem fontWeight='medium'>My cart</MenuItem>
-                          </Link>
-                        </MenuList>
-                      </Menu>
-                    </Box>
-                  </Skeleton>
+                            <MenuList>
+                              <Link to='user/cart'>
+                                {' '}
+                                <MenuItem fontWeight='medium'>My cart</MenuItem>
+                              </Link>
+                            </MenuList>
+                          </Menu>
+                        </Box>
+                      </Skeleton>
+                    </>
+                  )}
+
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                     <Menu>
-                      <Box
-                        borderWidth='2px'
-                        borderColor='neutral.white'
-                        transition='all 0.3s'
-                        _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
-                        borderRadius='2xl'
-                        display='flex'
-                        alignItems='center'
-                      >
-                        <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                          <Avatar
-                            py='2px'
-                            borderRadius='xl'
-                            size='md'
-                            name={!loading && arr.firstname + ' ' + arr.lastname}
-                            src={(!loading && arr.avatar) || null}
-                          />{' '}
-                        </MenuButton>
-                      </Box>
-                      <MenuList>
-                        <Link to='/user/account'>
-                          {' '}
-                          <MenuItem fontWeight='medium'>Settings</MenuItem>
-                        </Link>
-                        <MenuDivider />
-                        <Link to='/login'>
-                          <MenuItem
-                            m={0}
-                            h='100%'
-                            background='neutral.white'
-                            variant='solid'
-                            color='error.default'
-                            _hover={{
-                              background: 'error.default',
-                              color: 'neutral.white'
-                            }}
-                            fontWeight='medium'
+                      {!localStorage[TOKEN_KEY] && (
+                        <Box
+                          borderWidth='2px'
+                          borderColor='neutral.white'
+                          transition='all 0.3s'
+                          _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
+                          borderRadius='2xl'
+                          display='flex'
+                          alignItems='center'
+                        >
+                          <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                            <Avatar
+                              py='2px'
+                              borderRadius='3xl'
+                              size='md'
+                              name={'Anonimus'}
+                              src={'/assets/avatars/' + srcav}
+                            />{' '}
+                          </MenuButton>
+                        </Box>
+                      )}
+                      {localStorage[TOKEN_KEY] && (
+                        <>
+                          <Box
+                            borderWidth='2px'
+                            borderColor='neutral.white'
+                            transition='all 0.3s'
+                            _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
+                            borderRadius='2xl'
+                            display='flex'
+                            alignItems='center'
                           >
-                            Log Out
-                          </MenuItem>
-                        </Link>
-                      </MenuList>
+                            <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                              <Avatar
+                                py='2px'
+                                borderRadius='xl'
+                                size='md'
+                                name={!loading && arr.firstname + ' ' + arr.lastname}
+                                src={(!loading && arr.avatar) || null}
+                              />{' '}
+                            </MenuButton>
+                          </Box>
+                        </>
+                      )}
+                      {localStorage[TOKEN_KEY] ? (
+                        <>
+                          <MenuList>
+                            <a href='/user/account'>
+                              {' '}
+                              <MenuItem fontWeight='medium'>Settings</MenuItem>
+                            </a>
+
+                            <MenuDivider />
+
+                            <MenuItem
+                              onClick={onLogOut}
+                              m={0}
+                              h='100%'
+                              background='neutral.white'
+                              variant='solid'
+                              color='error.default'
+                              _hover={{
+                                background: 'error.default',
+                                color: 'neutral.white'
+                              }}
+                              fontWeight='medium'
+                            >
+                              Log Out
+                            </MenuItem>
+                          </MenuList>
+                        </>
+                      ) : (
+                        <MenuList>
+                          <Link to='/signup'>
+                            {' '}
+                            <MenuItem fontWeight='medium'>Sign up</MenuItem>
+                          </Link>
+
+                          <Link to='/login'>
+                            {' '}
+                            <MenuItem fontWeight='medium'>Log in</MenuItem>
+                          </Link>
+                        </MenuList>
+                      )}
                     </Menu>
                   </Skeleton>
                 </HStack>
@@ -232,85 +321,134 @@ export default function Navbar() {
 
               <Box display={{ base: 'inline-flex', md: 'none' }}>
                 <HStack display='flex' alignItems='center' spacing={4}>
-                  <Skeleton borderRadius='16px' isLoaded={!loading}>
-                    <Box
-                      borderColor={isInCart ? 'primary.default' : 'neutral.white'}
-                      borderWidth='1px'
-                      ml='4px'
-                      bg='neutral.grayLightest'
-                      color='black'
-                      px={'8px'}
-                      py={'8px'}
-                      borderRadius='16px'
-                      position='relative'
-                    >
-                      <Box
-                        position='absolute'
-                        top='-2px'
-                        right='-4px'
-                        bg='primary.default'
-                        h='18px'
-                        w='18px'
-                        borderRadius='8px'
-                        display='flex'
-                        alignItems='center'
-                        justifyContent='center'
-                        fontSize='xs'
-                        fontWeight='semibold'
-                        color='white'
-                        textAlign='center'
-                      >
-                        {!loading && cartLen}
-                      </Box>
-                      <Menu>
-                        <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                          <IconShoppingBag color='#4E60FF' />
-                        </MenuButton>
-                        <MenuList>
-                          <Link to='user/cart'>
-                            {' '}
-                            <MenuItem fontWeight='medium'>My cart</MenuItem>
-                          </Link>
-                        </MenuList>
-                      </Menu>
-                    </Box>
-                  </Skeleton>
+                  {localStorage[TOKEN_KEY] && (
+                    <>
+                      <Skeleton borderRadius='16px' isLoaded={!loading}>
+                        <Box
+                          borderColor={isInCart ? 'primary.default' : 'neutral.white'}
+                          borderWidth='1px'
+                          ml='4px'
+                          bg='neutral.grayLightest'
+                          color='black'
+                          px={'8px'}
+                          py={'8px'}
+                          borderRadius='16px'
+                          position='relative'
+                        >
+                          <Box
+                            position='absolute'
+                            top='-2px'
+                            right='-4px'
+                            bg='primary.default'
+                            h='18px'
+                            w='18px'
+                            borderRadius='8px'
+                            display='flex'
+                            alignItems='center'
+                            justifyContent='center'
+                            fontSize='xs'
+                            fontWeight='semibold'
+                            color='white'
+                            textAlign='center'
+                          >
+                            {!loading && cartLen}
+                          </Box>
+
+                          <Menu>
+                            <MenuButton
+                              as={Button}
+                              p='6px'
+                              rounded={'full'}
+                              variant={'link'}
+                              cursor={'pointer'}
+                              minW={0}
+                            >
+                              <IconShoppingBag color='#4E60FF' />
+                            </MenuButton>
+                            <MenuList>
+                              <Link to='user/cart'>
+                                {' '}
+                                <MenuItem fontWeight='medium'>My cart</MenuItem>
+                              </Link>
+                            </MenuList>
+                          </Menu>
+                        </Box>
+                      </Skeleton>
+                    </>
+                  )}
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                     <Menu>
-                      <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                        <Avatar
-                          py='2px'
-                          borderRadius='xl'
-                          size='md'
-                          name={!loading && arr.firstname + ' ' + arr.lastname}
-                          src={(!loading && arr.avatar) || null}
-                        />{' '}
-                      </MenuButton>
+                      {!localStorage[TOKEN_KEY] && (
+                        <Box
+                          borderWidth='2px'
+                          borderColor='neutral.white'
+                          transition='all 0.3s'
+                          _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
+                          borderRadius='2xl'
+                          display='flex'
+                          alignItems='center'
+                        >
+                          <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                            <Avatar
+                              py='2px'
+                              borderRadius='3xl'
+                              size='md'
+                              name={'Anonimus'}
+                              src={'/assets/avatars/' + srcav}
+                            />{' '}
+                          </MenuButton>
+                        </Box>
+                      )}
 
-                      <MenuList>
-                        <Link to='/user/account'>
-                          {' '}
-                          <MenuItem fontWeight='medium'>Settings</MenuItem>
-                        </Link>
+                      {localStorage[TOKEN_KEY] ? (
+                        <>
+                          <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                            <Avatar
+                              py='2px'
+                              borderRadius='xl'
+                              size='md'
+                              name={!loading && arr.firstname + ' ' + arr.lastname}
+                              src={(!loading && arr.avatar) || null}
+                            />{' '}
+                          </MenuButton>
+                          <MenuList>
+                            <Link to='/user/account'>
+                              {' '}
+                              <MenuItem fontWeight='medium'>Settings</MenuItem>
+                            </Link>
 
-                        <MenuDivider />
-                        <Link to='/login'>
-                          <MenuItem
-                            m={0}
-                            h='100%'
-                            background='neutral.white'
-                            variant='solid'
-                            color='error.default'
-                            _hover={{
-                              background: 'error.default',
-                              color: 'neutral.white'
-                            }}
-                            fontWeight='medium'
-                          >
-                            Log Out
-                          </MenuItem>
-                        </Link>
-                      </MenuList>
+                            <MenuDivider />
+
+                            <MenuItem
+                              onClick={onLogOut}
+                              m={0}
+                              h='100%'
+                              background='neutral.white'
+                              variant='solid'
+                              color='error.default'
+                              _hover={{
+                                background: 'error.default',
+                                color: 'neutral.white'
+                              }}
+                              fontWeight='medium'
+                            >
+                              Log Out
+                            </MenuItem>
+                          </MenuList>
+                        </>
+                      ) : (
+                        <MenuList>
+                          <Link to='/login'>
+                            {' '}
+                            <MenuItem fontWeight='medium'>Sign up</MenuItem>
+                          </Link>
+
+                          <Link to='/signup'>
+                            {' '}
+                            <MenuItem fontWeight='medium'>Log in</MenuItem>
+                          </Link>
+                        </MenuList>
+                      )}
                     </Menu>
                   </Skeleton>
                   <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest' />
@@ -371,9 +509,11 @@ export default function Navbar() {
                     <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
                       <Link to='#'>Deals </Link>
                     </Button>
-                    <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                      <Link to='/user/orders'>My orders</Link>
-                    </Button>
+                    {localStorage[TOKEN_KEY] && (
+                      <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
+                        <Link to='/user/orders'>My orders</Link>
+                      </Button>
+                    )}
                     <Box my='8px' display='flex' justifyItems='center'>
                       <InputGroup size='sm' fontSize='md' w='60%' mx='auto'>
                         <InputRightElement pointerEvents='none'>

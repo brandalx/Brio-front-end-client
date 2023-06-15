@@ -5,6 +5,7 @@ import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
 import Preloader from '../../components/Loaders/preloader';
+import { useCheckToken } from '../../services/token';
 export default function Home() {
   // todo: add tag into product into backend model and validation
 
@@ -37,7 +38,11 @@ export default function Home() {
       setScrollEnabled(true);
     }
   }, [loading]);
+  const isTokenExpired = useCheckToken();
 
+  useEffect(() => {
+    isTokenExpired;
+  }, [isTokenExpired]);
   return (
     <>
       <Preloader loading={loading} />
