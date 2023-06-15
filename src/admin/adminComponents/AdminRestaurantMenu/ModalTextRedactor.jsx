@@ -114,7 +114,7 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
               <Controller
                 control={control}
                 name='nutritionalValue'
-                defaultValue={item.nutritionalValue}
+                defaultValue={item.nutritionals}
                 render={({ field }) => <Input {...field} placeholder='Nutritional value' />}
               />
             </FormControl>
