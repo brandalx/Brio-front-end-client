@@ -7,18 +7,18 @@ import { API_URL, handleApiGet } from '../../../services/apiServices.js';
 import { Link } from 'react-router-dom';
 
 export default function DealsBlocks() {
-  const [promotions, setPromotion] = useState([]);
-  const fetchPromotions = async () => {
+  const [deals, setDeals] = useState([]);
+  const fetchdeals = async () => {
     try {
       const response = await handleApiGet(API_URL + '/admin/promotions');
       console.log(response);
-      setPromotion(response);
+      setDeals(response);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
 
-  function getPromotionStatus(startDate, endDate) {
+  function getdealstatus(startDate, endDate) {
     const now = new Date();
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -33,7 +33,7 @@ export default function DealsBlocks() {
   }
 
   useEffect(() => {
-    fetchPromotions();
+    fetchdeals();
   }, []);
 
   function formatDate(dateString) {
@@ -64,7 +64,7 @@ export default function DealsBlocks() {
     <Box>
       <Container maxW='1110px'>
         <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
-          {promotions.map((promotion, index) => {
+          {deals.map((promotion, index) => {
             return (
               <Box
                 key={index}
