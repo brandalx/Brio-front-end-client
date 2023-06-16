@@ -138,17 +138,20 @@ export default function Navbar() {
                     Restaurants
                   </Link>
                 </Button>
-                <Button
-                  color='neutral.black'
-                  fontWeight='bold'
-                  fontSize='2xs'
-                  _hover={{
-                    textDecoration: 'none',
-                    color: 'primary.default'
-                  }}
-                >
-                  Deals
-                </Button>
+                <Link to='/deals'>
+                  <Button
+                    color='neutral.black'
+                    fontWeight='bold'
+                    fontSize='2xs'
+                    _hover={{
+                      textDecoration: 'none',
+                      color: 'primary.default'
+                    }}
+                  >
+                    {' '}
+                    Deals
+                  </Button>
+                </Link>
                 {localStorage[TOKEN_KEY] && (
                   <>
                     <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
@@ -507,7 +510,7 @@ export default function Navbar() {
                       <Link to='/restaurant'>Restaurants</Link>
                     </Button>
                     <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                      <Link to='#'>Deals </Link>
+                      <Link to='/deals'>Deals </Link>
                     </Button>
                     {localStorage[TOKEN_KEY] && (
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>

@@ -30,9 +30,9 @@ import RestaurantPromotions from './admin/adminPages/RestaurantPromotions';
 import RestaurantCustomers from './admin/adminPages/RestaurantCustomers';
 import UserDetails from './admin/adminComponents/RestaurantCustomers/UserDetails';
 
-
 import { TOKEN_KEY } from './services/apiServices';
 import { useCheckToken } from './services/token';
+import Deals from './user/userPages/Deals';
 
 export default function AppRoutes({ isToken }) {
   return (
@@ -69,6 +69,7 @@ export default function AppRoutes({ isToken }) {
                     <Route path='/user/order/:id' element={<Order />} />
                   </>
                 )}
+                <Route path='/deals' element={<Deals />} />
                 <Route path='/restaurant/' element={<Restaurants />} />
                 <Route path='/restaurant/:id' element={<Restaurant />} />
                 <Route path='/restaurant/product/:id' element={<Product />} />
