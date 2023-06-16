@@ -20,7 +20,7 @@ import addressError from '../../../assets/images/addressError.jpg';
 import axios from 'axios';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 
-export default function AdressCard({ item, index }) {
+export default function AdressCard({ item, index, handleUserAddressDelete }) {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
   const REACT_APP_opencagedata = import.meta.env.VITE_OPENCAGEDATA;
   const REACT_APP_MAPBOX = import.meta.env.VITE_MAPBOX;
@@ -161,6 +161,7 @@ export default function AdressCard({ item, index }) {
                   <MenuItem fontWeight='medium'>Edit</MenuItem>
                   <MenuDivider />
                   <MenuItem
+                    onClick={() => handleUserAddressDelete(item._id)}
                     m={0}
                     background='neutral.white'
                     variant='solid'

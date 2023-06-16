@@ -33,7 +33,8 @@ export default function Adress() {
         state: item.state,
         city: item.city,
         address1: item.address1,
-        address2: item.address2
+        address2: item.address2,
+        _id: item._id
       }));
 
       setAddressArr(address);
@@ -102,6 +103,51 @@ export default function Adress() {
     handleApi();
   }, []);
 
+  const handleUserAddressDelete = async (_bodyData) => {
+    try {
+      // const url = API_URL + "/videos/"+params["id"];
+      console.log(_bodyData);
+      const _bodyDataFinal = {
+        addressToDelete: _bodyData
+      };
+      const url = API_URL + '/users/address/delete';
+      const data = await handleApiMethod(url, 'DELETE', _bodyDataFinal);
+      if (data.msg === true) {
+        toast({
+          title: 'New Address added.',
+          description: "We've added your new address.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+        const newAddressArrIndex = addressArr.findIndex(_bodyData);
+        // console.log('index is' + newAddressArrIndex);
+        // const newAddressArr = addressArr.splice(newAddressArrIndex, 1);
+        setAddressArr(addressArr.filter((_, index) => index !== newAddressArrIndex));
+      }
+    } catch (error) {
+      console.log(error);
+
+      if (error.response.data.err === 'Address does not exist') {
+        toast({
+          title: 'Address does not exist',
+          description: `Error when removing address - such address does not exist.`,
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      } else {
+        toast({
+          title: 'Error when removing address',
+          description: 'Error when removing selected address',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    }
+  };
+
   return (
     <>
       <Box>
@@ -117,7 +163,14 @@ export default function Adress() {
               <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={6}>
                 {!loading &&
                   addressArr.map((item, index) => {
-                    return <AdressCard key={index} item={item} index={index} />;
+                    return (
+                      <AdressCard
+                        handleUserAddressDelete={handleUserAddressDelete}
+                        key={index}
+                        item={item}
+                        index={index}
+                      />
+                    );
                   })}
               </Grid>
             </Box>
