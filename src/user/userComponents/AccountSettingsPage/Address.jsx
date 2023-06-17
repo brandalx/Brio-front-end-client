@@ -17,9 +17,11 @@ import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiSer
 import { useForm } from 'react-hook-form';
 
 export default function Adress() {
+  const [isEditTrue, setIsEditTrue] = useState(false);
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
   const [addressArr, setAddressArr] = useState([]);
+  const [targetIndex, setTargetIndex] = useState();
 
   const handleApi = async () => {
     const url = API_URL + '/users/info/user';
@@ -48,13 +50,20 @@ export default function Adress() {
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    setValue
   } = useForm();
 
   const onSubForm = (_bodyData) => {
     console.log(_bodyData);
     handleUserAddressPost(_bodyData);
   };
+
+  const onSubForm2 = (_bodyData) => {
+    console.log(_bodyData);
+    handleUserAddressUpdate(_bodyData);
+  };
+
   const toast = useToast();
   const handleUserAddressPost = async (_bodyData) => {
     try {
@@ -156,6 +165,75 @@ export default function Adress() {
     }
   };
 
+  const handleUserAddressUpdate = async (_bodyData) => {
+    try {
+      const _bodyDataFinal = {
+        country: _bodyData.country,
+        state: _bodyData.state,
+        city: _bodyData.city,
+        address1: _bodyData.address1,
+        address2: _bodyData.address2,
+        _id: targetIndex
+      };
+
+      console.log(_bodyDataFinal);
+
+      const url = API_URL + '/users/address/edit';
+      const data = await handleApiMethod(url, 'PUT', _bodyDataFinal);
+      if (data.msg === true) {
+        toast({
+          title: 'Address updated',
+          description: 'We successfuly updated your address',
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+
+      handleApi();
+      setIsEditTrue(false);
+      setValue('country', '');
+      setValue('state', '');
+      setValue('city', '');
+      setValue('address1', '');
+      setValue('address2', '');
+    } catch (error) {
+      console.log(error);
+
+      if (error.response.data.err === 'Address does not exist') {
+        toast({
+          title: 'Address does not exist',
+          description: `Error when removing address - such address does not exist.`,
+          status: 'warning',
+          duration: 9000,
+          isClosable: true
+        });
+      } else {
+        toast({
+          title: 'Error when removing address',
+          description: 'Error when removing selected address',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+      handleApi();
+    }
+  };
+
+  useEffect(() => {
+    if (isEditTrue === true) {
+      //will be passed here
+      const addressToEdit = addressArr.find((item) => item._id === targetIndex);
+
+      setValue('country', addressToEdit.country);
+      setValue('state', addressToEdit.state);
+      setValue('city', addressToEdit.city);
+      setValue('address1', addressToEdit.address1);
+      setValue('address2', addressToEdit.address2);
+    }
+  }, [isEditTrue]);
+
   return (
     <>
       <Box>
@@ -173,6 +251,8 @@ export default function Adress() {
                   addressArr.map((item, index) => {
                     return (
                       <AdressCard
+                        setTargetIndex={setTargetIndex}
+                        setIsEditTrue={setIsEditTrue}
                         handleUserAddressDelete={handleUserAddressDelete}
                         key={index}
                         item={item}
@@ -328,27 +408,75 @@ export default function Adress() {
             </Box>
 
             <Box pt={5} display='flex' justifyContent='flex-end'>
-              <Button
-                type='submit'
-                isLoading={isSubmitting}
-                background='neutral.white'
-                fontSize='2xs'
-                fontWeight='bold'
-                variant='solid'
-                color='primary.default'
-                borderWidth='1px'
-                borderColor='primary.default'
-                _hover={{
-                  background: 'primary.default',
-                  color: 'neutral.white',
-                  borderWidth: '1px',
-                  borderColor: 'primary.default'
-                }}
-                py={5}
-                me='20px'
-              >
-                Add new address
-              </Button>
+              {!isEditTrue ? (
+                <Button
+                  type='submit'
+                  isLoading={isSubmitting}
+                  background='neutral.white'
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='primary.default'
+                  borderWidth='1px'
+                  borderColor='primary.default'
+                  _hover={{
+                    background: 'primary.default',
+                    color: 'neutral.white',
+                    borderWidth: '1px',
+                    borderColor: 'primary.default'
+                  }}
+                  py={5}
+                  me='20px'
+                >
+                  Add new address
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleSubmit(onSubForm2)} // Pass the function reference directly to onClick
+                  isLoading={isSubmitting}
+                  background='neutral.white'
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='primary.default'
+                  borderWidth='1px'
+                  borderColor='primary.default'
+                  _hover={{
+                    background: 'primary.default',
+                    color: 'neutral.white',
+                    borderWidth: '1px',
+                    borderColor: 'primary.default'
+                  }}
+                  py={5}
+                  me='20px'
+                >
+                  Submit
+                </Button>
+              )}
+
+              {isEditTrue && (
+                <Button
+                  w={{ base: '100%', md: 'initial' }}
+                  background='neutral.white'
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='error.default'
+                  borderWidth='1px'
+                  borderColor='error.default'
+                  _hover={{
+                    background: 'error.default',
+                    color: 'neutral.white',
+                    borderWidth: '1px',
+                    borderColor: 'error.default'
+                  }}
+                  py={5}
+                  me='20px'
+                  onClick={() => setIsEditTrue(false)}
+                >
+                  Cancel edit
+                </Button>
+              )}
             </Box>
           </form>
         </Box>
