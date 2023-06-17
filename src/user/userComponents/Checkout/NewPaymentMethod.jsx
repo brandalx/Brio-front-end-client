@@ -19,7 +19,15 @@ import { useForm } from 'react-hook-form';
 import { API_URL, handleApiMethod } from '../../../services/apiServices';
 import { kMaxLength } from 'buffer';
 import cardValidator from 'card-validator';
-export default function NewPaymentMethod({ switcher, updateCreditCard }) {
+export default function NewPaymentMethod({
+  switcher,
+  updateCreditCard,
+  onSubForm2,
+  handleApi,
+  setIsEditTrue,
+  isEditTrue,
+  clearValues
+}) {
   const {
     handleSubmit,
     register,
@@ -64,6 +72,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
             isClosable: true
           });
           updateCreditCard(_bodyData);
+          handleApi();
         }
       }
     } catch (error) {

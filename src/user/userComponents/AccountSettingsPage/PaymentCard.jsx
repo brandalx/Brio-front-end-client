@@ -16,7 +16,13 @@ import mastercard from '../../../assets/images/mastercard.png';
 import React, { useEffect } from 'react';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 
-export default function PaymentCard({ item, disabledOptions = false }) {
+export default function PaymentCard({
+  item,
+  disabledOptions = false,
+  handleUserAddressDelete,
+  setIsEditTrue,
+  setTargetIndex
+}) {
   return (
     <Box
       _hover={{
@@ -68,9 +74,18 @@ export default function PaymentCard({ item, disabledOptions = false }) {
               </MenuButton>
 
               <MenuList>
-                <MenuItem fontWeight='medium'>Edit</MenuItem>
-                <MenuDivider />
+                {/* <MenuItem
+                  fontWeight='medium'
+                  onClick={() => {
+                    setIsEditTrue(true);
+                    setTargetIndex(item._id);
+                  }}
+                >
+                  Edit
+                </MenuItem> */}
+                {/* <MenuDivider /> */}
                 <MenuItem
+                  onClick={() => handleUserAddressDelete(item._id)}
                   m={0}
                   background='neutral.white'
                   variant='solid'

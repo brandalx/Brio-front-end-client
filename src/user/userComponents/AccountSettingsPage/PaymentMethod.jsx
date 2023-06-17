@@ -6,38 +6,39 @@ import visa from '../../../assets/images/visa.png';
 import mastercard from '../../../assets/images/mastercard.png';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import NewPaymentMethod from '../Checkout/NewPaymentMethod';
+import CardsReducers from '../reducers/CardsReducers';
 export default function PaymentMethod() {
-  const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
-  const [cardsArr, setCardsArr] = useState([]);
-
-  const handleApi = async () => {
-    const url = API_URL + '/users/info/user';
-    try {
-      const data = await handleApiGet(url);
-      setArr(data);
-      console.log(data);
-
-      const cards = data.creditdata.map((card) => ({
-        cardNumber: card.cardNumber,
-        cardType: card.cardType,
-        cardholder: card.cardholder,
-        expirationDate: card.expirationDate,
-        paymentMethod: card.paymentMethod,
-        securityCode: card.securityCode
-      }));
-
-      setCardsArr(cards);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
 
   const updateCreditCard = (newCardData) => {
     setCardsArr((prevCardsArr) => [...prevCardsArr, newCardData]);
   };
+
+  const {
+    loading,
+    setLoading,
+    isEditTrue,
+    setIsEditTrue,
+    cardsArr,
+    setCardsArr,
+    handleApi,
+    addressArr,
+    setAddressArr,
+    targetIndex,
+    setTargetIndex,
+    handleSubmit,
+    register,
+    errors,
+    isSubmitting,
+    setValue,
+    onSubForm,
+    onSubForm2,
+    handleUserAddressPost,
+    handleUserAddressUpdate,
+    clearValues,
+
+    handleUserAddressDelete
+  } = CardsReducers();
 
   useEffect(() => {
     handleApi();
@@ -57,7 +58,14 @@ export default function PaymentMethod() {
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={2}>
               {!loading &&
                 cardsArr.map((item, index) => {
-                  return <PaymentCard key={index} item={item} />;
+                  return (
+                    <PaymentCard
+                      setTargetIndex={setTargetIndex}
+                      handleUserAddressDelete={handleUserAddressDelete}
+                      key={index}
+                      item={item}
+                    />
+                  );
                 })}
             </Grid>
             {loading && (
@@ -74,7 +82,14 @@ export default function PaymentMethod() {
               </Grid>
             )}
           </Box>
-          <NewPaymentMethod updateCreditCard={updateCreditCard} />
+          <NewPaymentMethod
+            handleApi={handleApi}
+            clearValues={clearValues}
+            setIsEditTrue={setIsEditTrue}
+            isEditTrue={isEditTrue}
+            onSubForm2={onSubForm2}
+            updateCreditCard={updateCreditCard}
+          />
         </Box>
       </Box>
     </>
