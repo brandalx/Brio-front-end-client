@@ -15,13 +15,13 @@ import {
 import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
 
-export default function NewAddress({ SetAddressArrSend, addressArrSend }) {
+export default function NewAddress({ SetAddressArrSend, addressArrSend, handleUserAddressPost }) {
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
   const [addressArr, setAddressArr] = useState([]);
 
   const handleApi = async () => {
-    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    const url = API_URL + '/users/info';
     try {
       const data = await handleApiGet(url);
       setArr(data);
@@ -49,57 +49,19 @@ export default function NewAddress({ SetAddressArrSend, addressArrSend }) {
     formState: { errors, isSubmitting }
   } = useForm();
 
-  const onSubForm = (_bodyData) => {
+  const onSubForm = async (_bodyData) => {
     console.log(_bodyData);
-    handleUserAddressPost(_bodyData);
-  };
-  const toast = useToast();
-  const handleUserAddressPost = async (_bodyData) => {
-    try {
-      // const url = API_URL + "/videos/"+params["id"];
-      const url = API_URL + '/users/6464085ed67f7b944b642799/postuseraddress';
-      const data = await handleApiMethod(url, 'POST', _bodyData);
-      if (data.msg === true) {
-        toast({
-          title: 'New Address added.',
-          description: "We've added your new address.",
-          status: 'success',
-          duration: 9000,
-          isClosable: true
-        });
-
-        updateAddress(_bodyData);
-      }
-    } catch (error) {
-      console.log(error);
-
-      if (error.response.data.err === 'Address already exists') {
-        toast({
-          title: 'Duplicated address',
-          description: `Error when adding new address - such address already exist.`,
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
-      } else {
-        toast({
-          title: 'Error when adding new address',
-          description: 'Error when adding new address',
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
-      }
-    }
-  };
-
-  const updateAddress = (newAddressData) => {
-    SetAddressArrSend((prevCardsArr) => [...prevCardsArr, newAddressData]);
+    await handleUserAddressPost(_bodyData);
+    updateAddress(_bodyData);
   };
 
   useEffect(() => {
     handleApi();
   }, []);
+
+  const updateAddress = (newAddressData) => {
+    SetAddressArrSend((prevCardsArr) => [...prevCardsArr, newAddressData]);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubForm)}>

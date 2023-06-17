@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import AdressCard from '../AccountSettingsPage/AdressCard';
 import NewPaymentMethod from '../Checkout/NewPaymentMethod';
 import NewAddress from './NewAddress';
+import AddressReducers from '../reducers/addressReducers';
 
 export default function Delivery({ item }) {
   const [shown, isShown] = useState(false);
@@ -15,6 +16,30 @@ export default function Delivery({ item }) {
     setCombinedAddresses((prevAddresses) => [...prevAddresses, ...AddressArrSend]);
   }, [AddressArrSend]);
 
+  const {
+    isEditTrue,
+    setIsEditTrue,
+    loading,
+    arr,
+    setArr,
+    addressArr,
+    setAddressArr,
+    targetIndex,
+    setTargetIndex,
+    handleSubmit,
+    register,
+    errors,
+    isSubmitting,
+    setValue,
+    onSubForm,
+    onSubForm2,
+    handleUserAddressPost,
+    handleUserAddressUpdate,
+    handleApi,
+    clearValues,
+    handleUserAddressDelete
+  } = AddressReducers();
+
   return (
     <Box py={4}>
       <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
@@ -23,7 +48,16 @@ export default function Delivery({ item }) {
       <Box>
         {combinedAddresses &&
           combinedAddresses.map((item, index) => {
-            return <AdressCard key={index} item={item} index={index} />;
+            return (
+              <AdressCard
+                setTargetIndex={setTargetIndex}
+                setIsEditTrue={setIsEditTrue}
+                handleUserAddressDelete={handleUserAddressDelete}
+                key={index}
+                item={item}
+                index={index}
+              />
+            );
           })}
       </Box>
       <Button
@@ -49,7 +83,14 @@ export default function Delivery({ item }) {
         {shown ? <Box>Hide</Box> : <Box>Add new shipping address</Box>}
       </Button>
 
-      {shown && <NewAddress SetAddressArrSend={SetAddressArrSend} AddressArrSend={AddressArrSend} />}
+      {shown && (
+        <NewAddress
+          handleUserAddressDelete={handleUserAddressDelete}
+          handleUserAddressPost={handleUserAddressPost}
+          SetAddressArrSend={SetAddressArrSend}
+          AddressArrSend={AddressArrSend}
+        />
+      )}
     </Box>
   );
 }

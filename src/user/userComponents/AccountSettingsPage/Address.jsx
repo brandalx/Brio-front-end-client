@@ -39,7 +39,6 @@ export default function Adress() {
     handleApi,
     clearValues,
     handleUserAddressDelete
-    // ... add other functions and variables as needed
   } = AddressReducers();
 
   return (
