@@ -394,8 +394,7 @@ export default function Adress() {
 
                     <Input
                       {...register('address2', {
-                        required: true,
-                        minLength: { value: 2, message: 'Minimum length should be 2' }
+                        required: false
                       })}
                       type='text'
                       background='neutral.white'
