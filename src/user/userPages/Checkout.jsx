@@ -15,8 +15,9 @@ export default function Checkout() {
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
   const [cardsArr, setCardsArr] = useState([]);
+  const disabledOptions = true;
   const handleApi = async () => {
-    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    const url = API_URL + '/users/info/user';
     try {
       const data = await handleApiGet(url);
       setAr(data);
@@ -71,7 +72,9 @@ export default function Checkout() {
                     <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr  1fr ' }} gap={2}>
                       {!loading &&
                         cardsArr.map((item, index) => {
-                          return <PaymentCard loading={loading} key={index} item={item} />;
+                          return (
+                            <PaymentCard disabledOptions={disabledOptions} loading={loading} key={index} item={item} />
+                          );
                         })}
 
                       <GridItem w='100%'>
@@ -134,6 +137,18 @@ export default function Checkout() {
                           </Box>
                         </Skeleton>
                       </GridItem>
+                      <Link to='/user/account/payment'>
+                        <Text
+                          pt={2}
+                          textAlign='center'
+                          textDecoration='underline'
+                          fontWeight='semibold'
+                          fontSize='3xs'
+                          color='neutral.gray'
+                        >
+                          Manage all your payment methods here
+                        </Text>
+                      </Link>
                       {loading && (
                         <GridItem w='100%'>
                           <Skeleton h='110px' borderRadius='16px' isLoaded={!loading}></Skeleton>

@@ -113,7 +113,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                     })}
                     isDisabled={switcher}
                     pattern='[0-9]*'
-                    inputmode='numeric'
+                    inputMode='numeric'
                     type='password'
                     background='neutral.white'
                     _placeholder={{ color: 'neutral.gray' }}
