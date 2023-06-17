@@ -50,7 +50,6 @@ export default function AdressCard({ item, index, handleUserAddressDelete, setIs
 
   useEffect(() => {
     handleUserApi();
-    setTargetIndex(item._id);
   }, []);
 
   const handleMapApi = async (datasearch) => {
