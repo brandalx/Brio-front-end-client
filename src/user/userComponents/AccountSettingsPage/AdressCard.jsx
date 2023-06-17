@@ -19,8 +19,16 @@ import { API_URL, handleApiGet } from '../../../services/apiServices';
 import addressError from '../../../assets/images/addressError.jpg';
 import axios from 'axios';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
+import { Link } from 'react-router-dom';
 
-export default function AdressCard({ item, index, handleUserAddressDelete, setIsEditTrue, setTargetIndex }) {
+export default function AdressCard({
+  disabledOptions = false,
+  item,
+  index,
+  handleUserAddressDelete,
+  setIsEditTrue,
+  setTargetIndex
+}) {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
   const REACT_APP_opencagedata = import.meta.env.VITE_OPENCAGEDATA;
   const REACT_APP_MAPBOX = import.meta.env.VITE_MAPBOX;
@@ -147,49 +155,51 @@ export default function AdressCard({ item, index, handleUserAddressDelete, setIs
               </Box>
             </Flex>
             <Box>
-              <Menu>
-                <MenuButton
-                  mt={4}
-                  me={3}
-                  _hover={{
-                    color: 'neutral.black',
-                    borderColor: 'neutral.lightest'
-                  }}
-                  fontSize='2xs'
-                  color='neutral.gray'
-                  fontWeight='bold'
-                >
-                  <ThreeDots />
-                </MenuButton>
-
-                <MenuList>
-                  <MenuItem
-                    onClick={() => {
-                      setIsEditTrue(true);
-                      setTargetIndex(item._id);
-                    }}
-                    fontWeight='medium'
-                  >
-                    Edit
-                  </MenuItem>
-                  <MenuDivider />
-                  <MenuItem
-                    onClick={() => handleUserAddressDelete(item._id)}
-                    m={0}
-                    background='neutral.white'
-                    variant='solid'
-                    color='error.default'
+              {!disabledOptions && (
+                <Menu>
+                  <MenuButton
+                    mt={4}
+                    me={3}
                     _hover={{
-                      background: 'error.default',
-                      color: 'neutral.white'
+                      color: 'neutral.black',
+                      borderColor: 'neutral.lightest'
                     }}
-                    fontWeight='medium'
+                    fontSize='2xs'
+                    color='neutral.gray'
+                    fontWeight='bold'
                   >
-                    {' '}
-                    Remove
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+                    <ThreeDots />
+                  </MenuButton>
+
+                  <MenuList>
+                    <MenuItem
+                      onClick={() => {
+                        setIsEditTrue(true);
+                        setTargetIndex(item._id);
+                      }}
+                      fontWeight='medium'
+                    >
+                      Edit
+                    </MenuItem>
+                    <MenuDivider />
+                    <MenuItem
+                      onClick={() => handleUserAddressDelete(item._id)}
+                      m={0}
+                      background='neutral.white'
+                      variant='solid'
+                      color='error.default'
+                      _hover={{
+                        background: 'error.default',
+                        color: 'neutral.white'
+                      }}
+                      fontWeight='medium'
+                    >
+                      {' '}
+                      Remove
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              )}
             </Box>
           </Flex>
         </Box>

@@ -5,12 +5,13 @@ import AdressCard from '../AccountSettingsPage/AdressCard';
 import NewPaymentMethod from '../Checkout/NewPaymentMethod';
 import NewAddress from './NewAddress';
 import AddressReducers from '../reducers/addressReducers';
+import { Link } from 'react-router-dom';
 
 export default function Delivery({ item }) {
   const [shown, isShown] = useState(false);
   const [AddressArrSend, SetAddressArrSend] = useState([]);
   const [combinedAddresses, setCombinedAddresses] = useState(item); // added this state variable
-
+  const disabledOptions = true;
   useEffect(() => {
     // update combinedAddresses whenever AddressArrSend changes
     setCombinedAddresses((prevAddresses) => [...prevAddresses, ...AddressArrSend]);
@@ -50,6 +51,7 @@ export default function Delivery({ item }) {
           combinedAddresses.map((item, index) => {
             return (
               <AdressCard
+                disabledOptions={disabledOptions}
                 setTargetIndex={setTargetIndex}
                 setIsEditTrue={setIsEditTrue}
                 handleUserAddressDelete={handleUserAddressDelete}
@@ -82,7 +84,18 @@ export default function Delivery({ item }) {
       >
         {shown ? <Box>Hide</Box> : <Box>Add new shipping address</Box>}
       </Button>
-
+      <Link to='/user/account/address'>
+        <Text
+          pt={2}
+          textAlign='center'
+          textDecoration='underline'
+          fontWeight='semibold'
+          fontSize='3xs'
+          color='neutral.gray'
+        >
+          Manage all your addresses here
+        </Text>
+      </Link>
       {shown && (
         <NewAddress
           handleUserAddressDelete={handleUserAddressDelete}
