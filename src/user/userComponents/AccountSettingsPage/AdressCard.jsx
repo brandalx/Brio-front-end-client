@@ -72,6 +72,11 @@ export default function AdressCard({ item, index, handleUserAddressDelete }) {
     } catch (error) {
       console.log(error);
       setIsAddress(false);
+
+      if (isAddress) {
+        let warning = true;
+        handleUserAddressDelete(item._id, warning);
+      }
       console.log(isAddress);
       setAddressLoading(false);
     }

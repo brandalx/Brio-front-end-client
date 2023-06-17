@@ -70,7 +70,7 @@ export default function Adress() {
           isClosable: true
         });
 
-        updateAddress(_bodyData);
+        handleApi();
       }
     } catch (error) {
       console.log(error);
@@ -95,36 +95,43 @@ export default function Adress() {
     }
   };
 
-  const updateAddress = (newAddressData) => {
-    setAddressArr((prevCardsArr) => [...prevCardsArr, newAddressData]);
-  };
+  // const updateAddress = (newAddressData) => {
+  //   setAddressArr((prevCardsArr) => [...prevCardsArr, newAddressData]);
+  // };
 
   useEffect(() => {
     handleApi();
   }, []);
 
-  const handleUserAddressDelete = async (_bodyData) => {
+  const handleUserAddressDelete = async (_bodyData, warning) => {
     try {
-      // const url = API_URL + "/videos/"+params["id"];
-      console.log(_bodyData);
       const _bodyDataFinal = {
         addressToDelete: _bodyData
       };
+
+      console.log(_bodyDataFinal);
+
       const url = API_URL + '/users/address/delete';
       const data = await handleApiMethod(url, 'DELETE', _bodyDataFinal);
-      if (data.msg === true) {
+      if (data.msg === true && warning === true) {
         toast({
-          title: 'New Address added.',
-          description: "We've added your new address.",
+          title: 'Error when adding address',
+          description: 'Sorry this address cannot be used',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      } else {
+        toast({
+          title: 'Address was deleted.',
+          description: "We've deleted this address.",
           status: 'success',
           duration: 9000,
           isClosable: true
         });
-        const newAddressArrIndex = addressArr.findIndex(_bodyData);
-        // console.log('index is' + newAddressArrIndex);
-        // const newAddressArr = addressArr.splice(newAddressArrIndex, 1);
-        setAddressArr(addressArr.filter((_, index) => index !== newAddressArrIndex));
       }
+
+      handleApi();
     } catch (error) {
       console.log(error);
 
@@ -132,7 +139,7 @@ export default function Adress() {
         toast({
           title: 'Address does not exist',
           description: `Error when removing address - such address does not exist.`,
-          status: 'error',
+          status: 'warning',
           duration: 9000,
           isClosable: true
         });
@@ -145,6 +152,7 @@ export default function Adress() {
           isClosable: true
         });
       }
+      handleApi();
     }
   };
 
@@ -172,6 +180,11 @@ export default function Adress() {
                       />
                     );
                   })}
+                {addressArr.length === 0 && (
+                  <Text fontSize='2xs' fontWeight='bold' color='neutral.gray' py=''>
+                    No addresses added yet
+                  </Text>
+                )}
               </Grid>
             </Box>
           </Skeleton>
