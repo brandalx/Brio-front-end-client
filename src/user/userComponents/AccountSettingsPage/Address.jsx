@@ -192,11 +192,7 @@ export default function Adress() {
 
       handleApi();
       setIsEditTrue(false);
-      setValue('country', '');
-      setValue('state', '');
-      setValue('city', '');
-      setValue('address1', '');
-      setValue('address2', '');
+      clearValues();
     } catch (error) {
       console.log(error);
 
@@ -233,6 +229,15 @@ export default function Adress() {
       setValue('address2', addressToEdit.address2);
     }
   }, [isEditTrue]);
+
+  const clearValues = () => {
+    setIsEditTrue(false);
+    setValue('country', '');
+    setValue('state', '');
+    setValue('city', '');
+    setValue('address1', '');
+    setValue('address2', '');
+  };
 
   return (
     <>
@@ -408,6 +413,32 @@ export default function Adress() {
             </Box>
 
             <Box pt={5} display='flex' justifyContent='flex-end'>
+              {isEditTrue && (
+                <Button
+                  w={{ base: '100%', md: 'initial' }}
+                  background='neutral.white'
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='error.default'
+                  borderWidth='1px'
+                  borderColor='error.default'
+                  _hover={{
+                    background: 'error.default',
+                    color: 'neutral.white',
+                    borderWidth: '1px',
+                    borderColor: 'error.default'
+                  }}
+                  py={5}
+                  me='20px'
+                  onClick={() => {
+                    setIsEditTrue(false);
+                    clearValues();
+                  }}
+                >
+                  Cancel edit
+                </Button>
+              )}
               {!isEditTrue ? (
                 <Button
                   type='submit'
@@ -451,30 +482,6 @@ export default function Adress() {
                   me='20px'
                 >
                   Submit
-                </Button>
-              )}
-
-              {isEditTrue && (
-                <Button
-                  w={{ base: '100%', md: 'initial' }}
-                  background='neutral.white'
-                  fontSize='2xs'
-                  fontWeight='bold'
-                  variant='solid'
-                  color='error.default'
-                  borderWidth='1px'
-                  borderColor='error.default'
-                  _hover={{
-                    background: 'error.default',
-                    color: 'neutral.white',
-                    borderWidth: '1px',
-                    borderColor: 'error.default'
-                  }}
-                  py={5}
-                  me='20px'
-                  onClick={() => setIsEditTrue(false)}
-                >
-                  Cancel edit
                 </Button>
               )}
             </Box>
