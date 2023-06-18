@@ -7,6 +7,8 @@ import mastercard from '../../../assets/images/mastercard.png';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import NewPaymentMethod from '../Checkout/NewPaymentMethod';
 import CardsReducers from '../reducers/CardsReducers';
+import DefaultPaymentMethod from './DefaultPaymentMethod';
+import DefaultPaymentMethod111 from './DefaultPaymentMethod';
 export default function PaymentMethod() {
   const [arr, setArr] = useState([]);
 
@@ -56,17 +58,22 @@ export default function PaymentMethod() {
           </Text>
           <Box pt={5}>
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={2}>
-              {!loading &&
-                cardsArr.map((item, index) => {
-                  return (
-                    <PaymentCard
-                      setTargetIndex={setTargetIndex}
-                      handleUserAddressDelete={handleUserAddressDelete}
-                      key={index}
-                      item={item}
-                    />
-                  );
-                })}
+              {cardsArr.length === 0 ? (
+                <Text fontSize='2xs' fontWeight='bold' color='neutral.gray' py=''>
+                  No connected payments yet
+                </Text>
+              ) : (
+                !loading &&
+                cardsArr.map((item, index) => (
+                  <PaymentCard
+                    setTargetIndex={setTargetIndex}
+                    handleUserAddressDelete={handleUserAddressDelete}
+                    key={index}
+                    item={item}
+                  />
+                ))
+              )}
+              <DefaultPaymentMethod />
             </Grid>
             {loading && (
               <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={2}>
