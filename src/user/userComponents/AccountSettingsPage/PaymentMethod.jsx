@@ -59,9 +59,11 @@ export default function PaymentMethod() {
           <Box pt={5}>
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={2}>
               {cardsArr.length === 0 ? (
-                <Text fontSize='2xs' fontWeight='bold' color='neutral.gray' py=''>
-                  No connected payments yet
-                </Text>
+                <>
+                  <Text fontSize='2xs' fontWeight='bold' color='neutral.gray' py=''>
+                    No connected payments yet
+                  </Text>
+                </>
               ) : (
                 !loading &&
                 cardsArr.map((item, index) => (
