@@ -441,12 +441,12 @@ export default function Navbar() {
                         </>
                       ) : (
                         <MenuList>
-                          <Link to='/login'>
+                          <Link to='/signup'>
                             {' '}
                             <MenuItem fontWeight='medium'>Sign up</MenuItem>
                           </Link>
 
-                          <Link to='/signup'>
+                          <Link to='/login'>
                             {' '}
                             <MenuItem fontWeight='medium'>Log in</MenuItem>
                           </Link>

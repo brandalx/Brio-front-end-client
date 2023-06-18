@@ -18,8 +18,9 @@ import {
   useToast
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 export default function Account() {
   const [loading, setLoading] = useState(true);
@@ -41,6 +42,7 @@ export default function Account() {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors, isSubmitting }
   } = useForm();
 
@@ -52,7 +54,7 @@ export default function Account() {
   const handleUserDataPut = async (_bodyData) => {
     try {
       // const url = API_URL + "/videos/"+params["id"];
-      const url = API_URL + '/users/6464085ed67f7b944b642799/putuserdata';
+      const url = API_URL + '/users/putuserdata';
       const data = await handleApiMethod(url, 'PUT', _bodyData);
       if (data.acknowledged === true) {
         toast({
@@ -87,10 +89,29 @@ export default function Account() {
     }
   };
 
+  const navigate = useNavigate();
+  const onLogOut = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    navigate('/login');
+    toast({
+      title: 'Loggin out.',
+      description: 'Successfuly logged out!',
+      status: 'success',
+      duration: 9000,
+      isClosable: true
+    });
+  };
+
   useEffect(() => {
     handleUserData();
   }, []);
 
+  const clearValues = () => {
+    setValue('firstname', '');
+    setValue('lastname', '');
+    setValue('email', '');
+    setValue('phone', '');
+  };
   return (
     <Box>
       <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
@@ -356,6 +377,7 @@ export default function Account() {
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
               <GridItem w='100%'>
                 <Button
+                  onClick={() => onLogOut()}
                   w={{ base: '100%', md: 'initial' }}
                   background='neutral.white'
                   fontSize='2xs'
@@ -380,6 +402,7 @@ export default function Account() {
               <GridItem w='100%'>
                 <Flex flexDirection={{ base: 'row' }}>
                   <Button
+                    onClick={() => clearValues()}
                     w={{ base: '50%', md: 'initial' }}
                     background='neutral.white'
                     fontSize='2xs'

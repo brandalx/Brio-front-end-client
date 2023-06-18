@@ -60,7 +60,7 @@ export default function NewPaymentMethod({
       } else {
         console.log('All fields are valid!');
 
-        const url = API_URL + '/users/6464085ed67f7b944b642799/postusercard';
+        const url = API_URL + '/users/postusercard';
         const data = await handleApiMethod(url, 'POST', _bodyData);
 
         if (data.msg === true) {
