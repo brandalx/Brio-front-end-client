@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Grid, GridItem, Text, Button, Skeleton } from '@chakra-ui/react';
+import { Box, Container, Grid, GridItem, Text, Button, Skeleton, useStatStyles } from '@chakra-ui/react';
 import salad from '../../assets/images/salad.jpg';
 import MenuMeal from '../userComponents/Cart/MenuMeal';
 import Delivery from '../userComponents/Cart/Delivery';
@@ -15,6 +15,8 @@ export default function Cart() {
   const [mealsArr, setMealsArr] = useState([]);
   const [addressArr, setAddressArr] = useState([]);
   const [restaurant, setRestaurant] = useState([]);
+  const [checkoutBody, setCheckoutBody] = useState([]);
+  const [pickupLocation, setPickupLocation] = useState(false);
 
   const handleApi = async () => {
     const url = API_URL + '/users/info/user';
@@ -157,7 +159,12 @@ export default function Cart() {
                   path='/'
                   element={
                     <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
-                      <Delivery item={addressArr} />
+                      <Delivery
+                        setPickupLocation={setPickupLocation}
+                        pickupLocation={pickupLocation}
+                        setCheckoutBody={setCheckoutBody}
+                        item={addressArr}
+                      />
                     </Skeleton>
                   }
                 />
@@ -167,7 +174,12 @@ export default function Cart() {
                     <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
                       {!loading && (
                         <Box>
-                          <Pickup item={restaurant} />
+                          <Pickup
+                            setPickupLocation={setPickupLocation}
+                            pickupLocation={pickupLocation}
+                            setCheckoutBody={setCheckoutBody}
+                            item={restaurant}
+                          />
                         </Box>
                       )}
                     </Skeleton>
@@ -177,7 +189,7 @@ export default function Cart() {
             </Box>
             <Box py={4}>
               <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
-                <Summary loading={loading} item={arr} />
+                <Summary setCheckoutBody={setCheckoutBody} loading={loading} item={arr} />
               </Skeleton>
             </Box>
           </GridItem>

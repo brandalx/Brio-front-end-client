@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import defaultmap from '../../../assets/images/defaultmap.png';
 
 import axios from 'axios';
-export default function Pickup({ item }) {
+import { Checkbox, Flex, Radio } from '@chakra-ui/react';
+
+export default function Pickup({ item, pickupLocation, setPickupLocation }) {
   const [address, setAddress] = useState(null);
   const [addressLoading, setAddressLoading] = useState(true);
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -48,6 +50,21 @@ export default function Pickup({ item }) {
             <Text fontWeight='bold' fontSize='2xs' color='neutral.black'>
               {item.location} {item.address}
             </Text>
+
+            <Box>
+              <Flex alignItems='center'>
+                <Radio
+                  onClick={() => setPickupLocation(!pickupLocation)}
+                  isChecked={pickupLocation}
+                  iconColor='neutral.white'
+                  mr='2'
+                >
+                  <Text onClick={() => setPickupLocation(!pickupLocation)} color='neutral.black' fontSize='2xs'>
+                    Choose this payment method
+                  </Text>
+                </Radio>
+              </Flex>
+            </Box>
             {/* <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
             California State, USA
           </Text>

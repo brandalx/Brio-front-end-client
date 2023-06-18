@@ -22,6 +22,8 @@ import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import { Link } from 'react-router-dom';
 
 export default function AdressCard({
+  onitemselected,
+  selectCard,
   disabledOptions = false,
   item,
   index,
@@ -105,12 +107,15 @@ export default function AdressCard({
             bg: isAddress ? 'primary.light' : 'error.default',
             borderColor: 'primary.default'
           }}
+          //fix appirience and bug with click
+          borderColor={onitemselected ? 'primary.light' : 'neutral.white'}
           borderRadius='16px'
           mb='12px'
           p='0px'
           transition='all 0.3s'
           borderWidth='1px'
           bg={isAddress ? 'neutral.white' : 'error.default'}
+          onClick={() => selectCard(item._id)}
         >
           {/* Content */}
 
@@ -144,7 +149,7 @@ export default function AdressCard({
                   </Heading>
                 )}
                 <Heading color={isAddress ? 'initial' : 'neutral.white'} fontSize='2xs' fontWeight='bold'>
-                  {item.city}
+                  {item.city || ''}
                 </Heading>
                 <Text color={isAddress ? 'initial' : 'neutral.white'} fontSize='3xs' fontWeight='semibold'>
                   {item.state} State, {item.country}

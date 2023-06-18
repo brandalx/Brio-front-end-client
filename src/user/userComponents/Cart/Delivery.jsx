@@ -10,12 +10,26 @@ import { Link } from 'react-router-dom';
 export default function Delivery({ item }) {
   const [shown, isShown] = useState(false);
   const [AddressArrSend, SetAddressArrSend] = useState([]);
-  const [combinedAddresses, setCombinedAddresses] = useState(item); // added this state variable
+  const [combinedAddresses, setCombinedAddresses] = useState(item);
+  const [onitemselected, setOnitemselected] = useState(false);
+  const [addressId, setAddressId] = useState();
   const disabledOptions = true;
   useEffect(() => {
-    // update combinedAddresses whenever AddressArrSend changes
     setCombinedAddresses((prevAddresses) => [...prevAddresses, ...AddressArrSend]);
   }, [AddressArrSend]);
+  //fix bug with click on item selected
+  const selectCard = (cardId) => {
+    setAddressId(cardId);
+    console.log(cardId);
+    setCombinedAddresses((prevAddresses) =>
+      prevAddresses.map((item) => {
+        if (item._id === cardId) {
+          setOnitemselected(true);
+        }
+        setOnitemselected(false);
+      })
+    );
+  };
 
   const {
     isEditTrue,
@@ -51,6 +65,8 @@ export default function Delivery({ item }) {
           combinedAddresses.map((item, index) => {
             return (
               <AdressCard
+                onitemselected={onitemselected}
+                selectCard={selectCard}
                 disabledOptions={disabledOptions}
                 setTargetIndex={setTargetIndex}
                 setIsEditTrue={setIsEditTrue}
