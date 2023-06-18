@@ -9,6 +9,7 @@ import NewPaymentMethod from '../Checkout/NewPaymentMethod';
 import CardsReducers from '../reducers/CardsReducers';
 import DefaultPaymentMethod from './DefaultPaymentMethod';
 import DefaultPaymentMethod111 from './DefaultPaymentMethod';
+import cash from '../../../assets/images/cash.png';
 export default function PaymentMethod() {
   const [arr, setArr] = useState([]);
 
@@ -75,7 +76,7 @@ export default function PaymentMethod() {
                   />
                 ))
               )}
-              <DefaultPaymentMethod />
+              <DefaultPaymentMethod cash={cash} />
             </Grid>
             {loading && (
               <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={2}>
