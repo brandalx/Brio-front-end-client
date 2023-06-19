@@ -7,7 +7,7 @@ import NewAddress from './NewAddress';
 import AddressReducers from '../reducers/addressReducers';
 import { Link } from 'react-router-dom';
 
-export default function Delivery({ item, setCheckoutBody }) {
+export default function Delivery({ item, setCheckoutBody, setPickupLocation }) {
   const [shown, isShown] = useState(false);
   const [AddressArrSend, SetAddressArrSend] = useState([]);
   const [combinedAddresses, setCombinedAddresses] = useState(item);
@@ -30,6 +30,7 @@ export default function Delivery({ item, setCheckoutBody }) {
         setCheckoutBody({
           deliverylocationId: cardId
         });
+        setPickupLocation(false);
       }
     });
   };

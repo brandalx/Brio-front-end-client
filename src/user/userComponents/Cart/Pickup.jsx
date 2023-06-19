@@ -36,6 +36,12 @@ export default function Pickup({ item, pickupLocation, setPickupLocation, setChe
         deliverylocationId: item._id
       });
     }
+
+    if (!pickupLocation) {
+      setCheckoutBody({
+        deliverylocationId: null
+      });
+    }
   }, [pickupLocation]);
 
   return (
