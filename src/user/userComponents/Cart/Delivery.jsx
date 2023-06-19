@@ -27,9 +27,13 @@ export default function Delivery({ item, setCheckoutBody, setPickupLocation }) {
     combinedAddresses.map((item) => {
       if (item._id === cardId) {
         setOnitemselected(true);
-        setCheckoutBody({
-          deliverylocationId: cardId
-        });
+        setCheckoutBody((prevState) => ({
+          ...prevState,
+          userdata: {
+            ...prevState.userdata,
+            selectedAddress: cardId
+          }
+        }));
         setPickupLocation(false);
       }
     });

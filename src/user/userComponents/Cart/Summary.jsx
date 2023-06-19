@@ -40,7 +40,7 @@ export default function Summary({ item, loading, checkoutBody }) {
           </Flex>
           <Link to='/user/checkout' state={checkoutBody}>
             <Button
-              isDisabled={checkoutBody.deliverylocationId ? false : true}
+              isDisabled={checkoutBody.userdata.selectedAddress ? false : true}
               w='100%'
               background='primary.default'
               fontSize='2xs'

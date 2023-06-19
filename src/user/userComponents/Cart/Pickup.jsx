@@ -32,15 +32,23 @@ export default function Pickup({ item, pickupLocation, setPickupLocation, setChe
 
   useEffect(() => {
     if (pickupLocation) {
-      setCheckoutBody({
-        deliverylocationId: item._id
-      });
+      setCheckoutBody((prevState) => ({
+        ...prevState,
+        userdata: {
+          ...prevState.userdata,
+          selectedAddress: item._id
+        }
+      }));
     }
 
     if (!pickupLocation) {
-      setCheckoutBody({
-        deliverylocationId: null
-      });
+      setCheckoutBody((prevState) => ({
+        ...prevState,
+        userdata: {
+          ...prevState.userdata,
+          selectedAddress: null
+        }
+      }));
     }
   }, [pickupLocation]);
 

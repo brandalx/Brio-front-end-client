@@ -15,7 +15,34 @@ export default function Cart() {
   const [mealsArr, setMealsArr] = useState([]);
   const [addressArr, setAddressArr] = useState([]);
   const [restaurant, setRestaurant] = useState([]);
-  const [checkoutBody, setCheckoutBody] = useState([]);
+  const [checkoutBody, setCheckoutBody] = useState({
+    userdata: {
+      restaurants: ['646677ee6b29f689804a2855', '646677ee6b29f689804a2858', '646677ee6b29f689804a2857'],
+      selectedAddress: null,
+      selectedPaymentMethod: 'cash or card id',
+      status: 'Completed',
+      paymentSummary: {
+        couponCode: 'newone',
+        subtotal: 50,
+        tips: 3,
+        shipping: 5,
+        discount: 10,
+        totalAmount: 156334
+      }
+    },
+    ordersdata: {
+      products: [
+        {
+          productId: '64667cec6b29f689804a2862',
+          amount: 1
+        },
+        {
+          productId: '6466734c6b29f689804a285f',
+          amount: 1
+        }
+      ]
+    }
+  });
   const [pickupLocation, setPickupLocation] = useState(false);
 
   const handleApi = async () => {
@@ -77,7 +104,7 @@ export default function Cart() {
   const isPickupPage = location.pathname === '/user/cart/pickup';
 
   useEffect(() => {
-    console.log(checkoutBody.deliverylocationId);
+    console.log(checkoutBody.userdata.selectedAddress);
   }, [checkoutBody]);
 
   return (
