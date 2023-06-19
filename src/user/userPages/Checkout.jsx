@@ -223,7 +223,11 @@ export default function Checkout() {
                     </Grid>
                     <Skeleton borderRadius='16px' isLoaded={!loading}>
                       <Box>
-                        <NewPaymentMethod switcher={switcher} updateCreditCard={updateCreditCard} />
+                        <NewPaymentMethod
+                          handleApi={handleApi}
+                          switcher={switcher}
+                          updateCreditCard={updateCreditCard}
+                        />
                       </Box>
                     </Skeleton>
                   </Box>
