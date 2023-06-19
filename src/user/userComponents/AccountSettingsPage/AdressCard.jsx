@@ -99,7 +99,7 @@ export default function AdressCard({
             cursor: 'pointer',
             transition: 'all 0.3s',
             bg: isAddress ? 'primary.light' : 'error.hover',
-            borderColor: 'primary.light'
+            borderColor: onitemselected ? 'primary.default' : 'primary.light'
           }}
           _active={{
             cursor: 'pointer',
@@ -108,14 +108,16 @@ export default function AdressCard({
             borderColor: 'primary.default'
           }}
           //fix appirience and bug with click
-          borderColor={onitemselected ? 'primary.light' : 'neutral.white'}
+          borderColor={onitemselected ? 'primary.default' : 'BlackAlpha 200'}
           borderRadius='16px'
           mb='12px'
           p='0px'
           transition='all 0.3s'
           borderWidth='1px'
           bg={isAddress ? 'neutral.white' : 'error.default'}
-          onClick={() => selectCard(item._id)}
+          onClick={() => {
+            selectCard(item._id);
+          }}
         >
           {/* Content */}
 

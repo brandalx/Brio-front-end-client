@@ -5,7 +5,7 @@ import defaultmap from '../../../assets/images/defaultmap.png';
 import axios from 'axios';
 import { Checkbox, Flex, Radio } from '@chakra-ui/react';
 
-export default function Pickup({ item, pickupLocation, setPickupLocation }) {
+export default function Pickup({ item, pickupLocation, setPickupLocation, setCheckoutBody }) {
   const [address, setAddress] = useState(null);
   const [addressLoading, setAddressLoading] = useState(true);
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -29,6 +29,14 @@ export default function Pickup({ item, pickupLocation, setPickupLocation }) {
   useEffect(() => {
     handleMapApi();
   }, []);
+
+  useEffect(() => {
+    if (pickupLocation) {
+      setCheckoutBody({
+        deliverylocationId: item._id
+      });
+    }
+  }, [pickupLocation]);
 
   return (
     <Box pt={4}>
@@ -56,11 +64,11 @@ export default function Pickup({ item, pickupLocation, setPickupLocation }) {
                 <Radio
                   onClick={() => setPickupLocation(!pickupLocation)}
                   isChecked={pickupLocation}
-                  iconColor='neutral.white'
+                  iconcolor='neutral.white'
                   mr='2'
                 >
                   <Text onClick={() => setPickupLocation(!pickupLocation)} color='neutral.black' fontSize='2xs'>
-                    Choose this payment method
+                    Choose this location
                   </Text>
                 </Radio>
               </Flex>

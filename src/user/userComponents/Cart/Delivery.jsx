@@ -7,28 +7,31 @@ import NewAddress from './NewAddress';
 import AddressReducers from '../reducers/addressReducers';
 import { Link } from 'react-router-dom';
 
-export default function Delivery({ item }) {
+export default function Delivery({ item, setCheckoutBody }) {
   const [shown, isShown] = useState(false);
   const [AddressArrSend, SetAddressArrSend] = useState([]);
   const [combinedAddresses, setCombinedAddresses] = useState(item);
   const [onitemselected, setOnitemselected] = useState(false);
   const [addressId, setAddressId] = useState();
   const disabledOptions = true;
+
   useEffect(() => {
-    setCombinedAddresses((prevAddresses) => [...prevAddresses, ...AddressArrSend]);
-  }, [AddressArrSend]);
+    setCombinedAddresses(item);
+  }, [item]);
   //fix bug with click on item selected
   const selectCard = (cardId) => {
     setAddressId(cardId);
     console.log(cardId);
-    setCombinedAddresses((prevAddresses) =>
-      prevAddresses.map((item) => {
-        if (item._id === cardId) {
-          setOnitemselected(true);
-        }
-        setOnitemselected(false);
-      })
-    );
+    setOnitemselected(false);
+
+    combinedAddresses.map((item) => {
+      if (item._id === cardId) {
+        setOnitemselected(true);
+        setCheckoutBody({
+          deliverylocationId: cardId
+        });
+      }
+    });
   };
 
   const {
@@ -63,9 +66,10 @@ export default function Delivery({ item }) {
       <Box>
         {combinedAddresses &&
           combinedAddresses.map((item, index) => {
+            const isSelected = addressId === item._id;
             return (
               <AdressCard
-                onitemselected={onitemselected}
+                onitemselected={isSelected}
                 selectCard={selectCard}
                 disabledOptions={disabledOptions}
                 setTargetIndex={setTargetIndex}

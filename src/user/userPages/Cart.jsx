@@ -76,6 +76,10 @@ export default function Cart() {
   const isDeliveryPage = location.pathname === '/user/cart';
   const isPickupPage = location.pathname === '/user/cart/pickup';
 
+  useEffect(() => {
+    console.log(checkoutBody.deliverylocationId);
+  }, [checkoutBody]);
+
   return (
     <Box>
       <Container maxW='1110px'>
@@ -159,12 +163,22 @@ export default function Cart() {
                   path='/'
                   element={
                     <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
-                      <Delivery
-                        setPickupLocation={setPickupLocation}
-                        pickupLocation={pickupLocation}
-                        setCheckoutBody={setCheckoutBody}
-                        item={addressArr}
-                      />
+                      {addressArr.length > 0 ? (
+                        <Delivery
+                          setPickupLocation={setPickupLocation}
+                          pickupLocation={pickupLocation}
+                          setCheckoutBody={setCheckoutBody}
+                          item={addressArr}
+                        />
+                      ) : (
+                        <>
+                          <Link to='/user/account/address'>
+                            <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                              Add your first address
+                            </Text>
+                          </Link>
+                        </>
+                      )}
                     </Skeleton>
                   }
                 />

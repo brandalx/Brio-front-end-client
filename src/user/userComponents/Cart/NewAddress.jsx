@@ -175,7 +175,7 @@ export default function NewAddress({ SetAddressArrSend, addressArrSend, handleUs
 
               <Input
                 {...register('address2', {
-                  required: true,
+                  required: false,
                   minLength: { value: 2, message: 'Minimum length should be 2' }
                 })}
                 type='text'
