@@ -128,7 +128,7 @@ export default function Checkout() {
                         cardsArr.map((item, index) => {
                           return (
                             <PaymentCard
-                              onitemselected={onitemselected}
+                              onitemselected={choosenCard === item._id}
                               selectCard={selectCard}
                               disabledOptions={disabledOptions}
                               loading={loading}
