@@ -203,7 +203,7 @@ export default function Cart() {
             </Box>
             <Box py={4}>
               <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
-                <Summary setCheckoutBody={setCheckoutBody} loading={loading} item={arr} />
+                <Summary setCheckoutBody={setCheckoutBody} checkoutBody={checkoutBody} loading={loading} item={arr} />
               </Skeleton>
             </Box>
           </GridItem>

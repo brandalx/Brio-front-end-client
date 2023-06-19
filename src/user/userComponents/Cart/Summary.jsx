@@ -2,7 +2,7 @@ import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Summary({ item, loading }) {
+export default function Summary({ item, loading, checkoutBody }) {
   useEffect(() => {
     console.log(item);
   });
@@ -40,6 +40,7 @@ export default function Summary({ item, loading }) {
           </Flex>
           <Link to='/user/checkout'>
             <Button
+              isDisabled={checkoutBody.deliverylocationId ? false : true}
               w='100%'
               background='primary.default'
               fontSize='2xs'
