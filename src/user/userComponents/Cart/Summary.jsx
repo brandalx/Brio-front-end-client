@@ -38,7 +38,7 @@ export default function Summary({ item, loading, checkoutBody }) {
               $ {!loading && item.orders[0].paymentSummary.totalAmount}
             </Text>
           </Flex>
-          <Link to='/user/checkout' state={checkoutBody}>
+          <Link to='/user/checkout' state={{ checkoutBodyData: checkoutBody }}>
             <Button
               isDisabled={checkoutBody.userdata.selectedAddress ? false : true}
               w='100%'

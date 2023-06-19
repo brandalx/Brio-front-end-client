@@ -19,7 +19,7 @@ export default function Cart() {
     userdata: {
       restaurants: ['646677ee6b29f689804a2855', '646677ee6b29f689804a2858', '646677ee6b29f689804a2857'],
       selectedAddress: null,
-      selectedPaymentMethod: 'cash or card id',
+      selectedPaymentMethod: null,
       status: 'Completed',
       paymentSummary: {
         couponCode: 'newone',

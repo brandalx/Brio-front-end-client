@@ -11,13 +11,16 @@ import NewPaymentMethod from '../userComponents/Checkout/NewPaymentMethod';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 export default function Checkout() {
   const location = useLocation();
-  const { checkoutBody } = location.state;
 
   const [switcher, setSwitcher] = useState(true);
 
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
+  const [finalCheckoutBody, setFinalCheckoutBody] = useState(location.state);
+
   const [cardsArr, setCardsArr] = useState([]);
+  const [choosenCard, setChoosenCard] = useState([]);
+  const [onitemselected, setOnitemselected] = useState(false);
   const disabledOptions = true;
   const handleApi = async () => {
     const url = API_URL + '/users/info/user';
@@ -49,6 +52,26 @@ export default function Checkout() {
     handleApi();
     console.log(location.state);
   }, []);
+
+  const selectCard = (cardId) => {
+    setChoosenCard(cardId);
+    console.log(cardId);
+    setOnitemselected(false);
+
+    cardsArr.map((item) => {
+      if (item._id === cardId) {
+        setOnitemselected(true);
+        setFinalCheckoutBody((prevState) => ({
+          ...prevState,
+          userdata: {
+            ...prevState.userdata,
+            selectedPaymentMethod: cardId
+          }
+        }));
+        // setPickupLocation(false);
+      }
+    });
+  };
 
   return (
     <>
@@ -173,7 +196,16 @@ export default function Checkout() {
                 </Box>
               </GridItem>
               <GridItem w='100%'>
-                <PaymentSummary item={arr} loading={loading} />
+                {finalCheckoutBody && finalCheckoutBody.userdata ? (
+                  <PaymentSummary
+                    finalCheckoutBody={finalCheckoutBody}
+                    setFinalCheckoutBody={setFinalCheckoutBody}
+                    item={arr}
+                    loading={loading}
+                  />
+                ) : (
+                  <>j</>
+                )}
               </GridItem>
             </Grid>
           </Box>

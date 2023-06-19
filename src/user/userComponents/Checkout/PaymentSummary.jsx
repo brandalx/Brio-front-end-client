@@ -15,7 +15,7 @@ import {
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function PaymentSummary({ item, loading }) {
+export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
   return (
     <>
       <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
@@ -114,25 +114,30 @@ export default function PaymentSummary({ item, loading }) {
             </Flex>
           </Skeleton>
           <Link to='/user/checkout'>
-            <Button
-              w='100%'
-              background='primary.default'
-              fontSize='2xs'
-              fontWeight='bold'
-              variant='solid'
-              color='neutral.white'
-              borderWidth='1px'
-              borderColor='primary.default'
-              _hover={{
-                background: 'neutral.white',
-                color: 'primary.default',
-                borderWidth: '1px',
-                borderColor: 'primary.default'
-              }}
-              py={5}
-            >
-              Submit order
-            </Button>
+            {finalCheckoutBody && finalCheckoutBody.userdata ? (
+              <Button
+                isDisabled={finalCheckoutBody.userdata.selectedPaymentMethod ? false : true}
+                w='100%'
+                background='primary.default'
+                fontSize='2xs'
+                fontWeight='bold'
+                variant='solid'
+                color='neutral.white'
+                borderWidth='1px'
+                borderColor='primary.default'
+                _hover={{
+                  background: 'neutral.white',
+                  color: 'primary.default',
+                  borderWidth: '1px',
+                  borderColor: 'primary.default'
+                }}
+                py={5}
+              >
+                Submit order
+              </Button>
+            ) : (
+              <>j</>
+            )}
           </Link>
         </Box>
       </Box>
