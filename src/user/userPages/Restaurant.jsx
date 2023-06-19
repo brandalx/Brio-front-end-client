@@ -149,7 +149,7 @@ export default function Restaurant() {
               <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' my={2}>
                 <Flex alignItems='center'>
                   <Box w='100%'>
-                    {address && (
+                    {address?.results?.length > 0 && (
                       <iframe
                         width='100%'
                         src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
