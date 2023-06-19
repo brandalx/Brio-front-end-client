@@ -17,6 +17,8 @@ import React, { useEffect } from 'react';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 
 export default function PaymentCard({
+  onitemselected,
+  selectCard,
   item,
   disabledOptions = false,
   handleUserAddressDelete,
@@ -25,11 +27,14 @@ export default function PaymentCard({
 }) {
   return (
     <Box
+      onClick={() => {
+        selectCard(item._id);
+      }}
       _hover={{
         cursor: 'pointer',
         transition: 'all 0.3s',
         bg: 'primary.light',
-        borderColor: 'primary.light'
+        borderColor: onitemselected ? 'primary.default' : 'primary.light'
       }}
       _active={{
         cursor: 'pointer',
@@ -37,6 +42,7 @@ export default function PaymentCard({
         bg: 'primary.light',
         borderColor: 'primary.default'
       }}
+      borderColor={onitemselected ? 'primary.default' : 'BlackAlpha 200'}
       borderRadius='16px'
       mb='12px'
       p='30px'

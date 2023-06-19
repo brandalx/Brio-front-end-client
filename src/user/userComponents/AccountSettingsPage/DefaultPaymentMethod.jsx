@@ -1,15 +1,18 @@
 import { Box, Flex, Heading, Image } from '@chakra-ui/react';
 import React from 'react';
 
-export default function DefaultPaymentMethod({ cash }) {
+export default function DefaultPaymentMethod({ cash, selectCard, defaultmethod }) {
   return (
     <>
       <Box
+        onClick={() => {
+          selectCard('cash');
+        }}
         _hover={{
           cursor: 'pointer',
           transition: 'all 0.3s',
           bg: 'primary.light',
-          borderColor: 'primary.light'
+          borderColor: defaultmethod ? 'primary.default' : 'primary.light'
         }}
         _active={{
           cursor: 'pointer',
@@ -17,6 +20,7 @@ export default function DefaultPaymentMethod({ cash }) {
           bg: 'primary.light',
           borderColor: 'primary.default'
         }}
+        borderColor={defaultmethod ? 'primary.default' : 'BlackAlpha 200'}
         borderRadius='16px'
         mb='12px'
         p='30px'

@@ -107,7 +107,6 @@ export default function AdressCard({
             bg: isAddress ? 'primary.light' : 'error.default',
             borderColor: 'primary.default'
           }}
-          //fix appirience and bug with click
           borderColor={onitemselected ? 'primary.default' : 'BlackAlpha 200'}
           borderRadius='16px'
           mb='12px'

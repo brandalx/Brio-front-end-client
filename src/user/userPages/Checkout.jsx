@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
 import PaymentCard from '../userComponents/AccountSettingsPage/PaymentCard';
-
+import cash from '../../assets/images/cash.png';
 import visa from '../../assets/images/visa.png';
 import mastercard from '../../assets/images/mastercard.png';
 import PaymentSummary from '../userComponents/Checkout/PaymentSummary';
 import NewPaymentMethod from '../userComponents/Checkout/NewPaymentMethod';
 import { API_URL, handleApiGet } from '../../services/apiServices';
+import DefaultPaymentMethod from '../userComponents/AccountSettingsPage/DefaultPaymentMethod';
 export default function Checkout() {
   const location = useLocation();
 
@@ -21,6 +22,8 @@ export default function Checkout() {
   const [cardsArr, setCardsArr] = useState([]);
   const [choosenCard, setChoosenCard] = useState([]);
   const [onitemselected, setOnitemselected] = useState(false);
+  const [defaultmethod, setDefaultMethod] = useState(false);
+
   const disabledOptions = true;
   const handleApi = async () => {
     const url = API_URL + '/users/info/user';
@@ -33,7 +36,8 @@ export default function Checkout() {
         cardholder: card.cardholder,
         expirationDate: card.expirationDate,
         paymentMethod: card.paymentMethod,
-        securityCode: card.securityCode
+        securityCode: card.securityCode,
+        _id: card._id
       }));
       setCardsArr(cards);
       setLoading(false);
@@ -53,24 +57,47 @@ export default function Checkout() {
     console.log(location.state);
   }, []);
 
+  useEffect(() => {
+    console.log(finalCheckoutBody);
+  }, [finalCheckoutBody]);
+
   const selectCard = (cardId) => {
     setChoosenCard(cardId);
     console.log(cardId);
     setOnitemselected(false);
 
-    cardsArr.map((item) => {
-      if (item._id === cardId) {
-        setOnitemselected(true);
-        setFinalCheckoutBody((prevState) => ({
-          ...prevState,
+    if (cardId === 'cash') {
+      setOnitemselected(false);
+      setDefaultMethod(true);
+      setFinalCheckoutBody((prevState) => ({
+        ...prevState,
+        checkoutBodyData: {
+          ...prevState.checkoutBodyData,
           userdata: {
-            ...prevState.userdata,
+            ...prevState.checkoutBodyData.userdata,
             selectedPaymentMethod: cardId
           }
-        }));
-        // setPickupLocation(false);
-      }
-    });
+        }
+      }));
+    } else {
+      cardsArr.map((item) => {
+        if (item._id === cardId) {
+          setOnitemselected(true);
+          setDefaultMethod(false);
+          setFinalCheckoutBody((prevState) => ({
+            ...prevState,
+            checkoutBodyData: {
+              ...prevState.checkoutBodyData,
+              userdata: {
+                ...prevState.checkoutBodyData.userdata,
+                selectedPaymentMethod: cardId
+              }
+            }
+          }));
+          // setPickupLocation(false);
+        }
+      });
+    }
   };
 
   return (
@@ -100,10 +127,17 @@ export default function Checkout() {
                       {!loading &&
                         cardsArr.map((item, index) => {
                           return (
-                            <PaymentCard disabledOptions={disabledOptions} loading={loading} key={index} item={item} />
+                            <PaymentCard
+                              onitemselected={onitemselected}
+                              selectCard={selectCard}
+                              disabledOptions={disabledOptions}
+                              loading={loading}
+                              key={index}
+                              item={item}
+                            />
                           );
                         })}
-
+                      <DefaultPaymentMethod defaultmethod={defaultmethod} selectCard={selectCard} cash={cash} />
                       <GridItem w='100%'>
                         <Skeleton borderRadius='16px' isLoaded={!loading}>
                           <Box
