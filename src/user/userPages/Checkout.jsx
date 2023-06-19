@@ -1,6 +1,6 @@
 import { Box, Text, Icon, Button, Flex, Container, GridItem, Grid, Skeleton } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
 import PaymentCard from '../userComponents/AccountSettingsPage/PaymentCard';
 
@@ -10,6 +10,9 @@ import PaymentSummary from '../userComponents/Checkout/PaymentSummary';
 import NewPaymentMethod from '../userComponents/Checkout/NewPaymentMethod';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 export default function Checkout() {
+  const location = useLocation();
+  const { checkoutBody } = location.state;
+
   const [switcher, setSwitcher] = useState(true);
 
   const [loading, setLoading] = useState(true);
@@ -44,6 +47,7 @@ export default function Checkout() {
 
   useEffect(() => {
     handleApi();
+    console.log(location.state);
   }, []);
 
   return (
