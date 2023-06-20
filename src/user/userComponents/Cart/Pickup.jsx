@@ -59,33 +59,49 @@ export default function Pickup({ item, pickupLocation, setPickupLocation, setChe
       </Text>
       <Skeleton minHeight='320px' my={4} borderRadius='16px' isLoaded={!addressLoading}>
         <Box pt={4}>
-          {!addressLoading && (
-            <iframe
-              width='100%'
-              src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
-              title='Monochrome'
-              style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '320px' }}
-            />
+          {address ? (
+            <>
+              {!addressLoading && (
+                <iframe
+                  width='100%'
+                  src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
+                  title='Monochrome'
+                  style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '320px' }}
+                />
+              )}{' '}
+            </>
+          ) : (
+            <>No address specified</>
           )}
 
           <Box mt={4}>
             <Text fontWeight='bold' fontSize='2xs' color='neutral.black'>
-              {item.location} {item.address}
+              {/* prettier-igonre */}
+
+              {item ? (
+                <>No pickup locations!</>
+              ) : (
+                <>
+                  {item.location} {item.address}
+                </>
+              )}
             </Text>
 
             <Box>
-              <Flex alignItems='center'>
-                <Radio
-                  onClick={() => setPickupLocation(!pickupLocation)}
-                  isChecked={pickupLocation}
-                  iconcolor='neutral.white'
-                  mr='2'
-                >
-                  <Text onClick={() => setPickupLocation(!pickupLocation)} color='neutral.black' fontSize='2xs'>
-                    Choose this location
-                  </Text>
-                </Radio>
-              </Flex>
+              {address && (
+                <Flex alignItems='center'>
+                  <Radio
+                    onClick={() => setPickupLocation(!pickupLocation)}
+                    isChecked={pickupLocation}
+                    iconcolor='neutral.white'
+                    mr='2'
+                  >
+                    <Text onClick={() => setPickupLocation(!pickupLocation)} color='neutral.black' fontSize='2xs'>
+                      Choose this location
+                    </Text>
+                  </Radio>
+                </Flex>
+              )}
             </Box>
             {/* <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
             California State, USA

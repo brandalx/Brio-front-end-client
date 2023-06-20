@@ -15,6 +15,7 @@ export default function Cart() {
   const [mealsArr, setMealsArr] = useState([]);
   const [addressArr, setAddressArr] = useState([]);
   const [restaurant, setRestaurant] = useState([]);
+  const [blankCart, setBlankCart] = useState(false);
   const [checkoutBody, setCheckoutBody] = useState({
     userdata: {
       restaurants: ['646677ee6b29f689804a2855', '646677ee6b29f689804a2858', '646677ee6b29f689804a2857'],
@@ -76,7 +77,13 @@ export default function Cart() {
       );
       setMealsArr(product);
       console.log(product);
-      handleApiRestaurant(product[0].restaurantRef);
+      if (product.length === 0) {
+        setLoading(false);
+        setBlankCart(true);
+      } else {
+        handleApiRestaurant(product[0].restaurantRef);
+        setBlankCart(false);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -133,107 +140,119 @@ export default function Cart() {
               </Box>
             </Box>
           </GridItem>
-          <GridItem w='100%'>
-            <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
-              <Box bg='neutral.grayLightest' p={2} borderRadius='16px'>
-                <Grid templateColumns='repeat(2, 1fr)' gap={2}>
-                  <GridItem w='100%'>
-                    <Link to='/user/cart' w='100%'>
-                      <Button
-                        borderRadius='14px'
-                        w='100%'
-                        background={isDeliveryPage ? 'neutral.black' : 'neutral.grayLightest'}
-                        fontWeight='bold'
-                        variant='solid'
-                        color={isDeliveryPage ? 'neutral.white' : 'neutral.black'}
-                        borderWidth='1px'
-                        borderColor='neutral.grayLightest'
-                        _hover={{
-                          background: 'neutral.grayLightest',
-                          color: 'neutral.black',
-                          borderWidth: '1px',
-                          borderColor: 'neutral.black'
-                        }}
-                        py={6}
-                      >
-                        Delivery
-                      </Button>
-                    </Link>
-                  </GridItem>
-                  <GridItem w='100%'>
-                    <Link to='/user/cart/pickup' w='100%'>
-                      <Button
-                        borderRadius='14px'
-                        w='100%'
-                        background={isPickupPage ? 'neutral.black' : 'neutral.grayLightest'}
-                        fontWeight='bold'
-                        variant='solid'
-                        color={isPickupPage ? 'neutral.white' : 'neutral.black'}
-                        borderWidth='1px'
-                        borderColor='neutral.grayLightest'
-                        _hover={{
-                          background: 'neutral.grayLightest',
-                          color: 'neutral.black',
-                          borderWidth: '1px',
-                          borderColor: 'neutral.black'
-                        }}
-                        py={6}
-                      >
-                        Pickup
-                      </Button>
-                    </Link>
-                  </GridItem>
-                </Grid>
-              </Box>
-              <Routes>
-                <Route
-                  path='/'
-                  element={
-                    <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
-                      {addressArr.length > 0 ? (
-                        <Delivery
-                          setPickupLocation={setPickupLocation}
-                          pickupLocation={pickupLocation}
-                          setCheckoutBody={setCheckoutBody}
-                          item={addressArr}
-                        />
-                      ) : (
-                        <>
-                          <Link to='/user/account/address'>
-                            <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                              Add your first address
-                            </Text>
-                          </Link>
-                        </>
-                      )}
-                    </Skeleton>
-                  }
-                />
-                <Route
-                  path='/pickup'
-                  element={
-                    <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
-                      {!loading && (
-                        <Box>
-                          <Pickup
+          {blankCart ? (
+            <>No items in cart</>
+          ) : (
+            <GridItem w='100%'>
+              <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
+                <Box bg='neutral.grayLightest' p={2} borderRadius='16px'>
+                  <Grid templateColumns='repeat(2, 1fr)' gap={2}>
+                    <GridItem w='100%'>
+                      <Link to='/user/cart' w='100%'>
+                        <Button
+                          borderRadius='14px'
+                          w='100%'
+                          background={isDeliveryPage ? 'neutral.black' : 'neutral.grayLightest'}
+                          fontWeight='bold'
+                          variant='solid'
+                          color={isDeliveryPage ? 'neutral.white' : 'neutral.black'}
+                          borderWidth='1px'
+                          borderColor='neutral.grayLightest'
+                          _hover={{
+                            background: 'neutral.grayLightest',
+                            color: 'neutral.black',
+                            borderWidth: '1px',
+                            borderColor: 'neutral.black'
+                          }}
+                          py={6}
+                        >
+                          Delivery
+                        </Button>
+                      </Link>
+                    </GridItem>
+                    <GridItem w='100%'>
+                      <Link to='/user/cart/pickup' w='100%'>
+                        <Button
+                          borderRadius='14px'
+                          w='100%'
+                          background={isPickupPage ? 'neutral.black' : 'neutral.grayLightest'}
+                          fontWeight='bold'
+                          variant='solid'
+                          color={isPickupPage ? 'neutral.white' : 'neutral.black'}
+                          borderWidth='1px'
+                          borderColor='neutral.grayLightest'
+                          _hover={{
+                            background: 'neutral.grayLightest',
+                            color: 'neutral.black',
+                            borderWidth: '1px',
+                            borderColor: 'neutral.black'
+                          }}
+                          py={6}
+                        >
+                          Pickup
+                        </Button>
+                      </Link>
+                    </GridItem>
+                  </Grid>
+                </Box>
+                <Routes>
+                  <Route
+                    path='/'
+                    element={
+                      <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
+                        {addressArr.length > 0 ? (
+                          <Delivery
                             setPickupLocation={setPickupLocation}
                             pickupLocation={pickupLocation}
                             setCheckoutBody={setCheckoutBody}
-                            item={restaurant}
+                            item={addressArr}
                           />
-                        </Box>
-                      )}
-                    </Skeleton>
-                  }
-                />
-              </Routes>
-            </Box>
-            <Box py={4}>
-              <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
-                <Summary setCheckoutBody={setCheckoutBody} checkoutBody={checkoutBody} loading={loading} item={arr} />
-              </Skeleton>
-            </Box>
-          </GridItem>
+                        ) : (
+                          <>
+                            <Link to='/user/account/address'>
+                              <Text textDecoration='underline' fontSize='xs' fontWeight='bold' color='neutral.black'>
+                                Add your first address
+                              </Text>
+                            </Link>
+                          </>
+                        )}
+                      </Skeleton>
+                    }
+                  />
+                  <Route
+                    path='/pickup'
+                    element={
+                      <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
+                        {!loading && (
+                          <Box>
+                            <Pickup
+                              setPickupLocation={setPickupLocation}
+                              pickupLocation={pickupLocation}
+                              setCheckoutBody={setCheckoutBody}
+                              item={restaurant}
+                            />
+                          </Box>
+                        )}
+                      </Skeleton>
+                    }
+                  />
+                </Routes>
+              </Box>
+
+              <Box py={4}>
+                <Skeleton my={4} borderRadius='16px' isLoaded={!loading}>
+                  <Summary
+                    setBlankCart={setBlankCart}
+                    blankCart={blankCart}
+                    setCheckoutBody={setCheckoutBody}
+                    checkoutBody={checkoutBody}
+                    loading={loading}
+                    item={arr}
+                  />
+                </Skeleton>
+              </Box>
+            </GridItem>
+          )}
         </Grid>
       </Container>
     </Box>
