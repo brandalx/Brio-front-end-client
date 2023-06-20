@@ -136,7 +136,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
                 Submit order
               </Button>
             ) : (
-              <>j</>
+              <></>
             )}
           </Link>
         </Box>

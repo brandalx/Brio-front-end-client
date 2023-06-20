@@ -234,7 +234,7 @@ export default function Checkout() {
                 </Box>
               </GridItem>
               <GridItem w='100%'>
-                {finalCheckoutBody && finalCheckoutBody.userdata ? (
+                {finalCheckoutBody && finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? (
                   <PaymentSummary
                     finalCheckoutBody={finalCheckoutBody}
                     setFinalCheckoutBody={setFinalCheckoutBody}
@@ -242,7 +242,7 @@ export default function Checkout() {
                     loading={loading}
                   />
                 ) : (
-                  <>j</>
+                  <></>
                 )}
               </GridItem>
             </Grid>

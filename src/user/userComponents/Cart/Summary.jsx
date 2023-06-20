@@ -2,11 +2,11 @@ import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Summary({ item, loading, blankCart, setBlankCart, checkoutBody }) {
+export default function Summary({ loading, item, blankCart, setBlankCart, checkoutBody }) {
   const [blankSummary, setBlankSummary] = useState(false);
   useEffect(() => {
     console.log(item);
-    if (item.length === 0) {
+    if (!item[0]) {
       setBlankSummary(true);
     }
   });
@@ -24,7 +24,7 @@ export default function Summary({ item, loading, blankCart, setBlankCart, checko
             </Text>
             {/* prettier-ignore */}
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>$
-  {!blankSummary?( <>0</>) : (!loading && item.orders[0].paymentSummary.subtotal)}
+  {!blankSummary?( <>0</>) : (!loading && item.subtotal)}
 </Text>
           </Flex>
           <Flex my={4} justifyContent='space-between'>
@@ -33,7 +33,7 @@ export default function Summary({ item, loading, blankCart, setBlankCart, checko
             </Text>
             {/* prettier-ignore */}
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>$
-            {!blankSummary?( <>0</>) : (!loading && item.orders[0].paymentSummary.shipping)}
+            {!blankSummary?( <>0</>) : (!loading && item.shipping)}
             </Text>
           </Flex>
           <Flex my={4} justifyContent='space-between'>
@@ -42,7 +42,7 @@ export default function Summary({ item, loading, blankCart, setBlankCart, checko
             </Text>
             {/* prettier-ignore */}
             <Text fontWeight='bold' fontSize='2xs' color='primary.default'>$
-            {!blankSummary?( <>0</>) : (!loading && item.orders[0].paymentSummary.totalAmount)}            
+            {!blankSummary?( <>0</>) : (!loading && item.totalAmount)}            
             </Text>
           </Flex>
           <Link to='/user/checkout' state={{ checkoutBodyData: checkoutBody }}>

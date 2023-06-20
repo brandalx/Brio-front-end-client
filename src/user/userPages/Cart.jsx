@@ -16,12 +16,13 @@ export default function Cart() {
   const [addressArr, setAddressArr] = useState([]);
   const [restaurant, setRestaurant] = useState([]);
   const [blankCart, setBlankCart] = useState(false);
+  const [preSummary, setPreSummary] = useState([]);
   const [checkoutBody, setCheckoutBody] = useState({
     userdata: {
       restaurants: ['646677ee6b29f689804a2855', '646677ee6b29f689804a2858', '646677ee6b29f689804a2857'],
       selectedAddress: null,
       selectedPaymentMethod: null,
-      status: 'Completed',
+      status: 'Placed',
       paymentSummary: {
         couponCode: 'newone',
         subtotal: 50,
@@ -45,6 +46,19 @@ export default function Cart() {
     }
   });
   const [pickupLocation, setPickupLocation] = useState(false);
+
+  const handleApiPresummary = async () => {
+    const url = API_URL + '/users/cart/presummary';
+    try {
+      const data = await handleApiGet(url);
+      setPreSummary(data);
+
+      console.log(data);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
 
   const handleApi = async () => {
     const url = API_URL + '/users/info/user';
@@ -104,6 +118,10 @@ export default function Cart() {
 
   useEffect(() => {
     handleApi();
+  }, []);
+
+  useEffect(() => {
+    handleApiPresummary();
   }, []);
 
   const location = useLocation();
@@ -247,7 +265,7 @@ export default function Cart() {
                     setCheckoutBody={setCheckoutBody}
                     checkoutBody={checkoutBody}
                     loading={loading}
-                    item={arr}
+                    item={preSummary}
                   />
                 </Skeleton>
               </Box>
