@@ -69,7 +69,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
                 Subtotal
               </Text>
               <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-                ${!loading && item.orders[0].paymentSummary.subtotal}
+                ${!loading && item.subtotal}
               </Text>
             </Flex>
           </Skeleton>
@@ -79,7 +79,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
                 Shipping
               </Text>
               <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-                ${!loading && item.orders[0].paymentSummary.shipping}
+                ${!loading && item.shipping}
               </Text>
             </Flex>
           </Skeleton>
@@ -89,55 +89,55 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
                 Tips
               </Text>
               <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-                ${!loading && item.orders[0].paymentSummary.tips}
+                {/* ${!loading && item.orders[0].paymentSummary.tips} */}
+                tips
               </Text>
             </Flex>
           </Skeleton>
-          <Skeleton borderRadius='16px' isLoaded={!loading}>
+
+          {/* <Skeleton borderRadius='16px' isLoaded={!loading}>
             <Flex my={4} justifyContent='space-between'>
               <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
                 Discount (coupon)
               </Text>
               <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-                ${!loading && item.orders[0].paymentSummary.discount}
+                 ${!loading && item.orders[0].paymentSummary.discount} 
+                discount
               </Text>
             </Flex>
-          </Skeleton>
+          </Skeleton> */}
+
           <Skeleton borderRadius='16px' isLoaded={!loading}>
             <Flex my={4} justifyContent='space-between'>
               <Text fontWeight='semibold' fontSize='2xs' color='neutral.black'>
                 Total (tax incl.)
               </Text>
               <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
-                ${!loading && item.orders[0].paymentSummary.totalAmount}
+                ${!loading && item.totalAmount}
               </Text>
             </Flex>
           </Skeleton>
           <Link to='/user/checkout'>
-            {finalCheckoutBody && finalCheckoutBody.userdata ? (
-              <Button
-                isDisabled={finalCheckoutBody.userdata.selectedPaymentMethod ? false : true}
-                w='100%'
-                background='primary.default'
-                fontSize='2xs'
-                fontWeight='bold'
-                variant='solid'
-                color='neutral.white'
-                borderWidth='1px'
-                borderColor='primary.default'
-                _hover={{
-                  background: 'neutral.white',
-                  color: 'primary.default',
-                  borderWidth: '1px',
-                  borderColor: 'primary.default'
-                }}
-                py={5}
-              >
-                Submit order
-              </Button>
-            ) : (
-              <></>
-            )}
+            <Button
+              isDisabled={finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? false : true}
+              w='100%'
+              background='primary.default'
+              fontSize='2xs'
+              fontWeight='bold'
+              variant='solid'
+              color='neutral.white'
+              borderWidth='1px'
+              borderColor='primary.default'
+              _hover={{
+                background: 'neutral.white',
+                color: 'primary.default',
+                borderWidth: '1px',
+                borderColor: 'primary.default'
+              }}
+              py={5}
+            >
+              Submit order
+            </Button>
           </Link>
         </Box>
       </Box>

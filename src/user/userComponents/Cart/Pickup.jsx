@@ -79,11 +79,12 @@ export default function Pickup({ item, pickupLocation, setPickupLocation, setChe
               {/* prettier-igonre */}
 
               {item ? (
-                <>No pickup locations!</>
-              ) : (
                 <>
+                  {' '}
                   {item.location} {item.address}
                 </>
+              ) : (
+                <>No pickup locations!</>
               )}
             </Text>
 

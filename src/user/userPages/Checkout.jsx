@@ -23,7 +23,7 @@ export default function Checkout() {
   const [choosenCard, setChoosenCard] = useState([]);
   const [onitemselected, setOnitemselected] = useState(false);
   const [defaultmethod, setDefaultMethod] = useState(false);
-
+  const [preSummary, setPreSummary] = useState([]);
   const disabledOptions = true;
   const handleApi = async () => {
     const url = API_URL + '/users/info/user';
@@ -55,6 +55,7 @@ export default function Checkout() {
   useEffect(() => {
     handleApi();
     console.log(location.state);
+    handleApiPresummary();
   }, []);
 
   useEffect(() => {
@@ -97,6 +98,19 @@ export default function Checkout() {
           // setPickupLocation(false);
         }
       });
+    }
+  };
+
+  const handleApiPresummary = async () => {
+    const url = API_URL + '/users/cart/presummary';
+    try {
+      const data = await handleApiGet(url);
+      setPreSummary(data);
+
+      console.log(data);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
     }
   };
 
@@ -233,17 +247,16 @@ export default function Checkout() {
                   </Box>
                 </Box>
               </GridItem>
-              <GridItem w='100%'>
-                {finalCheckoutBody && finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? (
-                  <PaymentSummary
-                    finalCheckoutBody={finalCheckoutBody}
-                    setFinalCheckoutBody={setFinalCheckoutBody}
-                    item={arr}
-                    loading={loading}
-                  />
-                ) : (
-                  <></>
-                )}
+              <GridItem
+                w='100%'
+                isDisabled={finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? false : true}
+              >
+                <PaymentSummary
+                  finalCheckoutBody={finalCheckoutBody}
+                  setFinalCheckoutBody={setFinalCheckoutBody}
+                  item={preSummary}
+                  loading={loading}
+                />
               </GridItem>
             </Grid>
           </Box>

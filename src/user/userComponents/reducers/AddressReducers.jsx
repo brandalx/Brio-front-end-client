@@ -158,7 +158,6 @@ const AddressReducers = () => {
     if (isEditTrue === true) {
       //will be passed here
       const addressToEdit = addressArr.find((item) => item._id === targetIndex);
-
       setValue('country', addressToEdit.country);
       setValue('state', addressToEdit.state);
       setValue('city', addressToEdit.city);
