@@ -11,12 +11,15 @@ export default function CustomerProfile() {
   const [note, setNote] = useState(''); // New state for the note field
   const { userId } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [role, setRole] = useState(null); // New state for the role
 
   const fetchUser = async () => {
     try {
       const response = await handleApiGet(API_URL + '/users/' + userId);
       setUser(response);
-      setNote(response.notes); // Set the initial value of the note to the existing user notes
+      setRole(response.role); // Set the role
+
+      setNote(response.notes);
       console.log(response);
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -85,23 +88,25 @@ export default function CustomerProfile() {
                   {user.notes}
                 </Text>
               </Box>
-              <Button
-                onClick={onOpen}
-                _hover={{
-                  background: 'primary.default',
-                  color: 'neutral.white',
-                  borderWidth: '1px',
-                  borderColor: 'primary.default'
-                }}
-                color='primary.default'
-                p='20px'
-                border='1px'
-                borderColor='primary.default'
-                w='100%'
-                marginTop='16px'
-              >
-                Edit note
-              </Button>
+              {role === 'ADMIN' && (
+                <Button
+                  onClick={onOpen}
+                  _hover={{
+                    background: 'primary.default',
+                    color: 'neutral.white',
+                    borderWidth: '1px',
+                    borderColor: 'primary.default'
+                  }}
+                  color='primary.default'
+                  p='20px'
+                  border='1px'
+                  borderColor='primary.default'
+                  w='100%'
+                  marginTop='16px'
+                >
+                  Edit note
+                </Button>
+              )}
               <ModalNoteRedactor
                 isOpen={isOpen}
                 onClose={onClose}

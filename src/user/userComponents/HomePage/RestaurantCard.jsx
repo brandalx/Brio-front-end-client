@@ -7,36 +7,40 @@ import { Link } from 'react-router-dom';
 export default function RestaurantCard({ img, title, time, price, badgeData, _id }) {
   return (
     <>
-      <Link to={`/restaurant/${_id}`}>
+      <Link to={_id ? `/restaurant/${_id}` : '#'}>
         <GridItem w='100%' bg='neutral.white'>
           <Box bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='lg'>
-            <Image src={img} roundedTop='lg' h='230px' objectFit='cover' w='100%' />
-
+            {img && <Image src={img} roundedTop='lg' h='230px' objectFit='cover' w='100%' />}
             <Box p='6'>
               <Box>
-                <Text color='neutral.black' fontSize='xs' fontWeight='bold'>
-                  {title}
-                </Text>
-                <Box display='flex'>
-                  <Box display='flex' alignItems='center' me={2}>
-                    <AiOutlineClockCircle color='#828282' />
-                  </Box>
-                  <Text color='neutral.gray' fontSize='3xs'>
-                    {time} min • ${price} min price
+                {title && (
+                  <Text color='neutral.black' fontSize='xs' fontWeight='bold'>
+                    {title}
                   </Text>
-                </Box>
-                {badgeData.map((item) => (
-                  <Badge key={item.badgeTitle} mt={2} bg='neutral.grayLightest' rounded='full' p={1} px={3} mx={1}>
-                    <Box display='flex'>
-                      <Box as='span' display='flex' alignItems='center' me={2}>
-                        <Emoji emoji={item.badgeEmoji} size='20' />
-                      </Box>
-                      <Text color='neutral.grayDark' fontSize='3xs'>
-                        {item.badgeTitle}
-                      </Text>
+                )}
+                {time && price && (
+                  <Box display='flex'>
+                    <Box display='flex' alignItems='center' me={2}>
+                      <AiOutlineClockCircle color='#828282' />
                     </Box>
-                  </Badge>
-                ))}
+                    <Text color='neutral.gray' fontSize='3xs'>
+                      {time} min • ${price} min price
+                    </Text>
+                  </Box>
+                )}
+                {badgeData &&
+                  badgeData.map((item) => (
+                    <Badge key={item.badgeTitle} mt={2} bg='neutral.grayLightest' rounded='full' p={1} px={3} mx={1}>
+                      <Box display='flex'>
+                        <Box as='span' display='flex' alignItems='center' me={2}>
+                          <Emoji emoji={item.badgeEmoji} size='20' />
+                        </Box>
+                        <Text color='neutral.grayDark' fontSize='3xs'>
+                          {item.badgeTitle}
+                        </Text>
+                      </Box>
+                    </Badge>
+                  ))}
               </Box>
             </Box>
           </Box>
