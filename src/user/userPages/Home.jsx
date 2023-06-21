@@ -63,10 +63,11 @@ export default function Home() {
       )} */}
 
       <Box h={`${heightchange}px`} w='100%'>
-        <Spline scene='https://prod.spline.design/ePK-9QAwbidfbE-t/scene.splinecode' onLoad={onload} />
+        <Spline scene='https://draft.spline.design/PUwIzlFumPBQGPPr/scene.splinecode' onLoad={onload} />
       </Box>
 
       <Container maxW='1110px'>
+        <Skeleton borderRadius='16px' height={loading ? '250px' : '0px'} isLoaded={loading} my={loading ? 2 : 0} />
         <Box>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
