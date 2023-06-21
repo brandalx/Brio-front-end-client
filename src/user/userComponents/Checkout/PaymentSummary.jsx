@@ -12,10 +12,17 @@ import {
   Skeleton,
   Text
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
+  const [tipValue, setTipValue] = useState(0);
+  const tipref = useRef(null);
+  const handleTipChange = () => {
+    const value = tipref.current.value;
+    setTipValue(value);
+  };
+
   return (
     <>
       <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
@@ -23,6 +30,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
           Payment summary
         </Text>
         <Box>
+          {/*
           <Skeleton borderRadius='16px' isLoaded={!loading}>
             <FormControl id='coupon' mt={4}>
               <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
@@ -39,6 +47,8 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
               />
             </FormControl>
           </Skeleton>
+
+  */}
           <Skeleton borderRadius='16px' isLoaded={!loading}>
             <FormControl id='tip' mt={4}>
               <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
@@ -50,6 +60,8 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
                   $
                 </InputLeftElement>
                 <Input
+                  ref={tipref}
+                  onChange={handleTipChange}
                   type='text'
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
@@ -89,8 +101,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
                 Tips
               </Text>
               <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-                {/* ${!loading && item.orders[0].paymentSummary.tips} */}
-                tips
+                {/* ${!loading && item.orders[0].paymentSummary.tips} */}${tipValue}
               </Text>
             </Flex>
           </Skeleton>
