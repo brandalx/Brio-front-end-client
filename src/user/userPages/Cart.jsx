@@ -19,30 +19,20 @@ export default function Cart() {
   const [preSummary, setPreSummary] = useState([]);
   const [checkoutBody, setCheckoutBody] = useState({
     userdata: {
-      restaurants: ['646677ee6b29f689804a2855', '646677ee6b29f689804a2858', '646677ee6b29f689804a2857'],
       selectedAddress: null,
       selectedPaymentMethod: null,
       status: 'Placed',
       paymentSummary: {
-        couponCode: 'newone',
-        subtotal: 50,
-        tips: 3,
-        shipping: 5,
-        discount: 10,
-        totalAmount: 156334
+        subtotal: null,
+        tips: null,
+        shipping: null,
+
+        totalAmount: null
       }
     },
     ordersdata: {
-      products: [
-        {
-          productId: '64667cec6b29f689804a2862',
-          amount: 1
-        },
-        {
-          productId: '6466734c6b29f689804a285f',
-          amount: 1
-        }
-      ]
+      products: [],
+      restaurants: []
     }
   });
   const [pickupLocation, setPickupLocation] = useState(false);
@@ -53,6 +43,18 @@ export default function Cart() {
       const data = await handleApiGet(url);
       setPreSummary(data);
 
+      setCheckoutBody((prevState) => ({
+        ...prevState,
+        userdata: {
+          ...prevState.userdata,
+          paymentSummary: {
+            subtotal: data.subtotal,
+            tips: null,
+            shipping: data.shipping,
+            totalAmount: data.totalAmount
+          }
+        }
+      }));
       console.log(data);
     } catch (error) {
       setLoading(false);
@@ -83,6 +85,16 @@ export default function Cart() {
       const cartData = await handleApiGet(url);
       console.log(cartData.cart);
       setCartAr(cartData.cart);
+      setCheckoutBody((prevState) => ({
+        ...prevState,
+        ordersdata: {
+          products: cartData.cart.map((item) => ({
+            productId: item.productId,
+            amount: item.productAmount
+          }))
+        }
+      }));
+
       let product = await Promise.all(
         cartData.cart.map(async (item) => {
           const products = await handleApiGet(API_URL + '/products/' + item.productId);
@@ -90,6 +102,18 @@ export default function Cart() {
         })
       );
       setMealsArr(product);
+      setCheckoutBody((prevState) => {
+        const existingRestaurants = prevState.ordersdata.restaurants || [];
+        const newRestaurants = Array.from(new Set(product.map((item) => item.restaurantRef)));
+        const updatedRestaurants = [...existingRestaurants, ...newRestaurants];
+        return {
+          ...prevState,
+          ordersdata: {
+            ...prevState.ordersdata,
+            restaurants: updatedRestaurants
+          }
+        };
+      });
       console.log(product);
       if (product.length === 0) {
         setLoading(false);
@@ -129,7 +153,7 @@ export default function Cart() {
   const isPickupPage = location.pathname === '/user/cart/pickup';
 
   useEffect(() => {
-    console.log(checkoutBody.userdata.selectedAddress);
+    console.log(checkoutBody);
   }, [checkoutBody]);
 
   return (
