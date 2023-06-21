@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Container, Image, Text, Grid, Divider } from '@chakra-ui/react';
+import { Box, Button, Container, Image, Text, Grid, Divider, Skeleton } from '@chakra-ui/react';
 
 import ValidThrough from '../../../assets/svg/ValidThrough.jsx';
 import Location from '../../../assets/svg/Location.jsx';
@@ -8,13 +8,17 @@ import { Link } from 'react-router-dom';
 
 export default function DealsBlocks() {
   const [deals, setDeals] = useState([]);
+  const [loading, setLoading] = useState(true);
   const fetchdeals = async () => {
+    setLoading(true);
     try {
       const response = await handleApiGet(API_URL + '/admin/promotions');
       console.log(response);
       setDeals(response);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching products:', error);
+      setLoading(false);
     }
   };
 
@@ -64,8 +68,8 @@ export default function DealsBlocks() {
     <Box>
       <Container maxW='1110px'>
         <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
-          {deals.map((promotion, index) => {
-            return (
+          {deals.length > 0 &&
+            deals.map((promotion, index) => (
               <Box
                 key={index}
                 display='flex'
@@ -132,9 +136,18 @@ export default function DealsBlocks() {
                   </Box>
                 </Link>
               </Box>
-            );
-          })}
+            ))}
+
+          {/* Closing tag for the Grid component */}
         </Grid>
+
+        {deals.length === 0 && (
+          <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
+            <Skeleton borderRadius='16px' height='298px' width='100%' isLoaded={!loading}></Skeleton>
+            <Skeleton borderRadius='16px' height='298px' width='100%' isLoaded={!loading}></Skeleton>
+            <Skeleton borderRadius='16px' height='298px' width='100%' isLoaded={!loading}></Skeleton>
+          </Grid>
+        )}
       </Container>
     </Box>
   );

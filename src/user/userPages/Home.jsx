@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Box, Container, Flex, Text, GridItem, Grid, Image, Skeleton } from '@chakra-ui/react';
 import burgertest from '../../assets/images/burgertest.png';
 import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
@@ -6,11 +6,19 @@ import { API_URL, handleApiGet } from '../../services/apiServices';
 import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
 import Preloader from '../../components/Loaders/preloader';
 import { useCheckToken } from '../../services/token';
+
+const Spline1 = React.lazy(() => import('@splinetool/react-spline'));
+
+const MemoizedLazySpline1 = React.memo(({ onLoad }) => (
+  <Spline1 scene='https://prod.spline.design/ePK-9QAwbidfbE-t/scene.splinecode' onLoad={onLoad} />
+));
+
 export default function Home() {
   // todo: add tag into product into backend model and validation
 
   const [arr, setAr] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingModel, setloadingModel] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const handleApi = async () => {
     const url = API_URL + '/restaurants';
@@ -43,9 +51,26 @@ export default function Home() {
   useEffect(() => {
     isTokenExpired;
   }, [isTokenExpired]);
+
+  function onLoad() {
+    setloadingModel(true);
+  }
   return (
     <>
       <Preloader loading={loading} />
+
+      {/* {loading && (
+        <Box h='350px' my={4}>
+          <Skeleton mx='auto' borderRadius='16px' height='350px' isLoaded={loadingModel} maxW='1100px'></Skeleton>
+        </Box>
+      )} */}
+
+      <Box h={{ base: '200px', md: '350px' }} w='100%' my={4}>
+        <Suspense fallback={<Skeleton borderRadius='16px' />}>
+          <MemoizedLazySpline1 onLoad={onLoad} />
+        </Suspense>
+      </Box>
+
       <Container maxW='1110px'>
         <Box>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
