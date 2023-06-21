@@ -300,7 +300,7 @@ export default function Account() {
             </Grid>
           </Box>
 
-          <Box pt={5}>
+          {/* <Box pt={5}>
             <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
               Email notifications
             </Text>
@@ -371,7 +371,7 @@ export default function Account() {
                 </Stack>
               </GridItem>
             </Grid>
-          </Box>
+          </Box> */}
           <Divider pt={8} />
           <Box pt={5}>
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
