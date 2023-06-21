@@ -7,11 +7,7 @@ import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
 import Preloader from '../../components/Loaders/preloader';
 import { useCheckToken } from '../../services/token';
 
-const Spline1 = React.lazy(() => import('@splinetool/react-spline'));
-
-const MemoizedLazySpline1 = React.memo(({ onLoad }) => (
-  <Spline1 scene='https://prod.spline.design/ePK-9QAwbidfbE-t/scene.splinecode' onLoad={onLoad} />
-));
+import Spline from '@splinetool/react-spline';
 
 export default function Home() {
   // todo: add tag into product into backend model and validation
@@ -20,6 +16,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [loadingModel, setloadingModel] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(false);
+  const [heightchange, setheightchange] = useState(1);
   const handleApi = async () => {
     const url = API_URL + '/restaurants';
 
@@ -27,12 +24,12 @@ export default function Home() {
       const data = await handleApiGet(url);
       setAr(data);
       console.log(data);
-      setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log(error);
     }
   };
+
   useEffect(() => {
     handleApi();
   }, []);
@@ -51,10 +48,10 @@ export default function Home() {
   useEffect(() => {
     isTokenExpired;
   }, [isTokenExpired]);
-
-  function onLoad() {
-    setloadingModel(true);
-  }
+  const onload = () => {
+    setheightchange(350);
+    setLoading(false);
+  };
   return (
     <>
       <Preloader loading={loading} />
@@ -65,10 +62,8 @@ export default function Home() {
         </Box>
       )} */}
 
-      <Box h={{ base: '200px', md: '350px' }} w='100%' my={4}>
-        <Suspense fallback={<Skeleton borderRadius='16px' />}>
-          <MemoizedLazySpline1 onLoad={onLoad} />
-        </Suspense>
+      <Box h={`${heightchange}px`} w='100%'>
+        <Spline scene='https://prod.spline.design/ePK-9QAwbidfbE-t/scene.splinecode' onLoad={onload} />
       </Box>
 
       <Container maxW='1110px'>
