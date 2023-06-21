@@ -21,3 +21,11 @@ body {
 .wrapper {
   overflow: hidden;
 }
+
+.t-gra {
+  background: linear-gradient(351deg, #31b3ec 23%, #524add 87%, #524add 102%);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

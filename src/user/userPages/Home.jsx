@@ -67,6 +67,12 @@ export default function Home() {
       </Box>
 
       <Container maxW='1110px'>
+        {/* <Box my={5}>
+          <Text fontSize='2xl' lineHeight='60px' className='t-gra' fontWeight='black'>
+            Brio
+          </Text>
+        
+        </Box> */}
         <Skeleton borderRadius='16px' height={loading ? '250px' : '0px'} isLoaded={loading} my={loading ? 2 : 0} />
         <Box>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>

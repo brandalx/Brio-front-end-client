@@ -147,7 +147,11 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
               }}
               py={5}
             >
-              Submit order
+              {finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? (
+                <> Submit order</>
+              ) : (
+                <> Please,select payment method</>
+              )}
             </Button>
           </Link>
         </Box>

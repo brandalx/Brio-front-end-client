@@ -64,7 +64,7 @@ export default function Summary({ loading, item, blankCart, setBlankCart, checko
               }}
               py={5}
             >
-              Proceed to checkout
+              {checkoutBody.userdata.selectedAddress ? <>Proceed to checkout</> : <>Please, choose delivery location</>}
             </Button>
           </Link>
         </Box>
