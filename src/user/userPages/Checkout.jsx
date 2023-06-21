@@ -1,6 +1,6 @@
 import { Box, Text, Icon, Button, Flex, Container, GridItem, Grid, Skeleton } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
 import PaymentCard from '../userComponents/AccountSettingsPage/PaymentCard';
 import cash from '../../assets/images/cash.png';
@@ -101,6 +101,17 @@ export default function Checkout() {
     }
   };
 
+  useEffect(() => {
+    if (
+      !finalCheckoutBody ||
+      !finalCheckoutBody.checkoutBodyData ||
+      !finalCheckoutBody.checkoutBodyData.userdata ||
+      !finalCheckoutBody.checkoutBodyData.userdata.selectedAddress
+    ) {
+      navigate('/');
+    }
+  }, [finalCheckoutBody]);
+  const navigate = useNavigate();
   const handleApiPresummary = async () => {
     const url = API_URL + '/users/cart/presummary';
     try {
@@ -247,17 +258,19 @@ export default function Checkout() {
                   </Box>
                 </Box>
               </GridItem>
-              <GridItem
-                w='100%'
-                isDisabled={finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? false : true}
-              >
-                <PaymentSummary
-                  finalCheckoutBody={finalCheckoutBody}
-                  setFinalCheckoutBody={setFinalCheckoutBody}
-                  item={preSummary}
-                  loading={loading}
-                />
-              </GridItem>
+              {!loading && (
+                <GridItem
+                  w='100%'
+                  isDisabled={finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? false : true}
+                >
+                  <PaymentSummary
+                    finalCheckoutBody={finalCheckoutBody}
+                    setFinalCheckoutBody={setFinalCheckoutBody}
+                    item={preSummary}
+                    loading={loading}
+                  />
+                </GridItem>
+              )}
             </Grid>
           </Box>
         </Container>
