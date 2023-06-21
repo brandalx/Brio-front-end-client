@@ -78,7 +78,6 @@ export default function SignUpOptionsArr({ setOption }) {
       title: 'Restaurant',
       description: 'Manage your own restaurant',
       icon: Restaurants,
-
       type: 'restaurant'
     },
     {
