@@ -251,7 +251,7 @@ export default function NewPaymentMethod({
                 alignItems={{ base: 'initial', md: 'center' }}
                 flexDirection={{ base: 'column', md: 'row' }}
               >
-                <Stack
+                {/* <Stack
                   h='100%'
                   mt={4}
                   direction={{ base: 'column', sm: 'row' }}
@@ -265,7 +265,7 @@ export default function NewPaymentMethod({
                       </Text>
                     </Checkbox>
                   </Flex>
-                </Stack>
+                </Stack> */}
                 <Button
                   isLoading={isSubmitting}
                   type='submit'
