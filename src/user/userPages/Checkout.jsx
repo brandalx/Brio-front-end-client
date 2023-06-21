@@ -1,4 +1,4 @@
-import { Box, Text, Icon, Button, Flex, Container, GridItem, Grid, Skeleton } from '@chakra-ui/react';
+import { Box, Text, Icon, Button, Flex, Container, GridItem, Grid, Skeleton, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
@@ -8,7 +8,7 @@ import visa from '../../assets/images/visa.png';
 import mastercard from '../../assets/images/mastercard.png';
 import PaymentSummary from '../userComponents/Checkout/PaymentSummary';
 import NewPaymentMethod from '../userComponents/Checkout/NewPaymentMethod';
-import { API_URL, handleApiGet } from '../../services/apiServices';
+import { API_URL, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import DefaultPaymentMethod from '../userComponents/AccountSettingsPage/DefaultPaymentMethod';
 export default function Checkout() {
   const location = useLocation();

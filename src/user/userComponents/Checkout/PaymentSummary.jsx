@@ -10,10 +10,12 @@ import {
   InputLeftAddon,
   InputLeftElement,
   Skeleton,
-  Text
+  Text,
+  useToast
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL, handleApiMethod } from '../../../services/apiServices';
 
 export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
   const [tipValue, setTipValue] = useState(0);
@@ -21,6 +23,44 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
   const handleTipChange = () => {
     const value = tipref.current.value;
     setTipValue(value);
+  };
+
+  const toast = useToast();
+  const handleOrderPost = async (_bodyData) => {
+    console.log(_bodyData);
+    try {
+      const url = API_URL + '/orders/createorder';
+      const data = await handleApiMethod(url, 'POST', _bodyData);
+      if (data.msg === true) {
+        toast({
+          title: 'Order placed!',
+          description: 'Your food is on the way!',
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    } catch (error) {
+      console.log(error);
+
+      if (error.response.data.err === 'Order already exists') {
+        toast({
+          title: 'Duplicated orders',
+          description: `Error when placing new order - such order already exist.`,
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      } else {
+        toast({
+          title: 'Error when placing new order',
+          description: 'Error when placing new order. Please, try again',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    }
   };
 
   return (
@@ -130,6 +170,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
           </Skeleton>
           <Link to='/user/checkout'>
             <Button
+              onClick={() => handleOrderPost(finalCheckoutBody)}
               isDisabled={finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? false : true}
               w='100%'
               background='primary.default'
