@@ -21,7 +21,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
   const [tipValue, setTipValue] = useState(0);
   const tipref = useRef(null);
   const handleTipChange = () => {
-    const value = tipref.current.value;
+    const value = tipref.current.value ? tipref.current.value : 0;
     setTipValue(value);
   };
 
@@ -29,6 +29,8 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
   const handleOrderPost = async (_bodyData) => {
     console.log(_bodyData);
     try {
+      let preTipValue = Number(tipValue);
+      _bodyData.checkoutBodyData.userdata.paymentSummary.tips = preTipValue;
       const url = API_URL + '/orders/createorder';
       const data = await handleApiMethod(url, 'POST', _bodyData);
       if (data.msg === true) {
@@ -102,7 +104,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
                 <Input
                   ref={tipref}
                   onChange={handleTipChange}
-                  type='text'
+                  type='number'
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'

@@ -316,6 +316,9 @@ export default function Cart() {
                           />
                         ) : (
                           <>
+                            <Text fontSize='2xs' fontWeight='bold' color='neutral.gray' py=''>
+                              No addresses specified
+                            </Text>
                             <Link to='/user/account/address'>
                               <Text textDecoration='underline' fontSize='xs' fontWeight='bold' color='neutral.black'>
                                 Add your first address
