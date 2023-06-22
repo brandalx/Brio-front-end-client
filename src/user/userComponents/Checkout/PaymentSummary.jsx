@@ -14,7 +14,7 @@ import {
   useToast
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { API_URL, handleApiMethod } from '../../../services/apiServices';
 
 export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
@@ -24,7 +24,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
     const value = tipref.current.value ? tipref.current.value : 0;
     setTipValue(value);
   };
-
+  const navigate = useNavigate();
   const toast = useToast();
   const handleOrderPost = async (_bodyData) => {
     console.log(_bodyData);
@@ -41,6 +41,8 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
           duration: 9000,
           isClosable: true
         });
+
+        navigate('/');
       }
     } catch (error) {
       console.log(error);
