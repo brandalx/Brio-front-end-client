@@ -73,7 +73,13 @@ export default function AccountSettings() {
                 ...formData // Update fields with new form data
             };
 
-            const response = await axios.patch(`${API_URL}/admin/restaurants/${restaurantId}`, updatedRestaurantData);
+            const token = localStorage.getItem('x-api-key'); // получение токена из локального хранилища
+
+            const response = await axios.patch(`${API_URL}/admin/restaurants/${restaurantId}`, updatedRestaurantData, {
+                headers: {
+                    'x-api-key': token // добавление токена в заголовки
+                }
+            });
             console.log(response.data);
         } catch (error) {
             console.error('Error updating restaurant information:', error);
@@ -81,6 +87,7 @@ export default function AccountSettings() {
             alert("There was a problem updating the restaurant's information. Please try again later.");
         }
     };
+
     const fetchRestaurant = async (restaurantId) => {
 
         try {
