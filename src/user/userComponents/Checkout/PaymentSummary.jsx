@@ -191,7 +191,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
               {finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? (
                 <> Submit order</>
               ) : (
-                <> Please,select payment method</>
+                <> Select payment method</>
               )}
             </Button>
           </Link>
