@@ -73,6 +73,7 @@ export default function PaymentMethod() {
                     handleUserAddressDelete={handleUserAddressDelete}
                     key={index}
                     item={item}
+                    index={cardsArr.length - 1 - index}
                   />
                 ))
               )}

@@ -92,7 +92,7 @@ export default function AdressCard({
     }
   };
   return (
-    <GridItem w='100%' data-aos='fade-up'>
+    <GridItem zIndex={index} w='100%' data-aos='fade-up'>
       <Skeleton minH='100px' borderRadius='16px' isLoaded={!addressLoading}>
         <Box
           _hover={{

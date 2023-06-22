@@ -23,10 +23,11 @@ export default function PaymentCard({
   disabledOptions = false,
   handleUserAddressDelete,
   setIsEditTrue,
-  setTargetIndex
+  setTargetIndex,
+  index
 }) {
   return (
-    <Box data-aos='fade-up' h='100%'>
+    <Box zIndex={index} data-aos='fade-up' h='100%'>
       <Box
         h='100%'
         onClick={() => {

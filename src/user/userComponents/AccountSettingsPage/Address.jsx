@@ -64,7 +64,7 @@ export default function Adress() {
                         handleUserAddressDelete={handleUserAddressDelete}
                         key={index}
                         item={item}
-                        index={index}
+                        index={addressArr.length - 1 - index}
                       />
                     );
                   })}
