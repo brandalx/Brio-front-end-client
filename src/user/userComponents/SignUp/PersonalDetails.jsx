@@ -1,28 +1,16 @@
 import {
   Box,
-  Center,
-  Container,
   Text,
   FormControl,
   FormLabel,
   Stack,
   Input,
-  Checkbox,
   Button,
   Flex,
-  chakra,
-  VisuallyHidden,
-  InputGroup,
-  InputRightElement,
-  Grid,
-  GridItem,
   FormErrorMessage
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
-import Logo from '../../../assets/svg/Logo';
-import { AiOutlineSearch } from 'react-icons/ai';
-import AdditionalInfo from './AdditionalInfo';
 import { useForm } from 'react-hook-form';
 export default function PersonalDetails({ type, setMainBody, mainBody }) {
   const [email, setEmail] = useState('');

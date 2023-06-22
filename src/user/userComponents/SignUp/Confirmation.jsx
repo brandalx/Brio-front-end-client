@@ -37,7 +37,6 @@ export default function Confirmation({ mainBody }) {
   const toast = useToast();
   const handlePostUser = async (_bodyData) => {
     try {
-      // const url = API_URL + "/videos/"+params["id"];
       const url = API_URL + '/users/new';
       const data = await handleApiMethod(url, 'POST', _bodyData);
       if (data._id) {

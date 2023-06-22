@@ -1,7 +1,5 @@
 import {
   Box,
-  Center,
-  Container,
   Text,
   FormControl,
   FormLabel,
@@ -10,18 +8,9 @@ import {
   Checkbox,
   Button,
   Flex,
-  chakra,
-  VisuallyHidden,
-  InputGroup,
-  InputRightElement,
-  Grid,
-  GridItem,
   FormErrorMessage
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Logo from '../../../assets/svg/Logo';
-import { AiOutlineSearch } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
