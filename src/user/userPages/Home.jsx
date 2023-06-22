@@ -8,6 +8,7 @@ import Preloader from '../../components/Loaders/preloader';
 import { useCheckToken } from '../../services/token';
 
 import Spline from '@splinetool/react-spline';
+import Logo from '../../assets/svg/Logo';
 
 export default function Home() {
   // todo: add tag into product into backend model and validation
@@ -62,17 +63,33 @@ export default function Home() {
         </Box>
       )} */}
 
+      <Box
+        data-aos='fade-up'
+        zIndex='-1'
+        pos='relative'
+        textAlign='center'
+        display='flex'
+        alignItems='center'
+        justifyContent='center'
+        top='80px'
+        my={5}
+      >
+        <Text
+          pos='absolute'
+          fontSize={{ base: 'x-large', md: 'xl' }}
+          lineHeight={{ base: '20px', md: '60px' }}
+          color='primary.default'
+          fontWeight='black'
+        >
+          Bringing food really on-time
+        </Text>
+      </Box>
+
       <Box h={`${heightchange}px`} w='100%'>
         <Spline scene='https://draft.spline.design/PUwIzlFumPBQGPPr/scene.splinecode' onLoad={onload} />
       </Box>
 
       <Container maxW='1110px'>
-        {/* <Box my={5}>
-          <Text fontSize='2xl' lineHeight='60px' className='t-gra' fontWeight='black'>
-            Brio
-          </Text>
-        
-        </Box> */}
         <Skeleton borderRadius='16px' height={loading ? '250px' : '0px'} isLoaded={loading} my={loading ? 2 : 0} />
         <Box>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
