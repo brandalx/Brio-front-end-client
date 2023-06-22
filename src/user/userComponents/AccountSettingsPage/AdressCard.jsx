@@ -92,8 +92,8 @@ export default function AdressCard({
     }
   };
   return (
-    <GridItem w='100%'>
-      <Skeleton my={2} minH='100px' borderRadius='16px' isLoaded={!addressLoading}>
+    <GridItem w='100%' data-aos='fade-up'>
+      <Skeleton minH='100px' borderRadius='16px' isLoaded={!addressLoading}>
         <Box
           _hover={{
             cursor: 'pointer',
@@ -109,7 +109,6 @@ export default function AdressCard({
           }}
           borderColor={onitemselected ? 'primary.default' : 'BlackAlpha 200'}
           borderRadius='16px'
-          mb='12px'
           p='0px'
           transition='all 0.3s'
           borderWidth='1px'

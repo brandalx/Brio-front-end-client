@@ -19,7 +19,7 @@ export default function MenuMeal({ item, amount }) {
   const cutInfoText = cutInfo(info);
   return (
     <>
-      <Box>
+      <Box data-aos='fade-up'>
         <Grid templateColumns={{ base: '1fr', md: '1fr 1fr ' }} gap={4}>
           <GridItem w='100%'>
             <Box display='flex' alignItems='center'>

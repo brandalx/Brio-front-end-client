@@ -100,7 +100,7 @@ export default function Restaurant() {
 
   return (
     <>
-      <Box background='bg' py='50px'>
+      <Box background='bg' py='50px' data-aos='fade-up'>
         <Container maxW='1110px'>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
             <GridItem w='100%' h='100%'>
@@ -165,7 +165,7 @@ export default function Restaurant() {
         </Container>
       </Box>
       <Box>
-        <Container maxW='1110px'>
+        <Container maxW='1110px' data-aos='fade-up'>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
             <GridItem w='100%' h='100%'>
               <Box py='25px'>

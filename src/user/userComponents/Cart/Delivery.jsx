@@ -64,7 +64,7 @@ export default function Delivery({ item, setCheckoutBody, setPickupLocation }) {
   } = AddressReducers();
 
   return (
-    <Box py={4}>
+    <Box py={4} data-aos='fade-up'>
       <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
         Select your shipping adress
       </Text>
@@ -73,17 +73,18 @@ export default function Delivery({ item, setCheckoutBody, setPickupLocation }) {
           combinedAddresses.map((item, index) => {
             const isSelected = addressId === item._id;
             return (
-              <AdressCard
-                onitemselected={isSelected}
-                selectCard={selectCard}
-                disabledOptions={disabledOptions}
-                setTargetIndex={setTargetIndex}
-                setIsEditTrue={setIsEditTrue}
-                handleUserAddressDelete={handleUserAddressDelete}
-                key={index}
-                item={item}
-                index={index}
-              />
+              <Box key={index} my={4}>
+                <AdressCard
+                  onitemselected={isSelected}
+                  selectCard={selectCard}
+                  disabledOptions={disabledOptions}
+                  setTargetIndex={setTargetIndex}
+                  setIsEditTrue={setIsEditTrue}
+                  handleUserAddressDelete={handleUserAddressDelete}
+                  item={item}
+                  index={index}
+                />
+              </Box>
             );
           })}
       </Box>

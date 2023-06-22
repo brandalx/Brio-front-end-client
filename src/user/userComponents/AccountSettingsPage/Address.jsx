@@ -44,7 +44,7 @@ export default function Adress() {
 
   return (
     <>
-      <Box>
+      <Box data-aos='fade-up'>
         <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
           Address
         </Text>
@@ -54,7 +54,7 @@ export default function Adress() {
           </Text>
           <Skeleton minH='100px' borderRadius='16px' isLoaded={!loading}>
             <Box pt={5}>
-              <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={6}>
+              <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={4}>
                 {!loading &&
                   addressArr.map((item, index) => {
                     return (

@@ -49,7 +49,7 @@ export default function PaymentMethod() {
 
   return (
     <>
-      <Box>
+      <Box data-aos='fade-up'>
         <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
           Payment method
         </Text>
@@ -58,7 +58,7 @@ export default function PaymentMethod() {
             Connected payment methods
           </Text>
           <Box pt={5}>
-            <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={2}>
+            <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={4}>
               {cardsArr.length === 0 ? (
                 <>
                   <Text fontSize='2xs' fontWeight='bold' color='neutral.gray' py=''>

@@ -98,7 +98,7 @@ export default function SignUp() {
             </Flex>
           </Box>
         </GridItem>
-        <GridItem w='100%' h='100vh'>
+        <GridItem w='100%' h='100vh' data-aos='fade-up'>
           <Flex h='100%' justifyContent={{ base: 'center', md: 'flex-start' }}>
             <Flex
               ms={{ base: '0px', md: '100px', lg: '250px' }}

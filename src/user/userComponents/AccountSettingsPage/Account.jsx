@@ -113,7 +113,7 @@ export default function Account() {
     setValue('phone', '');
   };
   return (
-    <Box>
+    <Box data-aos='fade-up'>
       <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
         Account
       </Text>

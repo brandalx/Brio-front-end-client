@@ -74,7 +74,7 @@ export default function Login() {
     <>
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
         <Container maxW='550px'>
-          <GridItem w='100%' h='100vh'>
+          <GridItem w='100%' h='100vh' data-aos='fade-up'>
             <Flex h='100%' w='100' justifyContent='center'>
               <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
                 <Box py={6}>

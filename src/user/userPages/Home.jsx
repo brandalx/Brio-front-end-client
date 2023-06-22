@@ -199,6 +199,7 @@ export default function Home() {
               <Grid templateColumns={{ base: 'repeat(4, 1fr)', sm: 'repeat(4 1fr)', md: 'repeat(6, 1fr)' }} gap={3}>
                 <GridItem h='auto'>
                   <Box
+                    data-aos='fade-up'
                     as='button'
                     textAlign='center'
                     bg='neutral.white'
@@ -215,6 +216,7 @@ export default function Home() {
                 </GridItem>
                 <GridItem h='auto'>
                   <Box
+                    data-aos='fade-up'
                     as='button'
                     textAlign='center'
                     bg='neutral.white'
@@ -231,6 +233,7 @@ export default function Home() {
                 </GridItem>
                 <GridItem h='auto'>
                   <Box
+                    data-aos='fade-up'
                     as='button'
                     textAlign='center'
                     bg='neutral.white'
@@ -247,6 +250,7 @@ export default function Home() {
                 </GridItem>
                 <GridItem h='auto'>
                   <Box
+                    data-aos='fade-up'
                     as='button'
                     textAlign='center'
                     bg='neutral.white'
@@ -263,6 +267,7 @@ export default function Home() {
                 </GridItem>
                 <GridItem h='auto'>
                   <Box
+                    data-aos='fade-up'
                     as='button'
                     textAlign='center'
                     bg='neutral.white'
@@ -279,6 +284,7 @@ export default function Home() {
                 </GridItem>
                 <GridItem h='auto'>
                   <Box
+                    data-aos='fade-up'
                     as='button'
                     textAlign='center'
                     bg='neutral.white'

@@ -35,6 +35,7 @@
     "@splinetool/react-spline": "^2.2.6",
     "@splinetool/runtime": "^0.9.331",
     "@tabler/icons-react": "^2.17.0",
+    "aos": "^2.3.4",
     "axios": "^1.4.0",
     "buffer": "^5.5.0",
     "card-validator": "^8.1.1",

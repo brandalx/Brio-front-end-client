@@ -65,7 +65,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
 
   return (
     <>
-      <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
+      <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' data-aos='fade-up'>
         <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
           Payment summary
         </Text>

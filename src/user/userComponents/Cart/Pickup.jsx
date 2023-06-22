@@ -53,7 +53,7 @@ export default function Pickup({ item, pickupLocation, setPickupLocation, setChe
   }, [pickupLocation]);
 
   return (
-    <Box pt={4}>
+    <Box pt={4} data-aos='fade-up'>
       <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
         Restaurant address
       </Text>

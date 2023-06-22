@@ -139,7 +139,7 @@ export default function Checkout() {
           </Button>
           <Box my={5}>
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '4fr 1fr' }} gap={2}>
-              <GridItem w='100%'>
+              <GridItem w='100%' data-aos='fade-up'>
                 <Box>
                   <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
                     <Box ms={2} mb={4}>
@@ -148,7 +148,7 @@ export default function Checkout() {
                       </Text>
                     </Box>
 
-                    <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr  1fr ' }} gap={2}>
+                    <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr  1fr ' }} gap={4}>
                       {!loading &&
                         cardsArr.map((item, index) => {
                           return (
@@ -166,7 +166,9 @@ export default function Checkout() {
                       <GridItem w='100%'>
                         <Skeleton borderRadius='16px' isLoaded={!loading}>
                           <Box
-                            h={{ base: 'initial', lg: '130px' }}
+                            h='100%'
+                            data-aos='fade-up'
+                            // h={{ base: 'initial', lg: '130px' }}
                             onClick={() => setSwitcher(false)}
                             _hover={{
                               cursor: 'pointer',
@@ -181,7 +183,6 @@ export default function Checkout() {
                               borderColor: 'primary.default'
                             }}
                             borderRadius='16px'
-                            mb='12px'
                             p='25px'
                             transition='all 0.3s'
                             borderWidth='1px'

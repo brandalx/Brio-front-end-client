@@ -100,7 +100,7 @@ export default function NewPaymentMethod({
 
   return (
     <>
-      <Box ms={2} mb={4} mt={10}>
+      <Box ms={2} mb={4} mt={10} data-aos='fade-up'>
         <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
           New payment method
         </Text>

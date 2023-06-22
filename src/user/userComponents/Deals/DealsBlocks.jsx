@@ -71,6 +71,7 @@ export default function DealsBlocks() {
           {deals.length > 0 &&
             deals.map((promotion, index) => (
               <Box
+                data-aos='fade-up'
                 key={index}
                 display='flex'
                 justifyContent='space-between'
