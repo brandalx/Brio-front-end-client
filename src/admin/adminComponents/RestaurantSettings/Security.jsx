@@ -14,9 +14,90 @@ import {
   Checkbox,
   Stack
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Status from '../../../assets/svg/Status';
+import jwtDecode from 'jwt-decode';
+import axios from 'axios';
+import { API_URL } from '../../../services/apiServices';
 
 export default function Security() {
+  const [userId, setUserId] = useState(null);
+  const [restaurantId, setRestaurantId] = useState(null);
+  const [admins, setAdmins] = useState([]);
+
+  const fetchAdmin = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+
+      const response = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token // Это где вы устанавливаете заголовок с токеном
+        }
+      });
+
+      // Устанавливаем ID ресторана и пользователя
+      setRestaurantId(response.data.restaurant);
+      setUserId(userId);
+
+      console.log(response.data); // Выводим данные о пользователе и ресторане
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    }
+  };
+
+  const fetchAdmins = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const response = await axios.get(`${API_URL}/users/getAllUsers`, {
+        headers: {
+          'x-api-key': token // Setting header with token
+        }
+      });
+
+      // Filtering only admins who have userId equal to current user's ID
+      const filteredAdmins = response.data.filter((admin) => admin._id === userId);
+      setAdmins(filteredAdmins);
+    } catch (error) {
+      console.error('Error fetching admins:', error);
+    }
+  };
+
+  const updatePhoneNumber = async (newPhone) => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const response = await axios.put(
+        `${API_URL}/restaurants/${restaurantId}`,
+        {
+          phone: newPhone
+        },
+        {
+          headers: {
+            'x-api-key': token // Setting header with token
+          }
+        }
+      );
+
+      console.log(response.data); // Выводим обновленные данные
+    } catch (error) {
+      console.error('Error updating phone number:', error);
+    }
+  };
+
+  const [phoneNumber, setPhoneNumber] = useState(''); // Состояние для номера телефона
+
+  const handlePhoneChange = (e) => {
+    setPhoneNumber(e.target.value); // Обновляем значение номера телефона при изменении поля ввода
+  };
+
+  const handleTurnOn = () => {
+    updatePhoneNumber(phoneNumber); // Вызываем функцию обновления номера телефона при клике на кнопку
+  };
+  useEffect(() => {
+    fetchAdmin();
+    fetchAdmins();
+  }, [userId]);
   return (
     <>
       <Box>
@@ -35,6 +116,7 @@ export default function Security() {
                 </FormLabel>
 
                 <Input
+                  onChange={handlePhoneChange} // Добавляем обработчик изменения
                   w={{ base: '100%', md: 'fit-content' }}
                   type='phone'
                   background='neutral.white'
@@ -46,6 +128,7 @@ export default function Security() {
               </FormControl>
 
               <Button
+                onClick={handleTurnOn} // Добавляем обработчик клика
                 mt={{ base: 5, md: 0 }}
                 w={{ base: '100%', md: 'initial' }}
                 background='primary.default'
@@ -137,6 +220,7 @@ export default function Security() {
                   borderWidth: '1px',
                   borderColor: 'primary.default'
                 }}
+                onClick={handleTurnOn}
                 py={5}
               >
                 Change password
