@@ -7,7 +7,7 @@ import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import Pickup from '../userComponents/Cart/Pickup';
 import Summary from '../userComponents/Cart/Summary';
 import { API_URL, handleApiGet } from '../../services/apiServices';
-
+import Spline from '@splinetool/react-spline';
 export default function Cart() {
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
@@ -17,6 +17,7 @@ export default function Cart() {
   const [restaurant, setRestaurant] = useState([]);
   const [blankCart, setBlankCart] = useState(false);
   const [preSummary, setPreSummary] = useState([]);
+  const [heightchange, setheightchange] = useState(1);
   const [checkoutBody, setCheckoutBody] = useState({
     userdata: {
       selectedAddress: null,
@@ -156,6 +157,11 @@ export default function Cart() {
     console.log(checkoutBody);
   }, [checkoutBody]);
 
+  const onload = () => {
+    setheightchange(350);
+    setLoading(false);
+  };
+
   return (
     <Box>
       <Container maxW='1110px'>
@@ -167,7 +173,12 @@ export default function Cart() {
             <Box>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
                 <Skeleton minH='20px' w='100%' borderRadius='16px' my={2} isLoaded={!loading}>
-                  <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                  <Text
+                    fontSize='xs'
+                    fontWeight='bold'
+                    color='neutral.black'
+                    textAlign={!loading && mealsArr.length === 0 && 'center'}
+                  >
                     Menu {!loading && mealsArr.length} meals
                   </Text>
                 </Skeleton>
@@ -183,7 +194,61 @@ export default function Cart() {
             </Box>
           </GridItem>
           {blankCart ? (
-            <>No items in cart</>
+            <Skeleton minH='60px' w='100%' borderRadius='16px' isLoaded={!loading}>
+              <Box borderRadius='16px' borderWidth='1px' py='20px' mb={4}>
+                <Box
+                  data-aos='fade-up'
+                  zIndex='-1'
+                  pos='relative'
+                  textAlign='center'
+                  display='flex'
+                  alignItems='center'
+                  justifyContent='center'
+                  top='50px'
+                  my={5}
+                >
+                  <Text
+                    pos='absolute'
+                    fontSize={{ base: 'sm', md: 'dm' }}
+                    lineHeight={{ base: '20px', md: '60px' }}
+                    color='primary.default'
+                    fontWeight='black'
+                  >
+                    No items in cart yet :(
+                  </Text>
+                </Box>
+
+                <Box h={`${heightchange}px`} w='100%'>
+                  <Spline scene='https://prod.spline.design/cHCwM6lTjFe8NEqC/scene.splinecode' onLoad={onload} />
+                </Box>
+                {!loading && mealsArr.length === 0 && (
+                  <Box my={2} display='flex' justifyContent='center' alignItems='center'>
+                    <Link to='/'>
+                      <Button
+                        textAlign='center'
+                        fontSize='xs'
+                        background='primary.default'
+                        fontWeight='bold'
+                        variant='solid'
+                        color='neutral.white'
+                        borderWidth='1px'
+                        borderColor='primary.default'
+                        _hover={{
+                          background: 'neutral.white',
+                          color: 'primary.default',
+                          borderWidth: '1px',
+                          borderColor: 'primary.default'
+                        }}
+                        py={5}
+                      >
+                        {' '}
+                        Add your first meal
+                      </Button>
+                    </Link>
+                  </Box>
+                )}
+              </Box>
+            </Skeleton>
           ) : (
             <GridItem w='100%'>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
