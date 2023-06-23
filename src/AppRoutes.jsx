@@ -29,71 +29,74 @@ import PersonalDetails from './user/userComponents/SignUp/PersonalDetails';
 import RestaurantPromotions from './admin/adminPages/RestaurantPromotions';
 import RestaurantCustomers from './admin/adminPages/RestaurantCustomers';
 import UserDetails from './admin/adminComponents/RestaurantCustomers/UserDetails';
-
+import { cartContext } from './context/globalContext';
 import { TOKEN_KEY } from './services/apiServices';
 import { useCheckToken } from './services/token';
 import Deals from './user/userPages/Deals';
 
 export default function AppRoutes({ isToken }) {
+  const [cartLen, setCartLen] = useState(0);
   return (
     <>
       <globalContext.Provider value={{ isToken }}>
-        {/* TODO: pass global values in value obj */}
-        <BrowserRouter>
-          <div className='wrapper'>
-            <Routes>
-              <Route path='/admin/*' element={<AdminHeader />} />
-
-              <Route path='/*' element={<Header />} />
-              <Route path='/login/*' element={<div />} />
-              <Route path='/recoverpassword/*' element={<div />} />
-              <Route path='/signup/*' element={<div />} />
-            </Routes>
-
-            <Main>
+        <cartContext.Provider value={{ cartLen, setCartLen }}>
+          {/* TODO: pass global values in value obj */}
+          <BrowserRouter>
+            <div className='wrapper'>
               <Routes>
-                {/* ----------ALL USERS ROUTES------------ */}
-                <Route path='/' element={<Home />} />
-                <Route path='/login' element={<Login />} />
-                <Route path='/recoverpassword' element={<Forgotpassword />} />
-                <Route path='/signup/*' element={<SignUp />} />
+                <Route path='/admin/*' element={<AdminHeader />} />
 
-                {/* <Route path='/personal' element={<PersonalDetails />} />
-                <Route path='/personal' element={<PersonalDetails />} /> */}
-                {isToken && (
-                  <>
-                    <Route path='/user/account/*' element={<AccountSettings />} />
-                    <Route path='/user/cart/*' element={<Cart />} />
-                    <Route path='/user/checkout/' element={<Checkout />} />
-                    <Route path='/user/orders' element={<UserOrders />} />
-                    <Route path='/user/order/:id' element={<Order />} />
-                  </>
-                )}
-                <Route path='/deals' element={<Deals />} />
-                <Route path='/restaurant/' element={<Restaurants />} />
-                <Route path='/restaurant/:id' element={<Restaurant />} />
-                <Route path='/restaurant/product/:id' element={<Product />} />
-
-                {/* ----------ALL ADMIN ROUTES------------ */}
-                <Route path='/admin/restaurant/dashboard' element={<RestaurantDashboard />} />
-                <Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />
-                <Route path='/admin/restaurant/menu' element={<RestaurantMenu />} />
-                <Route path='/admin/restaurant/settings/*' element={<RestaurantSettings />} />
-                <Route path='/admin/restaurant/promotions' element={<RestaurantPromotions />} />
-                <Route path='/admin/restaurant/customers' element={<RestaurantCustomers />} />
-                <Route path='/admin/restaurant/customers/:userId' element={<UserDetails />} />
-                <Route path='/*' element={<Page404 />} />
+                <Route path='/*' element={<Header />} />
+                <Route path='/login/*' element={<div />} />
+                <Route path='/recoverpassword/*' element={<div />} />
+                <Route path='/signup/*' element={<div />} />
               </Routes>
-            </Main>
-            <Routes>
-              <Route path='/*' element={<Footer />} />
-              <Route path='/admin/*' element={<AdminFooter />} />
-              <Route path='/login/*' element={<div />} />
-              <Route path='/recoverpassword/*' element={<div />} />
-              <Route path='/signup/*' element={<div />} />
-            </Routes>
-          </div>
-        </BrowserRouter>
+
+              <Main>
+                <Routes>
+                  {/* ----------ALL USERS ROUTES------------ */}
+                  <Route path='/' element={<Home />} />
+                  <Route path='/login' element={<Login />} />
+                  <Route path='/recoverpassword' element={<Forgotpassword />} />
+                  <Route path='/signup/*' element={<SignUp />} />
+
+                  {/* <Route path='/personal' element={<PersonalDetails />} />
+                <Route path='/personal' element={<PersonalDetails />} /> */}
+                  {isToken && (
+                    <>
+                      <Route path='/user/account/*' element={<AccountSettings />} />
+                      <Route path='/user/cart/*' element={<Cart />} />
+                      <Route path='/user/checkout/' element={<Checkout />} />
+                      <Route path='/user/orders' element={<UserOrders />} />
+                      <Route path='/user/order/:id' element={<Order />} />
+                    </>
+                  )}
+                  <Route path='/deals' element={<Deals />} />
+                  <Route path='/restaurant/' element={<Restaurants />} />
+                  <Route path='/restaurant/:id' element={<Restaurant />} />
+                  <Route path='/restaurant/product/:id' element={<Product />} />
+
+                  {/* ----------ALL ADMIN ROUTES------------ */}
+                  <Route path='/admin/restaurant/dashboard' element={<RestaurantDashboard />} />
+                  <Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />
+                  <Route path='/admin/restaurant/menu' element={<RestaurantMenu />} />
+                  <Route path='/admin/restaurant/settings/*' element={<RestaurantSettings />} />
+                  <Route path='/admin/restaurant/promotions' element={<RestaurantPromotions />} />
+                  <Route path='/admin/restaurant/customers' element={<RestaurantCustomers />} />
+                  <Route path='/admin/restaurant/customers/:userId' element={<UserDetails />} />
+                  <Route path='/*' element={<Page404 />} />
+                </Routes>
+              </Main>
+              <Routes>
+                <Route path='/*' element={<Footer />} />
+                <Route path='/admin/*' element={<AdminFooter />} />
+                <Route path='/login/*' element={<div />} />
+                <Route path='/recoverpassword/*' element={<div />} />
+                <Route path='/signup/*' element={<div />} />
+              </Routes>
+            </div>
+          </BrowserRouter>
+        </cartContext.Provider>
       </globalContext.Provider>
     </>
   );

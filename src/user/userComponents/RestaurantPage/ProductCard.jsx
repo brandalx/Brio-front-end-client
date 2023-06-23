@@ -1,9 +1,11 @@
 import { Box, GridItem, Image, Text, Button, Flex, Stack, border, useToast } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
+import { cartContext } from '../../../context/globalContext';
 
 export default function ProductCard({ img, title, description, price, _id }) {
+  const { cartLen, setCartLen } = useContext(cartContext);
   const toast = useToast();
   const [userar, setUserAr] = useState([]);
   const [priceCount, setPriceCount] = useState(1);
@@ -57,6 +59,14 @@ export default function ProductCard({ img, title, description, price, _id }) {
           duration: 9000,
           isClosable: true
         });
+
+        let isContains = userar.cart.some((item) => {
+          return item.productId === _id;
+        });
+        let defcartlen = cartLen;
+        if (!isContains) {
+          setCartLen(defcartlen + 1);
+        }
       }
     } catch (error) {
       console.log(error);

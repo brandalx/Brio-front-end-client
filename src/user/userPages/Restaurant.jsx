@@ -59,7 +59,7 @@ export default function Restaurant() {
 
   useEffect(() => {
     handleRestaurantApi();
-  }, [params]);
+  }, []);
 
   useEffect(() => {
     if (restaurantArr) {

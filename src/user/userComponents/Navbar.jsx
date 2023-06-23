@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import {
   chakra,
@@ -33,13 +33,14 @@ import Logo from '../../assets/svg/Logo';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import { useCheckToken } from '../../services/token';
+import { cartContext } from '../../context/globalContext';
 export default function Navbar() {
   const isTokenExpired = useCheckToken();
-
-  useEffect(() => {
-    if (isTokenExpired) {
-    }
-  }, [isTokenExpired]);
+  const { cartLen, setCartLen } = useContext(cartContext);
+  // useEffect(() => {
+  //   if (isTokenExpired) {
+  //   }
+  // }, [isTokenExpired]);
   const bg = useColorModeValue('white', 'gray.800');
   const mobileNav = useDisclosure();
   const location = useLocation();
@@ -47,7 +48,6 @@ export default function Navbar() {
 
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
-  const [cartLen, setCartLen] = useState(0);
   const [srcav, setSrcav] = useState();
   const randomarr = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
 
