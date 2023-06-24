@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useContext, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { API_URL, handleApiMethod } from '../../../services/apiServices';
+import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 
 import { cartContext } from '../../../context/globalContext';
 
@@ -45,7 +45,11 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
           isClosable: true
         });
         setCartLen(0);
-        navigate('/');
+
+        const ordersurl = API_URL + '/orders/user/single';
+        const neworderdata = await handleApiGet(ordersurl);
+        const idorder = neworderdata[neworderdata.length - 1]._id;
+        navigate('/user/order/' + idorder);
       }
     } catch (error) {
       console.log(error);
