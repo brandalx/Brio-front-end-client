@@ -17,7 +17,7 @@ import {
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import '../../../css/global.css';
-import { API_URL, handleApiPost } from '../../../services/apiServices';
+import { API_URL } from '../../../services/apiServices';
 
 export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryName }) {
   const { control, handleSubmit, reset } = useForm();
@@ -29,7 +29,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
     const payload = {
       title: title,
       description: description,
-      image: items, // Обновлено
+      image: items,
       price: price,
       ingredients: ingredients,
       nutritionals: nutritionals,
@@ -38,9 +38,12 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
     };
 
     try {
+      const token = localStorage.getItem('x-api-key');
+
       const response = await fetch(API_URL + '/admin/products', {
         method: 'POST',
         headers: {
+          'x-api-key': token,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
@@ -64,14 +67,27 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
       description,
       ingredients: ingredientsStr,
       nutritionals: nutritionalsStr,
-      restaurantRef
+      restaurantRef,
+      items: image
     } = data;
+
     const ingredients = ingredientsStr.split(',').map((ingredient) => ingredient.trim());
     const nutritionals = nutritionalsStr.split(',').map((nutritional) => nutritional.trim());
 
     try {
+      console.log('Publishing product:', {
+        price,
+        title,
+        description,
+        ingredients,
+        nutritionals,
+        restaurantRef,
+        image,
+        categoryName
+      });
+
       const newProduct = await createProduct(
-        image, // Используйте значение image
+        image,
         price,
         title,
         description,
@@ -79,26 +95,27 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
         nutritionals,
         restaurantRef
       );
-      // Add the new product to the list of products
-      setProduct((prevProducts) => [
-        ...prevProducts,
-        { ...newProduct } // Add the amount field to the new product
-      ]);
-      // If successful, close the modal
+
+      console.log('Created product:', newProduct);
+
+      setProduct((prevProducts) => [...prevProducts, { ...newProduct }]);
       onClose();
     } catch (error) {
-      console.error('An error occurred while publishing the category:', error);
+      console.error('An error occurred while publishing the product:', error);
     }
   };
 
   const onSubmit = (data) => {
+    console.log('Form submitted:', data);
     handlePublishProduct(data);
-    reset(); // Reset the form values after submission
+    reset();
   };
 
   const handleImageChange = (event) => {
     setImage(URL.createObjectURL(event.target.files[0]));
   };
+
+  console.log('ModalRestaurantMenu rendered');
 
   return (
     <Modal
@@ -209,6 +226,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
                 <Controller
                   control={control}
                   name='title'
+                  rules={{ required: true }}
                   defaultValue=''
                   render={({ field }) => (
                     <Input {...field} color='neutral.gray' fontSize='2xs' type='text' placeholder='Enter meal name' />
@@ -328,7 +346,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
             p='20px'
             border='1px'
             borderColor='primary.default'
-            onClick={handleSubmit(onSubmit)}
+            onClick={() => handleSubmit(onSubmit)()}
           >
             Publish meal item
           </Button>
