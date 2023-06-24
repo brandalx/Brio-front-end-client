@@ -49,18 +49,6 @@ export default function OrdersTableBody() {
     }
   };
 
-  // const getRestaurantName = (id) => {
-  //   console.log(restaurantar);
-  //   const restaurant = restaurantar.find((restaurant) => {
-  //     let finded = restaurant._id === id;
-
-  //     if (finded) {
-  //       return restaurant.title;
-  //     } else {
-  //       return null;
-  //     }
-  //   });
-  // };
   const getRestaurantName = (id) => {
     return restaurantar.map((item) => {
       if (item._id === id) {
@@ -82,6 +70,12 @@ export default function OrdersTableBody() {
       day: 'numeric'
     });
     return formattedDate;
+  };
+  const formatTime = (timepass) => {
+    const isoString = timepass;
+    const date = new Date(isoString);
+    const usTime = date.toLocaleTimeString('en-US');
+    return usTime;
   };
 
   return (
@@ -118,7 +112,7 @@ export default function OrdersTableBody() {
                 {formattedDate}
               </Td>
               <Td pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-                {item.creationTime}
+                {formatTime(item.creationDate)}
               </Td>
               <Td
                 pr={isMobile ? '0' : ''}
