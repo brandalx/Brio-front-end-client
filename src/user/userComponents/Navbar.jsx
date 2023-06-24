@@ -220,7 +220,7 @@ export default function Navbar() {
                             </MenuButton>
 
                             <MenuList>
-                              <a href='user/cart'>
+                              <a href='/user/cart'>
                                 {/* //because it should refresh to update user logged in */}
 
                                 <MenuItem fontWeight='medium'>My cart</MenuItem>
@@ -370,7 +370,7 @@ export default function Navbar() {
                               <IconShoppingBag color='#4E60FF' />
                             </MenuButton>
                             <MenuList>
-                              <a href='user/cart'>
+                              <a href='/user/cart'>
                                 {/* //because it should refresh to update user logged in */}
 
                                 <MenuItem fontWeight='medium'>My cart</MenuItem>

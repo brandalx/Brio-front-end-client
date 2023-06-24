@@ -1,6 +1,7 @@
 import { Box, Button, Grid, GridItem, Text, Image, Divider } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import TrashBox from '../../../assets/svg/TrashBox';
+import { Link } from 'react-router-dom';
 
 export default function MenuMeal({ item, amount }) {
   let info = item.description;
@@ -22,23 +23,25 @@ export default function MenuMeal({ item, amount }) {
       <Box data-aos='fade-up'>
         <Grid templateColumns={{ base: '1fr', md: '1fr 1fr ' }} gap={4}>
           <GridItem w='100%'>
-            <Box display='flex' alignItems='center'>
-              <Box me={2}>
-                <Image borderRadius='12px' maxH='72px' maxW='72px' src={item.image} />
-              </Box>
-              <Box>
-                <Box>
-                  <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
-                    {item.title}
-                  </Text>
+            <Link to={`/restaurant/product/${item._id}`}>
+              <Box display='flex' alignItems='center'>
+                <Box me={2}>
+                  <Image borderRadius='12px' maxH='72px' maxW='72px' src={item.image} />
                 </Box>
                 <Box>
-                  <Text color='neutral.grayDark' fontSize='2xs'>
-                    {cutInfoText}
-                  </Text>
+                  <Box>
+                    <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
+                      {item.title}
+                    </Text>
+                  </Box>
+                  <Box>
+                    <Text color='neutral.grayDark' fontSize='2xs'>
+                      {cutInfoText}
+                    </Text>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
+            </Link>
           </GridItem>
           <GridItem w='100%'>
             <Box

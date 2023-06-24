@@ -24,7 +24,7 @@ import { FaChevronLeft } from 'react-icons/fa';
 
 import ImageGallery from 'react-image-gallery';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 export default function Product() {
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
@@ -35,6 +35,7 @@ export default function Product() {
   const [loading, setLoading] = useState(true);
   const [imageArr, setImageArr] = useState([]);
   const [restaurant, setRestaurant] = useState([]);
+  const navigate = useNavigate();
   const handleAProductApi = async () => {
     // const url = API_URL + '/products';
 
@@ -78,6 +79,10 @@ export default function Product() {
     handleAProductApi();
   }, [params]);
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
     <>
       <Box data-aos='fade-up'>
@@ -85,8 +90,8 @@ export default function Product() {
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
             <Flex alignItems='center'>
               <Icon as={FaChevronLeft} mr={1} boxSize={4} />
-              <Text color='neutral.black' fontSize='xs'>
-                <Link to={'/restaurant/' + arr.restaurantRef}> Back to Restaurant Page</Link>
+              <Text onClick={() => handleGoBack()} color='neutral.black' fontSize='xs'>
+                Back
               </Text>
             </Flex>
           </Button>
