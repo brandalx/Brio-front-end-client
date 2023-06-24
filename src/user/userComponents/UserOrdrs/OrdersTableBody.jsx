@@ -39,6 +39,7 @@ export default function OrdersTableBody() {
       const data = await handleApiGet(url);
       setUser(data);
       const datarestaurants = await handleApiGet(urlrestaurant);
+      data.orders.reverse();
       setArr(data.orders);
       const dataorders = await handleApiGet(urlorder);
       setOrders(dataorders);
