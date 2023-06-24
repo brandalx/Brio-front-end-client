@@ -12,14 +12,16 @@ import {
   ModalBody,
   ModalFooter,
   ModalOverlay,
-  transition
+  transition,
+  useToast
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import TrashBox from '../../../assets/svg/TrashBox';
 import { Link } from 'react-router-dom';
 import { Modal, useDisclosure } from '@chakra-ui/react';
+import { API_URL, handleApiMethod } from '../../../services/apiServices';
 
-export default function MenuMeal({ item, amount }) {
+export default function MenuMeal({ reload, setReload, item, amount }) {
   let info = item.description;
   const cutInfo = (info) => {
     const words = info.split(' ');
@@ -38,6 +40,59 @@ export default function MenuMeal({ item, amount }) {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
+  const toast = useToast();
+  const handleItemDelete = async (_bodyData) => {
+    const urltodelete = API_URL + '/users/cart/delete';
+
+    const _bodyDataFinal = {
+      itemToDelete: _bodyData
+    };
+
+    console.log(_bodyDataFinal);
+    try {
+      const data = await handleApiMethod(urltodelete, 'DELETE', _bodyDataFinal);
+      console.log(data);
+      if (data.msg === true) {
+        toast({
+          title: 'Meal was removed.',
+          description: "We've removed this meal.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+      setReload(reload + 1);
+    } catch (error) {
+      console.log(error);
+      if (error.response && error.response.data) {
+        if (error.response.data.err === 'Meal does not exist') {
+          toast({
+            title: 'Meal does not exist',
+            description: `Error when removing meal - such meal does not exist.`,
+            status: 'warning',
+            duration: 9000,
+            isClosable: true
+          });
+        } else {
+          toast({
+            title: 'Error when removing meal',
+            description: 'Error when removing selected meal',
+            status: 'error',
+            duration: 9000,
+            isClosable: true
+          });
+        }
+      } else {
+        toast({
+          title: 'Unexpected error',
+          description: 'An unexpected error has occurred.',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    }
+  };
 
   return (
     <>
@@ -201,7 +256,10 @@ export default function MenuMeal({ item, amount }) {
               Cancel
             </Button>
             <Button
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                handleItemDelete(item.itemCartId);
+              }}
               w={{ base: '50%', md: 'initial' }}
               fontSize='2xs'
               fontWeight='bold'

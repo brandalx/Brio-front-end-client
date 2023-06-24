@@ -18,6 +18,7 @@ export default function Cart() {
   const [blankCart, setBlankCart] = useState(false);
   const [preSummary, setPreSummary] = useState([]);
   const [heightchange, setheightchange] = useState(1);
+  const [reload, setReload] = useState(0);
   const [checkoutBody, setCheckoutBody] = useState({
     userdata: {
       selectedAddress: null,
@@ -99,6 +100,7 @@ export default function Cart() {
       let product = await Promise.all(
         cartData.cart.map(async (item) => {
           const products = await handleApiGet(API_URL + '/products/' + item.productId);
+          products.itemCartId = item._id;
           return products;
         })
       );
@@ -143,11 +145,11 @@ export default function Cart() {
 
   useEffect(() => {
     handleApi();
-  }, []);
+  }, [reload]);
 
   useEffect(() => {
     handleApiPresummary();
-  }, []);
+  }, [reload]);
 
   const location = useLocation();
   const isDeliveryPage = location.pathname === '/user/cart';
@@ -185,8 +187,16 @@ export default function Cart() {
                 <Skeleton minH='60px' w='100%' borderRadius='16px' isLoaded={!loading}>
                   <Box pt={5}>
                     {!loading &&
+                      mealsArr.length > 0 &&
+                      arr.cart.length > 0 &&
                       mealsArr.map((item, index) => (
-                        <MenuMeal key={index} item={item} amount={arr.cart[index].productAmount} />
+                        <MenuMeal
+                          setReload={setReload}
+                          reload={reload}
+                          key={index}
+                          item={item}
+                          amount={arr.cart[index]?.productAmount} // Use optional chaining to handle undefined objects
+                        />
                       ))}
                   </Box>
                 </Skeleton>
