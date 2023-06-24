@@ -185,21 +185,6 @@ export default function OrdersTableBody() {
                     <Link to={'/user/order/' + item._id}>
                       <MenuItem fontWeight='medium'>More info</MenuItem>{' '}
                     </Link>
-                    <MenuDivider />
-                    <MenuItem
-                      m={0}
-                      background='neutral.white'
-                      variant='solid'
-                      color='error.default'
-                      _hover={{
-                        background: 'error.default',
-                        color: 'neutral.white'
-                      }}
-                      fontWeight='medium'
-                    >
-                      {' '}
-                      Delete
-                    </MenuItem>
                   </MenuList>
                 </Menu>
               </Td>
