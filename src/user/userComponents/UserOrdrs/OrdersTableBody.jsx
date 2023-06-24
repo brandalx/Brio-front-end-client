@@ -182,7 +182,7 @@ export default function OrdersTableBody() {
 
                   <MenuList>
                     {' '}
-                    <Link to={'/user/order/' + item._id}>
+                    <Link to={'/user/order/' + item.orderRef}>
                       <MenuItem fontWeight='medium'>More info</MenuItem>{' '}
                     </Link>
                   </MenuList>

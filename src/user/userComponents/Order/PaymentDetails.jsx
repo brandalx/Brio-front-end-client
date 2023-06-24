@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import PaymentCard from '../AccountSettingsPage/PaymentCard';
 
 export default function PaymentDetails({ item, orders }) {
+  const [disabledOptions, setDisabledOptions] = useState(true);
   console.log(orders);
   return (
     <Box>
@@ -12,6 +13,7 @@ export default function PaymentDetails({ item, orders }) {
       </Text>
       <Box>
         <PaymentCard
+          disabledOptions={disabledOptions}
           item={{
             cardNumber: '1234 5678 9012 3456',
             expirationDate: '12/24',
@@ -26,7 +28,7 @@ export default function PaymentDetails({ item, orders }) {
             Subtotal
           </Text>
           <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-            $ {orders.paymentSummary.subtotal}
+            $ {item.userdata.paymentSummary.subtotal}
           </Text>
         </Flex>
         <Flex my={4} justifyContent='space-between'>
@@ -34,7 +36,7 @@ export default function PaymentDetails({ item, orders }) {
             Shipping
           </Text>
           <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-            $ {orders.paymentSummary.shipping}
+            $ {item.userdata.paymentSummary.shipping}
           </Text>
         </Flex>
         <Flex my={4} justifyContent='space-between'>
@@ -42,7 +44,7 @@ export default function PaymentDetails({ item, orders }) {
             Tips
           </Text>
           <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-            $ {orders.paymentSummary.tips}
+            $ {item.userdata.paymentSummary.tips}
           </Text>
         </Flex>
         <Flex my={4} justifyContent='space-between'>
@@ -50,7 +52,7 @@ export default function PaymentDetails({ item, orders }) {
             Discount (coupon)
           </Text>
           <Text fontWeight='semibold' fontSize='3xs' color='error.default'>
-            $ {orders.paymentSummary.discount}
+            $ {item.userdata.paymentSummary.discount}
           </Text>
         </Flex>
         <Flex my={4} justifyContent='space-between'>
@@ -58,7 +60,7 @@ export default function PaymentDetails({ item, orders }) {
             Total (tax incl.)
           </Text>
           <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
-            $ {orders.paymentSummary.totalAmount}
+            $ {item.userdata.paymentSummary.totalAmount}
           </Text>
         </Flex>
       </Box>

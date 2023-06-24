@@ -7,7 +7,7 @@ export default function Menu({ item }) {
   const [producAr, setProductAr] = useState([]);
   const [loading, setLoading] = useState(true);
   const handleApi = async () => {
-    const url = API_URL + '/products/' + item.productRef;
+    const url = API_URL + '/products/' + item.productId;
     console.log(url);
     try {
       // const data = await handleApiGet(userurl);

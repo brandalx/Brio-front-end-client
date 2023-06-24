@@ -42,6 +42,24 @@ export default function Order() {
   const [userArr, setUserArr] = useState([]);
   const [ordersArr, setOrdersArr] = useState([]);
   const [restaurantArr, setRestaurantArr] = useState([]);
+  const [checkoutBody, setCheckoutBody] = useState({
+    userdata: {
+      selectedAddress: null,
+      selectedPaymentMethod: null,
+      status: 'Placed',
+      paymentSummary: {
+        subtotal: null,
+        tips: null,
+        shipping: null,
+
+        totalAmount: null
+      }
+    },
+    ordersdata: {
+      products: [],
+      restaurants: []
+    }
+  });
   const params = useParams();
   const handleApi = async () => {
     const userurl = API_URL + '/users/info/user';
@@ -51,8 +69,9 @@ export default function Order() {
       // const data = await handleApiGet(userurl);
       const user = await handleApiGet(userurl);
       const order = await handleApiGet(orderurl);
-      const restauranturl = API_URL + '/restaurants/' + order.restaurantRef;
-      console.log('here is');
+      console.log(order);
+      const restauranturl = API_URL + '/restaurants/' + order.ordersdata.restaurants[0];
+
       console.log(restauranturl);
       const restaurant = await handleApiGet(restauranturl);
       setUserArr(user);
@@ -194,7 +213,7 @@ export default function Order() {
                   <Skeleton h='10px' my={2} borderRadius='16px' isLoaded={!loading}>
                     <Box mt={3} display='flex' alignItems='center'>
                       <Text me={2} color='neutral.gray' fontSize='2xs'>
-                        {!loading && formatDate(ordersArr.orderedTime)}
+                        {!loading && formatDate(ordersArr.creationDate)}
                       </Text>
                       <Box>
                         <Calendar />
@@ -312,7 +331,7 @@ export default function Order() {
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
               <Skeleton borderRadius='16px' isLoaded={!loading}>
                 <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                  Menu {!loading && ordersArr.products.length} meals
+                  Menu {!loading && ordersArr.ordersdata.products.length} meals
                 </Text>
               </Skeleton>
 
@@ -325,7 +344,7 @@ export default function Order() {
                   </Box>
                 )}
                 {!loading &&
-                  ordersArr.products.map((item, key) => {
+                  ordersArr.ordersdata.products.map((item, key) => {
                     return <Menu key={key} item={item} />;
                   })}
               </Box>
@@ -338,6 +357,8 @@ export default function Order() {
               </Text>
               {!loading && (
                 <Pickup
+                  checkoutBody={checkoutBody}
+                  setCheckoutBody={setCheckoutBody}
                   item={{
                     location: restaurantArr.location,
                     address: restaurantArr.address
@@ -347,7 +368,7 @@ export default function Order() {
             </Box>
             <Skeleton minH='250px' borderRadius='16px' isLoaded={!loading}>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
-                {!loading && <PaymentDetails orders={findOrder(params['id'])} item={userArr} />}
+                {!loading && <PaymentDetails orders={findOrder(params['id'])} item={ordersArr} />}
               </Box>
             </Skeleton>
           </GridItem>
