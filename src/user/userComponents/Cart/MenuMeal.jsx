@@ -15,13 +15,16 @@ import {
   transition,
   useToast
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import TrashBox from '../../../assets/svg/TrashBox';
 import { Link } from 'react-router-dom';
 import { Modal, useDisclosure } from '@chakra-ui/react';
 import { API_URL, handleApiMethod } from '../../../services/apiServices';
+import { cartContext } from '../../../context/globalContext';
 
 export default function MenuMeal({ reload, setReload, item, amount }) {
+  const { cartLen, setCartLen } = useContext(cartContext);
+
   let info = item.description;
   const cutInfo = (info) => {
     const words = info.split(' ');
@@ -60,6 +63,7 @@ export default function MenuMeal({ reload, setReload, item, amount }) {
           duration: 9000,
           isClosable: true
         });
+        setCartLen(cartLen - 1);
       }
       setReload(reload + 1);
     } catch (error) {
