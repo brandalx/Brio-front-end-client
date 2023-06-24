@@ -28,19 +28,25 @@ export default function OrdersTableBody() {
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
   const [user, setUser] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [restaurantar, setRestaurantar] = useState([]);
   let skeletonarr = [1, 2, 3, 4];
   const handleApi = async () => {
     const url = API_URL + '/users/info/user';
     const urlrestaurant = API_URL + '/restaurants';
+    const urlorder = API_URL + '/orders/user/single';
     try {
       const data = await handleApiGet(url);
       setUser(data);
       const datarestaurants = await handleApiGet(urlrestaurant);
       setArr(data.orders);
+      const dataorders = await handleApiGet(urlorder);
+      setOrders(dataorders);
       setRestaurantar(datarestaurants);
       console.log(data);
       console.log(datarestaurants);
+
+      console.log(dataorders);
 
       setLoading(false);
     } catch (error) {
@@ -78,6 +84,10 @@ export default function OrdersTableBody() {
     return usTime;
   };
 
+  const findOrder = (orderid) => {
+    const order = orders.find((item) => item._id === orderid);
+    return order ? order.userdata.status : undefined;
+  };
   return (
     <Tbody>
       {!loading &&
@@ -125,9 +135,9 @@ export default function OrdersTableBody() {
               >
                 <Flex alignItems='center'>
                   <Box as='span' me={2}>
-                    <Status color={colorstatus[item.status] || 'yellow'} />
+                    <Status color={(orders.length > 0 && colorstatus[findOrder(item.orderRef)]) || 'red'} />
                   </Box>
-                  {item.status}
+                  {(orders.length > 0 && findOrder(item.orderRef)) || 'Undefined'}
                 </Flex>
               </Td>
 
