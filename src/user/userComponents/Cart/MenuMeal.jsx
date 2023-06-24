@@ -1,7 +1,23 @@
-import { Box, Button, Grid, GridItem, Text, Image, Divider } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Grid,
+  GridItem,
+  Text,
+  Image,
+  Divider,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  ModalOverlay,
+  transition
+} from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import TrashBox from '../../../assets/svg/TrashBox';
 import { Link } from 'react-router-dom';
+import { Modal, useDisclosure } from '@chakra-ui/react';
 
 export default function MenuMeal({ item, amount }) {
   let info = item.description;
@@ -18,9 +34,22 @@ export default function MenuMeal({ item, amount }) {
     console.log(amount);
   }, []);
   const cutInfoText = cutInfo(info);
+  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px) hue-rotate(90deg)' />;
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [overlay, setOverlay] = React.useState(<OverlayOne />);
+
   return (
     <>
-      <Box data-aos='fade-up'>
+      <Box
+        my={2}
+        pt={5}
+        px={4}
+        borderRadius='12px'
+        data-aos='fade-up'
+        transition='all 0.3s'
+        _hover={{ bg: 'neutral.grayLightest', transition: 'all 0.3s' }}
+      >
         <Grid templateColumns={{ base: '1fr', md: '1fr 1fr ' }} gap={4}>
           <GridItem w='100%'>
             <Link to={`/restaurant/product/${item._id}`}>
@@ -92,7 +121,19 @@ export default function MenuMeal({ item, amount }) {
                   </Box>
                 </GridItem>
                 <GridItem w='100%' mt={1}>
-                  <TrashBox color='#C7C8D2' />
+                  <Button
+                    style={{ transform: 'translateY(-5px)' }}
+                    m={0}
+                    p={0}
+                    h='100%'
+                    w='100%'
+                    onClick={() => {
+                      setOverlay(<OverlayOne />);
+                      onOpen();
+                    }}
+                  >
+                    <TrashBox color='#C7C8D2' />
+                  </Button>
                 </GridItem>
               </Grid>
             </Box>
@@ -100,6 +141,89 @@ export default function MenuMeal({ item, amount }) {
         </Grid>
         <Divider pt={4} />
       </Box>
+      <Modal size='xl' isCentered isOpen={isOpen} onClose={onClose}>
+        {overlay}
+        <ModalContent>
+          <ModalHeader>
+            <Text fontSize='xs' fontWeight='bold' color='neutral.black' textAlign={'center'}>
+              Are you sure you want to delete this item?
+            </Text>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Link to={`/restaurant/product/${item._id}`}>
+              <Box
+                transition='all 0.3s'
+                _hover={{ bg: 'neutral.grayLightest', transition: 'all 0.3s' }}
+                borderRadius='12px'
+                p={2}
+              >
+                <Box display='flex' alignItems='center'>
+                  <Box me={2}>
+                    <Image borderRadius='12px' maxH='72px' maxW='72px' src={item.image} />
+                  </Box>
+                  <Box>
+                    <Box>
+                      <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
+                        {item.title}
+                      </Text>
+                    </Box>
+                    <Box>
+                      <Text color='neutral.grayDark' fontSize='2xs'>
+                        {cutInfoText}
+                      </Text>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+            </Link>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              me={2}
+              onClick={onClose}
+              type='submit'
+              w={{ base: '50%', md: 'initial' }}
+              background='primary.default'
+              fontWeight='bold'
+              variant='solid'
+              color='neutral.white'
+              borderWidth='1px'
+              borderColor='neutral.white'
+              _hover={{
+                background: 'neutral.white',
+                color: 'primary.default',
+                borderWidth: '1px',
+                borderColor: 'primary.default'
+              }}
+              py={5}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={onClose}
+              w={{ base: '50%', md: 'initial' }}
+              fontSize='2xs'
+              fontWeight='bold'
+              variant='solid'
+              borderWidth='1px'
+              borderColor='error.default'
+              background='error.default'
+              color='neutral.white'
+              _hover={{
+                background: 'neutral.white',
+                color: 'error.default',
+                borderWidth: '1px',
+                borderColor: 'error.default'
+              }}
+              py={5}
+              me='20px'
+            >
+              Remove item
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }
