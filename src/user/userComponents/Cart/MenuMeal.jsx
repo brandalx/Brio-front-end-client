@@ -62,6 +62,7 @@ export default function MenuMeal({ item, amount }) {
                       px='10px'
                       fontSize='sm'
                       color='neutral.gray'
+                      _hover={{ bg: 'red', color: 'white' }}
                     >
                       -
                     </Button>
@@ -70,6 +71,7 @@ export default function MenuMeal({ item, amount }) {
                       {amount}
                     </Text>
                     <Button
+                      _hover={{ bg: 'primary.default', color: 'white' }}
                       background='neutral.grayLightest'
                       borderRadius='100px'
                       py='10px'
