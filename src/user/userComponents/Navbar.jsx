@@ -220,10 +220,11 @@ export default function Navbar() {
                             </MenuButton>
 
                             <MenuList>
-                              <Link to='user/cart'>
-                                {' '}
+                              <a href='user/cart'>
+                                {/* //because it should refresh to update user logged in */}
+
                                 <MenuItem fontWeight='medium'>My cart</MenuItem>
-                              </Link>
+                              </a>
                             </MenuList>
                           </Menu>
                         </Box>
@@ -281,7 +282,7 @@ export default function Navbar() {
                         <>
                           <MenuList>
                             <a href='/user/account'>
-                              {' '}
+                              {/* //because it should refresh to update user logged in */}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
                             </a>
 
@@ -369,10 +370,11 @@ export default function Navbar() {
                               <IconShoppingBag color='#4E60FF' />
                             </MenuButton>
                             <MenuList>
-                              <Link to='user/cart'>
-                                {' '}
+                              <a href='user/cart'>
+                                {/* //because it should refresh to update user logged in */}
+
                                 <MenuItem fontWeight='medium'>My cart</MenuItem>
-                              </Link>
+                              </a>
                             </MenuList>
                           </Menu>
                         </Box>
@@ -415,10 +417,11 @@ export default function Navbar() {
                             />{' '}
                           </MenuButton>
                           <MenuList>
-                            <Link to='/user/account'>
+                            {/* //because it should refresh to update user logged in */}
+                            <a href='user/cart'>
                               {' '}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
-                            </Link>
+                            </a>
 
                             <MenuDivider />
 
