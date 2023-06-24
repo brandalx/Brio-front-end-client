@@ -42,13 +42,14 @@ export default function Order() {
   const [loading, setLoading] = useState(true);
   const [userArr, setUserArr] = useState([]);
   const [ordersArr, setOrdersArr] = useState([]);
+  const [ordersArr2, setOrdersArr2] = useState([]);
   const [restaurantArr, setRestaurantArr] = useState([]);
 
   const params = useParams();
   const handleApi = async () => {
     const userurl = API_URL + '/users/info/user';
     const orderurl = API_URL + '/orders/' + params['id'];
-
+    const orders2url = API_URL + '/orders/user/single';
     try {
       // const data = await handleApiGet(userurl);
       const user = await handleApiGet(userurl);
@@ -58,9 +59,13 @@ export default function Order() {
 
       console.log(restauranturl);
       const restaurant = await handleApiGet(restauranturl);
+      const orders2 = await handleApiGet(orders2url);
+      console.log(orders2);
+      setOrdersArr2(orders2);
       setUserArr(user);
       setOrdersArr(order);
       setRestaurantArr(restaurant);
+
       console.log(user);
       console.log(order);
       console.log(restaurant);
@@ -73,9 +78,9 @@ export default function Order() {
   };
 
   const findOrder = (orderId) => {
-    const order = userArr.orders.find((item) => item.orderId === orderId);
+    const order = ordersArr2.find((item) => item._id === orderId);
     if (order) {
-      return order;
+      return order.userdata.status;
     } else {
       return 'Status error';
     }
@@ -173,9 +178,9 @@ export default function Order() {
                     <Skeleton my={2} minH='10px' w='25%' borderRadius='16px' isLoaded={!loading}>
                       <Box display='flex' alignItems='center'>
                         {' '}
-                        {!loading && <Status color={colorstatus[findOrder(params['id']).status] || 'yellow'} />}
+                        {!loading && <Status color={(!loading && colorstatus[findOrder(params['id'])]) || 'red'} />}
                         <Text ms={2} color='neutral.black' fontSize='2xs'>
-                          {!loading && findOrder(params['id']).status}
+                          {(!loading && findOrder(params['id'])) || 'Undefined'}
                         </Text>
                       </Box>
                     </Skeleton>
