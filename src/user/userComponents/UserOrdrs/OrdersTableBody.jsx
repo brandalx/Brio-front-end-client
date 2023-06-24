@@ -27,6 +27,7 @@ export default function OrdersTableBody() {
 
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
+  const [user, setUser] = useState([]);
   const [restaurantar, setRestaurantar] = useState([]);
   let skeletonarr = [1, 2, 3, 4];
   const handleApi = async () => {
@@ -34,6 +35,7 @@ export default function OrdersTableBody() {
     const urlrestaurant = API_URL + '/restaurants';
     try {
       const data = await handleApiGet(url);
+      setUser(data);
       const datarestaurants = await handleApiGet(urlrestaurant);
       setArr(data.orders);
       setRestaurantar(datarestaurants);
@@ -47,13 +49,25 @@ export default function OrdersTableBody() {
     }
   };
 
+  // const getRestaurantName = (id) => {
+  //   console.log(restaurantar);
+  //   const restaurant = restaurantar.find((restaurant) => {
+  //     let finded = restaurant._id === id;
+
+  //     if (finded) {
+  //       return restaurant.title;
+  //     } else {
+  //       return null;
+  //     }
+  //   });
+  // };
   const getRestaurantName = (id) => {
-    const restaurant = restaurantar.find((restaurant) => restaurant.id === id);
-    if (restaurant) {
-      return restaurant.title;
-    } else {
-      return 'User not found';
-    }
+    return restaurantar.map((item) => {
+      if (item._id === id) {
+        console.log(item.title);
+        return item.title;
+      }
+    });
   };
 
   useEffect(() => {
@@ -91,9 +105,14 @@ export default function OrdersTableBody() {
                 color='neutral.grayDark'
                 fontWeight='semibold'
               >
-                <Box bg='neutral.grayLightest' borderRadius='100px' px={4} py={1}>
-                  {getRestaurantName()}
-                </Box>
+                {item.restaurant.length > 0 &&
+                  item.restaurant.map((item2, index2) => {
+                    return (
+                      <Box key={index2} bg='neutral.grayLightest' borderRadius='100px' px={4} py={1} me={2}>
+                        {getRestaurantName(item2)}
+                      </Box>
+                    );
+                  })}
               </Td>
               <Td pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
                 {formattedDate}

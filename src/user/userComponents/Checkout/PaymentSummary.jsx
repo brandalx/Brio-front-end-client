@@ -13,11 +13,14 @@ import {
   Text,
   useToast
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { API_URL, handleApiMethod } from '../../../services/apiServices';
 
+import { cartContext } from '../../../context/globalContext';
+
 export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
+  const { cartLen, setCartLen } = useContext(cartContext);
   const [tipValue, setTipValue] = useState(0);
   const tipref = useRef(null);
   const handleTipChange = () => {
@@ -41,7 +44,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
           duration: 9000,
           isClosable: true
         });
-
+        setCartLen(0);
         navigate('/');
       }
     } catch (error) {

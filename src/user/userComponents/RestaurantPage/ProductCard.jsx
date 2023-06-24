@@ -60,12 +60,17 @@ export default function ProductCard({ img, title, description, price, _id }) {
           isClosable: true
         });
 
-        let isContains = userar.cart.some((item) => {
-          return item.productId === _id;
+        const url2 = API_URL + '/users/info/user';
+        const data2 = await handleApiGet(url2);
+        setUserAr(data2);
+        console.log(data2);
+
+        let isContains = data2.cart.some((item) => {
+          return item._id === _id;
         });
-        let defcartlen = cartLen;
+
         if (!isContains) {
-          setCartLen(defcartlen + 1);
+          setCartLen(data2.cart.length);
         }
       }
     } catch (error) {
