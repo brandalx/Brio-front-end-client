@@ -418,7 +418,7 @@ export default function Navbar() {
                           </MenuButton>
                           <MenuList>
                             {/* //because it should refresh to update user logged in */}
-                            <a href='user/cart'>
+                            <a href='/user/account'>
                               {' '}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
                             </a>
