@@ -33,6 +33,7 @@ import OrderStatus from '../../assets/svg/OrderStatus';
 import colorstatus from '../userComponents/UserOrdrs/colorsObject.json';
 import Status from '../../assets/svg/Status';
 import Calendar from '../../assets/svg/Calendar';
+import Shipping from '../userComponents/Order/Shipping';
 export default function Order() {
   const [placed, setPlaced] = useState(true);
   const [prepared, setPrepared] = useState(false);
@@ -42,24 +43,7 @@ export default function Order() {
   const [userArr, setUserArr] = useState([]);
   const [ordersArr, setOrdersArr] = useState([]);
   const [restaurantArr, setRestaurantArr] = useState([]);
-  const [checkoutBody, setCheckoutBody] = useState({
-    userdata: {
-      selectedAddress: null,
-      selectedPaymentMethod: null,
-      status: 'Placed',
-      paymentSummary: {
-        subtotal: null,
-        tips: null,
-        shipping: null,
 
-        totalAmount: null
-      }
-    },
-    ordersdata: {
-      products: [],
-      restaurants: []
-    }
-  });
   const params = useParams();
   const handleApi = async () => {
     const userurl = API_URL + '/users/info/user';
@@ -70,7 +54,7 @@ export default function Order() {
       const user = await handleApiGet(userurl);
       const order = await handleApiGet(orderurl);
       console.log(order);
-      const restauranturl = API_URL + '/restaurants/' + order.ordersdata.restaurants[0];
+      const restauranturl = API_URL + '/restaurants/';
 
       console.log(restauranturl);
       const restaurant = await handleApiGet(restauranturl);
@@ -356,14 +340,7 @@ export default function Order() {
                 Shipping address
               </Text>
               {!loading && (
-                <Pickup
-                  checkoutBody={checkoutBody}
-                  setCheckoutBody={setCheckoutBody}
-                  item={{
-                    location: restaurantArr.location,
-                    address: restaurantArr.address
-                  }}
-                />
+                <Shipping userArr={userArr} restaurantArr={restaurantArr} item={ordersArr.userdata.selectedAddress} />
               )}
             </Box>
             <Skeleton minH='250px' borderRadius='16px' isLoaded={!loading}>
