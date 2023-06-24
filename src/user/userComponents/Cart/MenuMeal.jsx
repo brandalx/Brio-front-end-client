@@ -124,7 +124,7 @@ export default function MenuMeal({ item, amount }) {
                   <Button
                     style={{ transform: 'translateY(-5px)' }}
                     m={0}
-                    p={0}
+                    p={1}
                     h='100%'
                     w='100%'
                     onClick={() => {
