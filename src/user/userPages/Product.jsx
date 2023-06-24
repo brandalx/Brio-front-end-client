@@ -137,6 +137,7 @@ export default function Product() {
                       </Text>
                       <Box display='flex' alignItems='center'>
                         <Button
+                          _hover={{ bg: 'red', color: 'white' }}
                           background='neutral.grayLightest'
                           borderRadius='100px'
                           py='10px'
@@ -150,7 +151,9 @@ export default function Product() {
                         <Text color='neutral.gray' fontWeight='bold' px={3}>
                           1
                         </Text>
+
                         <Button
+                          _hover={{ bg: 'primary.default', color: 'white' }}
                           background='neutral.grayLightest'
                           borderRadius='100px'
                           py='10px'
