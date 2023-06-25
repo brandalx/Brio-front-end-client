@@ -17,6 +17,8 @@ import ModalTextRedactor from './ModalTextRedactor';
 import Pen from '../../../assets/svg/Pen';
 import Copy from '../../../assets/svg/Copy';
 import TrashBox from '../../../assets/svg/TrashBox';
+import jwtDecode from "jwt-decode";
+import axios from "axios";
 
 export default function ListOfProducts({ selectedCategory, categoryCounts, setCategoryCounts }) {
   const gridColumns = useBreakpointValue({ base: '1fr', md: '1fr 4fr' });
@@ -28,7 +30,8 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [initialCategory, setInitialCategory] = useState('');
-
+  const [userId, setUserId] = useState(null);
+  const [restaurantId, setRestaurantId] = useState(null);
   const fetchProducts = async () => {
     try {
       const response = await handleApiGet(API_URL + '/admin/products?categoryName=' + selectedCategory);
@@ -36,6 +39,28 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
       setLoading(false);
     } catch (error) {
       console.error('Error fetching products:', error);
+    }
+  };
+
+  const fetchAdmin = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+
+      const response = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token // Это где вы устанавливаете заголовок с токеном
+        }
+      });
+
+      // Устанавливаем ID ресторана и пользователя
+      setRestaurantId(response.data.restaurant);
+      setUserId(userId);
+
+      console.log(response.data); // Выводим данные о пользователе и ресторане
+    } catch (error) {
+      console.error('Error fetching user:', error);
     }
   };
 
@@ -66,6 +91,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
 
   useEffect(() => {
     updateCategoryCounts();
+    fetchAdmin()
   }, [products]);
 
   const handleTrashClick = (productId) => {
@@ -78,7 +104,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
         {selectedCategory === null ? '' : selectedCategory}
       </Text>
       {products
-        .filter((item) => item.categoryName === selectedCategory)
+        .filter((item) => item.categoryName === selectedCategory  && item.restaurantRef === restaurantId)
         .map((item) => (
           <Box
             key={item._id}
