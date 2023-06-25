@@ -27,6 +27,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [initialCategory, setInitialCategory] = useState('');
 
   const fetchProducts = async () => {
     try {
@@ -52,6 +53,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
 
     products.forEach((item) => {
       const { categoryName } = item;
+      setInitialCategory(categoryName);
       counts[categoryName] = counts[categoryName] ? counts[categoryName] + 1 : 1;
     });
 
@@ -73,7 +75,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
   return (
     <GridItem colSpan={8}>
       <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
-        {selectedCategory === null ? 'Breakfast menu' : selectedCategory}
+        {selectedCategory === null ? '' : selectedCategory}
       </Text>
       {products
         .filter((item) => item.categoryName === selectedCategory)

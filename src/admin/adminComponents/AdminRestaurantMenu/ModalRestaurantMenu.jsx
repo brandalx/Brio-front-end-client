@@ -18,12 +18,35 @@ import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import '../../../css/global.css';
 import { API_URL } from '../../../services/apiServices';
-
+import jwtDecode from 'jwt-decode';
 export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryName }) {
   const { control, handleSubmit, reset } = useForm();
   const [isLilMob] = useMediaQuery('(max-width: 350px)');
   const [product, setProduct] = useState('');
   const [image, setImage] = useState(null);
+
+  const fetchAdminData = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const { _id } = jwtDecode(token); // You need to import jwt_decode library
+
+      const response = await fetch(`${API_URL}/users/${_id}`, {
+        method: 'GET',
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch admin data');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error('An error occurred while fetching the admin data: ' + error.message);
+    }
+  };
 
   const createProduct = async (items, price, title, description, ingredients, nutritionals, restaurantRef) => {
     const payload = {
@@ -60,14 +83,13 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
     }
   };
 
-  const handlePublishProduct = async (data) => {
+  const handlePublishProduct = async (data, adminId) => {
     const {
       price,
       title,
       description,
       ingredients: ingredientsStr,
       nutritionals: nutritionalsStr,
-      restaurantRef,
       items: image
     } = data;
 
@@ -75,6 +97,9 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
     const nutritionals = nutritionalsStr.split(',').map((nutritional) => nutritional.trim());
 
     try {
+      const adminData = await fetchAdminData(adminId);
+      const restaurantRef = adminData.restaurant;
+
       console.log('Publishing product:', {
         price,
         title,
