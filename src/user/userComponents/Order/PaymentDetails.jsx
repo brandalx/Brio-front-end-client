@@ -49,14 +49,6 @@ export default function PaymentDetails({ item, orders }) {
         </Flex>
         <Flex my={4} justifyContent='space-between'>
           <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
-            Discount (coupon)
-          </Text>
-          <Text fontWeight='semibold' fontSize='3xs' color='error.default'>
-            $ {item.userdata.paymentSummary.discount}
-          </Text>
-        </Flex>
-        <Flex my={4} justifyContent='space-between'>
-          <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
             Total (tax incl.)
           </Text>
           <Text fontWeight='bold' fontSize='2xs' color='primary.default'>

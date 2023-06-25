@@ -44,7 +44,33 @@ export default function Order() {
   const [ordersArr, setOrdersArr] = useState([]);
   const [ordersArr2, setOrdersArr2] = useState([]);
   const [restaurantArr, setRestaurantArr] = useState([]);
+  const [addressString, setAddressString] = useState(null);
+  const [isSelf, setIsSelf] = useState(false);
 
+  const handleDefineAddress = (orderitem, useritem, restaurantitem) => {
+    let finaladdress = orderitem.userdata.selectedAddress;
+    console.log(finaladdress);
+    console.log('ok');
+
+    let finaladdressobj = useritem.address.find((address) => address._id === finaladdress);
+    if (finaladdressobj) {
+      finaladdressobj =
+        finaladdressobj.state +
+        '%20' +
+        finaladdressobj.city +
+        '%20' +
+        finaladdressobj.address1 +
+        '%20' +
+        finaladdressobj.address2;
+    }
+
+    const restaurantObj = restaurantitem.find((restaurant) => restaurant._id === finaladdress);
+    if (restaurantObj) {
+      finaladdressobj = restaurantObj.location + ' ' + restaurantObj.address;
+      setIsSelf(true);
+    }
+    setAddressString(finaladdressobj.replace(/%20/g, ' '));
+  };
   const params = useParams();
   const handleApi = async () => {
     const userurl = API_URL + '/users/info/user';
@@ -69,7 +95,7 @@ export default function Order() {
       console.log(user);
       console.log(order);
       console.log(restaurant);
-
+      handleDefineAddress(order, user, restaurant);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -187,15 +213,19 @@ export default function Order() {
                   </Box>
                 </Box>
                 <Box w='100%' textAlign='end' display='flex' flexDir='column' alignItems='end'>
-                  <Skeleton my={2} borderRadius='16px' h='10px' isLoaded={!loading}>
-                    <Box display='flex' alignItems='center'>
-                      <Text me={2} color='neutral.gray' fontSize='2xs'>
-                        {/* for second release will still static after that will changed to dynamic according on picked address id */}
-                        {!loading && userArr.address[0].city}
-                      </Text>
-
-                      <Box>
-                        <Location />
+                  <Skeleton my={5} borderRadius='16px' h='10px' isLoaded={!loading}>
+                    <Box display={{ sm: 'none', md: 'block' }}>
+                      <Box display='flex' alignItems='center'>
+                        <Text me={2} color='neutral.gray' fontSize='2xs'>
+                          {/* for second release will still static after that will changed to dynamic according on picked address id */}
+                          {isSelf ? '(Pickup at)' : '(Delivery to)'}
+                        </Text>
+                        <Text me={2} fontWeight='bold'>
+                          {addressString}
+                        </Text>
+                        <Box>
+                          <Location />
+                        </Box>
                       </Box>
                     </Box>
                   </Skeleton>

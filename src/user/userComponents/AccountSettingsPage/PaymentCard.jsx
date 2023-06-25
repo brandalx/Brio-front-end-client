@@ -50,7 +50,6 @@ export default function PaymentCard({
         p='30px'
         transition='all 0.3s'
         borderWidth='1px'
-        borderot
         bg='neutral.white'
       >
         <Flex justifyContent='space-between'>
