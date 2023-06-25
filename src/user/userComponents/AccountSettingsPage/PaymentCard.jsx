@@ -27,7 +27,7 @@ export default function PaymentCard({
   index
 }) {
   return (
-    <Box zIndex={index} data-aos='fade-up' h='100%'>
+    <Box zIndex={index + 1} data-aos='fade-up' h='100%'>
       <Box
         h='100%'
         onClick={() => {

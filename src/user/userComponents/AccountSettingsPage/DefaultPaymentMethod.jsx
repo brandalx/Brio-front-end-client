@@ -4,7 +4,7 @@ import React from 'react';
 export default function DefaultPaymentMethod({ cash, selectCard, defaultmethod }) {
   return (
     <>
-      <Box zIndex='-1' data-aos='fade-up' h='100%'>
+      <Box zIndex='0' data-aos='fade-up' h='100%'>
         <Box
           h='100%'
           onClick={() => {
