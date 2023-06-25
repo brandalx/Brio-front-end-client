@@ -175,7 +175,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
                 Total (tax incl.)
               </Text>
               <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
-                ${!loading && item.totalAmount}
+                ${!loading && Number(item.totalAmount) + Number(tipValue)}
               </Text>
             </Flex>
           </Skeleton>
