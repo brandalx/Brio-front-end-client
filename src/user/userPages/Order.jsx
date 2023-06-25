@@ -135,6 +135,12 @@ export default function Order() {
       setDelivered(true);
     }
   };
+  //todo: replace with post wehn updating post time and status
+  useEffect(() => {
+    const timer = setInterval(updateState, 60 * 1000);
+
+    return () => clearInterval(timer);
+  }, [placed, prepared, delivery, delivered]);
 
   const findOrder2 = (orderId) => {
     if (userArr && userArr.orders) {
@@ -253,7 +259,7 @@ export default function Order() {
                 <GridItem w='100%'>
                   <Box h='100%' display='flex' alignItems='center'>
                     <Skeleton w='100%' borderRadius='16px' isLoaded={!loading}>
-                      <Divider borderWidth='2px' borderColor={placed ? '#1ABF70' : 'neutral.gray'} />
+                      <Divider borderWidth='2px' borderColor={placed && prepared ? '#1ABF70' : 'neutral.gray'} />
                     </Skeleton>
                   </Box>
                 </GridItem>
