@@ -78,7 +78,7 @@ export default function Menu({ item }) {
                     {' '}
                     <Skeleton borderRadius='16px' isLoaded={!loading}>
                       <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
-                        {!loading && producAr.price * item.amount}
+                        {!loading && '$ ' + producAr.price * item.amount}
                       </Text>
                     </Skeleton>
                   </Box>

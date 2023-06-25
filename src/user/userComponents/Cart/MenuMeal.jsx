@@ -15,7 +15,7 @@ import {
   transition,
   useToast
 } from '@chakra-ui/react';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import TrashBox from '../../../assets/svg/TrashBox';
 import { Link } from 'react-router-dom';
 import { Modal, useDisclosure } from '@chakra-ui/react';
@@ -24,7 +24,7 @@ import { cartContext } from '../../../context/globalContext';
 
 export default function MenuMeal({ reload, setReload, item, amount }) {
   const { cartLen, setCartLen } = useContext(cartContext);
-
+  const [amountMeals, setAmountMeals] = useState(amount);
   let info = item.description;
   const cutInfo = (info) => {
     const words = info.split(' ');
@@ -64,6 +64,16 @@ export default function MenuMeal({ reload, setReload, item, amount }) {
           isClosable: true
         });
         setCartLen(cartLen - 1);
+
+        let cartData = localStorage.getItem('cart');
+        let cartArray = cartData ? JSON.parse(cartData) : [];
+        let index = cartArray.findIndex((item2) => {
+          return item2.productId === item._id;
+        });
+        console.log(index);
+        cartArray = cartArray.slice(index, index + 1); // Assign the sliced array back to cartArray
+
+        localStorage.setItem('cart', JSON.stringify(cartArray));
       }
       setReload(reload + 1);
     } catch (error) {
@@ -95,6 +105,64 @@ export default function MenuMeal({ reload, setReload, item, amount }) {
           isClosable: true
         });
       }
+    }
+  };
+
+  const addMealAmount = () => {
+    let cartData = localStorage.getItem('cart');
+    let cartArray = cartData ? JSON.parse(cartData) : [];
+
+    let cartObject = {
+      productId: item._id,
+      productAmount: amountMeals + 1
+    };
+
+    let isTrue = cartArray.some((item2) => {
+      return item2.productId === item._id;
+    });
+
+    if (!isTrue) {
+      cartArray.push(cartObject);
+    }
+    if (isTrue) {
+      let index = cartArray.findIndex((item2) => {
+        return item2.productId === item._id;
+      });
+      cartArray[index].productAmount = amountMeals + 1;
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cartArray));
+
+    setAmountMeals(amountMeals + 1);
+  };
+
+  const reduceMealAmount = () => {
+    if (amountMeals - 1 != 0) {
+      let cartData = localStorage.getItem('cart');
+      let cartArray = cartData ? JSON.parse(cartData) : [];
+
+      let cartObject = {
+        productId: item._id,
+        productAmount: amountMeals - 1
+      };
+
+      let isTrue = cartArray.some((item2) => {
+        return item2.productId === item._id;
+      });
+
+      if (!isTrue) {
+        cartArray.push(cartObject);
+      }
+      if (isTrue) {
+        let index = cartArray.findIndex((item2) => {
+          return item2.productId === item._id;
+        });
+        cartArray[index].productAmount = amountMeals - 1;
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cartArray));
+
+      setAmountMeals(amountMeals - 1);
     }
   };
 
@@ -144,6 +212,8 @@ export default function MenuMeal({ reload, setReload, item, amount }) {
                   {' '}
                   <Box display='flex' alignItems='center'>
                     <Button
+                      isDisabled={amountMeals - 1 === 0 ? true : false}
+                      onClick={() => reduceMealAmount()}
                       background='neutral.grayLightest'
                       borderRadius='100px'
                       py='10px'
@@ -156,9 +226,10 @@ export default function MenuMeal({ reload, setReload, item, amount }) {
                     </Button>
 
                     <Text fontSize='2xs' color='neutral.gray' fontWeight='bold' px={3}>
-                      {amount}
+                      {amountMeals}
                     </Text>
                     <Button
+                      onClick={() => addMealAmount()}
                       _hover={{ bg: 'primary.default', color: 'white' }}
                       background='neutral.grayLightest'
                       borderRadius='100px'
@@ -175,7 +246,7 @@ export default function MenuMeal({ reload, setReload, item, amount }) {
                   <Box w='100%' display='flex' justifyContent='center'>
                     {' '}
                     <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
-                      $ {item.price * amount}
+                      $ {(item.price * amountMeals).toFixed(2)}
                     </Text>
                   </Box>
                 </GridItem>
