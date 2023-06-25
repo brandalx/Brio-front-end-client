@@ -18,6 +18,7 @@ export default function Cart() {
   const [blankCart, setBlankCart] = useState(false);
   const [preSummary, setPreSummary] = useState([]);
   const [heightchange, setheightchange] = useState(1);
+  const [reload2, setReload2] = useState(0);
   const [reload, setReload] = useState(0);
   const [checkoutBody, setCheckoutBody] = useState({
     userdata: {
@@ -149,7 +150,7 @@ export default function Cart() {
 
   useEffect(() => {
     handleApiPresummary();
-  }, [reload]);
+  }, [reload, reload2]);
 
   const location = useLocation();
   const isDeliveryPage = location.pathname === '/user/cart';
@@ -191,6 +192,10 @@ export default function Cart() {
                       arr.cart.length > 0 &&
                       mealsArr.map((item, index) => (
                         <MenuMeal
+                          targetId={item.itemCartId}
+                          setReload2={setReload2}
+                          reload2={reload2}
+                          user={arr}
                           setReload={setReload}
                           reload={reload}
                           key={index}

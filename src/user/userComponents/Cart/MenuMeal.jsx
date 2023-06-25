@@ -19,12 +19,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import TrashBox from '../../../assets/svg/TrashBox';
 import { Link } from 'react-router-dom';
 import { Modal, useDisclosure } from '@chakra-ui/react';
-import { API_URL, handleApiMethod } from '../../../services/apiServices';
+import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { cartContext } from '../../../context/globalContext';
 
-export default function MenuMeal({ reload, setReload, item, amount }) {
+export default function MenuMeal({ user, setReload2, reload2, reload, setReload, item, amount, targetId }) {
   const { cartLen, setCartLen } = useContext(cartContext);
   const [amountMeals, setAmountMeals] = useState(amount);
+  const [targetIdRewrite, setTargetIdRewrite] = useState(targetId);
   let info = item.description;
   const cutInfo = (info) => {
     const words = info.split(' ');
@@ -64,16 +65,6 @@ export default function MenuMeal({ reload, setReload, item, amount }) {
           isClosable: true
         });
         setCartLen(cartLen - 1);
-
-        let cartData = localStorage.getItem('cart');
-        let cartArray = cartData ? JSON.parse(cartData) : [];
-        let index = cartArray.findIndex((item2) => {
-          return item2.productId === item._id;
-        });
-        console.log(index);
-        cartArray = cartArray.slice(index, index + 1); // Assign the sliced array back to cartArray
-
-        localStorage.setItem('cart', JSON.stringify(cartArray));
       }
       setReload(reload + 1);
     } catch (error) {
@@ -108,61 +99,49 @@ export default function MenuMeal({ reload, setReload, item, amount }) {
     }
   };
 
-  const addMealAmount = () => {
-    let cartData = localStorage.getItem('cart');
-    let cartArray = cartData ? JSON.parse(cartData) : [];
+  let postToCart = async (_data) => {
+    try {
+      let cartObject = {
+        productId: item._id,
+        productAmount: _data
+      };
+      const url = API_URL + `/users/${user._id}/posttocart`;
+      const data = await handleApiMethod(url, 'POST', cartObject);
 
-    let cartObject = {
-      productId: item._id,
-      productAmount: amountMeals + 1
-    };
+      setTargetIdRewrite(data._id);
+      setReload2(reload2 + 1);
 
-    let isTrue = cartArray.some((item2) => {
-      return item2.productId === item._id;
-    });
+      // if (data.msg === true) {
+      //   toast({
+      //     title: 'Product updated.',
+      //     description: "We've updated this product amount.",
+      //     status: 'success',
+      //     duration: 9000,
+      //     isClosable: true
+      //   });
+      // }
+    } catch (error) {
+      console.log(error);
 
-    if (!isTrue) {
-      cartArray.push(cartObject);
-    }
-    if (isTrue) {
-      let index = cartArray.findIndex((item2) => {
-        return item2.productId === item._id;
+      toast({
+        title: 'Error when adding changing item amount',
+        description: 'Error when changing item amount',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
       });
-      cartArray[index].productAmount = amountMeals + 1;
     }
+  };
 
-    localStorage.setItem('cart', JSON.stringify(cartArray));
-
+  const addMealAmount = () => {
     setAmountMeals(amountMeals + 1);
+    postToCart(amountMeals + 1);
   };
 
   const reduceMealAmount = () => {
     if (amountMeals - 1 != 0) {
-      let cartData = localStorage.getItem('cart');
-      let cartArray = cartData ? JSON.parse(cartData) : [];
-
-      let cartObject = {
-        productId: item._id,
-        productAmount: amountMeals - 1
-      };
-
-      let isTrue = cartArray.some((item2) => {
-        return item2.productId === item._id;
-      });
-
-      if (!isTrue) {
-        cartArray.push(cartObject);
-      }
-      if (isTrue) {
-        let index = cartArray.findIndex((item2) => {
-          return item2.productId === item._id;
-        });
-        cartArray[index].productAmount = amountMeals - 1;
-      }
-
-      localStorage.setItem('cart', JSON.stringify(cartArray));
-
       setAmountMeals(amountMeals - 1);
+      postToCart(amountMeals - 1);
     }
   };
 
@@ -333,7 +312,7 @@ export default function MenuMeal({ reload, setReload, item, amount }) {
             <Button
               onClick={() => {
                 onClose();
-                handleItemDelete(item.itemCartId);
+                handleItemDelete(targetIdRewrite);
               }}
               w={{ base: '50%', md: 'initial' }}
               fontSize='2xs'
