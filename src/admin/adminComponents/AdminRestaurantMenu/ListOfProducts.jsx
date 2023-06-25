@@ -17,8 +17,8 @@ import ModalTextRedactor from './ModalTextRedactor';
 import Pen from '../../../assets/svg/Pen';
 import Copy from '../../../assets/svg/Copy';
 import TrashBox from '../../../assets/svg/TrashBox';
-import jwtDecode from "jwt-decode";
-import axios from "axios";
+import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 
 export default function ListOfProducts({ selectedCategory, categoryCounts, setCategoryCounts }) {
   const gridColumns = useBreakpointValue({ base: '1fr', md: '1fr 4fr' });
@@ -65,11 +65,24 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
   };
 
   const deleteProduct = async (productId) => {
+    const token = localStorage.getItem('x-api-key');
+
     try {
-      await handleApiDelete(API_URL + '/admin/products/' + productId);
-      await fetchProducts();
+      const response = await fetch(API_URL + '/admin/products/' + productId, {
+        method: 'DELETE',
+        headers: {
+          'x-api-key': token,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Ошибка при удалении продукта');
+      }
+
+      await fetchProducts(); // после удаления продукта обновляем список продуктов
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error('Ошибка при удалении продукта:', error);
     }
   };
 
@@ -91,7 +104,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
 
   useEffect(() => {
     updateCategoryCounts();
-    fetchAdmin()
+    fetchAdmin();
   }, [products]);
 
   const handleTrashClick = (productId) => {
@@ -104,7 +117,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
         {selectedCategory === null ? '' : selectedCategory}
       </Text>
       {products
-        .filter((item) => item.categoryName === selectedCategory  && item.restaurantRef === restaurantId)
+        .filter((item) => item.categoryName === selectedCategory && item.restaurantRef === restaurantId)
         .map((item) => (
           <Box
             key={item._id}
