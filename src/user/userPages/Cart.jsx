@@ -234,7 +234,7 @@ export default function Cart() {
                 </Box>
 
                 <Box h={`${heightchange}px`} w='100%'>
-                  <Spline scene='https://prod.spline.design/cHCwM6lTjFe8NEqC/scene.splinecode' onLoad={onload} />
+                  <Spline scene='https://draft.spline.design/FR2ppvMgkXyeDQtK/scene.splinecode' onLoad={onload} />
                 </Box>
                 {!loading && mealsArr.length === 0 && (
                   <Box my={2} display='flex' justifyContent='center' alignItems='center'>
