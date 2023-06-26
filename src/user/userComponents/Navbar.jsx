@@ -33,10 +33,11 @@ import Logo from '../../assets/svg/Logo';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import { useCheckToken } from '../../services/token';
-import { cartContext } from '../../context/globalContext';
+import { avatarContext, cartContext } from '../../context/globalContext';
 export default function Navbar() {
   const isTokenExpired = useCheckToken();
   const { cartLen, setCartLen } = useContext(cartContext);
+  const { avatarUser, setAvatarUser } = useContext(avatarContext);
   // useEffect(() => {
   //   if (isTokenExpired) {
   //   }
@@ -48,7 +49,7 @@ export default function Navbar() {
 
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
-  const [avatar, setavatar] = useState('');
+
   const [srcav, setSrcav] = useState();
   const randomarr = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
 
@@ -65,7 +66,8 @@ export default function Navbar() {
     try {
       const data = await handleApiGet(url);
       setArr(data);
-      setavatar(API_URL + '/' + data.avatar);
+
+      setAvatarUser(API_URL + '/' + data.avatar);
       console.log(data);
 
       setCartLen(data.cart.length);
@@ -247,7 +249,13 @@ export default function Navbar() {
                           alignItems='center'
                         >
                           <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                            <Avatar py='2px' borderRadius='3xl' size='md' name={'Anonimus'} src={!loading && avatar} />{' '}
+                            <Avatar
+                              py='2px'
+                              borderRadius='3xl'
+                              size='md'
+                              name={'Anonimus'}
+                              src={!loading && avatarUser}
+                            />{' '}
                           </MenuButton>
                         </Box>
                       )}
@@ -268,7 +276,7 @@ export default function Navbar() {
                                 borderRadius='xl'
                                 size='md'
                                 name={!loading && arr.firstname + ' ' + arr.lastname}
-                                src={!loading && avatar}
+                                src={!loading && avatarUser}
                               />{' '}
                             </MenuButton>
                           </Box>

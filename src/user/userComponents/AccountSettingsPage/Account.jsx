@@ -17,24 +17,26 @@ import {
   FormErrorMessage,
   useToast
 } from '@chakra-ui/react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { avatarContext } from '../../../context/globalContext';
 
 export default function Account() {
+  const { avatarUser, setAvatarUser } = useContext(avatarContext);
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
   const [reload, setReload] = useState(0);
-  const [avatar, setavatar] = useState('');
+
   const handleUserData = async () => {
     const url = API_URL + '/users/info/user';
     try {
       const data = await handleApiGet(url);
       setAr(data);
       console.log(data);
-      setavatar(API_URL + '/' + data.avatar + '?t=' + reload);
+      setAvatarUser(API_URL + '/' + data.avatar + '?t=' + reload);
 
       setLoading(false);
     } catch (error) {
@@ -108,7 +110,7 @@ export default function Account() {
 
   useEffect(() => {
     handleUserData();
-  }, [reload, avatar]);
+  }, [reload, avatarUser]);
 
   const clearValues = () => {
     setValue('firstname', '');
@@ -194,7 +196,7 @@ export default function Account() {
                   borderRadius='10px'
                   boxSize='80px'
                   objectFit='cover'
-                  src={avatar || ''}
+                  src={avatarUser || ''}
                   name={`${arr.firstname} ${arr.lastname}`}
                 />
               </Box>
@@ -220,25 +222,6 @@ export default function Account() {
                 me='20px'
               >
                 Change
-              </Button>
-              <Button
-                type='submit'
-                borderColor='neutral.white'
-                borderWidth='1px'
-                _hover={{
-                  background: 'error.default',
-                  color: 'neutral.white',
-                  borderWidth: '1px',
-                  borderColor: 'error.default'
-                }}
-                fontSize='2xs'
-                color='neutral.gray'
-                fontWeight='bold'
-                variant='ghost'
-                py={5}
-                me='20px'
-              >
-                Submit
               </Button>
             </form>
           </Flex>
