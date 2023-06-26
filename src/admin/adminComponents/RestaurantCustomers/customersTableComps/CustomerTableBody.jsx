@@ -11,7 +11,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Skeleton,
   Tbody,
   Td,
   Tr,
@@ -36,10 +35,9 @@ export default function CustomerTableBody() {
   const onClose = () => setIsOpen(false);
   const fetchOrders = async () => {
     try {
-      const response = await handleApiGet(`${API_URL}/users/${userId}`);
-
+      const response = await handleApiGet(`${API_URL}/users/`);
+      console.log(response);
       setUser(response);
-
       // setLoading(false);
     } catch (error) {
       console.error('Error fetching user:', error);

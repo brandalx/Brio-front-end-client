@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Flex,
@@ -93,7 +94,13 @@ export default function CustomersTable() {
               >
                 {user.firstname} {user.lastname}
                 <Box mr='12px' w='42px' h='42px'>
-                  <Image w='100%' h='100%' borderRadius='full' src={user.avatar} />
+                  <Avatar
+                    w='100%'
+                    h='100%'
+                    borderRadius='full'
+                    src={user.avatar}
+                    name={user.firstname + ' ' + user.lastname}
+                  />
                 </Box>
               </Td>
               <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>

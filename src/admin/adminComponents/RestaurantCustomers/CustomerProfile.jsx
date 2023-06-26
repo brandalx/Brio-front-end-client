@@ -17,7 +17,7 @@ export default function CustomerProfile() {
     try {
       const response = await handleApiGet(API_URL + '/users/' + userId);
       setUser(response);
-      setRole(response.role); // Set the role
+      setRole(response.role);
 
       setNote(response.notes);
       console.log(response);

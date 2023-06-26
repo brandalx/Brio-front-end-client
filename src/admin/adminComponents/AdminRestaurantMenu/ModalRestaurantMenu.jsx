@@ -47,6 +47,29 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
       throw new Error('An error occurred while fetching the admin data: ' + error.message);
     }
   };
+  const updateRestaurant = async (restaurantId, productId) => {
+    const token = localStorage.getItem('x-api-key');
+
+    try {
+      const response = await fetch(`${API_URL}/admin/restaurants/${restaurantId}`, {
+        method: 'PATCH',
+        headers: {
+          'x-api-key': token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ $push: { products: productId } })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update restaurant');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error('An error occurred while updating the restaurant: ' + error.message);
+    }
+  };
 
   const createProduct = async (items, price, title, description, ingredients, nutritionals, restaurantRef) => {
     const payload = {
@@ -120,6 +143,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
         nutritionals,
         restaurantRef
       );
+      await updateRestaurant(restaurantRef, newProduct._id);
 
       console.log('Created product:', newProduct);
 
