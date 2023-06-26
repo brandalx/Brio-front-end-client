@@ -77,7 +77,7 @@ export default function Product() {
 
   useEffect(() => {
     handleAProductApi();
-  }, [params]);
+  }, []);
 
   const handleGoBack = () => {
     navigate(-1);
