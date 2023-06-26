@@ -1,5 +1,5 @@
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -16,7 +16,8 @@ import {
   Stack,
   Divider,
   Icon,
-  Skeleton
+  Skeleton,
+  useToast
 } from '@chakra-ui/react';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -25,8 +26,10 @@ import { FaChevronLeft } from 'react-icons/fa';
 import ImageGallery from 'react-image-gallery';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { API_URL, handleApiGet } from '../../services/apiServices';
+import { API_URL, handleApiGet, handleApiMethod } from '../../services/apiServices';
+import { cartContext } from '../../context/globalContext';
 export default function Product() {
+  const { cartLen, setCartLen } = useContext(cartContext);
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const thumbnailPosition = isLargerThanMd ? 'left' : 'bottom';
   const params = useParams();
@@ -35,6 +38,8 @@ export default function Product() {
   const [loading, setLoading] = useState(true);
   const [imageArr, setImageArr] = useState([]);
   const [restaurant, setRestaurant] = useState([]);
+  const [user, setUser] = useState([]);
+  const [amount, setAmount] = useState(1);
   const navigate = useNavigate();
   const handleAProductApi = async () => {
     // const url = API_URL + '/products';
@@ -45,8 +50,12 @@ export default function Product() {
       }
 
       const urlprod = API_URL + '/products/' + params['id'];
+      const urluser = API_URL + '/users/info/user';
       const productdata = await handleApiGet(urlprod);
       setAr(productdata);
+
+      const userdata = await handleApiGet(urluser);
+      setUser(userdata);
 
       const images = productdata.image.map((item) => ({
         original: item,
@@ -67,6 +76,7 @@ export default function Product() {
 
       const finalProducts = tempProductArr.filter((item) => item._id !== params['id']);
       setProductsAr(finalProducts);
+
       setImageArr(images);
       setLoading(false);
     } catch (error) {
@@ -81,6 +91,54 @@ export default function Product() {
 
   const handleGoBack = () => {
     navigate(-1);
+  };
+
+  const addMealAmount = () => {
+    setAmount(amount + 1);
+  };
+
+  const reduceMealAmount = () => {
+    if (amount - 1 != 0) {
+      setAmount(amount - 1);
+    }
+  };
+  const toast = useToast();
+  let postToCart = async (_data) => {
+    console.log(_data);
+    try {
+      let cartObject = {
+        productId: _data,
+        productAmount: amount
+      };
+      console.log(cartObject);
+      const url = API_URL + `/users/${user._id}/posttocart`;
+      const data = await handleApiMethod(url, 'POST', cartObject);
+
+      if (data.msg === true) {
+        toast({
+          title: 'Product added.',
+          description: "We've added this product to your cart.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+
+        const urluser = API_URL + '/users/info/user';
+        const userdata = await handleApiGet(urluser);
+        setUser(userdata);
+        setCartLen(userdata.cart.length);
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast({
+        title: 'Error when adding this product',
+        description: 'Error when this product into your cart',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+    }
   };
 
   return (
@@ -137,6 +195,8 @@ export default function Product() {
                       </Text>
                       <Box display='flex' alignItems='center'>
                         <Button
+                          isDisabled={amount - 1 === 0 ? true : false}
+                          onClick={() => reduceMealAmount()}
                           _hover={{ bg: 'red', color: 'white' }}
                           background='neutral.grayLightest'
                           borderRadius='100px'
@@ -149,10 +209,11 @@ export default function Product() {
                         </Button>
 
                         <Text color='neutral.gray' fontWeight='bold' px={3}>
-                          1
+                          {amount}
                         </Text>
 
                         <Button
+                          onClick={() => addMealAmount()}
                           _hover={{ bg: 'primary.default', color: 'white' }}
                           background='neutral.grayLightest'
                           borderRadius='100px'
@@ -165,6 +226,9 @@ export default function Product() {
                         </Button>
                       </Box>
                       <Button
+                        onClick={() => {
+                          postToCart(arr._id);
+                        }}
                         rightIcon={<Text fontSize='md'>+</Text>}
                         background='primary.default'
                         fontWeight='bold'
