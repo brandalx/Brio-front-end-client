@@ -80,7 +80,11 @@ export default function Cart() {
       console.log(error);
     }
   };
-
+  const getRestaurantId = async (_iddata) => {
+    const urlprod = API_URL + '/products/' + _iddata;
+    const productdata = await handleApiGet(urlprod);
+    return productdata.restaurantRef;
+  };
   const handleApiMeals = async (_data) => {
     let id = _data._id;
     try {
@@ -88,12 +92,16 @@ export default function Cart() {
       const cartData = await handleApiGet(url);
       console.log(cartData.cart);
       setCartAr(cartData.cart);
+
+      const restaurantIds = await Promise.all(cartData.cart.map((item) => getRestaurantId(item.productId)));
+
       setCheckoutBody((prevState) => ({
         ...prevState,
         ordersdata: {
-          products: cartData.cart.map((item) => ({
+          products: cartData.cart.map((item, index) => ({
             productId: item.productId,
-            amount: item.productAmount
+            amount: item.productAmount,
+            restaurantId: restaurantIds[index]
           }))
         }
       }));

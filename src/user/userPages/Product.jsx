@@ -53,6 +53,7 @@ export default function Product() {
       const urluser = API_URL + '/users/info/user';
       const productdata = await handleApiGet(urlprod);
       setAr(productdata);
+      console.log(productdata);
 
       const userdata = await handleApiGet(urluser);
       setUser(userdata);
@@ -76,7 +77,6 @@ export default function Product() {
 
       const finalProducts = tempProductArr.filter((item) => item._id !== params['id']);
       setProductsAr(finalProducts);
-
       setImageArr(images);
       setLoading(false);
     } catch (error) {
