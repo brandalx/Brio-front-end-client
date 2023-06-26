@@ -48,6 +48,7 @@ export default function Navbar() {
 
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
+  const [avatar, setavatar] = useState('');
   const [srcav, setSrcav] = useState();
   const randomarr = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
 
@@ -64,6 +65,7 @@ export default function Navbar() {
     try {
       const data = await handleApiGet(url);
       setArr(data);
+      setavatar(API_URL + '/' + data.avatar);
       console.log(data);
 
       setCartLen(data.cart.length);
@@ -245,13 +247,7 @@ export default function Navbar() {
                           alignItems='center'
                         >
                           <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                            <Avatar
-                              py='2px'
-                              borderRadius='3xl'
-                              size='md'
-                              name={'Anonimus'}
-                              src={'/assets/avatars/' + srcav}
-                            />{' '}
+                            <Avatar py='2px' borderRadius='3xl' size='md' name={'Anonimus'} src={!loading && avatar} />{' '}
                           </MenuButton>
                         </Box>
                       )}
@@ -272,7 +268,7 @@ export default function Navbar() {
                                 borderRadius='xl'
                                 size='md'
                                 name={!loading && arr.firstname + ' ' + arr.lastname}
-                                src={(!loading && arr.avatar) || null}
+                                src={!loading && avatar}
                               />{' '}
                             </MenuButton>
                           </Box>

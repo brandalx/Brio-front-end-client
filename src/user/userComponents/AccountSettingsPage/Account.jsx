@@ -17,7 +17,7 @@ import {
   FormErrorMessage,
   useToast
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -26,13 +26,16 @@ import axios from 'axios';
 export default function Account() {
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
-
+  const [reload, setReload] = useState(0);
+  const [avatar, setavatar] = useState('');
   const handleUserData = async () => {
     const url = API_URL + '/users/info/user';
     try {
       const data = await handleApiGet(url);
       setAr(data);
       console.log(data);
+      setavatar(API_URL + '/' + data.avatar + '?t=' + reload);
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -95,7 +98,7 @@ export default function Account() {
     localStorage.removeItem(TOKEN_KEY);
     navigate('/login');
     toast({
-      title: 'Loggin out.',
+      title: 'Logged out.',
       description: 'Successfuly logged out!',
       status: 'success',
       duration: 9000,
@@ -105,7 +108,7 @@ export default function Account() {
 
   useEffect(() => {
     handleUserData();
-  }, []);
+  }, [reload, avatar]);
 
   const clearValues = () => {
     setValue('firstname', '');
@@ -114,6 +117,20 @@ export default function Account() {
     setValue('phone', '');
   };
   // todo: finish uploda and add refs
+  const uploadRef = useRef();
+
+  const onSubUpload = (e) => {
+    e.preventDefault();
+
+    handleUploadAvatar();
+  };
+
+  const handleClick = () => {
+    if (uploadRef.current) {
+      uploadRef.current.click();
+    }
+  };
+
   const handleUploadAvatar = async () => {
     console.log(uploadRef.current.files);
     if (uploadRef.current.files[0]) {
@@ -121,19 +138,37 @@ export default function Account() {
         const fdata = new FormData();
 
         fdata.append('myFile', uploadRef.current.files[0]);
-        const url = 'http://localhost:3001/upload/test2';
+        const url = API_URL + '/users/user/avatar';
 
         const resp = await axios({
           method: 'POST',
           url: url,
           data: fdata,
           headers: {
-            'x-api-key': localStorage['token']
+            'x-api-key': localStorage[TOKEN_KEY]
           }
         });
         console.log(resp.data);
+        if (resp.data.excludedPath) {
+          toast({
+            title: 'Profile image updated.',
+            description: 'Profile image successfuly updeted!',
+            status: 'success',
+            duration: 9000,
+            isClosable: true
+          });
+        }
+
+        setReload(reload + 1);
       } catch (err) {
         console.log(err);
+        toast({
+          title: 'Error when updating your profile image',
+          description: 'Error when updating your profile image. Try upload different file',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
       }
     }
   };
@@ -159,48 +194,53 @@ export default function Account() {
                   borderRadius='10px'
                   boxSize='80px'
                   objectFit='cover'
-                  src={arr.avatar || ''}
+                  src={avatar || ''}
                   name={`${arr.firstname} ${arr.lastname}`}
                 />
               </Box>
             </Skeleton>
-            <Button
-              background='neutral.white'
-              fontSize='2xs'
-              fontWeight='bold'
-              variant='solid'
-              color='primary.default'
-              borderWidth='1px'
-              borderColor='primary.default'
-              _hover={{
-                background: 'primary.default',
-                color: 'neutral.white',
-                borderWidth: '1px',
-                borderColor: 'primary.default'
-              }}
-              py={5}
-              me='20px'
-            >
-              Change
-            </Button>
-            <Button
-              borderColor='neutral.white'
-              borderWidth='1px'
-              _hover={{
-                background: 'error.default',
-                color: 'neutral.white',
-                borderWidth: '1px',
-                borderColor: 'error.default'
-              }}
-              fontSize='2xs'
-              color='neutral.gray'
-              fontWeight='bold'
-              variant='ghost'
-              py={5}
-              me='20px'
-            >
-              Remove
-            </Button>
+            <form onSubmit={onSubUpload}>
+              <Input ref={uploadRef} type='file' hidden onChange={handleUploadAvatar} />
+              <Button
+                onClick={handleClick}
+                background='neutral.white'
+                fontSize='2xs'
+                fontWeight='bold'
+                variant='solid'
+                color='primary.default'
+                borderWidth='1px'
+                borderColor='primary.default'
+                _hover={{
+                  background: 'primary.default',
+                  color: 'neutral.white',
+                  borderWidth: '1px',
+                  borderColor: 'primary.default'
+                }}
+                py={5}
+                me='20px'
+              >
+                Change
+              </Button>
+              <Button
+                type='submit'
+                borderColor='neutral.white'
+                borderWidth='1px'
+                _hover={{
+                  background: 'error.default',
+                  color: 'neutral.white',
+                  borderWidth: '1px',
+                  borderColor: 'error.default'
+                }}
+                fontSize='2xs'
+                color='neutral.gray'
+                fontWeight='bold'
+                variant='ghost'
+                py={5}
+                me='20px'
+              >
+                Submit
+              </Button>
+            </form>
           </Flex>
         </Box>
 
