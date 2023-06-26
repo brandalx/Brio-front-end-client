@@ -21,6 +21,7 @@ import React, { useEffect, useState } from 'react';
 import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Account() {
   const [loading, setLoading] = useState(true);
@@ -111,6 +112,30 @@ export default function Account() {
     setValue('lastname', '');
     setValue('email', '');
     setValue('phone', '');
+  };
+  // todo: finish uploda and add refs
+  const handleUploadAvatar = async () => {
+    console.log(uploadRef.current.files);
+    if (uploadRef.current.files[0]) {
+      try {
+        const fdata = new FormData();
+
+        fdata.append('myFile', uploadRef.current.files[0]);
+        const url = 'http://localhost:3001/upload/test2';
+
+        const resp = await axios({
+          method: 'POST',
+          url: url,
+          data: fdata,
+          headers: {
+            'x-api-key': localStorage['token']
+          }
+        });
+        console.log(resp.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
   return (
     <Box data-aos='fade-up'>
