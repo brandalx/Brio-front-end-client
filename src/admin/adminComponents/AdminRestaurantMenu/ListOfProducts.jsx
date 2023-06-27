@@ -80,7 +80,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
         throw new Error('Ошибка при удалении продукта');
       }
 
-      await fetchProducts(); // после удаления продукта обновляем список продуктов
+      await fetchProducts();
     } catch (error) {
       console.error('Ошибка при удалении продукта:', error);
     }
