@@ -153,7 +153,12 @@ export default function Login() {
                         </FormErrorMessage>
                       </FormControl>
                       <Stack spacing={10}>
-                        <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                        <Stack
+                          mt={2}
+                          direction={{ base: 'column', sm: 'row' }}
+                          align={'start'}
+                          justify={'space-between'}
+                        >
                           <Flex alignItems='center'>
                             <Checkbox mr='2'>
                               <Text color='neutral.black' fontSize='2xs'>

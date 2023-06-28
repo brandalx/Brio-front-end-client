@@ -10,6 +10,7 @@ import { useCheckToken } from '../../services/token';
 import Spline from '@splinetool/react-spline';
 import Logo from '../../assets/svg/Logo';
 import { Circle } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   // todo: add tag into product into backend model and validation
@@ -19,6 +20,7 @@ export default function Home() {
   const [loadingModel, setloadingModel] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [heightchange, setheightchange] = useState(1);
+  const [hovered, setHovered] = useState(false);
   const handleApi = async () => {
     const url = API_URL + '/restaurants';
 
@@ -51,8 +53,18 @@ export default function Home() {
     isTokenExpired;
   }, [isTokenExpired]);
   const onload = () => {
-    setheightchange(200);
+    setheightchange(250);
     setLoading(false);
+  };
+
+  const handleMouseEnter = () => {
+    console.log('Mouse entered');
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    console.log('Mouse left');
+    setHovered(false);
   };
   return (
     <>
@@ -65,7 +77,7 @@ export default function Home() {
       )} */}
       <Container maxW='1110px' py={30}>
         <Box borderRadius='16px' py={5} bg='primary.default'>
-          <Flex flexDir={{ base: 'column', md: 'row' }}>
+          <Flex flexDir={{ base: 'column', md: 'row' }} alignItems={{ base: 'none', md: 'center' }}>
             <Box>
               <Text
                 backgroundColor='none'
@@ -147,6 +159,54 @@ export default function Home() {
             </Skeleton>
           </Grid>
         </Box>
+        <Box maxW='1110px' my='45px'>
+          <Link to='/deals'>
+            <Box
+              style={{ transition: 'all 0.3s' }}
+              cursor='pointer'
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              borderRadius='16px'
+              py={5}
+              borderWidth='1px'
+              bg='primary.default'
+              _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
+            >
+              <Flex justifyContent='space-between' alignItems={{ base: 'none', md: 'center' }}>
+                <Text
+                  ms={5}
+                  textAlign={{ base: 'center', md: 'start' }}
+                  fontSize={{ base: 'sm', md: 'dm' }}
+                  lineHeight={{ base: '15px', md: '20px' }}
+                  color={hovered ? '#4e60ff' : 'white'}
+                  fontWeight='black'
+                >
+                  To all deals
+                </Text>
+                <Box me={5}>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='icon icon-tabler icon-tabler-arrow-big-right-filled'
+                    width='24'
+                    height='24'
+                    viewBox='0 0 24 24'
+                    strokeWidth='2'
+                    fill='none'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  >
+                    <path stroke='none' d='M0 0h24v24H0z' fill='none'></path>
+                    <path
+                      d='M12.089 3.634a2 2 0 0 0 -1.089 1.78l-.001 2.586h-6.999a2 2 0 0 0 -2 2v4l.005 .15a2 2 0 0 0 1.995 1.85l6.999 -.001l.001 2.587a2 2 0 0 0 3.414 1.414l6.586 -6.586a2 2 0 0 0 0 -2.828l-6.586 -6.586a2 2 0 0 0 -2.18 -.434l-.145 .068z'
+                      strokeWidth='0'
+                      fill={hovered ? '#4e60ff' : 'white'}
+                    ></path>
+                  </svg>
+                </Box>
+              </Flex>
+            </Box>
+          </Link>
+        </Box>
         <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
           <Box py={30}>
             <Grid templateColumns={{ base: 'repeat(3, 1fr)', md: 'repeat(6, 1fr)' }} gap={4}>
@@ -161,7 +221,7 @@ export default function Home() {
           </Box>
         </Skeleton>
         <Box py='25px'>
-          <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>
+          <Text mb={5} fontWeight='semibold' color='neutral.black' fontSize='sm'>
             Nearby restaurants
           </Text>
 
