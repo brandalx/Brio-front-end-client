@@ -36,7 +36,7 @@ export default function useGeolocation() {
       console.log('Geolocation not available, falling back to IP-based location');
       fetchIPLocation();
     }
-  }, []);
+  }, [city]);
 
   return { city, setCity };
 }

@@ -182,7 +182,7 @@ export default function Navbar() {
                   {localStorage[TOKEN_KEY] && (
                     <>
                       <Box>
-                        <GeolocationDefinder loading={loading} isInCart={isInCart} />
+                        <GeolocationDefinder setLoading={setLoading} loading={loading} isInCart={isInCart} />
                       </Box>
                       <Skeleton borderRadius='16px' isLoaded={!loading}>
                         <Box
