@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 
-export default function GeolocationDefinder({ loading, isInCart }) {
+export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom' }) {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const { city, setCity } = useContext(geolocationContext);
   const [loading2, setLoading2] = useState(true);
@@ -53,7 +53,7 @@ export default function GeolocationDefinder({ loading, isInCart }) {
                 returnFocusOnClose={false}
                 isOpen={isOpen}
                 onClose={onClose}
-                placement='right'
+                placement='bottom'
                 closeOnBlur={false}
               >
                 <Menu>
@@ -134,7 +134,7 @@ export default function GeolocationDefinder({ loading, isInCart }) {
         <Box>
           <Skeleton borderRadius='16px' isLoaded={!loading}>
             <Box
-              borderColor={isInCart ? 'primary.default' : 'neutral.white'}
+              borderColor={'neutral.white'}
               borderWidth='1px'
               ml='4px'
               bg='primary.lightest'
@@ -145,13 +145,7 @@ export default function GeolocationDefinder({ loading, isInCart }) {
               borderRadius='16px'
               position='relative'
             >
-              <Popover
-                returnFocusOnClose={false}
-                isOpen={isOpen}
-                onClose={onClose}
-                placement='right'
-                closeOnBlur={false}
-              >
+              <Popover returnFocusOnClose={false} isOpen={isOpen} onClose={onClose} placement={pos} closeOnBlur={false}>
                 <Menu>
                   <PopoverTrigger>
                     <MenuButton
@@ -175,7 +169,7 @@ export default function GeolocationDefinder({ loading, isInCart }) {
                     <PopoverFooter display='flex' justifyContent='flex-end'>
                       <ButtonGroup size='2xs'>
                         <Button
-                          w={{ base: '50%', md: 'initial' }}
+                          w={{ base: '100%', md: 'initial' }}
                           background='primary.default'
                           fontWeight='bold'
                           variant='solid'

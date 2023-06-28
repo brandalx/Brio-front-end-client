@@ -87,6 +87,7 @@ export default function Navbar() {
   }, []);
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem('location');
     navigate('/login');
     toast({
       title: 'Loggin out.',
@@ -336,6 +337,9 @@ export default function Navbar() {
                 <HStack display='flex' alignItems='center' spacing={4}>
                   {localStorage[TOKEN_KEY] && (
                     <>
+                      <Box>
+                        <GeolocationDefinder setLoading={setLoading} loading={loading} isInCart={isInCart} />
+                      </Box>
                       <Skeleton borderRadius='16px' isLoaded={!loading}>
                         <Box
                           borderColor={isInCart ? 'primary.default' : 'neutral.white'}

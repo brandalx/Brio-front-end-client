@@ -98,6 +98,7 @@ export default function Account() {
   const navigate = useNavigate();
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem('location');
     navigate('/login');
     toast({
       title: 'Logged out.',
