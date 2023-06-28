@@ -50,13 +50,10 @@ export default function Product() {
       }
 
       const urlprod = API_URL + '/products/' + params['id'];
-      const urluser = API_URL + '/users/info/user';
+
       const productdata = await handleApiGet(urlprod);
       setAr(productdata);
       console.log(productdata);
-
-      const userdata = await handleApiGet(urluser);
-      setUser(userdata);
 
       const images = productdata.image.map((item) => ({
         original: item,
@@ -78,16 +75,28 @@ export default function Product() {
       const finalProducts = tempProductArr.filter((item) => item._id !== params['id']);
       setProductsAr(finalProducts);
       setImageArr(images);
-      setLoading(false);
+      handleUserApi();
     } catch (error) {
       setLoading(false);
       console.log(error);
     }
   };
 
+  const handleUserApi = async () => {
+    try {
+      const urluser = API_URL + '/users/info/user';
+      const userdata = await handleApiGet(urluser);
+      setUser(userdata);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     handleAProductApi();
-  }, []);
+  }, [params['id']]);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -164,6 +173,7 @@ export default function Product() {
                     showThumbnails={true}
                     showNav={true}
                     thumbnailPosition={thumbnailPosition}
+                    lazyLoad={true}
                     showFullscreenButton={false}
                     useBrowserFullscreen={false}
                     showPlayButton={false}

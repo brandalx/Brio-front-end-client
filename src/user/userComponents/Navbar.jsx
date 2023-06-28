@@ -251,10 +251,10 @@ export default function Navbar() {
                           <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                             <Avatar
                               py='2px'
-                              borderRadius='3xl'
+                              borderRadius='xl'
                               size='md'
-                              name={'Anonimus'}
-                              src={!loading && avatarUser}
+                              name={!loading && arr.firstname + ' ' + arr.lastname}
+                              src={'/assets/avatars/' + srcav}
                             />{' '}
                           </MenuButton>
                         </Box>
@@ -273,9 +273,9 @@ export default function Navbar() {
                             <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                               <Avatar
                                 py='2px'
-                                borderRadius='xl'
+                                borderRadius='3xl'
                                 size='md'
-                                name={!loading && arr.firstname + ' ' + arr.lastname}
+                                name={'Anonimus'}
                                 src={!loading && avatarUser}
                               />{' '}
                             </MenuButton>
@@ -417,7 +417,7 @@ export default function Navbar() {
                               borderRadius='xl'
                               size='md'
                               name={!loading && arr.firstname + ' ' + arr.lastname}
-                              src={(!loading && arr.avatar) || null}
+                              src={(!loading && avatarUser) || null}
                             />{' '}
                           </MenuButton>
                           <MenuList>
