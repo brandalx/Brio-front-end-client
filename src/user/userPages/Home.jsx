@@ -62,34 +62,27 @@ export default function Home() {
           <Skeleton mx='auto' borderRadius='16px' height='350px' isLoaded={loadingModel} maxW='1100px'></Skeleton>
         </Box>
       )} */}
+      <Container maxW='1110px' py={30}>
+        <Box borderRadius='16px' bg='primary.default'>
+          <Text
+            zIndex='5'
+            data-aos='fade-up'
+            textAlign='center'
+            fontSize={{ base: 'x-large', md: 'xl' }}
+            lineHeight={{ base: '20px', md: '60px' }}
+            color='white'
+            fontWeight='black'
+          >
+            Bringing food really on-time
+          </Text>
 
-      <Box
-        data-aos='fade-up'
-        zIndex='-1'
-        pos='relative'
-        textAlign='center'
-        display='flex'
-        alignItems='center'
-        justifyContent='center'
-        top='80px'
-        my={5}
-      >
-        <Text
-          pos='absolute'
-          fontSize={{ base: 'x-large', md: 'xl' }}
-          lineHeight={{ base: '20px', md: '60px' }}
-          color='primary.default'
-          fontWeight='black'
-        >
-          Bringing food really on-time
-        </Text>
-      </Box>
+          <Box h={`${heightchange}px`} w='100%'>
+            <Spline scene='https://draft.spline.design/qVhp5gYdqVX-stpF/scene.splinecode' onLoad={onload} />
+          </Box>
+        </Box>
+      </Container>
 
-      <Box h={`${heightchange}px`} w='100%'>
-        <Spline scene='https://draft.spline.design/PUwIzlFumPBQGPPr/scene.splinecode' onLoad={onload} />
-      </Box>
-
-      <Container maxW='1110px'>
+      <Container maxW='1110px' py={15}>
         <Skeleton borderRadius='16px' height={loading ? '250px' : '0px'} isLoaded={loading} my={loading ? 2 : 0} />
         <Box>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
