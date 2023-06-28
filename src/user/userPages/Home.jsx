@@ -118,7 +118,17 @@ export default function Home() {
         <Box>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
-              <GridItem w='100%' h='auto' bg='primary.light' borderRadius={20}>
+              <GridItem
+                style={{ transition: 'all 0.3s' }}
+                cursor='pointer'
+                w='100%'
+                h='auto'
+                borderColor='white'
+                borderWidth='1px'
+                bg='primary.light'
+                _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
+                borderRadius={20}
+              >
                 <Flex alignItems='center'>
                   <Box w='50%'>
                     <Image src={burgertest} alt='Promotion 1' />
@@ -138,7 +148,17 @@ export default function Home() {
               </GridItem>
             </Skeleton>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
-              <GridItem borderRadius={20} w='100%' h='auto' bg='primary.light'>
+              <GridItem
+                style={{ transition: 'all 0.3s' }}
+                cursor='pointer'
+                borderRadius={20}
+                w='100%'
+                h='auto'
+                borderColor='white'
+                borderWidth='1px'
+                bg='primary.light'
+                _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
+              >
                 <Flex alignItems='center'>
                   <Box w='50%'>
                     <Image src={burgertest} alt='Promotion 1' />
@@ -168,8 +188,9 @@ export default function Home() {
               onMouseLeave={handleMouseLeave}
               borderRadius='16px'
               py={5}
+              borderColor='white'
               borderWidth='1px'
-              bg='primary.default'
+              bg='primary.light'
               _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
             >
               <Flex justifyContent='space-between' alignItems={{ base: 'none', md: 'center' }}>
@@ -178,7 +199,7 @@ export default function Home() {
                   textAlign={{ base: 'center', md: 'start' }}
                   fontSize={{ base: 'sm', md: 'dm' }}
                   lineHeight={{ base: '15px', md: '20px' }}
-                  color={hovered ? '#4e60ff' : 'white'}
+                  color={hovered ? '#4e60ff' : '#4e60ff'}
                   fontWeight='black'
                 >
                   To all deals
@@ -199,7 +220,7 @@ export default function Home() {
                     <path
                       d='M12.089 3.634a2 2 0 0 0 -1.089 1.78l-.001 2.586h-6.999a2 2 0 0 0 -2 2v4l.005 .15a2 2 0 0 0 1.995 1.85l6.999 -.001l.001 2.587a2 2 0 0 0 3.414 1.414l6.586 -6.586a2 2 0 0 0 0 -2.828l-6.586 -6.586a2 2 0 0 0 -2.18 -.434l-.145 .068z'
                       strokeWidth='0'
-                      fill={hovered ? '#4e60ff' : 'white'}
+                      fill={hovered ? '#4e60ff' : '#4e60ff'}
                     ></path>
                   </svg>
                 </Box>
