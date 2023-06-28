@@ -34,11 +34,11 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
   const [restaurantId, setRestaurantId] = useState(null);
   const fetchProducts = async () => {
     try {
-      const response = await handleApiGet(API_URL + '/admin/products?categoryName=' + selectedCategory);
+      const response = await handleApiGet(`${API_URL}/admin/products?categoryName=${selectedCategory}`);
       setProducts(response);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Ошибка при получении продуктов:', error);
     }
   };
 
@@ -50,17 +50,36 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
 
       const response = await axios.get(`${API_URL}/users/${userId}`, {
         headers: {
-          'x-api-key': token // Это где вы устанавливаете заголовок с токеном
+          'x-api-key': token
         }
       });
 
-      // Устанавливаем ID ресторана и пользователя
       setRestaurantId(response.data.restaurant);
       setUserId(userId);
 
-      console.log(response.data); // Выводим данные о пользователе и ресторане
+      console.log(response.data);
     } catch (error) {
-      console.error('Error fetching user:', error);
+      console.error('Ошибка при получении данных пользователя:', error);
+    }
+  };
+
+  const removeProductFromRestaurant = async (productId) => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+
+      const response = await axios.put(`${API_URL}/restaurants/${restaurantId}/product/remove`, { productId }, {
+        headers: {
+          'x-api-key': token,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Ошибка при удалении продукта из ресторана');
+      }
+
+    } catch (error) {
+      console.error('Ошибка при удалении продукта из ресторана:', error);
     }
   };
 
@@ -68,15 +87,16 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
     const token = localStorage.getItem('x-api-key');
 
     try {
-      const response = await fetch(API_URL + '/admin/products/' + productId, {
-        method: 'DELETE',
+      await removeProductFromRestaurant(productId);
+
+      const response = await axios.delete(`${API_URL}/admin/products/${productId}`, {
         headers: {
           'x-api-key': token,
           'Content-Type': 'application/json'
         }
       });
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error('Ошибка при удалении продукта');
       }
 
@@ -85,6 +105,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
       console.error('Ошибка при удалении продукта:', error);
     }
   };
+
 
   const updateCategoryCounts = () => {
     const counts = {};
