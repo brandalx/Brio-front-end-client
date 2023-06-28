@@ -9,6 +9,7 @@ import { useCheckToken } from '../../services/token';
 
 import Spline from '@splinetool/react-spline';
 import Logo from '../../assets/svg/Logo';
+import { Circle } from '@chakra-ui/react';
 
 export default function Home() {
   // todo: add tag into product into backend model and validation
@@ -50,7 +51,7 @@ export default function Home() {
     isTokenExpired;
   }, [isTokenExpired]);
   const onload = () => {
-    setheightchange(350);
+    setheightchange(200);
     setLoading(false);
   };
   return (
@@ -63,22 +64,40 @@ export default function Home() {
         </Box>
       )} */}
       <Container maxW='1110px' py={30}>
-        <Box borderRadius='16px' bg='primary.default'>
-          <Text
-            zIndex='5'
-            data-aos='fade-up'
-            textAlign='center'
-            fontSize={{ base: 'x-large', md: 'xl' }}
-            lineHeight={{ base: '20px', md: '60px' }}
-            color='white'
-            fontWeight='black'
-          >
-            Bringing food really on-time
-          </Text>
+        <Box borderRadius='16px' py={5} bg='primary.default'>
+          <Flex flexDir={{ base: 'column', md: 'row' }}>
+            <Box>
+              <Text
+                backgroundColor='none'
+                mt={5}
+                ms={5}
+                data-aos='fade-up'
+                textAlign={{ base: 'center', md: 'start' }}
+                fontSize={{ base: 'xl', md: '2xl' }}
+                lineHeight={{ base: '20px', md: '45px' }}
+                color='white'
+                fontWeight='black'
+              >
+                Brio
+              </Text>
 
-          <Box h={`${heightchange}px`} w='100%'>
-            <Spline scene='https://draft.spline.design/qVhp5gYdqVX-stpF/scene.splinecode' onLoad={onload} />
-          </Box>
+              <Text
+                mt={5}
+                ms={5}
+                textAlign={{ base: 'center', md: 'start' }}
+                fontSize={{ base: 'sm', md: 'dm' }}
+                lineHeight={{ base: '15px', md: '20px' }}
+                color='white'
+                fontWeight='black'
+              >
+                Bringing food really on-time
+              </Text>
+            </Box>
+
+            <Box borderRadius='16px' h={`${heightchange}px`} w='100%'>
+              <Spline scene='https://draft.spline.design/wzcQPaZUf8Lx1H2y/scene.splinecode' onLoad={onload} />
+            </Box>
+          </Flex>
         </Box>
       </Container>
 
