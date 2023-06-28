@@ -38,7 +38,7 @@ export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom' 
         <Box>
           <Skeleton borderRadius='16px' isLoaded={!loading}>
             <Box
-              borderColor={isInCart ? 'primary.default' : 'neutral.white'}
+              borderColor={'neutral.white'}
               borderWidth='1px'
               ml='4px'
               bg='primary.lightest'
