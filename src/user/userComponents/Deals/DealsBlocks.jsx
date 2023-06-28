@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Container, Image, Text, Grid, Divider, Skeleton } from '@chakra-ui/react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 import ValidThrough from '../../../assets/svg/ValidThrough.jsx';
 import Location from '../../../assets/svg/Location.jsx';
@@ -102,13 +104,21 @@ export default function DealsBlocks() {
                         {promotion.discountDetails}
                       </Text>
                     </Box>
-                    <Image
+                    {/* <Image
                       width='112px'
                       height='92px'
                       borderRadius='16px'
                       src={promotion.image}
                       objectFit='cover'
                       objectPosition='center'
+                    /> */}
+
+                    <LazyLoadImage
+                      alt={`Lazy loaded image number ${index}`}
+                      height='92px'
+                      src={promotion.image}
+                      width='112px'
+                      effect='blur'
                     />
                   </Box>
                   <Divider mt='10px' mb='8px' />
