@@ -88,25 +88,25 @@ export default function CustomerProfile() {
                   {user.notes}
                 </Text>
               </Box>
-              {role === 'ADMIN' && (
-                <Button
-                  onClick={onOpen}
-                  _hover={{
-                    background: 'primary.default',
-                    color: 'neutral.white',
-                    borderWidth: '1px',
-                    borderColor: 'primary.default'
-                  }}
-                  color='primary.default'
-                  p='20px'
-                  border='1px'
-                  borderColor='primary.default'
-                  w='100%'
-                  marginTop='16px'
-                >
-                  Edit note
-                </Button>
-              )}
+
+              <Button
+                onClick={onOpen}
+                _hover={{
+                  background: 'primary.default',
+                  color: 'neutral.white',
+                  borderWidth: '1px',
+                  borderColor: 'primary.default'
+                }}
+                color='primary.default'
+                p='20px'
+                border='1px'
+                borderColor='primary.default'
+                w='100%'
+                marginTop='16px'
+              >
+                Edit note
+              </Button>
+
               <ModalNoteRedactor
                 isOpen={isOpen}
                 onClose={onClose}
