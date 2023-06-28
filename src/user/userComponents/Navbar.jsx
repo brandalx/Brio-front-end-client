@@ -345,7 +345,7 @@ export default function Navbar() {
                           borderColor={isInCart ? 'primary.default' : 'neutral.white'}
                           borderWidth='1px'
                           ml='4px'
-                          bg='neutral.grayLightest'
+                          bg='primary.lightest'
                           color='black'
                           px={'8px'}
                           py={'8px'}
