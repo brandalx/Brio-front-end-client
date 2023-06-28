@@ -11,6 +11,7 @@ import Spline from '@splinetool/react-spline';
 import Logo from '../../assets/svg/Logo';
 import { Circle } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { Button } from '@chakra-ui/react';
 
 export default function Home() {
   // todo: add tag into product into backend model and validation
@@ -94,7 +95,7 @@ export default function Home() {
               </Text>
 
               <Text
-                mt={5}
+                mt={2}
                 ms={5}
                 textAlign={{ base: 'center', md: 'start' }}
                 fontSize={{ base: 'sm', md: 'dm' }}
@@ -104,6 +105,30 @@ export default function Home() {
               >
                 Bringing food really on-time
               </Text>
+
+              <Box mt={{ base: 5, md: 4 }} ms={5} textAlign={{ base: 'center', md: 'start' }}>
+                <Link to='/signup'>
+                  <Button
+                    fontSize='xs'
+                    fontWeight='bold'
+                    variant='solid'
+                    color='primary.default'
+                    borderWidth='1px'
+                    background='neutral.white'
+                    borderColor='primary.default'
+                    _hover={{
+                      background: 'primary.light',
+                      color: 'primary.default',
+                      borderWidth: '1px',
+                      borderColor: 'primary.default'
+                    }}
+                    py={5}
+                  >
+                    {' '}
+                    Get started
+                  </Button>
+                </Link>
+              </Box>
             </Box>
 
             <Box borderRadius='16px' h={`${heightchange}px`} w='100%'>
