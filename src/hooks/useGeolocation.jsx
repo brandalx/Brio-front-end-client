@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 export default function useGeolocation() {
   const VITE_IPAPI = import.meta.env.VITE_IPAPI;
-  const [city, setCity] = useState('New York');
+  const [city, setCity] = useState(null);
 
   useEffect(() => {
     // Fallback to IP-based location
