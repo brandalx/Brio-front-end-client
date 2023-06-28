@@ -11,8 +11,10 @@ import {
   MenuDivider,
   MenuButton
 } from '@chakra-ui/react';
-import visa from '../../../assets/images/visa.png';
-import mastercard from '../../../assets/images/mastercard.png';
+// import visa from '../../../assets/images/visa.png';
+// import mastercard from '../../../assets/images/mastercard.png';
+import MasterCard from '../../../assets/svg/MasterCard';
+import Visa from '../../../assets/svg/Visa';
 import React, { useEffect } from 'react';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 
@@ -111,7 +113,7 @@ export default function PaymentCard({
               </Menu>
             )}
 
-            <Image w='auto' h='20px' src={item.cardType === 'visa' ? visa : mastercard} />
+            <Box style={{ transform: 'scale(2.5)' }}>{item.cardType === 'visa' ? <Visa /> : <MasterCard />}</Box>
           </Box>
         </Flex>
       </Box>
