@@ -87,7 +87,7 @@ export default function DealsBlocks() {
               >
                 <Link to={`/restaurant/${promotion.restaurantRef}`}>
                   <Box display='flex' justifyContent='space-between'>
-                    <Box marginRight='10px'>
+                    <Box marginRight='10px' maxW='50%'>
                       <Box
                         textAlign='center'
                         border='1px'
@@ -107,19 +107,20 @@ export default function DealsBlocks() {
                     {/* <Image
                       width='112px'
                       height='92px'
-                      borderRadius='16px'
                       src={promotion.image}
                       objectFit='cover'
-                      objectPosition='center'
+                      borderRadius='16px' objectPosition='center' 
                     /> */}
-
-                    <LazyLoadImage
-                      alt={`Lazy loaded image number ${index}`}
-                      height='92px'
-                      src={promotion.image}
-                      width='112px'
-                      effect='blur'
-                    />
+                    <Box minH='92px' objectFit='cover' borderRadius='16px' width='100%'>
+                      <LazyLoadImage
+                        style={{ objectFit: 'cover', objectPosition: 'center', borderRadius: '16px' }}
+                        width='100%'
+                        height='100%'
+                        alt={`Lazy loaded image number ${index}`}
+                        src={promotion.image}
+                        effect='blur'
+                      />
+                    </Box>
                   </Box>
                   <Divider mt='10px' mb='8px' />
                   <Box display='flex' flexDirection='column'>
