@@ -253,7 +253,7 @@ export default function Navbar() {
                               py='2px'
                               borderRadius='xl'
                               size='md'
-                              name={!loading && arr.firstname + ' ' + arr.lastname}
+                              name={'Anonimus'}
                               src={'/assets/avatars/' + srcav}
                             />{' '}
                           </MenuButton>
@@ -275,7 +275,7 @@ export default function Navbar() {
                                 py='2px'
                                 borderRadius='3xl'
                                 size='md'
-                                name={'Anonimus'}
+                                name={!loading && arr.firstname + ' ' + arr.lastname}
                                 src={!loading && avatarUser}
                               />{' '}
                             </MenuButton>
