@@ -70,7 +70,6 @@ export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom' 
                       <Geolocation />
                     </MenuButton>
                   </PopoverTrigger>
-
                   <PopoverContent>
                     <PopoverHeader fontWeight='semibold'>Let us know restaurants nearby</PopoverHeader>
                     <PopoverArrow />
@@ -162,7 +161,7 @@ export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom' 
                   </PopoverTrigger>
 
                   <PopoverContent>
-                    <PopoverHeader fontWeight='semibold'>Let us know restaurants nearby</PopoverHeader>
+                    <PopoverHeader fontWeight='semibold'>We will show restaurants nearby</PopoverHeader>
                     <PopoverArrow />
                     <PopoverCloseButton />
                     <PopoverBody>Your location is {city}</PopoverBody>

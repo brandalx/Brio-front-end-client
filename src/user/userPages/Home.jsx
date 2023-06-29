@@ -25,16 +25,28 @@ export default function Home() {
   const [hovered, setHovered] = useState(false);
   const handleApi = async () => {
     const url = API_URL + '/restaurants';
-    const urluser = API_URL + '/users/info/user';
 
     try {
       const data = await handleApiGet(url);
-      const data2 = await handleApiGet(urluser);
+
       setAr(data);
-      setUser(data2);
+      handleApiUser();
       console.log(data);
     } catch (error) {
       setLoading(false);
+      console.log(error);
+    }
+  };
+
+  const handleApiUser = async () => {
+    const urluser = API_URL + '/users/info/user';
+
+    try {
+      const data2 = await handleApiGet(urluser);
+
+      setUser(data2);
+      console.log(data);
+    } catch (error) {
       console.log(error);
     }
   };
