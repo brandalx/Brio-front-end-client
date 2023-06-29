@@ -18,24 +18,57 @@ import {
 import AddPlus from '../../../assets/svg/AddPlus';
 import { API_URL, handleApiPost, handleApiGet } from '../../../services/apiServices';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 export default function ModalNewCategory({ fetchCategories, setCategories }) {
   const [isLilMob] = useMediaQuery('(max-width: 350px)');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [categoryName, setCategoryName] = useState('');
+  const [restaurantId, setRestaurantId] = useState(null);
+
+  const fetchAdmin = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+
+      const response = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token // Это где вы устанавливаете заголовок с токеном
+        }
+      });
+
+      // Устанавливаем ID ресторана
+      setRestaurantId(response.data.restaurant);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    }
+  };
 
   const createNewCategory = async (name, items) => {
     const amount = 0;
-    return await handleApiPost(API_URL + '/admin/categories', {
-      categoryName: name,
-      items,
-      amount
-    });
+    const token = localStorage.getItem('x-api-key'); // get the token
+    return await handleApiPost(
+      API_URL + '/admin/categories',
+      {
+        restaurantId,
+        categoryName: name,
+        items,
+        amount
+      },
+      { 'x-api-key': token }
+    ); // pass the token in headers
   };
 
   const handlePublishCategory = async () => {
     // Assuming you have an array of new items ID
     const newItemsId = [];
+
+    // Ensure the restaurantId is set and newItemsId is an array
+    if (!restaurantId || !Array.isArray(newItemsId)) {
+      console.error('The restaurant ID is not set or the items is not an array');
+      return;
+    }
 
     try {
       const newCategory = await createNewCategory(categoryName, newItemsId);
@@ -50,6 +83,12 @@ export default function ModalNewCategory({ fetchCategories, setCategories }) {
       console.error('An error occurred while publishing the category:', error);
     }
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchAdmin();
+    }
+  }, [isOpen]);
 
   return (
     <>

@@ -17,6 +17,8 @@ import ModalTextRedactor from './ModalTextRedactor';
 import Pen from '../../../assets/svg/Pen';
 import Copy from '../../../assets/svg/Copy';
 import TrashBox from '../../../assets/svg/TrashBox';
+import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 
 export default function ListOfProducts({ selectedCategory, categoryCounts, setCategoryCounts }) {
   const gridColumns = useBreakpointValue({ base: '1fr', md: '1fr 4fr' });
@@ -27,23 +29,83 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
+  const [initialCategory, setInitialCategory] = useState('');
+  const [userId, setUserId] = useState(null);
+  const [restaurantId, setRestaurantId] = useState(null);
   const fetchProducts = async () => {
     try {
-      const response = await handleApiGet(API_URL + '/admin/products?categoryName=' + selectedCategory);
+      const response = await handleApiGet(`${API_URL}/admin/products?categoryName=${selectedCategory}`);
       setProducts(response);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Ошибка при получении продуктов:', error);
+    }
+  };
+
+  const fetchAdmin = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+
+      const response = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      setRestaurantId(response.data.restaurant);
+      setUserId(userId);
+
+      console.log(response.data);
+    } catch (error) {
+      console.error('Ошибка при получении данных пользователя:', error);
+    }
+  };
+
+  const removeProductFromRestaurant = async (productId) => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+
+      const response = await axios.put(
+        `${API_URL}/restaurants/${restaurantId}/product/remove`,
+        { productId },
+        {
+          headers: {
+            'x-api-key': token,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error('Ошибка при удалении продукта из ресторана');
+      }
+    } catch (error) {
+      console.error('Ошибка при удалении продукта из ресторана:', error);
     }
   };
 
   const deleteProduct = async (productId) => {
+    const token = localStorage.getItem('x-api-key');
+
     try {
-      await handleApiDelete(API_URL + '/admin/products/' + productId);
+      await removeProductFromRestaurant(productId);
+
+      const response = await axios.delete(`${API_URL}/admin/products/${productId}`, {
+        headers: {
+          'x-api-key': token,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Ошибка при удалении продукта');
+      }
+
       await fetchProducts();
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error('Ошибка при удалении продукта:', error);
     }
   };
 
@@ -52,6 +114,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
 
     products.forEach((item) => {
       const { categoryName } = item;
+      setInitialCategory(categoryName);
       counts[categoryName] = counts[categoryName] ? counts[categoryName] + 1 : 1;
     });
 
@@ -64,6 +127,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
 
   useEffect(() => {
     updateCategoryCounts();
+    fetchAdmin();
   }, [products]);
 
   const handleTrashClick = (productId) => {
@@ -73,10 +137,10 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
   return (
     <GridItem colSpan={8}>
       <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
-        {selectedCategory === null ? 'Breakfast menu' : selectedCategory}
+        {selectedCategory === null ? '' : selectedCategory}
       </Text>
       {products
-        .filter((item) => item.categoryName === selectedCategory)
+        .filter((item) => item.categoryName === selectedCategory && item.restaurantRef === restaurantId)
         .map((item) => (
           <Box
             key={item._id}

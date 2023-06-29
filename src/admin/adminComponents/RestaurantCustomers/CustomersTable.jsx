@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Flex,
@@ -21,18 +22,22 @@ import React, { useEffect, useState } from 'react';
 import Status from '../../../assets/svg/Status';
 import ThreeDots from '../../../assets/svg/ThreeDots';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export default function CustomersTable() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
   const [isMobile] = useMediaQuery('(max-width: 575px)');
-  const [ordersOfUsers, setOrdersOfUsers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = React.useState(false);
   const options = { year: 'numeric', month: 'short', day: 'numeric' };
   const [isBetween] = useMediaQuery('(min-width: 576px) and (max-width: 600px)');
   const navigate = useNavigate();
-
+  const [restaurantId, setRestaurantId] = useState(null);
+  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(3px) hue-rotate(90deg)' />;
+  const [overlay, setOverlay] = React.useState(<OverlayOne />);
   const [openModalId, setOpenModalId] = useState(null);
   const handleOpenModal = (userId) => {
     setIsOpen(true);
@@ -49,29 +54,71 @@ export default function CustomersTable() {
     setIsOpen(false);
     setOpenModalId(null);
   };
-
-  const fetchOrders = async () => {
+  const fetchRestaurantData = async () => {
     try {
-      const response = await handleApiGet(API_URL + '/users/getAllUsers');
+      const token = localStorage.getItem('x-api-key');
 
-      setOrdersOfUsers(response);
+      const decodedToken = jwtDecode(token);
 
-      // setLoading(false);
+      const userId = decodedToken._id;
+
+      const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      setRestaurantId(adminResponse.data.restaurant);
+      console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant); // добавлено логирование
+      setLoading(false);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error fetching restaurant data:', error);
     }
   };
 
+  // Добавим пустой массив в качестве зависимостей для вызова только при первом рендере
   useEffect(() => {
-    fetchOrders();
+    fetchRestaurantData();
   }, []);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (restaurantId) {
+        console.log('Fetching users with orders from restaurant: ', restaurantId); // добавлено логирование
+        try {
+          const usersResponse = await handleApiGet(`${API_URL}/users/getAllUsers`);
+          console.log('Fetched all users: ', usersResponse); // добавлено логирование
+          const users = usersResponse;
+
+          if (users && Array.isArray(users)) {
+            const filteredUsers = users.filter((user) => {
+              // Проверяем, есть ли у пользователя заказы из этого ресторана
+              return (
+                user.orders && user.orders.some((order) => order.restaurant && order.restaurant.includes(restaurantId))
+              );
+            });
+
+            setUsers(filteredUsers);
+            console.log('Filtered users: ', filteredUsers); // добавлено логирование
+            setLoading(false);
+          } else {
+            console.error('Unexpected data structure:', usersResponse);
+          }
+        } catch (error) {
+          console.error('Error fetching orders or users:', error);
+        }
+      }
+    };
+
+    fetchOrders();
+  }, [restaurantId]);
 
   return (
     <Tbody>
-      {Array.isArray(ordersOfUsers) &&
-        ordersOfUsers.map((user) => {
+      {Array.isArray(users) &&
+        users.map((user) => {
           const mostRecentOrder = user.orders.reduce((recent, order) => {
-            return new Date(recent.creationTime) > new Date(order.creationTime) ? recent : order;
+            return new Date(recent.creationDate) > new Date(order.creationDate) ? recent : order;
           }, user.orders[0]);
 
           return (
@@ -93,7 +140,7 @@ export default function CustomersTable() {
               >
                 {user.firstname} {user.lastname}
                 <Box mr='12px' w='42px' h='42px'>
-                  <Image w='100%' h='100%' borderRadius='full' src={user.avatar} />
+                  <Avatar w='100%' h='100%' borderRadius='full' src={''} name={user.firstname + ' ' + user.lastname} />
                 </Box>
               </Td>
               <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
@@ -105,8 +152,8 @@ export default function CustomersTable() {
               </Td>
               <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
                 {mostRecentOrder &&
-                  mostRecentOrder.creationTime &&
-                  new Date(mostRecentOrder.creationTime).toLocaleDateString('en-US', options)}
+                  mostRecentOrder.creationDate &&
+                  new Date(mostRecentOrder.creationDate).toLocaleDateString('en-US', options)}
               </Td>
 
               <Td
@@ -153,21 +200,7 @@ export default function CustomersTable() {
               >
                 <IconButton icon={<ThreeDots />} onClick={() => handleOpenModal(user._id)} />
                 <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
-                  <ModalOverlay
-                    width='100%'
-                    sx={{
-                      position: 'fixed',
-                      top: '0',
-                      left: '0',
-                      width: '100%',
-                      height: '100%',
-                      zIndex: '10',
-                      bg: 'rgba(0,0,0,0.6)',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  />
+                  {overlay}
 
                   <ModalContent
                     position='relative'

@@ -130,7 +130,7 @@ export default function OrdersTableBody() {
                 fontWeight='bold'
                 color='neutral.black'
               >
-                ${item.paymentSummary.totalAmount}
+                {item.paymentSummary && item.paymentSummary.totalAmount}
               </Td>
               <Td
                 position={isMobile ? 'relative' : ''}

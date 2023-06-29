@@ -35,8 +35,12 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
       image: item.image // use the item's images
     };
 
+    // Assume you have a token
+    const token = localStorage.getItem('x-api-key');
     axios
-      .patch(`http://localhost:3001/admin/products/${item._id}`, combinedData)
+      .patch(`http://localhost:3001/admin/products/${item._id}`, combinedData, {
+        headers: { 'x-api-key': token }
+      })
       .then((response) => {
         console.log(response);
         onClose(); // Close the modal
@@ -85,36 +89,37 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
               <Controller
                 control={control}
                 name='title'
-                defaultValue={item.title}
+                defaultValue={item ? item.title : ''}
                 render={({ field }) => <Input {...field} placeholder='Title' />}
               />
+
               <FormLabel mt='15px'>Description</FormLabel>
               <Controller
                 control={control}
                 name='description'
-                defaultValue={item.description}
+                defaultValue={item && item.description ? item.description : ''}
                 render={({ field }) => <Input {...field} placeholder='Description' />}
               />
+
               <FormLabel mt='15px'>Ingredients</FormLabel>
               <Controller
                 control={control}
                 name='ingredients'
-                defaultValue={item.ingredients}
+                defaultValue={item.ingredients || ''}
                 render={({ field }) => <Input {...field} placeholder='Ingredients' />}
               />
               <FormLabel mt='15px'>Price</FormLabel>
               <Controller
                 control={control}
                 name='price'
-                defaultValue={item.price}
+                defaultValue={item.price || ''}
                 render={({ field }) => <Input {...field} placeholder='Price' type='number' />}
               />
-
               <FormLabel mt='15px'>Nutritional value</FormLabel>
               <Controller
                 control={control}
                 name='nutritionalValue'
-                defaultValue={item.nutritionals}
+                defaultValue={item.nutritionals || ''}
                 render={({ field }) => <Input {...field} placeholder='Nutritional value' />}
               />
             </FormControl>

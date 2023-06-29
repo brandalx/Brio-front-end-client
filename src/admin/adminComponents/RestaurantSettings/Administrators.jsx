@@ -15,7 +15,7 @@ import {
   Stack,
   Container
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TableAdmins from './TableAdmins';
 
 export default function Administrators() {

@@ -62,12 +62,9 @@ export default function CustomerTableBody() {
               pb='19.5px'
               fontSize='2xs'
               color='neutral.grayDark'
-              textOverflow='ellipsis'
-              overflow='hidden'
-              whiteSpace='nowrap'
               maxW='100px'
             >
-              {order.orderId}
+              {order._id.slice(-5)}
             </Td>
             <Td
               display={{ base: 'none', sm: 'table-cell' }}
@@ -76,7 +73,7 @@ export default function CustomerTableBody() {
               fontSize='2xs'
               color='neutral.grayDark'
             >
-              {new Date(order.creationTime).toLocaleDateString('en-US', {
+              {new Date(order.creationDate).toLocaleDateString('en-US', {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
@@ -89,7 +86,7 @@ export default function CustomerTableBody() {
               fontSize='2xs'
               color='neutral.grayDark'
             >
-              {new Date(order.creationTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+              {new Date(order.creationDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
             </Td>
             <Td
               pr={isMobile ? '0' : ''}

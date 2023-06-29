@@ -6,7 +6,6 @@ export const API_URL = urlbackend;
 // export const API_URL = 'http://localhost:3001';
 // export const API_URL = 'http://192.168.1.29:3001';
 
-
 //maintainable for fast change
 
 export const TOKEN_KEY = 'x-api-key';
@@ -52,6 +51,7 @@ export const handleApiDelete = async (url) => {
     const response = await fetch(url, {
       method: 'DELETE',
       headers: {
+        'x-api-key': localStorage[TOKEN_KEY],
         'Content-Type': 'application/json'
       }
     });

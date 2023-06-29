@@ -17,55 +17,101 @@ import {
 import React, { useEffect, useState } from 'react';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
 export default function AccountSettings() {
   const [restaurant, setRestaurant] = useState([]);
+  const { id } = useParams();
+  const [restaurantId, setRestaurantId] = useState(null);
   const [image, setImage] = useState(null);
   const [formData, setFormData] = useState({
-    name: '',
+    title: '',
     email: '',
     phoneNumber: '',
     address: '',
     description: ''
   });
+  const [user, setUser] = useState(null);
 
   const handleImageChange = (event) => {
     setImage(URL.createObjectURL(event.target.files[0]));
   };
+  const fetchAdmin = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
 
+      const response = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token // Это где вы устанавливаете заголовок с токеном
+        }
+      });
+      const restaurantId2 = response.data.restaurant;
+      setRestaurantId(restaurantId2);
+
+      await fetchRestaurant(restaurantId2);
+
+      if (response.data.success) {
+        // Проверка успешности запроса
+        localStorage.setItem('token', response.data.token); // Сохранение токена в хранилище
+      }
+      if (response.data && response.data.restaurant) {
+        console.log(token); // Это должно выводить ваш токен, если он присутствует в localStorage
+      }
+      setUser(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    }
+  };
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
       const updatedRestaurantData = {
-        ...restaurant[0], // Keep existing fields from the restaurant data
+        ...restaurant, // Keep existing fields from the restaurant data
         ...formData // Update fields with new form data
       };
 
-      const response = await axios.patch(`${API_URL}/admin/restaurants/${restaurant[0]._id}`, updatedRestaurantData);
+      const token = localStorage.getItem('x-api-key'); // получение токена из локального хранилища
+
+      const response = await axios.patch(`${API_URL}/admin/restaurants/${restaurantId}`, updatedRestaurantData, {
+        headers: {
+          'x-api-key': token // добавление токена в заголовки
+        }
+      });
       console.log(response.data);
-      // Perform any additional actions, such as showing a success message or refreshing the data
     } catch (error) {
       console.error('Error updating restaurant information:', error);
-      // Handle the error, e.g., display an error message to the user
+      // Display an error message to the user
+      alert("There was a problem updating the restaurant's information. Please try again later.");
     }
   };
 
-  const fetchRestaurants = async () => {
+  const fetchRestaurant = async (restaurantId) => {
     try {
-      const response = await handleApiGet(API_URL + '/admin/restaurants');
-      setRestaurant(response);
-      if (response.length > 0) {
-        const { title, email, phoneNumber, address, description } = response[0];
-        setFormData({ name: title, email, phoneNumber: phoneNumber, address, description }); // <-- Изменено с 'phone' на 'phoneNumber'
-      }
+      const response = await handleApiGet(API_URL + `/admin/restaurants/${restaurantId}`);
+      setRestaurant(response.data); // if the response comes wrapped in a data object
+      console.log(response.data);
+      console.log(response);
+      const { title, email, phoneNumber = '', address, description } = response.restaurant;
+      setFormData({ name: title, email, phoneNumber, address, description });
     } catch (error) {
-      console.error('Error fetching restaurants:', error);
+      console.error('Error fetching restaurant:', error);
     }
   };
 
   useEffect(() => {
-    fetchRestaurants();
+    fetchAdmin();
   }, []);
+  useEffect(() => {
+    console.log(restaurant);
+  }, [restaurant]);
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   return (
     <Box>
@@ -85,8 +131,8 @@ export default function AccountSettings() {
                 objectFit='cover'
                 src={
                   image ||
-                  (restaurant.length > 0
-                    ? restaurant[0].image
+                  (restaurant
+                    ? restaurant.image
                     : 'https://cdn.pixabay.com/photo/2023/04/26/16/57/flower-7952897_960_720.jpg')
                 }
                 alt='Avatar'
@@ -142,19 +188,19 @@ export default function AccountSettings() {
         <Box pt={5}>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr 1fr ' }} gap={6}>
             <GridItem w='100%'>
-              <FormControl id='name'>
+              <FormControl id='title'>
                 <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                   Restaurant name
                 </FormLabel>
 
                 <Input
-                  type='name'
+                  type='text'
                   background='neutral.white'
+                  defaultValue={formData.name}
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  defaultValue={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 />
               </FormControl>
             </GridItem>
