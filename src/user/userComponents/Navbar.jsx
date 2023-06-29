@@ -33,11 +33,13 @@ import Logo from '../../assets/svg/Logo';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import { useCheckToken } from '../../services/token';
-import { avatarContext, cartContext } from '../../context/globalContext';
+import { avatarContext, cartContext, geolocationContext } from '../../context/globalContext';
+import GeolocationDefinder from './Navbar/GeolocationDefinder';
 export default function Navbar() {
   const isTokenExpired = useCheckToken();
   const { cartLen, setCartLen } = useContext(cartContext);
   const { avatarUser, setAvatarUser } = useContext(avatarContext);
+  const { city, setCity } = useContext(geolocationContext);
   // useEffect(() => {
   //   if (isTokenExpired) {
   //   }
@@ -85,6 +87,7 @@ export default function Navbar() {
   }, []);
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem('location');
     navigate('/login');
     toast({
       title: 'Loggin out.',
@@ -179,6 +182,9 @@ export default function Navbar() {
                 <HStack spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
                   {localStorage[TOKEN_KEY] && (
                     <>
+                      <Box>
+                        <GeolocationDefinder setLoading={setLoading} loading={loading} isInCart={isInCart} />
+                      </Box>
                       <Skeleton borderRadius='16px' isLoaded={!loading}>
                         <Box
                           borderColor={isInCart ? 'primary.default' : 'neutral.white'}
@@ -253,7 +259,7 @@ export default function Navbar() {
                               py='2px'
                               borderRadius='xl'
                               size='md'
-                              name={!loading && arr.firstname + ' ' + arr.lastname}
+                              name={'Anonimus'}
                               src={'/assets/avatars/' + srcav}
                             />{' '}
                           </MenuButton>
@@ -331,12 +337,15 @@ export default function Navbar() {
                 <HStack display='flex' alignItems='center' spacing={4}>
                   {localStorage[TOKEN_KEY] && (
                     <>
+                      <Box>
+                        <GeolocationDefinder setLoading={setLoading} loading={loading} isInCart={isInCart} />
+                      </Box>
                       <Skeleton borderRadius='16px' isLoaded={!loading}>
                         <Box
                           borderColor={isInCart ? 'primary.default' : 'neutral.white'}
                           borderWidth='1px'
                           ml='4px'
-                          bg='neutral.grayLightest'
+                          bg='primary.lightest'
                           color='black'
                           px={'8px'}
                           py={'8px'}
