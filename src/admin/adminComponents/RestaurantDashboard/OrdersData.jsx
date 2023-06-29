@@ -1,11 +1,55 @@
 import { Box, Flex, Grid, GridItem, Heading, Text } from '@chakra-ui/layout';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Notification from '../../../assets/svg/Notification';
 import OrdersRecived from '../../../assets/svg/OrdersRecived';
 import OrdersDelivered from '../../../assets/svg/OrdersDelivered';
 import Revenue from '../../../assets/svg/Revenue';
+import axios from 'axios';
+import { API_URL } from '../../../services/apiServices';
+import jwtDecode from 'jwt-decode';
 
 export default function OrdersData({ setCurrentArr, ordersRecived, ordersDelivered, orderRevenue }) {
+  const [orders, setOrders] = useState();
+  const [restaurantId, setRestaurantId] = useState();
+  const fetchRestaurantData = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+
+      const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      setRestaurantId(adminResponse.data.restaurant);
+    } catch (error) {
+      console.error('Error fetching restaurant data:', error);
+    }
+  };
+  const fetchOrders = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const response = await axios.get(`${API_URL}/orders`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+      if (response.status === 200) {
+        setOrders(response.data);
+      } else {
+        console.error('Error fetching orders:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
   let arr = [9273, 7691, 437291];
   return (
     <Grid templateColumns={{ base: '1fr ', md: '1fr 1fr 1fr ' }} gap={{ base: 2, md: 6 }}>

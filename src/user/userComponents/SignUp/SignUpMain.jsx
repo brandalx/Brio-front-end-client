@@ -13,7 +13,11 @@ export default function SignUpMain({ SetOption2, mainBody }) {
       ...prevState,
       type: option
     }));
+    console.log(option);
   }, [option]);
+
+  const path = option === 'restaurant' ? '/signup/restaurant' : '/signup/personal';
+
   return (
     <Box>
       <Box>
@@ -32,7 +36,7 @@ export default function SignUpMain({ SetOption2, mainBody }) {
             </Box>
 
             <Stack spacing={10}>
-              <Link to='/signup/personal'>
+              <Link to={path}>
                 <Button
                   isDisabled={!option ? true : false}
                   w='100%'

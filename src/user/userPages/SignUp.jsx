@@ -31,25 +31,29 @@ import AdditionalInfo from '../userComponents/SignUp/AdditionalInfo';
 import Confirmation from '../userComponents/SignUp/Confirmation';
 import OrderStatus from '../../assets/svg/OrderStatus';
 import SignupStatus from '../../assets/svg/SignupStatus';
+import SellerPersonalDetails from '../userComponents/SignUp/sellerSignUp/SellerPersonalDetails';
+import RestaurantInfo from '../userComponents/SignUp/sellerSignUp/RestaurantInfo';
+import RestaurantConfirmation from '../userComponents/SignUp/sellerSignUp/RestaurantConfirmation';
 function RedirectHandler({ setRedirect }) {
   useEffect(() => {
     setRedirect(true);
+    return () => setRedirect(false); // обновленная строка
   }, [setRedirect]);
-  setRedirect(false);
+
   return null;
 }
+
 export default function SignUp() {
   const location = useLocation();
   const currentUrl = location.pathname;
   const [option2, SetOption2] = useState(null);
   const [mainBody, setMainBody] = useState({
-    type: '',
     firstname: '',
     lastname: '',
     email: '',
+    phone: '',
     password: '',
-    confirmpassword: '',
-    phone: ''
+    confirmpassword: ''
   });
   const [shouldRedirectTo404, setShouldRedirectTo404] = useState(false);
   const navigate = useNavigate();
@@ -190,7 +194,23 @@ export default function SignUp() {
               <Routes>
                 <Route path='/' element={<SignUpMain mainBody={setMainBody} SetOption2={SetOption2} />} />
 
-                {option2 && (
+                {option2 === 'restaurant' && (
+                  <>
+                    <Route
+                      path='/restaurant'
+                      element={<SellerPersonalDetails setMainBody={setMainBody} mainBody={mainBody} type={option2} />}
+                    />
+                    <Route
+                      path='/restaurant/info'
+                      element={<RestaurantInfo setMainBody={setMainBody} mainBody={mainBody} type={option2} />}
+                    />
+                    <Route
+                      path='/restaurant/info/confirmation'
+                      element={<RestaurantConfirmation setMainBody={setMainBody} mainBody={mainBody} />}
+                    />
+                  </>
+                )}
+                {option2 === 'personal' && (
                   <>
                     <Route
                       path='/personal'
@@ -206,6 +226,7 @@ export default function SignUp() {
                     />
                   </>
                 )}
+
                 <Route path='/*' element={<RedirectHandler setRedirect={setShouldRedirectTo404} />} />
               </Routes>
 

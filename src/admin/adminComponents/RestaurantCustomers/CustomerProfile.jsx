@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Container, Image, Text, useDisclosure } from '@chakra-ui/react';
+import { Avatar, Box, Button, Container, Image, Text, useDisclosure } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { API_URL, handleApiGet, handleApiPost } from '../../../services/apiServices';
 import Phone from '../../../assets/svg/Phone';
@@ -11,12 +11,15 @@ export default function CustomerProfile() {
   const [note, setNote] = useState(''); // New state for the note field
   const { userId } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [role, setRole] = useState(null); // New state for the role
 
   const fetchUser = async () => {
     try {
       const response = await handleApiGet(API_URL + '/users/' + userId);
       setUser(response);
-      setNote(response.notes); // Set the initial value of the note to the existing user notes
+      setRole(response.role);
+
+      setNote(response.notes);
       console.log(response);
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -39,11 +42,12 @@ export default function CustomerProfile() {
           <Box border='1px' borderRadius='6px' borderColor='neutral.grayLightest'>
             <Box display='flex' padding='16px 16px 20px 16px'>
               <Box display='flex' alignItems='flex-end'>
-                <Image
+                <Avatar
                   width='88px'
                   height='88px'
                   borderRadius='16px'
-                  src={user.avatar}
+                  name={user.firstname + ' ' + user.lastname}
+                  src={API_URL + '/' + user.avatar || ''}
                   objectFit='cover'
                   objectPosition='center'
                 />
@@ -85,6 +89,7 @@ export default function CustomerProfile() {
                   {user.notes}
                 </Text>
               </Box>
+
               <Button
                 onClick={onOpen}
                 _hover={{
@@ -102,6 +107,7 @@ export default function CustomerProfile() {
               >
                 Edit note
               </Button>
+
               <ModalNoteRedactor
                 isOpen={isOpen}
                 onClose={onClose}

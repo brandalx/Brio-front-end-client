@@ -17,19 +17,65 @@ import {
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import '../../../css/global.css';
-import { API_URL, handleApiPost } from '../../../services/apiServices';
-
+import { API_URL } from '../../../services/apiServices';
+import jwtDecode from 'jwt-decode';
 export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryName }) {
   const { control, handleSubmit, reset } = useForm();
   const [isLilMob] = useMediaQuery('(max-width: 350px)');
   const [product, setProduct] = useState('');
   const [image, setImage] = useState(null);
 
+  const fetchAdminData = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const { _id } = jwtDecode(token); // You need to import jwt_decode library
+
+      const response = await fetch(`${API_URL}/users/${_id}`, {
+        method: 'GET',
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch admin data');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error('An error occurred while fetching the admin data: ' + error.message);
+    }
+  };
+  const updateRestaurant = async (restaurantId, productId) => {
+    const token = localStorage.getItem('x-api-key');
+
+    try {
+      const response = await fetch(`${API_URL}/admin/restaurants/${restaurantId}`, {
+        method: 'PATCH',
+        headers: {
+          'x-api-key': token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ $push: { products: productId } })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update restaurant');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error('An error occurred while updating the restaurant: ' + error.message);
+    }
+  };
+
   const createProduct = async (items, price, title, description, ingredients, nutritionals, restaurantRef) => {
     const payload = {
       title: title,
       description: description,
-      image: items, // Обновлено
+      image: items,
       price: price,
       ingredients: ingredients,
       nutritionals: nutritionals,
@@ -38,9 +84,12 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
     };
 
     try {
+      const token = localStorage.getItem('x-api-key');
+
       const response = await fetch(API_URL + '/admin/products', {
         method: 'POST',
         headers: {
+          'x-api-key': token,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
@@ -57,21 +106,36 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
     }
   };
 
-  const handlePublishProduct = async (data) => {
+  const handlePublishProduct = async (data, adminId) => {
     const {
       price,
       title,
       description,
       ingredients: ingredientsStr,
       nutritionals: nutritionalsStr,
-      restaurantRef
+      items: image
     } = data;
+
     const ingredients = ingredientsStr.split(',').map((ingredient) => ingredient.trim());
     const nutritionals = nutritionalsStr.split(',').map((nutritional) => nutritional.trim());
 
     try {
+      const adminData = await fetchAdminData(adminId);
+      const restaurantRef = adminData.restaurant;
+
+      console.log('Publishing product:', {
+        price,
+        title,
+        description,
+        ingredients,
+        nutritionals,
+        restaurantRef,
+        image,
+        categoryName
+      });
+
       const newProduct = await createProduct(
-        image, // Используйте значение image
+        image,
         price,
         title,
         description,
@@ -79,26 +143,28 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
         nutritionals,
         restaurantRef
       );
-      // Add the new product to the list of products
-      setProduct((prevProducts) => [
-        ...prevProducts,
-        { ...newProduct } // Add the amount field to the new product
-      ]);
-      // If successful, close the modal
+      await updateRestaurant(restaurantRef, newProduct._id);
+
+      console.log('Created product:', newProduct);
+
+      setProduct((prevProducts) => [...prevProducts, { ...newProduct }]);
       onClose();
     } catch (error) {
-      console.error('An error occurred while publishing the category:', error);
+      console.error('An error occurred while publishing the product:', error);
     }
   };
 
   const onSubmit = (data) => {
+    console.log('Form submitted:', data);
     handlePublishProduct(data);
-    reset(); // Reset the form values after submission
+    reset();
   };
 
   const handleImageChange = (event) => {
     setImage(URL.createObjectURL(event.target.files[0]));
   };
+
+  console.log('ModalRestaurantMenu rendered');
 
   return (
     <Modal
@@ -209,6 +275,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
                 <Controller
                   control={control}
                   name='title'
+                  rules={{ required: true }}
                   defaultValue=''
                   render={({ field }) => (
                     <Input {...field} color='neutral.gray' fontSize='2xs' type='text' placeholder='Enter meal name' />
@@ -328,7 +395,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
             p='20px'
             border='1px'
             borderColor='primary.default'
-            onClick={handleSubmit(onSubmit)}
+            onClick={() => handleSubmit(onSubmit)()}
           >
             Publish meal item
           </Button>

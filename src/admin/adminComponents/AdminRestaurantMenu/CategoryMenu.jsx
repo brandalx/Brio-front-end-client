@@ -25,25 +25,59 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
   const [selectedItem, setSelectedItem] = useState(null);
   const [categories, setCategories] = useState([]);
 
-  const fetchCategories = async () => {
+  const fetchRestaurant = async () => {
     try {
-      const response = await handleApiGet(API_URL + '/admin/categories');
-      setCategories(response);
-      setLoading(false);
+      const response = await handleApiGet(API_URL + '/admin/restaurants');
+      return response;
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error('Error fetching restaurant:', error);
+      throw error; // Это приведет к тому, что ошибка будет выброшена в fetchCategories
     }
   };
+
+  const fetchCategories = async () => {
+    try {
+      const restaurants = await fetchRestaurant();
+      let allCategories = [];
+      for (let restaurant of restaurants) {
+        if (restaurant && restaurant.categories && restaurant.categories.length > 0) {
+          const response = await Promise.all(
+            restaurant.categories.map((id) => handleApiGet(`${API_URL}/admin/categories/${id.toString()}`))
+          );
+          allCategories = [...allCategories, ...response];
+        }
+      }
+      setCategories(allCategories);
+      setLoading(false);
+      // Set the selected category as soon as the categories are fetched
+      if (allCategories.length > 0) {
+        const initialCategory = allCategories[0];
+        // Make sure that products for this category are loaded
+        if (categoryCounts[initialCategory.categoryName] && categoryCounts[initialCategory.categoryName] > 0) {
+          onCategoryChange(initialCategory.categoryName);
+          setSelectedItem(initialCategory._id);
+        }
+      }
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    // Fetch products based on the selectedCategory
+  }, [selectedCategory]);
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    console.log(categories);
+  }, [categories]);
+
   const handleCategoryClick = (category) => {
     onCategoryChange(category.categoryName);
     setSelectedItem(category._id);
   };
-
   return (
     <GridItem width='100%' overflow='hidden' colSpan={4}>
       <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>

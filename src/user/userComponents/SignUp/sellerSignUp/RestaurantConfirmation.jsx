@@ -1,31 +1,11 @@
-import {
-  Box,
-  Center,
-  Container,
-  Text,
-  FormControl,
-  FormLabel,
-  Stack,
-  Input,
-  Checkbox,
-  Button,
-  Flex,
-  chakra,
-  VisuallyHidden,
-  InputGroup,
-  InputRightElement,
-  Grid,
-  GridItem,
-  useToast
-} from '@chakra-ui/react';
+import { Box, Text, Stack, Button, Flex, useToast } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../../../assets/svg/Logo';
-import { AiOutlineSearch } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
-import { API_URL, handleApiMethod } from '../../../services/apiServices';
 
-export default function Confirmation({ mainBody }) {
+import { useNavigate } from 'react-router-dom';
+import { API_URL, handleApiMethod } from '../../../../services/apiServices';
+
+export default function RestaurantConfirmation({ mainBody }) {
   const navigate = useNavigate();
   useEffect(() => {
     console.log(mainBody);
@@ -36,37 +16,43 @@ export default function Confirmation({ mainBody }) {
 
   const toast = useToast();
   const handlePostUser = async (_bodyData) => {
-    try {
-      const url = API_URL + '/users/new';
-      const data = await handleApiMethod(url, 'POST', _bodyData);
-      if (data._id) {
-        toast({
-          title: 'Account successfuly created.',
-          description: 'Login to begin use our service.',
-          status: 'success',
-          duration: 9000,
-          isClosable: true
-        });
-        navigate('/login');
-      }
-    } catch (error) {
-      console.log(error);
+    const restaurantData = {
+      title: _bodyData.title,
+      address: _bodyData.address,
+      location: _bodyData.location,
+      email: _bodyData.email,
+      description: _bodyData.description,
+      company: _bodyData.company
+    };
+    const adminData = {
+      firstname: _bodyData.firstname,
+      lastname: _bodyData.lastname,
+      email: _bodyData.email,
+      phone: _bodyData.phone,
+      password: _bodyData.password,
+      nickname: Math.random().toString(36).substring(2, 15),
+      role: 'ADMIN'
+    };
 
-      toast({
-        title: 'Error when creating new account',
-        description: 'Error when creating your account. PLease,  try again',
-        status: 'error',
-        duration: 9000,
-        isClosable: true
-      });
+    const payload = {
+      restaurant: restaurantData,
+      admin: adminData
+    };
+
+    const createUrl = API_URL + '/createRestaurantAndAdmin';
+
+    try {
+      console.log('Creating restaurant and admin with data:', payload);
+      const response = await handleApiMethod(createUrl, 'POST', payload);
+      console.log('Creation result:', response);
+    } catch (error) {
+      console.error('An error occurred:', error);
     }
   };
   return (
     <>
-      <Flex data-aos='zoom-in' h='100%' w='100' justifyContent='center'>
+      <Flex h='100%' w='100' justifyContent='center'>
         <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
-          <Box></Box>
-
           <Box>
             <Box>
               <Text fontSize='xl' fontWeight='bold' color='neutral.black'>

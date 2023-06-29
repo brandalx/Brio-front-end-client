@@ -1,8 +1,9 @@
 import { Box, Text, FormControl, FormLabel, Stack, Input, Button, Flex, FormErrorMessage } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+
 import { useForm } from 'react-hook-form';
-export default function PersonalDetails({ type, setMainBody, mainBody }) {
+export default function SellerPersonalDetails({ type, setMainBody, mainBody }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,15 +22,21 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
       ...prevState,
       firstname: _bodyData.firstname,
       lastname: _bodyData.lastname,
+      title: _bodyData.title,
       email: _bodyData.email,
+      phone: _bodyData.phone,
       password: _bodyData.password,
-      confirmpassword: _bodyData.confirmpassword
+      confirmpassword: _bodyData.confirmpassword,
+      address: _bodyData.address,
+      location: _bodyData.location,
+      description: _bodyData.description
     }));
-    navigate('/signup/personal/info');
+    navigate('/signup/restaurant/info');
   };
+
   return (
     <>
-      <Flex h='100%' w='100' justifyContent='center' data-aos='fade-left'>
+      <Flex h='100%' w='100' justifyContent='center'>
         <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
           <Box></Box>
 
@@ -89,6 +96,29 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                     />
                     <FormErrorMessage p={0} m={0} fontSize='3xs'>
                       {errors.lastname && errors.lastname.message}
+                    </FormErrorMessage>
+                  </FormControl>
+                  <FormControl id='phone' isInvalid={errors.phone}>
+                    <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                      Phone number:
+                    </FormLabel>
+
+                    <Input
+                      id='phone'
+                      {...register('phone', {
+                        required: true,
+                        minLength: { value: 10, message: 'Minimum length should be 12' }
+                      })}
+                      required
+                      type='text'
+                      background='neutral.white'
+                      _placeholder={{ color: 'neutral.gray' }}
+                      borderRadius='8px'
+                      fontSize='2xs'
+                      placeholder='John'
+                    />
+                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                      {errors.phone && errors.phone}
                     </FormErrorMessage>
                   </FormControl>
 
@@ -206,8 +236,6 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
               </Box>
             </form>
           </Box>
-
-          <Box></Box>
         </Flex>
       </Flex>
     </>
