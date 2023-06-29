@@ -89,24 +89,17 @@ export default function OrdersTableBody() {
 
         if (Array.isArray(ordersResponse)) {
           const filteredOrders = ordersResponse
-            .filter((order) => {
-              const doesExist = order.ordersdata.restaurants.includes(restaurantId);
-              return doesExist;
-            })
-            .map((order) => {
-              const relevantProducts = order.ordersdata.products.filter((product) => {
-                const doesBelong = product.restaurantId === restaurantId;
-                return doesBelong;
+              .filter((order) => order.ordersdata.restaurants.includes(restaurantId))
+              .map((order) => {
+                const relevantProducts = order.ordersdata.products.filter((product) =>
+                    product.restaurantId === restaurantId
+                );
+                const newOrder = { ...order, ordersdata: { ...order.ordersdata, products: relevantProducts } };
+                return newOrder;
               });
 
-              const newOrder = { ...order, ordersdata: { ...order.ordersdata, products: relevantProducts } };
-              return newOrder;
-            });
-
-          setRelevantOrders(filteredOrders);
-
           const productIds = new Set(
-            filteredOrders.flatMap((order) => order.ordersdata.products.map((product) => product.productId))
+              filteredOrders.flatMap((order) => order.ordersdata.products.map((product) => product.productId))
           );
 
           const productPromises = Array.from(productIds).map(fetchProductData);
@@ -114,29 +107,20 @@ export default function OrdersTableBody() {
 
           setProducts(products);
 
-          const usersTotalSpent = filteredOrders.reduce((acc, order) => {
-            const userId = order.userRef;
+          const ordersWithTotalSpent = filteredOrders.map((order) => {
             const productsCost = order.ordersdata.products.reduce((total, product) => {
-              const relatedProduct = products.find((p) => p._id === product.productId);
+              const relatedProduct = products.find((p) => p._id === product.productId && product.restaurantId === restaurantId);
               return total + (relatedProduct ? relatedProduct.price * product.amount : 0);
             }, 0);
 
             // Adding the shipping and tips to the total cost of products
-            const totalAmount =
-              productsCost + order.userdata.paymentSummary.shipping + order.userdata.paymentSummary.tips;
+            const totalAmount = productsCost + order.userdata.paymentSummary.shipping + order.userdata.paymentSummary.tips;
 
-            const foundUser = acc.find((user) => user.id === userId);
+            // Add the totalAmount to the order object itself
+            return { ...order, totalSpent: totalAmount };
+          });
 
-            if (foundUser) {
-              foundUser.totalSpent += totalAmount;
-            } else {
-              acc.push({ id: userId, totalSpent: totalAmount });
-            }
-
-            return acc;
-          }, []);
-
-          setUsersTotalSpent(usersTotalSpent);
+          setRelevantOrders(ordersWithTotalSpent);
         }
 
         setOrdersOfUsers(usersResponse);
@@ -148,6 +132,7 @@ export default function OrdersTableBody() {
 
     fetchAll();
   }, [restaurantId]);
+
 
   return (
     <Tbody>
@@ -227,16 +212,17 @@ export default function OrdersTableBody() {
                 </Flex>
               </Td>
               <Td
-                pr={isMobile ? '0' : ''}
-                pl={isMobile ? '5px' : ''}
-                pt='10px'
-                pb='10px'
-                fontSize='2.5xs'
-                color='neutral.black'
-                fontWeight='semibold'
+                  pr={isMobile ? '0' : ''}
+                  pl={isMobile ? '5px' : ''}
+                  pt='10px'
+                  pb='10px'
+                  fontSize='2.5xs'
+                  color='neutral.black'
+                  fontWeight='semibold'
               >
-                {usersTotalSpent.find((user) => user.id === order.userRef)?.totalSpent || 0}
+                {order.totalSpent || 0}
               </Td>
+
               <Td
                 position={isMobile ? 'relative' : ''}
                 right={isMobile ? '10px' : '0'}
