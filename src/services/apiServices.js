@@ -51,6 +51,7 @@ export const handleApiDelete = async (url) => {
     const response = await fetch(url, {
       method: 'DELETE',
       headers: {
+        'x-api-key': localStorage[TOKEN_KEY],
         'Content-Type': 'application/json'
       }
     });

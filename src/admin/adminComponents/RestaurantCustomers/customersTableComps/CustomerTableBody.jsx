@@ -11,6 +11,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Skeleton,
   Tbody,
   Td,
   Tr,
@@ -35,9 +36,10 @@ export default function CustomerTableBody() {
   const onClose = () => setIsOpen(false);
   const fetchOrders = async () => {
     try {
-      const response = await handleApiGet(`${API_URL}/users/`);
-      console.log(response);
+      const response = await handleApiGet(`${API_URL}/users/${userId}`);
+
       setUser(response);
+
       // setLoading(false);
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -60,12 +62,9 @@ export default function CustomerTableBody() {
               pb='19.5px'
               fontSize='2xs'
               color='neutral.grayDark'
-              textOverflow='ellipsis'
-              overflow='hidden'
-              whiteSpace='nowrap'
               maxW='100px'
             >
-              {order.orderId}
+              {order._id.slice(-5)}
             </Td>
             <Td
               display={{ base: 'none', sm: 'table-cell' }}
@@ -74,7 +73,7 @@ export default function CustomerTableBody() {
               fontSize='2xs'
               color='neutral.grayDark'
             >
-              {new Date(order.creationTime).toLocaleDateString('en-US', {
+              {new Date(order.creationDate).toLocaleDateString('en-US', {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
@@ -87,7 +86,7 @@ export default function CustomerTableBody() {
               fontSize='2xs'
               color='neutral.grayDark'
             >
-              {new Date(order.creationTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+              {new Date(order.creationDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
             </Td>
             <Td
               pr={isMobile ? '0' : ''}

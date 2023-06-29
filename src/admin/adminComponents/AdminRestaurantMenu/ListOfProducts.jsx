@@ -67,17 +67,20 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
     try {
       const token = localStorage.getItem('x-api-key');
 
-      const response = await axios.put(`${API_URL}/restaurants/${restaurantId}/product/remove`, { productId }, {
-        headers: {
-          'x-api-key': token,
-          'Content-Type': 'application/json'
+      const response = await axios.put(
+        `${API_URL}/restaurants/${restaurantId}/product/remove`,
+        { productId },
+        {
+          headers: {
+            'x-api-key': token,
+            'Content-Type': 'application/json'
+          }
         }
-      });
+      );
 
       if (response.status !== 200) {
         throw new Error('Ошибка при удалении продукта из ресторана');
       }
-
     } catch (error) {
       console.error('Ошибка при удалении продукта из ресторана:', error);
     }
@@ -105,7 +108,6 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
       console.error('Ошибка при удалении продукта:', error);
     }
   };
-
 
   const updateCategoryCounts = () => {
     const counts = {};
