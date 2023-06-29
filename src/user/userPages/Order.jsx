@@ -386,7 +386,7 @@ export default function Order() {
             </Box>
             <Skeleton minH='250px' borderRadius='16px' isLoaded={!loading}>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
-                {!loading && <PaymentDetails orders={findOrder(params['id'])} item={ordersArr} />}
+                {!loading && <PaymentDetails userArr={userArr} orders={findOrder(params['id'])} item={ordersArr} />}
               </Box>
             </Skeleton>
           </GridItem>
