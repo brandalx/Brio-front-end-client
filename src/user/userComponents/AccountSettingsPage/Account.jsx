@@ -186,6 +186,9 @@ export default function Account() {
         </Text>
         <Box pt={5}>
           <Skeleton borderRadius='16px' isLoaded={!loading} minHeight='20px' my={2} w='50%'>
+            <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark' mb={0}>
+              Welcome back,
+            </FormLabel>
             <Text fontSize='md' fontWeight='black' color='neutral.darkGray'>
               {!loading && `${arr.firstname} ${arr.lastname}`}
             </Text>

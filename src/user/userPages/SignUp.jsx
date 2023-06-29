@@ -225,6 +225,19 @@ export default function SignUp() {
                     </Text>{' '}
                   </Link>
                 </Text>
+                <Link to='/'>
+                  <FormLabel
+                    cursor='pointer'
+                    textDecor='underline'
+                    textAlign='center'
+                    fontWeight='semibold'
+                    fontSize='3xs'
+                    color='neutral.grayDark'
+                    mb={0}
+                  >
+                    Back to home
+                  </FormLabel>
+                </Link>
               </Box>
             </Flex>
           </Flex>

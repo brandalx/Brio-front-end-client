@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { Box, Container, Flex, Text, GridItem, Grid, Image, Skeleton } from '@chakra-ui/react';
 import burgertest from '../../assets/images/burgertest.png';
 import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
-import { API_URL, handleApiGet } from '../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
 import Preloader from '../../components/Loaders/preloader';
 import { useCheckToken } from '../../services/token';
@@ -17,6 +17,7 @@ export default function Home() {
   // todo: add tag into product into backend model and validation
 
   const [arr, setAr] = useState([]);
+  const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingModel, setloadingModel] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(false);
@@ -24,10 +25,13 @@ export default function Home() {
   const [hovered, setHovered] = useState(false);
   const handleApi = async () => {
     const url = API_URL + '/restaurants';
+    const urluser = API_URL + '/users/info/user';
 
     try {
       const data = await handleApiGet(url);
+      const data2 = await handleApiGet(urluser);
       setAr(data);
+      setUser(data2);
       console.log(data);
     } catch (error) {
       setLoading(false);
@@ -106,29 +110,57 @@ export default function Home() {
                 Bringing food really on-time
               </Text>
 
-              <Box mt={{ base: 5, md: 4 }} ms={5} textAlign={{ base: 'center', md: 'start' }}>
-                <Link to='/signup'>
-                  <Button
-                    fontSize='xs'
-                    fontWeight='bold'
-                    variant='solid'
-                    color='primary.default'
-                    borderWidth='1px'
-                    background='neutral.white'
-                    borderColor='primary.default'
-                    _hover={{
-                      background: 'primary.light',
-                      color: 'primary.default',
-                      borderWidth: '1px',
-                      borderColor: 'primary.default'
-                    }}
-                    py={5}
-                  >
-                    {' '}
-                    Get started
-                  </Button>
-                </Link>
-              </Box>
+              {!localStorage[TOKEN_KEY] && (
+                <Box mt={{ base: 5, md: 4 }} ms={5} textAlign={{ base: 'center', md: 'start' }}>
+                  <Link to='/signup'>
+                    <Button
+                      fontSize='xs'
+                      fontWeight='bold'
+                      variant='solid'
+                      color='primary.default'
+                      borderWidth='1px'
+                      background='neutral.white'
+                      borderColor='primary.default'
+                      _hover={{
+                        background: 'primary.light',
+                        color: 'primary.default',
+                        borderWidth: '1px',
+                        borderColor: 'primary.default'
+                      }}
+                      py={5}
+                    >
+                      {' '}
+                      Get started
+                    </Button>
+                  </Link>
+                </Box>
+              )}
+
+              {localStorage[TOKEN_KEY] && !loading && (
+                <Box mt={{ base: 5, md: 4 }} ms={5} textAlign={{ base: 'center', md: 'start' }}>
+                  <Link to='/restaurant'>
+                    <Button
+                      fontSize='xs'
+                      fontWeight='bold'
+                      variant='solid'
+                      color='primary.default'
+                      borderWidth='1px'
+                      background='neutral.white'
+                      borderColor='primary.default'
+                      _hover={{
+                        background: 'primary.light',
+                        color: 'primary.default',
+                        borderWidth: '1px',
+                        borderColor: 'primary.default'
+                      }}
+                      py={5}
+                    >
+                      {' '}
+                      Welcome back, {user.firstname}
+                    </Button>
+                  </Link>
+                </Box>
+              )}
             </Box>
 
             <Box borderRadius='16px' h={`${heightchange}px`} w='100%'>

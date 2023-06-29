@@ -254,11 +254,12 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
         {overlay}
         <ModalContent>
           <ModalHeader>
-            <Text fontSize='xs' fontWeight='bold' color='neutral.black' textAlign={'center'}>
+            <ModalCloseButton />
+            <Text mt={{ base: 8, md: 0 }} fontSize='xs' fontWeight='bold' color='neutral.black' textAlign={'center'}>
               Are you sure you want to delete this item?
             </Text>
           </ModalHeader>
-          <ModalCloseButton />
+
           <ModalBody>
             <Link to={`/restaurant/product/${item._id}`}>
               <Box
