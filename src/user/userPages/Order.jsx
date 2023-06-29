@@ -33,6 +33,7 @@ import OrderStatus from '../../assets/svg/OrderStatus';
 import colorstatus from '../userComponents/UserOrdrs/colorsObject.json';
 import Status from '../../assets/svg/Status';
 import Calendar from '../../assets/svg/Calendar';
+import Shipping from '../userComponents/Order/Shipping';
 export default function Order() {
   const [placed, setPlaced] = useState(true);
   const [prepared, setPrepared] = useState(false);
@@ -41,27 +42,60 @@ export default function Order() {
   const [loading, setLoading] = useState(true);
   const [userArr, setUserArr] = useState([]);
   const [ordersArr, setOrdersArr] = useState([]);
+  const [ordersArr2, setOrdersArr2] = useState([]);
   const [restaurantArr, setRestaurantArr] = useState([]);
+  const [addressString, setAddressString] = useState(null);
+  const [isSelf, setIsSelf] = useState(false);
+
+  const handleDefineAddress = (orderitem, useritem, restaurantitem) => {
+    let finaladdress = orderitem.userdata.selectedAddress;
+    console.log(finaladdress);
+    console.log('ok');
+
+    let finaladdressobj = useritem.address.find((address) => address._id === finaladdress);
+    if (finaladdressobj) {
+      finaladdressobj =
+        finaladdressobj.state +
+        '%20' +
+        finaladdressobj.city +
+        '%20' +
+        finaladdressobj.address1 +
+        '%20' +
+        finaladdressobj.address2;
+    }
+
+    const restaurantObj = restaurantitem.find((restaurant) => restaurant._id === finaladdress);
+    if (restaurantObj) {
+      finaladdressobj = restaurantObj.location + ' ' + restaurantObj.address;
+      setIsSelf(true);
+    }
+    setAddressString(finaladdressobj.replace(/%20/g, ' '));
+  };
   const params = useParams();
   const handleApi = async () => {
     const userurl = API_URL + '/users/info/user';
     const orderurl = API_URL + '/orders/' + params['id'];
-
+    const orders2url = API_URL + '/orders/user/single';
     try {
       // const data = await handleApiGet(userurl);
       const user = await handleApiGet(userurl);
       const order = await handleApiGet(orderurl);
-      const restauranturl = API_URL + '/restaurants/' + order.restaurantRef;
-      console.log('here is');
+      console.log(order);
+      const restauranturl = API_URL + '/restaurants/';
+
       console.log(restauranturl);
       const restaurant = await handleApiGet(restauranturl);
+      const orders2 = await handleApiGet(orders2url);
+      console.log(orders2);
+      setOrdersArr2(orders2);
       setUserArr(user);
       setOrdersArr(order);
       setRestaurantArr(restaurant);
+
       console.log(user);
       console.log(order);
       console.log(restaurant);
-
+      handleDefineAddress(order, user, restaurant);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -70,9 +104,9 @@ export default function Order() {
   };
 
   const findOrder = (orderId) => {
-    const order = userArr.orders.find((item) => item.orderId === orderId);
+    const order = ordersArr2.find((item) => item._id === orderId);
     if (order) {
-      return order;
+      return order.userdata.status;
     } else {
       return 'Status error';
     }
@@ -101,6 +135,12 @@ export default function Order() {
       setDelivered(true);
     }
   };
+  //todo: replace with post wehn updating post time and status
+  useEffect(() => {
+    const timer = setInterval(updateState, 60 * 1000);
+
+    return () => clearInterval(timer);
+  }, [placed, prepared, delivery, delivered]);
 
   const findOrder2 = (orderId) => {
     if (userArr && userArr.orders) {
@@ -170,31 +210,35 @@ export default function Order() {
                     <Skeleton my={2} minH='10px' w='25%' borderRadius='16px' isLoaded={!loading}>
                       <Box display='flex' alignItems='center'>
                         {' '}
-                        {!loading && <Status color={colorstatus[findOrder(params['id']).status] || 'yellow'} />}
+                        {!loading && <Status color={(!loading && colorstatus[findOrder(params['id'])]) || 'red'} />}
                         <Text ms={2} color='neutral.black' fontSize='2xs'>
-                          {!loading && findOrder(params['id']).status}
+                          {(!loading && findOrder(params['id'])) || 'Undefined'}
                         </Text>
                       </Box>
                     </Skeleton>
                   </Box>
                 </Box>
                 <Box w='100%' textAlign='end' display='flex' flexDir='column' alignItems='end'>
-                  <Skeleton my={2} borderRadius='16px' h='10px' isLoaded={!loading}>
-                    <Box display='flex' alignItems='center'>
-                      <Text me={2} color='neutral.gray' fontSize='2xs'>
-                        {/* for second release will still static after that will changed to dynamic according on picked address id */}
-                        {!loading && userArr.address[0].city}
-                      </Text>
-
-                      <Box>
-                        <Location />
+                  <Skeleton my={5} borderRadius='16px' h='10px' isLoaded={!loading}>
+                    <Box display={{ sm: 'none', md: 'block' }}>
+                      <Box display='flex' alignItems='center'>
+                        <Text me={2} color='neutral.gray' fontSize='2xs'>
+                          {/* for second release will still static after that will changed to dynamic according on picked address id */}
+                          {isSelf ? '(Pickup at)' : '(Delivery to)'}
+                        </Text>
+                        <Text me={2} fontWeight='bold'>
+                          {addressString}
+                        </Text>
+                        <Box>
+                          <Location />
+                        </Box>
                       </Box>
                     </Box>
                   </Skeleton>
                   <Skeleton h='10px' my={2} borderRadius='16px' isLoaded={!loading}>
                     <Box mt={3} display='flex' alignItems='center'>
                       <Text me={2} color='neutral.gray' fontSize='2xs'>
-                        {!loading && formatDate(ordersArr.orderedTime)}
+                        {!loading && formatDate(ordersArr.creationDate)}
                       </Text>
                       <Box>
                         <Calendar />
@@ -215,7 +259,7 @@ export default function Order() {
                 <GridItem w='100%'>
                   <Box h='100%' display='flex' alignItems='center'>
                     <Skeleton w='100%' borderRadius='16px' isLoaded={!loading}>
-                      <Divider borderWidth='2px' borderColor={placed ? '#1ABF70' : 'neutral.gray'} />
+                      <Divider borderWidth='2px' borderColor={placed && prepared ? '#1ABF70' : 'neutral.gray'} />
                     </Skeleton>
                   </Box>
                 </GridItem>
@@ -312,7 +356,7 @@ export default function Order() {
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
               <Skeleton borderRadius='16px' isLoaded={!loading}>
                 <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                  Menu {!loading && ordersArr.products.length} meals
+                  Menu {!loading && ordersArr.ordersdata.products.length} meals
                 </Text>
               </Skeleton>
 
@@ -325,7 +369,7 @@ export default function Order() {
                   </Box>
                 )}
                 {!loading &&
-                  ordersArr.products.map((item, key) => {
+                  ordersArr.ordersdata.products.map((item, key) => {
                     return <Menu key={key} item={item} />;
                   })}
               </Box>
@@ -337,17 +381,12 @@ export default function Order() {
                 Shipping address
               </Text>
               {!loading && (
-                <Pickup
-                  item={{
-                    location: restaurantArr.location,
-                    address: restaurantArr.address
-                  }}
-                />
+                <Shipping userArr={userArr} restaurantArr={restaurantArr} item={ordersArr.userdata.selectedAddress} />
               )}
             </Box>
             <Skeleton minH='250px' borderRadius='16px' isLoaded={!loading}>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
-                {!loading && <PaymentDetails orders={findOrder(params['id'])} item={userArr} />}
+                {!loading && <PaymentDetails orders={findOrder(params['id'])} item={ordersArr} />}
               </Box>
             </Skeleton>
           </GridItem>

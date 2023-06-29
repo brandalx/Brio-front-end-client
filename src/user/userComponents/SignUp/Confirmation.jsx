@@ -63,7 +63,7 @@ export default function Confirmation({ mainBody }) {
   };
   return (
     <>
-      <Flex h='100%' w='100' justifyContent='center'>
+      <Flex data-aos='zoom-in' h='100%' w='100' justifyContent='center'>
         <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
           <Box></Box>
 

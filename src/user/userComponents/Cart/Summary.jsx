@@ -1,14 +1,18 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Summary({ item, loading }) {
+export default function Summary({ loading, item, blankCart, setBlankCart, checkoutBody }) {
+  const [blankSummary, setBlankSummary] = useState(false);
   useEffect(() => {
     console.log(item);
+    if (!item[0]) {
+      setBlankSummary(true);
+    }
   });
   return (
     <>
-      <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
+      <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' data-aos='fade-up'>
         <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
           Payment summary
         </Text>
@@ -18,28 +22,32 @@ export default function Summary({ item, loading }) {
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
               Subtotal
             </Text>
-            <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-              ${!loading && item.orders[0].paymentSummary.subtotal}
-            </Text>
+            {/* prettier-ignore */}
+            <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>$
+  {!blankSummary?( <>0</>) : (!loading && item.subtotal)}
+</Text>
           </Flex>
           <Flex my={4} justifyContent='space-between'>
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
               Shipping
             </Text>
-            <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-              ${!loading && item.orders[0].paymentSummary.shipping}
+            {/* prettier-ignore */}
+            <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>$
+            {!blankSummary?( <>0</>) : (!loading && item.shipping)}
             </Text>
           </Flex>
           <Flex my={4} justifyContent='space-between'>
             <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
               Total (tax incl.)
             </Text>
-            <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
-              $ {!loading && item.orders[0].paymentSummary.totalAmount}
+            {/* prettier-ignore */}
+            <Text fontWeight='bold' fontSize='2xs' color='primary.default'>$
+            {!blankSummary?( <>0</>) : (!loading && item.totalAmount)}            
             </Text>
           </Flex>
-          <Link to='/user/checkout'>
+          <Link to='/user/checkout' state={{ checkoutBodyData: checkoutBody }}>
             <Button
+              isDisabled={checkoutBody.userdata.selectedAddress ? false : true}
               w='100%'
               background='primary.default'
               fontSize='2xs'
@@ -56,7 +64,7 @@ export default function Summary({ item, loading }) {
               }}
               py={5}
             >
-              Proceed to checkout
+              {checkoutBody.userdata.selectedAddress ? <>Proceed to checkout</> : <>Please, choose delivery location</>}
             </Button>
           </Link>
         </Box>

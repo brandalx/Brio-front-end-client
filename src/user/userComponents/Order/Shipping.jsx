@@ -5,17 +5,19 @@ import defaultmap from '../../../assets/images/defaultmap.png';
 import axios from 'axios';
 import { Checkbox, Flex, Radio } from '@chakra-ui/react';
 
-export default function Pickup({ item, pickupLocation, setPickupLocation, setCheckoutBody }) {
+export default function Shipping({ item, userArr, restaurantArr }) {
   const [address, setAddress] = useState(null);
   const [addressLoading, setAddressLoading] = useState(true);
+  const [addressString, setAddressString] = useState();
+  const [isSelf, setIsSelf] = useState(false);
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
   const REACT_APP_opencagedata = import.meta.env.VITE_OPENCAGEDATA;
   const REACT_APP_MAPBOX = import.meta.env.VITE_MAPBOX;
   const REACT_APP_MAPBOX_TOKEN = import.meta.env.VITE_MAPBOXTOKEN;
 
-  const handleMapApi = async () => {
+  const handleMapApi = async (finaladdressobj) => {
     try {
-      const placeUrl = `${REACT_APP_opencagedata}${item.location}%20${item.address}&pretty=1`;
+      const placeUrl = `${REACT_APP_opencagedata}${finaladdressobj}&pretty=1`;
       const resp = await axios.get(placeUrl);
       const data = resp.data;
       setAddress(data);
@@ -25,38 +27,42 @@ export default function Pickup({ item, pickupLocation, setPickupLocation, setChe
       setAddressLoading(false);
     }
   };
+  const handleDefineAddress = () => {
+    let finaladdress = item;
+
+    let finaladdressobj = userArr.address.find((address) => address._id === finaladdress);
+    if (finaladdressobj) {
+      finaladdressobj =
+        finaladdressobj.country +
+        '%20' +
+        finaladdressobj.state +
+        '%20' +
+        finaladdressobj.city +
+        '%20' +
+        finaladdressobj.address1 +
+        '%20' +
+        finaladdressobj.address2;
+    }
+
+    const restaurantObj = restaurantArr.find((restaurant) => restaurant._id === finaladdress);
+    if (restaurantObj) {
+      finaladdressobj = restaurantObj.location + ' ' + restaurantObj.address;
+      setIsSelf(true);
+    }
+    setAddressString(finaladdressobj.replace(/%20/g, ' '));
+    handleMapApi(finaladdressobj);
+  };
 
   useEffect(() => {
-    handleMapApi();
+    handleDefineAddress();
   }, []);
-
-  useEffect(() => {
-    if (pickupLocation) {
-      setCheckoutBody((prevState) => ({
-        ...prevState,
-        userdata: {
-          ...prevState.userdata,
-          selectedAddress: item._id
-        }
-      }));
-    }
-
-    if (!pickupLocation) {
-      setCheckoutBody((prevState) => ({
-        ...prevState,
-        userdata: {
-          ...prevState.userdata,
-          selectedAddress: null
-        }
-      }));
-    }
-  }, [pickupLocation]);
 
   return (
     <Box pt={4} data-aos='fade-up'>
       <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
-        Restaurant address
+        {isSelf ? 'Pickup' : 'Delivery'} address
       </Text>
+      <Box fontWeight='bold'>{addressString}</Box>
       <Skeleton minHeight='320px' my={4} borderRadius='16px' isLoaded={!addressLoading}>
         <Box pt={4}>
           {address ? (
@@ -87,30 +93,6 @@ export default function Pickup({ item, pickupLocation, setPickupLocation, setChe
                 <>No pickup locations!</>
               )}
             </Text>
-
-            <Box>
-              {address && (
-                <Flex alignItems='center'>
-                  <Radio
-                    onClick={() => setPickupLocation(!pickupLocation)}
-                    isChecked={pickupLocation}
-                    iconcolor='neutral.white'
-                    mr='2'
-                  >
-                    <Text onClick={() => setPickupLocation(!pickupLocation)} color='neutral.black' fontSize='2xs'>
-                      Choose this location
-                    </Text>
-                  </Radio>
-                </Flex>
-              )}
-            </Box>
-            {/* <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
-            California State, USA
-          </Text>
-          <Text fontSize='3xs' color='neutral.grayDark'>
-            3891 Ranchview Dr. Richardson, 62639
-          </Text> */}
-            {/* todo: change adress mdoel and validation */}
           </Box>
         </Box>
       </Skeleton>

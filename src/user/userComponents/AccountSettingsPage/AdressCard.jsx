@@ -19,8 +19,18 @@ import { API_URL, handleApiGet } from '../../../services/apiServices';
 import addressError from '../../../assets/images/addressError.jpg';
 import axios from 'axios';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
+import { Link } from 'react-router-dom';
 
-export default function AdressCard({ item, index }) {
+export default function AdressCard({
+  onitemselected,
+  selectCard,
+  disabledOptions = false,
+  item,
+  index,
+  handleUserAddressDelete,
+  setIsEditTrue,
+  setTargetIndex
+}) {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
   const REACT_APP_opencagedata = import.meta.env.VITE_OPENCAGEDATA;
   const REACT_APP_MAPBOX = import.meta.env.VITE_MAPBOX;
@@ -72,19 +82,24 @@ export default function AdressCard({ item, index }) {
     } catch (error) {
       console.log(error);
       setIsAddress(false);
+
+      if (isAddress) {
+        let warning = true;
+        handleUserAddressDelete(item._id, warning);
+      }
       console.log(isAddress);
       setAddressLoading(false);
     }
   };
   return (
-    <GridItem w='100%'>
-      <Skeleton my={2} minH='100px' borderRadius='16px' isLoaded={!addressLoading}>
+    <GridItem zIndex={index} w='100%' data-aos='fade-up'>
+      <Skeleton minH='100px' borderRadius='16px' isLoaded={!addressLoading}>
         <Box
           _hover={{
             cursor: 'pointer',
             transition: 'all 0.3s',
             bg: isAddress ? 'primary.light' : 'error.hover',
-            borderColor: 'primary.light'
+            borderColor: onitemselected ? 'primary.default' : 'primary.light'
           }}
           _active={{
             cursor: 'pointer',
@@ -92,12 +107,15 @@ export default function AdressCard({ item, index }) {
             bg: isAddress ? 'primary.light' : 'error.default',
             borderColor: 'primary.default'
           }}
+          borderColor={onitemselected ? 'primary.default' : 'BlackAlpha 200'}
           borderRadius='16px'
-          mb='12px'
           p='0px'
           transition='all 0.3s'
           borderWidth='1px'
           bg={isAddress ? 'neutral.white' : 'error.default'}
+          onClick={() => {
+            selectCard(item._id);
+          }}
         >
           {/* Content */}
 
@@ -131,7 +149,7 @@ export default function AdressCard({ item, index }) {
                   </Heading>
                 )}
                 <Heading color={isAddress ? 'initial' : 'neutral.white'} fontSize='2xs' fontWeight='bold'>
-                  {item.city}
+                  {item.city || ''}
                 </Heading>
                 <Text color={isAddress ? 'initial' : 'neutral.white'} fontSize='3xs' fontWeight='semibold'>
                   {item.state} State, {item.country}
@@ -142,40 +160,51 @@ export default function AdressCard({ item, index }) {
               </Box>
             </Flex>
             <Box>
-              <Menu>
-                <MenuButton
-                  mt={4}
-                  me={3}
-                  _hover={{
-                    color: 'neutral.black',
-                    borderColor: 'neutral.lightest'
-                  }}
-                  fontSize='2xs'
-                  color='neutral.gray'
-                  fontWeight='bold'
-                >
-                  <ThreeDots />
-                </MenuButton>
-
-                <MenuList>
-                  <MenuItem fontWeight='medium'>Edit</MenuItem>
-                  <MenuDivider />
-                  <MenuItem
-                    m={0}
-                    background='neutral.white'
-                    variant='solid'
-                    color='error.default'
+              {!disabledOptions && (
+                <Menu>
+                  <MenuButton
+                    mt={4}
+                    me={3}
                     _hover={{
-                      background: 'error.default',
-                      color: 'neutral.white'
+                      color: 'neutral.black',
+                      borderColor: 'neutral.lightest'
                     }}
-                    fontWeight='medium'
+                    fontSize='2xs'
+                    color='neutral.gray'
+                    fontWeight='bold'
                   >
-                    {' '}
-                    Remove
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+                    <ThreeDots />
+                  </MenuButton>
+
+                  <MenuList>
+                    <MenuItem
+                      onClick={() => {
+                        setIsEditTrue(true);
+                        setTargetIndex(item._id);
+                      }}
+                      fontWeight='medium'
+                    >
+                      Edit
+                    </MenuItem>
+                    <MenuDivider />
+                    <MenuItem
+                      onClick={() => handleUserAddressDelete(item._id)}
+                      m={0}
+                      background='neutral.white'
+                      variant='solid'
+                      color='error.default'
+                      _hover={{
+                        background: 'error.default',
+                        color: 'neutral.white'
+                      }}
+                      fontWeight='medium'
+                    >
+                      {' '}
+                      Remove
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              )}
             </Box>
           </Flex>
         </Box>

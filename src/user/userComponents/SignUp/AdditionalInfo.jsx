@@ -36,7 +36,7 @@ export default function AdditionalInfo({ mainBody, setMainBody }) {
 
   return (
     <>
-      <Flex h='100%' w='100' justifyContent='center'>
+      <Flex h='100%' w='100' justifyContent='center' data-aos='fade-left'>
         <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
           <Box></Box>
           <form onSubmit={handleSubmit(onSubForm)}>

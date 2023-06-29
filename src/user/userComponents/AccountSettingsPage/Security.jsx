@@ -82,7 +82,7 @@ export default function Security() {
 
   return (
     <>
-      <Box>
+      <Box data-aos='fade-up'>
         <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
           Security
         </Text>

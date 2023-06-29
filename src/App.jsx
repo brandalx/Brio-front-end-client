@@ -8,7 +8,7 @@ import './css/tools/fonts.css';
 import './css/gallery.css';
 import './css/global.css';
 import { useCheckToken } from './services/token';
-
+import Aos from 'aos';
 export default function App() {
   const isTokenExpired = useCheckToken();
   const [isToken, setIsToken] = useState(false);
@@ -20,6 +20,9 @@ export default function App() {
       setIsToken(true);
     }
   }, [isTokenExpired, localStorage]);
+  useEffect(() => {
+    Aos.init();
+  }, []);
   return (
     <ChakraProvider theme={theme}>
       <AppRoutes isToken={isToken} />

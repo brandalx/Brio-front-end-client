@@ -5,7 +5,7 @@ import Logo from '../../assets/svg/Logo';
 
 export default function Page404() {
   return (
-    <Box display='flex' justifyContent='center' alignItems='center' height='90vh'>
+    <Box data-aos='zoom-in' display='flex' justifyContent='center' alignItems='center' height='90vh'>
       <Box
         textAlign='center'
         w='50%' // set width to 50%

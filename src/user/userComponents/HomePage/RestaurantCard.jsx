@@ -8,7 +8,9 @@ export default function RestaurantCard({ img, title, time, price, badgeData, _id
   return (
     <>
       <Link to={_id ? `/restaurant/${_id}` : '#'}>
-        <GridItem w='100%' bg='neutral.white'>
+
+        <GridItem w='100%' bg='neutral.white' data-aos='fade-up'>
+
           <Box bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='lg'>
             {img && <Image src={img} roundedTop='lg' h='230px' objectFit='cover' w='100%' />}
             <Box p='6'>

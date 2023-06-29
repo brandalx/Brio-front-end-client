@@ -18,8 +18,16 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { API_URL, handleApiMethod } from '../../../services/apiServices';
 import { kMaxLength } from 'buffer';
-
-export default function NewPaymentMethod({ switcher, updateCreditCard }) {
+import cardValidator from 'card-validator';
+export default function NewPaymentMethod({
+  switcher,
+  updateCreditCard,
+  onSubForm2,
+  handleApi,
+  setIsEditTrue,
+  isEditTrue,
+  clearValues
+}) {
   const {
     handleSubmit,
     register,
@@ -33,26 +41,47 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
   const toast = useToast();
   const handleUserCardPost = async (_bodyData) => {
     try {
-      // const url = API_URL + "/videos/"+params["id"];
-      const url = API_URL + '/users/6464085ed67f7b944b642799/postusercard';
-      const data = await handleApiMethod(url, 'POST', _bodyData);
-      if (data.msg === true) {
+      const validation = cardValidator.number(_bodyData.cardNumber);
+      let bodytype = _bodyData.cardType.toLowerCase();
+
+      if (validation.card.type.toLowerCase() !== bodytype) {
+        validation.isValid = false;
+      }
+
+      if (!validation.isValid) {
+        console.log('Credit card is invalid!');
         toast({
-          title: 'New payment method added.',
-          description: "We've added your new payment method.",
-          status: 'success',
+          title: 'Credit card is not valid',
+          description: 'Error when adding new payment method',
+          status: 'error',
           duration: 9000,
           isClosable: true
         });
-        updateCreditCard(_bodyData);
+      } else {
+        console.log('All fields are valid!');
+
+        const url = API_URL + '/users/postusercard';
+        const data = await handleApiMethod(url, 'POST', _bodyData);
+
+        if (data.msg === true) {
+          toast({
+            title: 'New payment method added.',
+            description: "We've added your new payment method.",
+            status: 'success',
+            duration: 9000,
+            isClosable: true
+          });
+          updateCreditCard(_bodyData);
+          handleApi();
+        }
       }
     } catch (error) {
       console.log(error);
 
-      if (error.response.data.err === 'Such payment method already exists') {
+      if (error.response && error.response.data && error.response.data.err === 'Such payment method already exists') {
         toast({
           title: 'Duplicated payment methods',
-          description: `Error when adding new payment method - such payment method already exist.`,
+          description: `Error when adding new payment method - such payment method already exists.`,
           status: 'error',
           duration: 9000,
           isClosable: true
@@ -71,7 +100,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
 
   return (
     <>
-      <Box ms={2} mb={4} mt={10}>
+      <Box ms={2} mb={4} mt={10} data-aos='fade-up'>
         <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
           New payment method
         </Text>
@@ -93,7 +122,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                     })}
                     isDisabled={switcher}
                     pattern='[0-9]*'
-                    inputmode='numeric'
+                    inputMode='numeric'
                     type='password'
                     background='neutral.white'
                     _placeholder={{ color: 'neutral.gray' }}
@@ -222,7 +251,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                 alignItems={{ base: 'initial', md: 'center' }}
                 flexDirection={{ base: 'column', md: 'row' }}
               >
-                <Stack
+                {/* <Stack
                   h='100%'
                   mt={4}
                   direction={{ base: 'column', sm: 'row' }}
@@ -236,7 +265,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                       </Text>
                     </Checkbox>
                   </Flex>
-                </Stack>
+                </Stack> */}
                 <Button
                   isLoading={isSubmitting}
                   type='submit'

@@ -102,7 +102,7 @@ export default function SignUp() {
             </Flex>
           </Box>
         </GridItem>
-        <GridItem w='100%' h='100vh'>
+        <GridItem w='100%' h='100vh' data-aos='fade-up'>
           <Flex h='100%' justifyContent={{ base: 'center', md: 'flex-start' }}>
             <Flex
               ms={{ base: '0px', md: '100px', lg: '250px' }}
@@ -246,6 +246,19 @@ export default function SignUp() {
                     </Text>{' '}
                   </Link>
                 </Text>
+                <Link to='/'>
+                  <FormLabel
+                    cursor='pointer'
+                    textDecor='underline'
+                    textAlign='center'
+                    fontWeight='semibold'
+                    fontSize='3xs'
+                    color='neutral.grayDark'
+                    mb={0}
+                  >
+                    Back to home
+                  </FormLabel>
+                </Link>
               </Box>
             </Flex>
           </Flex>

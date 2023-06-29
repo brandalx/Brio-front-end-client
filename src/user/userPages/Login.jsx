@@ -74,7 +74,7 @@ export default function Login() {
     <>
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
         <Container maxW='550px'>
-          <GridItem w='100%' h='100vh'>
+          <GridItem w='100%' h='100vh' data-aos='fade-up'>
             <Flex h='100%' w='100' justifyContent='center'>
               <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
                 <Box py={6}>
@@ -153,7 +153,12 @@ export default function Login() {
                         </FormErrorMessage>
                       </FormControl>
                       <Stack spacing={10}>
-                        <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                        <Stack
+                          mt={2}
+                          direction={{ base: 'column', sm: 'row' }}
+                          align={'start'}
+                          justify={'space-between'}
+                        >
                           <Flex alignItems='center'>
                             <Checkbox mr='2'>
                               <Text color='neutral.black' fontSize='2xs'>
@@ -221,6 +226,19 @@ export default function Login() {
                       </Text>{' '}
                     </Link>
                   </Text>
+                  <Link to='/'>
+                    <FormLabel
+                      cursor='pointer'
+                      textDecor='underline'
+                      textAlign='center'
+                      fontWeight='semibold'
+                      fontSize='3xs'
+                      color='neutral.grayDark'
+                      mb={0}
+                    >
+                      Back to home
+                    </FormLabel>
+                  </Link>
                 </Box>
               </Flex>
             </Flex>

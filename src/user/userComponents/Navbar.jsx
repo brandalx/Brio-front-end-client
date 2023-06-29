@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import {
   chakra,
@@ -33,13 +33,17 @@ import Logo from '../../assets/svg/Logo';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import { useCheckToken } from '../../services/token';
+import { avatarContext, cartContext, geolocationContext } from '../../context/globalContext';
+import GeolocationDefinder from './Navbar/GeolocationDefinder';
 export default function Navbar() {
   const isTokenExpired = useCheckToken();
-
-  useEffect(() => {
-    if (isTokenExpired) {
-    }
-  }, [isTokenExpired]);
+  const { cartLen, setCartLen } = useContext(cartContext);
+  const { avatarUser, setAvatarUser } = useContext(avatarContext);
+  const { city, setCity } = useContext(geolocationContext);
+  // useEffect(() => {
+  //   if (isTokenExpired) {
+  //   }
+  // }, [isTokenExpired]);
   const bg = useColorModeValue('white', 'gray.800');
   const mobileNav = useDisclosure();
   const location = useLocation();
@@ -47,7 +51,7 @@ export default function Navbar() {
 
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
-  const [cartLen, setCartLen] = useState(0);
+
   const [srcav, setSrcav] = useState();
   const randomarr = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
 
@@ -64,6 +68,8 @@ export default function Navbar() {
     try {
       const data = await handleApiGet(url);
       setArr(data);
+
+      setAvatarUser(API_URL + '/' + data.avatar);
       console.log(data);
 
       setCartLen(data.cart.length);
@@ -81,6 +87,7 @@ export default function Navbar() {
   }, []);
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem('location');
     navigate('/login');
     toast({
       title: 'Loggin out.',
@@ -138,17 +145,20 @@ export default function Navbar() {
                     Restaurants
                   </Link>
                 </Button>
-                <Button
-                  color='neutral.black'
-                  fontWeight='bold'
-                  fontSize='2xs'
-                  _hover={{
-                    textDecoration: 'none',
-                    color: 'primary.default'
-                  }}
-                >
-                  Deals
-                </Button>
+                <Link to='/deals'>
+                  <Button
+                    color='neutral.black'
+                    fontWeight='bold'
+                    fontSize='2xs'
+                    _hover={{
+                      textDecoration: 'none',
+                      color: 'primary.default'
+                    }}
+                  >
+                    {' '}
+                    Deals
+                  </Button>
+                </Link>
                 {localStorage[TOKEN_KEY] && (
                   <>
                     <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
@@ -172,6 +182,9 @@ export default function Navbar() {
                 <HStack spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
                   {localStorage[TOKEN_KEY] && (
                     <>
+                      <Box>
+                        <GeolocationDefinder setLoading={setLoading} loading={loading} isInCart={isInCart} />
+                      </Box>
                       <Skeleton borderRadius='16px' isLoaded={!loading}>
                         <Box
                           borderColor={isInCart ? 'primary.default' : 'neutral.white'}
@@ -217,10 +230,11 @@ export default function Navbar() {
                             </MenuButton>
 
                             <MenuList>
-                              <Link to='user/cart'>
-                                {' '}
+                              <a href='/user/cart'>
+                                {/* //because it should refresh to update user logged in */}
+
                                 <MenuItem fontWeight='medium'>My cart</MenuItem>
-                              </Link>
+                              </a>
                             </MenuList>
                           </Menu>
                         </Box>
@@ -243,7 +257,7 @@ export default function Navbar() {
                           <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                             <Avatar
                               py='2px'
-                              borderRadius='3xl'
+                              borderRadius='xl'
                               size='md'
                               name={'Anonimus'}
                               src={'/assets/avatars/' + srcav}
@@ -265,10 +279,10 @@ export default function Navbar() {
                             <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                               <Avatar
                                 py='2px'
-                                borderRadius='xl'
+                                borderRadius='3xl'
                                 size='md'
                                 name={!loading && arr.firstname + ' ' + arr.lastname}
-                                src={(!loading && arr.avatar) || null}
+                                src={!loading && avatarUser}
                               />{' '}
                             </MenuButton>
                           </Box>
@@ -278,7 +292,7 @@ export default function Navbar() {
                         <>
                           <MenuList>
                             <a href='/user/account'>
-                              {' '}
+                              {/* //because it should refresh to update user logged in */}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
                             </a>
 
@@ -323,12 +337,15 @@ export default function Navbar() {
                 <HStack display='flex' alignItems='center' spacing={4}>
                   {localStorage[TOKEN_KEY] && (
                     <>
+                      <Box>
+                        <GeolocationDefinder setLoading={setLoading} loading={loading} isInCart={isInCart} />
+                      </Box>
                       <Skeleton borderRadius='16px' isLoaded={!loading}>
                         <Box
                           borderColor={isInCart ? 'primary.default' : 'neutral.white'}
                           borderWidth='1px'
                           ml='4px'
-                          bg='neutral.grayLightest'
+                          bg='primary.lightest'
                           color='black'
                           px={'8px'}
                           py={'8px'}
@@ -366,10 +383,11 @@ export default function Navbar() {
                               <IconShoppingBag color='#4E60FF' />
                             </MenuButton>
                             <MenuList>
-                              <Link to='user/cart'>
-                                {' '}
+                              <a href='/user/cart'>
+                                {/* //because it should refresh to update user logged in */}
+
                                 <MenuItem fontWeight='medium'>My cart</MenuItem>
-                              </Link>
+                              </a>
                             </MenuList>
                           </Menu>
                         </Box>
@@ -408,14 +426,15 @@ export default function Navbar() {
                               borderRadius='xl'
                               size='md'
                               name={!loading && arr.firstname + ' ' + arr.lastname}
-                              src={(!loading && arr.avatar) || null}
+                              src={(!loading && avatarUser) || null}
                             />{' '}
                           </MenuButton>
                           <MenuList>
-                            <Link to='/user/account'>
+                            {/* //because it should refresh to update user logged in */}
+                            <a href='/user/account'>
                               {' '}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
-                            </Link>
+                            </a>
 
                             <MenuDivider />
 
@@ -438,12 +457,12 @@ export default function Navbar() {
                         </>
                       ) : (
                         <MenuList>
-                          <Link to='/login'>
+                          <Link to='/signup'>
                             {' '}
                             <MenuItem fontWeight='medium'>Sign up</MenuItem>
                           </Link>
 
-                          <Link to='/signup'>
+                          <Link to='/login'>
                             {' '}
                             <MenuItem fontWeight='medium'>Log in</MenuItem>
                           </Link>
@@ -507,7 +526,7 @@ export default function Navbar() {
                       <Link to='/restaurant'>Restaurants</Link>
                     </Button>
                     <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
-                      <Link to='#'>Deals </Link>
+                      <Link to='/deals'>Deals </Link>
                     </Button>
                     {localStorage[TOKEN_KEY] && (
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>

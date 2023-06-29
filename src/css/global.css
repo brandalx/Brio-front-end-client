@@ -21,3 +21,27 @@ body {
 .wrapper {
   overflow: hidden;
 }
+
+.t-gra {
+  background: linear-gradient(351deg, #31b3ec 23%, #524add 87%, #524add 102%);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* prevent zoom */
+html {
+  touch-action: manipulation; /* Optional: Improves scrolling performance on mobile devices */
+  touch-zooming: none; /* Disables pinch-to-zoom */
+  -ms-touch-action: manipulation; /* For Internet Explorer 10 and 11 */
+  -ms-touch-zoom: none; /* For Internet Explorer 10 and 11 */
+}
+
+/* For iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  html {
+    touch-callout: none; /* Disables the callout (menu) when tapping and holding a touch target */
+    -webkit-text-size-adjust: 100%; /* Prevents font scaling when user zooms in */
+  }
+}

@@ -17,13 +17,18 @@ import {
   FormErrorMessage,
   useToast
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { avatarContext } from '../../../context/globalContext';
 
 export default function Account() {
+  const { avatarUser, setAvatarUser } = useContext(avatarContext);
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
+  const [reload, setReload] = useState(0);
 
   const handleUserData = async () => {
     const url = API_URL + '/users/info/user';
@@ -31,6 +36,8 @@ export default function Account() {
       const data = await handleApiGet(url);
       setAr(data);
       console.log(data);
+      setAvatarUser(API_URL + '/' + data.avatar + '?t=' + reload);
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -41,6 +48,7 @@ export default function Account() {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors, isSubmitting }
   } = useForm();
 
@@ -52,7 +60,7 @@ export default function Account() {
   const handleUserDataPut = async (_bodyData) => {
     try {
       // const url = API_URL + "/videos/"+params["id"];
-      const url = API_URL + '/users/6464085ed67f7b944b642799/putuserdata';
+      const url = API_URL + '/users/putuserdata';
       const data = await handleApiMethod(url, 'PUT', _bodyData);
       if (data.acknowledged === true) {
         toast({
@@ -87,12 +95,88 @@ export default function Account() {
     }
   };
 
+  const navigate = useNavigate();
+  const onLogOut = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem('location');
+    navigate('/login');
+    toast({
+      title: 'Logged out.',
+      description: 'Successfuly logged out!',
+      status: 'success',
+      duration: 9000,
+      isClosable: true
+    });
+  };
+
   useEffect(() => {
     handleUserData();
-  }, []);
+  }, [reload, avatarUser]);
 
+  const clearValues = () => {
+    setValue('firstname', '');
+    setValue('lastname', '');
+    setValue('email', '');
+    setValue('phone', '');
+  };
+  // todo: finish uploda and add refs
+  const uploadRef = useRef();
+
+  const onSubUpload = (e) => {
+    e.preventDefault();
+
+    handleUploadAvatar();
+  };
+
+  const handleClick = () => {
+    if (uploadRef.current) {
+      uploadRef.current.click();
+    }
+  };
+
+  const handleUploadAvatar = async () => {
+    console.log(uploadRef.current.files);
+    if (uploadRef.current.files[0]) {
+      try {
+        const fdata = new FormData();
+
+        fdata.append('myFile', uploadRef.current.files[0]);
+        const url = API_URL + '/users/user/avatar';
+
+        const resp = await axios({
+          method: 'POST',
+          url: url,
+          data: fdata,
+          headers: {
+            'x-api-key': localStorage[TOKEN_KEY]
+          }
+        });
+        console.log(resp.data);
+        if (resp.data.excludedPath) {
+          toast({
+            title: 'Profile image updated.',
+            description: 'Profile image successfuly updeted!',
+            status: 'success',
+            duration: 9000,
+            isClosable: true
+          });
+        }
+
+        setReload(reload + 1);
+      } catch (err) {
+        console.log(err);
+        toast({
+          title: 'Error when updating your profile image',
+          description: 'Error when updating your profile image. Try upload different file',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    }
+  };
   return (
-    <Box>
+    <Box data-aos='fade-up'>
       <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
         Account
       </Text>
@@ -102,6 +186,9 @@ export default function Account() {
         </Text>
         <Box pt={5}>
           <Skeleton borderRadius='16px' isLoaded={!loading} minHeight='20px' my={2} w='50%'>
+            <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark' mb={0}>
+              Welcome back,
+            </FormLabel>
             <Text fontSize='md' fontWeight='black' color='neutral.darkGray'>
               {!loading && `${arr.firstname} ${arr.lastname}`}
             </Text>
@@ -113,48 +200,34 @@ export default function Account() {
                   borderRadius='10px'
                   boxSize='80px'
                   objectFit='cover'
-                  src={arr.avatar || ''}
+                  src={avatarUser || ''}
                   name={`${arr.firstname} ${arr.lastname}`}
                 />
               </Box>
             </Skeleton>
-            <Button
-              background='neutral.white'
-              fontSize='2xs'
-              fontWeight='bold'
-              variant='solid'
-              color='primary.default'
-              borderWidth='1px'
-              borderColor='primary.default'
-              _hover={{
-                background: 'primary.default',
-                color: 'neutral.white',
-                borderWidth: '1px',
-                borderColor: 'primary.default'
-              }}
-              py={5}
-              me='20px'
-            >
-              Change
-            </Button>
-            <Button
-              borderColor='neutral.white'
-              borderWidth='1px'
-              _hover={{
-                background: 'error.default',
-                color: 'neutral.white',
-                borderWidth: '1px',
-                borderColor: 'error.default'
-              }}
-              fontSize='2xs'
-              color='neutral.gray'
-              fontWeight='bold'
-              variant='ghost'
-              py={5}
-              me='20px'
-            >
-              Remove
-            </Button>
+            <form onSubmit={onSubUpload}>
+              <Input ref={uploadRef} type='file' hidden onChange={handleUploadAvatar} />
+              <Button
+                onClick={handleClick}
+                background='neutral.white'
+                fontSize='2xs'
+                fontWeight='bold'
+                variant='solid'
+                color='primary.default'
+                borderWidth='1px'
+                borderColor='primary.default'
+                _hover={{
+                  background: 'primary.default',
+                  color: 'neutral.white',
+                  borderWidth: '1px',
+                  borderColor: 'primary.default'
+                }}
+                py={5}
+                me='20px'
+              >
+                Change
+              </Button>
+            </form>
           </Flex>
         </Box>
 
@@ -279,7 +352,7 @@ export default function Account() {
             </Grid>
           </Box>
 
-          <Box pt={5}>
+          {/* <Box pt={5}>
             <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
               Email notifications
             </Text>
@@ -350,12 +423,13 @@ export default function Account() {
                 </Stack>
               </GridItem>
             </Grid>
-          </Box>
+          </Box> */}
           <Divider pt={8} />
           <Box pt={5}>
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
               <GridItem w='100%'>
                 <Button
+                  onClick={() => onLogOut()}
                   w={{ base: '100%', md: 'initial' }}
                   background='neutral.white'
                   fontSize='2xs'
@@ -380,6 +454,7 @@ export default function Account() {
               <GridItem w='100%'>
                 <Flex flexDirection={{ base: 'row' }}>
                   <Button
+                    onClick={() => clearValues()}
                     w={{ base: '50%', md: 'initial' }}
                     background='neutral.white'
                     fontSize='2xs'

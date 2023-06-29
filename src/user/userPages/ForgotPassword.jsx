@@ -65,7 +65,7 @@ export default function ForgotPassword() {
                   </Flex>
                 </Box>
 
-                <Box>
+                <Box data-aos='fade-up'>
                   <Box pb={10} w='100%' display='flex' justifyItems='flex-startx'>
                     <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
                       <Flex alignItems='center'>
@@ -149,6 +149,19 @@ export default function ForgotPassword() {
                       </Text>{' '}
                     </Link>
                   </Text>
+                  <Link to='/'>
+                    <FormLabel
+                      cursor='pointer'
+                      textDecor='underline'
+                      textAlign='center'
+                      fontWeight='semibold'
+                      fontSize='3xs'
+                      color='neutral.grayDark'
+                      mb={0}
+                    >
+                      Back to home
+                    </FormLabel>
+                  </Link>
                 </Box>
               </Flex>
             </Flex>
