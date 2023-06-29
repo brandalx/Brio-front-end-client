@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Flex,
@@ -115,10 +116,15 @@ export default function OrdersTableBody() {
 
           const usersTotalSpent = filteredOrders.reduce((acc, order) => {
             const userId = order.userRef;
-            const totalAmount = order.ordersdata.products.reduce((total, product) => {
+            const productsCost = order.ordersdata.products.reduce((total, product) => {
               const relatedProduct = products.find((p) => p._id === product.productId);
               return total + (relatedProduct ? relatedProduct.price * product.amount : 0);
             }, 0);
+
+            // Adding the shipping and tips to the total cost of products
+            const totalAmount =
+              productsCost + order.userdata.paymentSummary.shipping + order.userdata.paymentSummary.tips;
+
             const foundUser = acc.find((user) => user.id === userId);
 
             if (foundUser) {
@@ -176,8 +182,7 @@ export default function OrdersTableBody() {
               >
                 {user.firstname} {user.lastname}
                 <Box mr='12px' w='42px' h='42px'>
-                  <Image w='100%' h='100%' borderRadius='full' />
-                  {/*src={API_URL + '/' + user.avatar || ''}*/}
+                  <Avatar w='100%' h='100%' borderRadius='full' src={''} name={user.firstname + ' ' + user.lastname} />
                 </Box>
               </Td>
               <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>

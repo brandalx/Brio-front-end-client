@@ -36,7 +36,8 @@ export default function CustomersTable() {
   const [isBetween] = useMediaQuery('(min-width: 576px) and (max-width: 600px)');
   const navigate = useNavigate();
   const [restaurantId, setRestaurantId] = useState(null);
-
+  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(3px) hue-rotate(90deg)' />;
+  const [overlay, setOverlay] = React.useState(<OverlayOne />);
   const [openModalId, setOpenModalId] = useState(null);
   const handleOpenModal = (userId) => {
     setIsOpen(true);
@@ -117,7 +118,7 @@ export default function CustomersTable() {
       {Array.isArray(users) &&
         users.map((user) => {
           const mostRecentOrder = user.orders.reduce((recent, order) => {
-            return new Date(recent.creationTime) > new Date(order.creationTime) ? recent : order;
+            return new Date(recent.creationDate) > new Date(order.creationDate) ? recent : order;
           }, user.orders[0]);
 
           return (
@@ -151,8 +152,8 @@ export default function CustomersTable() {
               </Td>
               <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
                 {mostRecentOrder &&
-                  mostRecentOrder.creationTime &&
-                  new Date(mostRecentOrder.creationTime).toLocaleDateString('en-US', options)}
+                  mostRecentOrder.creationDate &&
+                  new Date(mostRecentOrder.creationDate).toLocaleDateString('en-US', options)}
               </Td>
 
               <Td
@@ -199,21 +200,7 @@ export default function CustomersTable() {
               >
                 <IconButton icon={<ThreeDots />} onClick={() => handleOpenModal(user._id)} />
                 <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
-                  <ModalOverlay
-                    width='100%'
-                    sx={{
-                      position: 'fixed',
-                      top: '0',
-                      left: '0',
-                      width: '100%',
-                      height: '100%',
-                      zIndex: '10',
-                      bg: 'rgba(0,0,0,0.6)',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  />
+                  {overlay}
 
                   <ModalContent
                     position='relative'

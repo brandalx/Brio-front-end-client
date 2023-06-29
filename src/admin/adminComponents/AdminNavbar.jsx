@@ -176,8 +176,6 @@ export default function AdminNavbar() {
                         </MenuButton>
                         <MenuList>
                           <MenuItem fontWeight='medium'>Event</MenuItem>
-                          <MenuItem fontWeight='medium'>Event</MenuItem>
-                          <MenuItem fontWeight='medium'>Event</MenuItem>
                         </MenuList>
                       </Menu>
                     </Box>
@@ -196,8 +194,6 @@ export default function AdminNavbar() {
                         <MenuItem as={RouterLink} to='/admin/restaurant/settings' fontWeight='medium'>
                           Settings
                         </MenuItem>
-                        <MenuItem fontWeight='medium'>Event</MenuItem>
-                        <MenuItem fontWeight='medium'>Event</MenuItem>
                       </MenuList>
                     </Menu>
                   </Flex>
@@ -236,11 +232,7 @@ export default function AdminNavbar() {
                         <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                           <Notification />
                         </MenuButton>
-                        <MenuList>
-                          <MenuItem fontWeight='medium'>Event</MenuItem>
-                          <MenuItem fontWeight='medium'>Event</MenuItem>
-                          <MenuItem fontWeight='medium'>Event</MenuItem>
-                        </MenuList>
+                        <MenuList></MenuList>
                       </Menu>
                     </Box>
                     <Menu>
@@ -257,8 +249,6 @@ export default function AdminNavbar() {
                         <MenuItem as={RouterLink} to='/admin/restaurant/settings' fontWeight='medium'>
                           Settings
                         </MenuItem>
-                        <MenuItem fontWeight='medium'>Event</MenuItem>
-                        <MenuItem fontWeight='medium'>Event</MenuItem>
                       </MenuList>
                     </Menu>
                     <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest' />
