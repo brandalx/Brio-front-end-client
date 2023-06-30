@@ -102,6 +102,8 @@ export default function Restaurant() {
     handleLoadings();
   }, [restaurantArr, productArr, address]);
 
+  let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
   return (
     <>
       <Box background='bg' py='50px' data-aos='fade-up'>
@@ -325,58 +327,63 @@ export default function Restaurant() {
                       </Box>
                       <Divider w='100%' />
                       <Box p={4}>
-                        <Box>
-                          <Box display='flex'>
-                            <Box me={4}>
-                              <Avatar size='md' name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
-                            </Box>
-                            <Box display='flex' flexDir='column'>
-                              <Box>
-                                <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
-                                  Savannah Miles
-                                </Text>
-                              </Box>
+                        {arr.map((item, index) => {
+                          return (
+                            <Box my='20px' key={index}>
                               <Box display='flex'>
-                                <Box>
-                                  <Box me={2} display='flex'>
-                                    <Star color='#4E60FF' />
-                                    <Star color='#4E60FF' />
-                                    <Star color='#4E60FF' />
-                                    <Star color='#4E60FF' />
-                                    <Star />
-                                    <Star />
+                                <Box me={4}>
+                                  <Avatar size='md' name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
+                                </Box>
+                                <Box display='flex' flexDir='column'>
+                                  <Box>
+                                    <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
+                                      Savannah Miles
+                                    </Text>
+                                  </Box>
+                                  <Box display='flex'>
+                                    <Box>
+                                      <Box me={2} display='flex'>
+                                        <Star color='#4E60FF' />
+                                        <Star color='#4E60FF' />
+                                        <Star color='#4E60FF' />
+                                        <Star color='#4E60FF' />
+                                        <Star />
+                                        <Star />
+                                      </Box>
+                                    </Box>
+                                    <Box>
+                                      {' '}
+                                      <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
+                                        10 days ago
+                                      </Text>
+                                    </Box>
                                   </Box>
                                 </Box>
-                                <Box>
-                                  {' '}
-                                  <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
-                                    10 days ago
+                              </Box>
+                              <Box mt={2}>
+                                <Text color='neutral.black' fontWeight='regular' fontSize='2xs'>
+                                  Lorem ipsum dolor sit amet, adhuc nulla definiebas mei ad, ei doming aperiam delicata
+                                  est.
+                                </Text>
+                              </Box>
+                              <Box mt={4} display='flex' alignItems='center'>
+                                <Box me={6} display='flex' alignItems='center'>
+                                  <Like />
+                                  <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
+                                    14
+                                  </Text>
+                                </Box>
+                                <Box display='flex' alignItems='center'>
+                                  <Dislike />
+                                  <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
+                                    4
                                   </Text>
                                 </Box>
                               </Box>
+                              <Divider my={4} w='100%' />
                             </Box>
-                          </Box>
-                          <Box mt={2}>
-                            <Text color='neutral.black' fontWeight='regular' fontSize='2xs'>
-                              Lorem ipsum dolor sit amet, adhuc nulla definiebas mei ad, ei doming aperiam delicata est.
-                            </Text>
-                          </Box>
-                          <Box mt={4} display='flex' alignItems='center'>
-                            <Box me={6} display='flex' alignItems='center'>
-                              <Like />
-                              <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                                14
-                              </Text>
-                            </Box>
-                            <Box display='flex' alignItems='center'>
-                              <Dislike />
-                              <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                                4
-                              </Text>
-                            </Box>
-                          </Box>
-                          <Divider my={4} w='100%' />
-                        </Box>
+                          );
+                        })}
                       </Box>
                     </Box>
                   </Box>
