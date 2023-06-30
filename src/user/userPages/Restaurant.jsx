@@ -8,6 +8,7 @@ import { API_URL, handleApiGet } from '../../services/apiServices';
 import axios from 'axios';
 
 import Logo from '../../assets/svg/Logo';
+import Star from '../../assets/svg/Star';
 
 export default function Restaurant() {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -257,29 +258,35 @@ export default function Restaurant() {
                 </Box>
               </Box>
             </GridItem>
-            <GridItem>
-              <Box py='25px'>
-                <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
-                  Reviews
-                </Text>
-                <Box
-                  w='100%'
-                  py={4}
-                  bg='neutral.white'
-                  border='1px'
-                  borderColor='neutral.grayLightest'
-                  borderRadius='16px'
-                  h='100%'
-                  data-aos='fade-up'
-                >
-                  <Box>
-                    <Box p={4}>Overall rating</Box>
-                    <Divider w='100%' />
-                    <Box p={4}>comments</Box>
+            {!productArr.length <= 0 && (
+              <GridItem>
+                <Box py='25px'>
+                  <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
+                    Reviews
+                  </Text>
+                  <Box
+                    w='100%'
+                    py={4}
+                    bg='neutral.white'
+                    border='1px'
+                    borderColor='neutral.grayLightest'
+                    borderRadius='16px'
+                    h='100%'
+                    data-aos='fade-up'
+                  >
+                    <Box>
+                      <Box p={4}>
+                        Overall rating
+                        <Star />
+                        <Star color='#4E60FF' />
+                      </Box>
+                      <Divider w='100%' />
+                      <Box p={4}>comments</Box>
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
-            </GridItem>
+              </GridItem>
+            )}
           </Grid>
         </Container>
       </Box>
