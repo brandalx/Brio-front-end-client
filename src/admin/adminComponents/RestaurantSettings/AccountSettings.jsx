@@ -19,6 +19,8 @@ import { API_URL, handleApiGet } from '../../../services/apiServices';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
+import EmailNotification from './EmailNotification';
+import Badges from './Badges';
 
 export default function AccountSettings() {
   const [restaurant, setRestaurant] = useState([]);
@@ -284,27 +286,12 @@ export default function AccountSettings() {
             Email notifications
           </Text>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={{ base: 4, md: 6 }}>
-            <GridItem w='100%'>
-              <Stack mt={2} direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
-                <Flex alignItems='center'>
-                  <Checkbox mr='2'>
-                    <Text color='neutral.black' fontSize='2xs'>
-                      Order updates
-                    </Text>
-                  </Checkbox>
-                </Flex>
-              </Stack>
-              <Stack mt={4} direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
-                <Flex alignItems='center'>
-                  <Checkbox iconColor='neutral.white' mr='2'>
-                    <Text color='neutral.black' fontSize='2xs'>
-                      Admin actions
-                    </Text>
-                  </Checkbox>
-                </Flex>
-              </Stack>
-            </GridItem>
-
+            {/*////*/}
+            {/*////*/}
+            <EmailNotification />
+            {/*////*/}
+            {/*////*/}
+            <Badges />
             <GridItem w='100%'>
               <Stack
                 mt={{ base: '0px', md: 4 }}
