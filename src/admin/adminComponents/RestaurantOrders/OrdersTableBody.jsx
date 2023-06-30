@@ -89,17 +89,17 @@ export default function OrdersTableBody() {
 
         if (Array.isArray(ordersResponse)) {
           const filteredOrders = ordersResponse
-              .filter((order) => order.ordersdata.restaurants.includes(restaurantId))
-              .map((order) => {
-                const relevantProducts = order.ordersdata.products.filter((product) =>
-                    product.restaurantId === restaurantId
-                );
-                const newOrder = { ...order, ordersdata: { ...order.ordersdata, products: relevantProducts } };
-                return newOrder;
-              });
+            .filter((order) => order.ordersdata.restaurants.includes(restaurantId))
+            .map((order) => {
+              const relevantProducts = order.ordersdata.products.filter(
+                (product) => product.restaurantId === restaurantId
+              );
+              const newOrder = { ...order, ordersdata: { ...order.ordersdata, products: relevantProducts } };
+              return newOrder;
+            });
 
           const productIds = new Set(
-              filteredOrders.flatMap((order) => order.ordersdata.products.map((product) => product.productId))
+            filteredOrders.flatMap((order) => order.ordersdata.products.map((product) => product.productId))
           );
 
           const productPromises = Array.from(productIds).map(fetchProductData);
@@ -109,12 +109,18 @@ export default function OrdersTableBody() {
 
           const ordersWithTotalSpent = filteredOrders.map((order) => {
             const productsCost = order.ordersdata.products.reduce((total, product) => {
-              const relatedProduct = products.find((p) => p._id === product.productId && product.restaurantId === restaurantId);
+              const relatedProduct = products.find(
+                (p) => p._id === product.productId && product.restaurantId === restaurantId
+              );
               return total + (relatedProduct ? relatedProduct.price * product.amount : 0);
             }, 0);
 
             // Adding the shipping and tips to the total cost of products
-            const totalAmount = (productsCost + order.userdata.paymentSummary.shipping + order.userdata.paymentSummary.tips).toFixed(2);
+            const totalAmount = (
+              productsCost +
+              order.userdata.paymentSummary.shipping +
+              order.userdata.paymentSummary.tips
+            ).toFixed(2);
 
             // Add the totalAmount to the order object itself
             return { ...order, totalSpent: totalAmount };
@@ -132,7 +138,6 @@ export default function OrdersTableBody() {
 
     fetchAll();
   }, [restaurantId]);
-
 
   return (
     <Tbody>
@@ -212,13 +217,13 @@ export default function OrdersTableBody() {
                 </Flex>
               </Td>
               <Td
-                  pr={isMobile ? '0' : ''}
-                  pl={isMobile ? '5px' : ''}
-                  pt='10px'
-                  pb='10px'
-                  fontSize='2.5xs'
-                  color='neutral.black'
-                  fontWeight='semibold'
+                pr={isMobile ? '0' : ''}
+                pl={isMobile ? '5px' : ''}
+                pt='10px'
+                pb='10px'
+                fontSize='2.5xs'
+                color='neutral.black'
+                fontWeight='semibold'
               >
                 {order.totalSpent || 0}
               </Td>

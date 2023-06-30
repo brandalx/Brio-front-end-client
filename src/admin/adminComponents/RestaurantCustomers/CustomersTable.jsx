@@ -178,13 +178,15 @@ export default function CustomersTable() {
                 fontWeight='semibold'
               >
                 $
-                {(user.orders.reduce((sum, order) => {
-                  if (order.status !== 'Canceled') {
-                    return sum + order.paymentSummary.totalAmount;
-                  } else {
-                    return sum;
-                  }
-                }, 0)).toFixed(2)}
+                {user.orders
+                  .reduce((sum, order) => {
+                    if (order.status !== 'Canceled') {
+                      return sum + order.paymentSummary.totalAmount;
+                    } else {
+                      return sum;
+                    }
+                  }, 0)
+                  .toFixed(2)}
               </Td>
 
               <Td
