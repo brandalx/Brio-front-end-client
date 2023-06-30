@@ -1,4 +1,4 @@
-import { Box, Container, Flex, GridItem, Text, Skeleton, Image, Grid, Button } from '@chakra-ui/react';
+import { Box, Container, Flex, GridItem, Text, Skeleton, Image, Grid, Button, Divider } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 
@@ -264,7 +264,7 @@ export default function Restaurant() {
                 </Text>
                 <Box
                   w='100%'
-                  p={4}
+                  py={4}
                   bg='neutral.white'
                   border='1px'
                   borderColor='neutral.grayLightest'
@@ -272,7 +272,11 @@ export default function Restaurant() {
                   h='100%'
                   data-aos='fade-up'
                 >
-                  reviews box
+                  <Box>
+                    <Box p={4}>Overall rating</Box>
+                    <Divider w='100%' />
+                    <Box p={4}>comments</Box>
+                  </Box>
                 </Box>
               </Box>
             </GridItem>
