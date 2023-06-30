@@ -319,6 +319,11 @@ export default function Home() {
               <Text mb={5} fontWeight='semibold' color='neutral.black' fontSize='sm'>
                 Nearby restaurants at {city}
               </Text>
+              <Skeleton borderRadius='16px' isLoaded={!loading}>
+                <Text pb={4} color='neutral.grayDark' fontSize='3xs'>
+                  Found {arr.length} restaurants
+                </Text>
+              </Skeleton>
 
               {!loading && (
                 <Box>

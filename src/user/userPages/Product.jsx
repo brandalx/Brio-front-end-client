@@ -96,6 +96,7 @@ export default function Product() {
 
   useEffect(() => {
     handleAProductApi();
+    setAmount(1);
   }, [params['id']]);
 
   const handleGoBack = () => {
