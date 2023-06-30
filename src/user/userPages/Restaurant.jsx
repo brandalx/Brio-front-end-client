@@ -9,6 +9,9 @@ import axios from 'axios';
 
 import Logo from '../../assets/svg/Logo';
 import Star from '../../assets/svg/Star';
+import { Avatar } from '@chakra-ui/react';
+import Like from '../../assets/svg/Like';
+import Dislike from '../../assets/svg/Dislike';
 
 export default function Restaurant() {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -321,12 +324,66 @@ export default function Restaurant() {
                         </Box>
                       </Box>
                       <Divider w='100%' />
-                      <Box p={4}>comments</Box>
+                      <Box p={4}>
+                        <Box>
+                          <Box display='flex'>
+                            <Box me={4}>
+                              <Avatar size='md' name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
+                            </Box>
+                            <Box display='flex' flexDir='column'>
+                              <Box>
+                                <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
+                                  Savannah Miles
+                                </Text>
+                              </Box>
+                              <Box display='flex'>
+                                <Box>
+                                  <Box me={2} display='flex'>
+                                    <Star color='#4E60FF' />
+                                    <Star color='#4E60FF' />
+                                    <Star color='#4E60FF' />
+                                    <Star color='#4E60FF' />
+                                    <Star />
+                                    <Star />
+                                  </Box>
+                                </Box>
+                                <Box>
+                                  {' '}
+                                  <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
+                                    10 days ago
+                                  </Text>
+                                </Box>
+                              </Box>
+                            </Box>
+                          </Box>
+                          <Box mt={2}>
+                            <Text color='neutral.black' fontWeight='regular' fontSize='2xs'>
+                              Lorem ipsum dolor sit amet, adhuc nulla definiebas mei ad, ei doming aperiam delicata est.
+                            </Text>
+                          </Box>
+                          <Box mt={4} display='flex' alignItems='center'>
+                            <Box me={6} display='flex' alignItems='center'>
+                              <Like />
+                              <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
+                                14
+                              </Text>
+                            </Box>
+                            <Box display='flex' alignItems='center'>
+                              <Dislike />
+                              <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
+                                4
+                              </Text>
+                            </Box>
+                          </Box>
+                          <Divider my={4} w='100%' />
+                        </Box>
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
               </GridItem>
             )}
+            {/* <Avatar size='2xs' name='Dan Abrahmov' src='https://bit.ly/dan-abramov' /> */}
           </Grid>
         </Container>
       </Box>
