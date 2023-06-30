@@ -6,7 +6,7 @@ import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
 import Preloader from '../../components/Loaders/preloader';
 import { useCheckToken } from '../../services/token';
-
+import caketest from '../../assets/images/caketest.png';
 import Spline from '@splinetool/react-spline';
 import Logo from '../../assets/svg/Logo';
 import { Circle } from '@chakra-ui/react';
@@ -203,7 +203,7 @@ export default function Home() {
               >
                 <Flex alignItems='center'>
                   <Box w='50%'>
-                    <Image src={burgertest} alt='Promotion 1' />
+                    <Image src={caketest} alt='Promotion 1' />
                   </Box>
                   <Box w='50%'>
                     <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
@@ -228,7 +228,7 @@ export default function Home() {
                 h='auto'
                 borderColor='white'
                 borderWidth='1px'
-                bg='primary.light'
+                bg='secondary.light'
                 _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
               >
                 <Flex alignItems='center'>
