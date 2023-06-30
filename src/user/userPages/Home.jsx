@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useContext, useEffect, useState } from 'react';
 import { Box, Container, Flex, Text, GridItem, Grid, Image, Skeleton } from '@chakra-ui/react';
 import burgertest from '../../assets/images/burgertest.png';
 import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
@@ -12,6 +12,7 @@ import Logo from '../../assets/svg/Logo';
 import { Circle } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
+import { geolocationContext } from '../../context/globalContext';
 
 export default function Home() {
   // todo: add tag into product into backend model and validation
@@ -23,6 +24,8 @@ export default function Home() {
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [heightchange, setheightchange] = useState(1);
   const [hovered, setHovered] = useState(false);
+  const { city, setCity, isTrue, setIsTrue } = useContext(geolocationContext);
+
   const handleApi = async () => {
     const url = API_URL + '/restaurants';
 
@@ -267,7 +270,6 @@ export default function Home() {
                   ms={5}
                   textAlign={{ base: 'center', md: 'start' }}
                   fontSize={{ base: 'sm', md: 'dm' }}
-                  lineHeight={{ base: '15px', md: '20px' }}
                   color={hovered ? '#4e60ff' : '#4e60ff'}
                   fontWeight='black'
                 >
@@ -297,65 +299,72 @@ export default function Home() {
             </Box>
           </Link>
         </Box>
-        <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
-          <Box py={30}>
-            <Grid templateColumns={{ base: 'repeat(3, 1fr)', md: 'repeat(6, 1fr)' }} gap={4}>
-              <CategoryPicker emoji='pizza' label='Pizza' />
+        {localStorage[TOKEN_KEY] && sessionStorage['isTrue'] && sessionStorage['location'] && (
+          <>
+            <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
+              <Box py={30}>
+                <Grid templateColumns={{ base: 'repeat(3, 1fr)', md: 'repeat(6, 1fr)' }} gap={4}>
+                  <CategoryPicker emoji='pizza' label='Pizza' />
 
-              <CategoryPicker emoji='hamburger' label='Burger' />
-              <CategoryPicker emoji='cut-of-meat' label='   Sushi' />
-              <CategoryPicker emoji='sushi' label='Sushi' />
-              <CategoryPicker emoji='broccoli' label='Vegan' />
-              <CategoryPicker emoji='cupcake' label='  Desserts' />
-            </Grid>
-          </Box>
-        </Skeleton>
-        <Box py='25px'>
-          <Text mb={5} fontWeight='semibold' color='neutral.black' fontSize='sm'>
-            Nearby restaurants
-          </Text>
+                  <CategoryPicker emoji='hamburger' label='Burger' />
+                  <CategoryPicker emoji='cut-of-meat' label='   Sushi' />
+                  <CategoryPicker emoji='sushi' label='Sushi' />
+                  <CategoryPicker emoji='broccoli' label='Vegan' />
+                  <CategoryPicker emoji='cupcake' label='  Desserts' />
+                </Grid>
+              </Box>
+            </Skeleton>
 
-          {!loading && (
-            <Box>
-              <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
-                {arr.map((item, index) => {
-                  return (
-                    <Box key={index}>
-                      <Skeleton borderRadius='16px' isLoaded={!loading}>
-                        <RestaurantCard
-                          _id={item._id}
-                          img={item.image}
-                          title={item.title}
-                          time={item.time}
-                          price={item.minprice}
-                          badgeData={item.tags}
-                        />
-                      </Skeleton>
-                    </Box>
-                  );
-                })}
-              </Grid>
+            <Box py='25px'>
+              <Text mb={5} fontWeight='semibold' color='neutral.black' fontSize='sm'>
+                Nearby restaurants at {city}
+              </Text>
+
+              {!loading && (
+                <Box>
+                  <Grid
+                    templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+                    gap={4}
+                  >
+                    {arr.map((item, index) => {
+                      return (
+                        <Box key={index}>
+                          <Skeleton borderRadius='16px' isLoaded={!loading}>
+                            <RestaurantCard
+                              _id={item._id}
+                              img={item.image}
+                              title={item.title}
+                              time={item.time}
+                              price={item.minprice}
+                              badgeData={item.tags}
+                            />
+                          </Skeleton>
+                        </Box>
+                      );
+                    })}
+                  </Grid>
+                </Box>
+              )}
+              {loading && (
+                <Grid
+                  mt={4}
+                  templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+                  gap={4}
+                >
+                  <GridItem minH='350px'>
+                    <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
+                  </GridItem>
+                  <GridItem minH='350px'>
+                    <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
+                  </GridItem>
+                  <GridItem minH='350px'>
+                    <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
+                  </GridItem>
+                </Grid>
+              )}
             </Box>
-          )}
-          {loading && (
-            <Grid
-              mt={4}
-              templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
-              gap={4}
-            >
-              <GridItem minH='350px'>
-                <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
-              </GridItem>
-              <GridItem minH='350px'>
-                <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
-              </GridItem>
-              <GridItem minH='350px'>
-                <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
-              </GridItem>
-            </Grid>
-          )}
-        </Box>
-
+          </>
+        )}
         <Box py='25px'>
           <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>
             All restaurants

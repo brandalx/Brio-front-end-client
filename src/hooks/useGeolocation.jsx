@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 export default function useGeolocation() {
   const VITE_IPAPI = import.meta.env.VITE_IPAPI;
   const [city, setCity] = useState(null);
+  const [update, setUpdate] = useState(0);
+  const [isTrue, setIsTrue] = useState(false);
 
   useEffect(() => {
     // Fallback to IP-based location
@@ -36,7 +38,7 @@ export default function useGeolocation() {
       console.log('Geolocation not available, falling back to IP-based location');
       fetchIPLocation();
     }
-  }, [city]);
+  }, [update]);
 
-  return { city, setCity };
+  return { city, setCity, update, setUpdate, isTrue, setIsTrue };
 }

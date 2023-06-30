@@ -38,11 +38,11 @@ import { geolocationContext } from './context/globalContext';
 export default function AppRoutes({ isToken }) {
   const [cartLen, setCartLen] = useState(0);
   const [avatarUser, setAvatarUser] = useState(null);
-  const { city, setCity } = useGeolocation();
+  const { city, setCity, update, setUpdate, isTrue, setIsTrue } = useGeolocation();
   return (
     <>
       <globalContext.Provider value={{ isToken }}>
-        <geolocationContext.Provider value={{ city, setCity }}>
+        <geolocationContext.Provider value={{ city, setCity, update, setUpdate, isTrue, setIsTrue }}>
           <cartContext.Provider value={{ cartLen, setCartLen }}>
             <avatarContext.Provider value={{ avatarUser, setAvatarUser }}>
               {/* TODO: pass global values in value obj */}
@@ -80,7 +80,6 @@ export default function AppRoutes({ isToken }) {
                       <Route path='/restaurant/' element={<Restaurants />} />
                       <Route path='/restaurant/:id' element={<Restaurant />} />
                       <Route path='/restaurant/product/:id' element={<Product />} />
-
 
                       {/* ----------ALL ADMIN ROUTES------------ */}
                       <Route path='/admin/restaurant/dashboard' element={<RestaurantDashboard />} />
