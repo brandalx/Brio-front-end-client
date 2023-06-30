@@ -114,7 +114,7 @@ export default function OrdersTableBody() {
             }, 0);
 
             // Adding the shipping and tips to the total cost of products
-            const totalAmount = productsCost + order.userdata.paymentSummary.shipping + order.userdata.paymentSummary.tips;
+            const totalAmount = (productsCost + order.userdata.paymentSummary.shipping + order.userdata.paymentSummary.tips).toFixed(2);
 
             // Add the totalAmount to the order object itself
             return { ...order, totalSpent: totalAmount };
