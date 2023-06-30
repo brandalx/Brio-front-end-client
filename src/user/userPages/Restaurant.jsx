@@ -326,7 +326,7 @@ export default function Restaurant() {
                         </Box>
                       </Box>
                       <Divider w='100%' />
-                      <Box p={4}>
+                      <Box p={4} overflowY='scroll' h='750px'>
                         {arr.map((item, index) => {
                           return (
                             <Box my='20px' key={index}>
@@ -380,7 +380,7 @@ export default function Restaurant() {
                                   </Text>
                                 </Box>
                               </Box>
-                              <Divider my={4} w='100%' />
+                              {index === arr.length - 1 ? <></> : <Divider my={4} w='100%' />}
                             </Box>
                           );
                         })}
