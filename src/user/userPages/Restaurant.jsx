@@ -169,7 +169,7 @@ export default function Restaurant() {
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
             <GridItem w='100%' h='100%'>
               <Box py='25px'>
-                <Text color='neutral.black' fontWeight='semibold' fontSize='sm'>
+                <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
                   Menu
                 </Text>
                 <Box>
@@ -254,6 +254,25 @@ export default function Restaurant() {
                       </>
                     )}
                   </Grid>
+                </Box>
+              </Box>
+            </GridItem>
+            <GridItem>
+              <Box py='25px'>
+                <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
+                  Reviews
+                </Text>
+                <Box
+                  w='100%'
+                  p={4}
+                  bg='neutral.white'
+                  border='1px'
+                  borderColor='neutral.grayLightest'
+                  borderRadius='16px'
+                  h='100%'
+                  data-aos='fade-up'
+                >
+                  reviews box
                 </Box>
               </Box>
             </GridItem>
