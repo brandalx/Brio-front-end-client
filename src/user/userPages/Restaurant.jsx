@@ -264,6 +264,7 @@ export default function Restaurant() {
                   <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
                     Reviews
                   </Text>
+
                   <Box
                     w='100%'
                     py={4}
@@ -276,9 +277,48 @@ export default function Restaurant() {
                   >
                     <Box>
                       <Box p={4}>
-                        Overall rating
-                        <Star />
-                        <Star color='#4E60FF' />
+                        <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
+                          Overall rating
+                        </Text>
+                        <Box display='flex' justifyContent='space-between' alignItems='center'>
+                          <Box display='flex' alignItems='center'>
+                            <Text me={2} color='primary.default' fontWeight='semibold' fontSize='sm'>
+                              4.2
+                            </Text>
+                            <Box me={2} display='flex'>
+                              <Star color='#4E60FF' />
+                              <Star color='#4E60FF' />
+                              <Star color='#4E60FF' />
+                              <Star color='#4E60FF' />
+                              <Star />
+                              <Star />
+                            </Box>
+                            <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
+                              3 votes
+                            </Text>
+                          </Box>
+                          <Box>
+                            <Button
+                              background='neutral.white'
+                              fontSize='2xs'
+                              fontWeight='bold'
+                              variant='solid'
+                              color='primary.default'
+                              borderWidth='1px'
+                              borderColor='primary.default'
+                              _hover={{
+                                background: 'primary.default',
+                                color: 'neutral.white',
+                                borderWidth: '1px',
+                                borderColor: 'primary.default'
+                              }}
+                              py={5}
+                              me='20px'
+                            >
+                              Leave review
+                            </Button>
+                          </Box>
+                        </Box>
                       </Box>
                       <Divider w='100%' />
                       <Box p={4}>comments</Box>
