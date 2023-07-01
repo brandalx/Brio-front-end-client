@@ -73,6 +73,16 @@ export default function Restaurant() {
     return '';
   };
 
+  let getUserAvatar = async (userid) => {
+    const user = usersArr.find((item) => item._id === userid);
+    if (user) {
+      let stringAvatar = API_URL + '/' + user.avatar;
+      console.log(stringAvatar);
+      return stringAvatar;
+    }
+    return '';
+  };
+
   useEffect(() => {
     handleRestaurantApi();
   }, []);
@@ -351,7 +361,7 @@ export default function Restaurant() {
                         </Box>
                       </Box>
                       <Divider w='100%' />
-                      <Box p={4} overflowY='scroll' h='750px'>
+                      <Box p={4} overflowY='scroll' h={comments.length > 0 ? '750px' : '280'}>
                         {comments.length > 0 ? (
                           <Box>
                             {comments.map((item, index) => {
@@ -359,7 +369,11 @@ export default function Restaurant() {
                                 <Box my='20px' key={index}>
                                   <Box display='flex'>
                                     <Box me={4}>
-                                      <Avatar size='md' name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
+                                      <Avatar
+                                        size='md'
+                                        name={getUserName(item.userRef)}
+                                        src={getUserAvatar(item.userRef)}
+                                      />
                                     </Box>
                                     <Box display='flex' flexDir='column'>
                                       <Box>
@@ -415,7 +429,7 @@ export default function Restaurant() {
                           </Box>
                         ) : (
                           <Box>
-                            <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
+                            <Text textAlign='center' color='neutral.gray' fontWeight='bold' fontSize='2xs'>
                               No comments yet. Be the first!
                             </Text>
                           </Box>
