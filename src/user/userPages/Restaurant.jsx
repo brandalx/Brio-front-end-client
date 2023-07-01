@@ -1,4 +1,18 @@
-import { Box, Container, Flex, GridItem, Text, Skeleton, Image, Grid, Button, Divider } from '@chakra-ui/react';
+import {
+  Box,
+  Container,
+  Flex,
+  GridItem,
+  Text,
+  Skeleton,
+  Image,
+  Grid,
+  Button,
+  Divider,
+  FormLabel,
+  FormErrorMessage,
+  Textarea
+} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 
@@ -12,6 +26,8 @@ import Star from '../../assets/svg/Star';
 import { Avatar } from '@chakra-ui/react';
 import Like from '../../assets/svg/Like';
 import Dislike from '../../assets/svg/Dislike';
+import { useForm } from 'react-hook-form';
+import { FormControl, Input, Select } from '@chakra-ui/react';
 
 export default function Restaurant() {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -23,8 +39,10 @@ export default function Restaurant() {
   const [productArr, setProductAr] = useState([]);
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState(null);
+  const [isActive, setIsActive] = useState(false);
   const [comments, setComments] = useState();
   const params = useParams();
+
   const [usersArr, setUsersArr] = useState();
 
   const handleRestaurantApi = async () => {
@@ -138,6 +156,15 @@ export default function Restaurant() {
   useEffect(() => {
     handleLoadings();
   }, [restaurantArr, productArr, address]);
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting }
+  } = useForm();
+  const onSubForm = (_bodyData) => {
+    console.log(_bodyData);
+  };
 
   return (
     <>
@@ -352,14 +379,111 @@ export default function Restaurant() {
                                 borderWidth: '1px',
                                 borderColor: 'primary.default'
                               }}
+                              onClick={() => setIsActive(!isActive)}
                               py={5}
                               me='20px'
                             >
-                              Leave review
+                              {isActive ? 'Hide review form' : '       Leave review'}
                             </Button>
                           </Box>
                         </Box>
                       </Box>
+                      {isActive ? (
+                        <Box>
+                          <Divider w='100%' />
+                          <Box>
+                            <Box p={4}>
+                              <form onSubmit={handleSubmit(onSubForm)}>
+                                <Box pt={2} mb={2}>
+                                  <Grid templateColumns='repeat(1, 1fr)' gap={4}>
+                                    <GridItem w='100%'>
+                                      <FormControl isInvalid={errors.comment} id='comment'>
+                                        <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                                          Your review
+                                        </FormLabel>
+
+                                        <Textarea
+                                          {...register('comment', {
+                                            required: false,
+                                            minLength: { value: 4, message: 'Minimum length should be 4' }
+                                          })}
+                                          type='text'
+                                          background='neutral.white'
+                                          _placeholder={{ color: 'neutral.gray' }}
+                                          borderRadius='8px'
+                                          fontSize='2xs'
+                                          placeholder='Add your feedback about this restaurant!'
+                                        />
+                                        <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                                          {errors.comment && errors.comment.message}
+                                        </FormErrorMessage>
+                                      </FormControl>
+                                      <FormControl mt={2} w='20%' isInvalid={errors.rate} id='comment'>
+                                        <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                                          Rating
+                                        </FormLabel>
+
+                                        <Input
+                                          min='1'
+                                          max='5'
+                                          {...register('rate', {
+                                            required: true,
+                                            min: { value: 1, message: 'minimum is 1' },
+                                            max: { value: 5, message: 'maximum is 5' }
+                                          })}
+                                          type='number'
+                                          background='neutral.white'
+                                          _placeholder={{ color: 'neutral.gray' }}
+                                          borderRadius='8px'
+                                          fontSize='2xs'
+                                          placeholder='Rate from 1 to 5'
+                                        />
+                                        <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                                          {errors.rate && errors.rate.message}
+                                        </FormErrorMessage>
+                                      </FormControl>
+                                    </GridItem>
+                                  </Grid>
+                                </Box>
+                                <Box pt={5} display='flex' justifyContent='flex-end' w='100%'>
+                                  <Flex
+                                    w='100%'
+                                    justifyContent='space-between'
+                                    alignItems={{ base: 'initial', md: 'center' }}
+                                    flexDirection={{ base: 'column', md: 'row' }}
+                                  >
+                                    <Button
+                                      isLoading={isSubmitting}
+                                      type='submit'
+                                      mt={{ base: '20px', md: '0px' }}
+                                      w={{ base: '100%', md: 'initial' }}
+                                      background='neutral.white'
+                                      fontSize='2xs'
+                                      fontWeight='bold'
+                                      variant='solid'
+                                      color='primary.default'
+                                      borderWidth='1px'
+                                      borderColor='primary.default'
+                                      _hover={{
+                                        background: 'primary.default',
+                                        color: 'neutral.white',
+                                        borderWidth: '1px',
+                                        borderColor: 'primary.default'
+                                      }}
+                                      py={5}
+                                      me='20px'
+                                    >
+                                      Add your review
+                                    </Button>
+                                  </Flex>
+                                </Box>
+                              </form>{' '}
+                            </Box>
+                          </Box>{' '}
+                        </Box>
+                      ) : (
+                        <></>
+                      )}
                       <Divider w='100%' />
                       <Box p={4} overflowY='scroll' h={comments.length > 0 ? '750px' : '280'}>
                         {comments.length > 0 ? (
