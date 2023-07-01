@@ -352,64 +352,74 @@ export default function Restaurant() {
                       </Box>
                       <Divider w='100%' />
                       <Box p={4} overflowY='scroll' h='750px'>
-                        {comments.map((item, index) => {
-                          return (
-                            <Box my='20px' key={index}>
-                              <Box display='flex'>
-                                <Box me={4}>
-                                  <Avatar size='md' name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
-                                </Box>
-                                <Box display='flex' flexDir='column'>
-                                  <Box>
-                                    <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
-                                      {/* Savannah Miles */}
-                                      {getUserName(item.userRef)}
-                                    </Text>
-                                  </Box>
+                        {comments.length > 0 ? (
+                          <Box>
+                            {comments.map((item, index) => {
+                              return (
+                                <Box my='20px' key={index}>
                                   <Box display='flex'>
-                                    <Box>
-                                      <Box me={2} display='flex'>
-                                        <Star color='#4E60FF' />
-                                        <Star color='#4E60FF' />
-                                        <Star color='#4E60FF' />
-                                        <Star color='#4E60FF' />
-                                        <Star />
-                                        <Star />
+                                    <Box me={4}>
+                                      <Avatar size='md' name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
+                                    </Box>
+                                    <Box display='flex' flexDir='column'>
+                                      <Box>
+                                        <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
+                                          {/* Savannah Miles */}
+                                          {getUserName(item.userRef)}
+                                        </Text>
+                                      </Box>
+                                      <Box display='flex'>
+                                        <Box>
+                                          <Box me={2} display='flex'>
+                                            <Star color='#4E60FF' />
+                                            <Star color='#4E60FF' />
+                                            <Star color='#4E60FF' />
+                                            <Star color='#4E60FF' />
+                                            <Star />
+                                            <Star />
+                                          </Box>
+                                        </Box>
+                                        <Box>
+                                          {' '}
+                                          <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
+                                            {/* 10 days ago */}
+                                            {item.datecreated}
+                                          </Text>
+                                        </Box>
                                       </Box>
                                     </Box>
-                                    <Box>
-                                      {' '}
-                                      <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
-                                        {/* 10 days ago */}
-                                        {item.datecreated}
+                                  </Box>
+                                  <Box mt={2}>
+                                    <Text color='neutral.black' fontWeight='regular' fontSize='2xs'>
+                                      {item.comment}
+                                    </Text>
+                                  </Box>
+                                  <Box mt={4} display='flex' alignItems='center'>
+                                    <Box me={6} display='flex' alignItems='center'>
+                                      <Like />
+                                      <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
+                                        {item.likes}
+                                      </Text>
+                                    </Box>
+                                    <Box display='flex' alignItems='center'>
+                                      <Dislike />
+                                      <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
+                                        {item.dislikes}
                                       </Text>
                                     </Box>
                                   </Box>
+                                  {index === comments.length - 1 ? <></> : <Divider my={4} w='100%' />}
                                 </Box>
-                              </Box>
-                              <Box mt={2}>
-                                <Text color='neutral.black' fontWeight='regular' fontSize='2xs'>
-                                  {item.comment}
-                                </Text>
-                              </Box>
-                              <Box mt={4} display='flex' alignItems='center'>
-                                <Box me={6} display='flex' alignItems='center'>
-                                  <Like />
-                                  <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                                    {item.likes}
-                                  </Text>
-                                </Box>
-                                <Box display='flex' alignItems='center'>
-                                  <Dislike />
-                                  <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                                    {item.dislikes}
-                                  </Text>
-                                </Box>
-                              </Box>
-                              {index === comments.length - 1 ? <></> : <Divider my={4} w='100%' />}
-                            </Box>
-                          );
-                        })}
+                              );
+                            })}
+                          </Box>
+                        ) : (
+                          <Box>
+                            <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
+                              No comments yet. Be the first!
+                            </Text>
+                          </Box>
+                        )}
                       </Box>
                     </Box>
                   </Box>
