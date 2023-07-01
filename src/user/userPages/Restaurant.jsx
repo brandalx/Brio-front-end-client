@@ -18,12 +18,14 @@ export default function Restaurant() {
   const REACT_APP_opencagedata = import.meta.env.VITE_OPENCAGEDATA;
   const REACT_APP_MAPBOX = import.meta.env.VITE_MAPBOX;
   const REACT_APP_MAPBOX_TOKEN = import.meta.env.VITE_MAPBOXTOKEN;
+  const [userRef, setUserRef] = useState();
   const [restaurantArr, setAr] = useState([]);
   const [productArr, setProductAr] = useState([]);
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState(null);
-
+  const [comments, setComments] = useState();
   const params = useParams();
+  const [usersArr, setUsersArr] = useState();
 
   const handleRestaurantApi = async () => {
     const url = API_URL + '/restaurants/' + params['id'];
@@ -32,6 +34,8 @@ export default function Restaurant() {
       setLoading(true);
       const data = await handleApiGet(url);
       setAr(data);
+      setComments(data.reviews);
+      await handleUsersPublicData(data.reviews);
       await handleProductApi(data);
       console.log(data);
       setLoading(false);
@@ -64,6 +68,21 @@ export default function Restaurant() {
   useEffect(() => {
     handleRestaurantApi();
   }, []);
+  let handleUsersPublicData = async (_commentsdata) => {
+    try {
+      if (_commentsdata.length > 0) {
+        let allUsers = [];
+        const response = await Promise.all(
+          _commentsdata.map((item) => handleApiGet(`${API_URL}/users/info/public/user/${item.userRef.toString()}`))
+        );
+        allUsers = [...allUsers, ...response];
+        setUsersArr(allUsers);
+        console.log(allUsers);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (restaurantArr) {
@@ -101,36 +120,6 @@ export default function Restaurant() {
   useEffect(() => {
     handleLoadings();
   }, [restaurantArr, productArr, address]);
-
-  const commentsArr = [
-    {
-      commentRef: 'ref',
-      userRef: '6464085ed67f7b944b642799',
-      rate: 4,
-      comment: 'Great product!',
-      datecreated: '2023-06-28',
-      likes: 10,
-      dislikes: 2
-    },
-    {
-      commentRef: 'ref',
-      userRef: '6464085ed67f7b944b642799',
-      rate: null,
-      comment: 'Nice work!',
-      datecreated: '2023-06-29',
-      likes: 5,
-      dislikes: 1
-    },
-    {
-      commentRef: 'ref',
-      userRef: '648ad9f8278724e5994d47ab',
-      rate: 2,
-      comment: 'Could be better.',
-      datecreated: '2023-06-30',
-      likes: 3,
-      dislikes: 4
-    }
-  ];
 
   return (
     <>
@@ -327,7 +316,7 @@ export default function Restaurant() {
                               <Star />
                             </Box>
                             <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
-                              {commentsArr.length} votes
+                              {comments.length} votes
                             </Text>
                           </Box>
                           <Box>
@@ -355,7 +344,7 @@ export default function Restaurant() {
                       </Box>
                       <Divider w='100%' />
                       <Box p={4} overflowY='scroll' h='750px'>
-                        {commentsArr.map((item, index) => {
+                        {comments.map((item, index) => {
                           return (
                             <Box my='20px' key={index}>
                               <Box display='flex'>
@@ -408,7 +397,7 @@ export default function Restaurant() {
                                   </Text>
                                 </Box>
                               </Box>
-                              {index === commentsArr.length - 1 ? <></> : <Divider my={4} w='100%' />}
+                              {index === comments.length - 1 ? <></> : <Divider my={4} w='100%' />}
                             </Box>
                           );
                         })}
