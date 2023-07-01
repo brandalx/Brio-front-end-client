@@ -102,7 +102,35 @@ export default function Restaurant() {
     handleLoadings();
   }, [restaurantArr, productArr, address]);
 
-  let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const commentsArr = [
+    {
+      commentRef: 'ref',
+      userRef: '6464085ed67f7b944b642799',
+      rate: 4,
+      comment: 'Great product!',
+      datecreated: '2023-06-28',
+      likes: 10,
+      dislikes: 2
+    },
+    {
+      commentRef: 'ref',
+      userRef: '6464085ed67f7b944b642799',
+      rate: null,
+      comment: 'Nice work!',
+      datecreated: '2023-06-29',
+      likes: 5,
+      dislikes: 1
+    },
+    {
+      commentRef: 'ref',
+      userRef: '648ad9f8278724e5994d47ab',
+      rate: 2,
+      comment: 'Could be better.',
+      datecreated: '2023-06-30',
+      likes: 3,
+      dislikes: 4
+    }
+  ];
 
   return (
     <>
@@ -299,7 +327,7 @@ export default function Restaurant() {
                               <Star />
                             </Box>
                             <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
-                              3 votes
+                              {commentsArr.length} votes
                             </Text>
                           </Box>
                           <Box>
@@ -327,7 +355,7 @@ export default function Restaurant() {
                       </Box>
                       <Divider w='100%' />
                       <Box p={4} overflowY='scroll' h='750px'>
-                        {arr.map((item, index) => {
+                        {commentsArr.map((item, index) => {
                           return (
                             <Box my='20px' key={index}>
                               <Box display='flex'>
@@ -354,7 +382,8 @@ export default function Restaurant() {
                                     <Box>
                                       {' '}
                                       <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
-                                        10 days ago
+                                        {/* 10 days ago */}
+                                        {item.datecreated}
                                       </Text>
                                     </Box>
                                   </Box>
@@ -362,25 +391,24 @@ export default function Restaurant() {
                               </Box>
                               <Box mt={2}>
                                 <Text color='neutral.black' fontWeight='regular' fontSize='2xs'>
-                                  Lorem ipsum dolor sit amet, adhuc nulla definiebas mei ad, ei doming aperiam delicata
-                                  est.
+                                  {item.comment}
                                 </Text>
                               </Box>
                               <Box mt={4} display='flex' alignItems='center'>
                                 <Box me={6} display='flex' alignItems='center'>
                                   <Like />
                                   <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                                    14
+                                    {item.likes}
                                   </Text>
                                 </Box>
                                 <Box display='flex' alignItems='center'>
                                   <Dislike />
                                   <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                                    4
+                                    {item.dislikes}
                                   </Text>
                                 </Box>
                               </Box>
-                              {index === arr.length - 1 ? <></> : <Divider my={4} w='100%' />}
+                              {index === commentsArr.length - 1 ? <></> : <Divider my={4} w='100%' />}
                             </Box>
                           );
                         })}
