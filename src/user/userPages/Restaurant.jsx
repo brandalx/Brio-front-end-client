@@ -65,6 +65,14 @@ export default function Restaurant() {
     }
   };
 
+  let getUserName = (userid) => {
+    const user = usersArr.find((item) => item._id === userid);
+    if (user) {
+      return user.firstname + ' ' + user.lastname;
+    }
+    return '';
+  };
+
   useEffect(() => {
     handleRestaurantApi();
   }, []);
@@ -354,7 +362,8 @@ export default function Restaurant() {
                                 <Box display='flex' flexDir='column'>
                                   <Box>
                                     <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
-                                      Savannah Miles
+                                      {/* Savannah Miles */}
+                                      {getUserName(item.userRef)}
                                     </Text>
                                   </Box>
                                   <Box display='flex'>
