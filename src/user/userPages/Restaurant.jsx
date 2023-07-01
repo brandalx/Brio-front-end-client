@@ -73,7 +73,7 @@ export default function Restaurant() {
     return '';
   };
 
-  let getUserAvatar = async (userid) => {
+  let getUserAvatar = (userid) => {
     const user = usersArr.find((item) => item._id === userid);
     if (user) {
       let stringAvatar = API_URL + '/' + user.avatar;
