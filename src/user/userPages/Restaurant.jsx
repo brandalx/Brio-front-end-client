@@ -18,7 +18,7 @@ import { AiOutlineClockCircle } from 'react-icons/ai';
 
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useParams } from 'react-router-dom';
-import { API_URL, handleApiGet } from '../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import axios from 'axios';
 
 import Logo from '../../assets/svg/Logo';
@@ -385,26 +385,51 @@ export default function Restaurant() {
                             </Text>
                           </Box>
                           <Box>
-                            <Button
-                              background='neutral.white'
-                              fontSize='2xs'
-                              fontWeight='bold'
-                              variant='solid'
-                              color='primary.default'
-                              borderWidth='1px'
-                              borderColor='primary.default'
-                              _hover={{
-                                background: 'primary.default',
-                                color: 'neutral.white',
-                                borderWidth: '1px',
-                                borderColor: 'primary.default'
-                              }}
-                              onClick={() => setIsActive(!isActive)}
-                              py={5}
-                              me='20px'
-                            >
-                              {isActive ? 'Hide review form' : '       Leave review'}
-                            </Button>
+                            {localStorage[TOKEN_KEY] ? (
+                              <Button
+                                background='neutral.white'
+                                fontSize='2xs'
+                                fontWeight='bold'
+                                variant='solid'
+                                color='primary.default'
+                                borderWidth='1px'
+                                borderColor='primary.default'
+                                _hover={{
+                                  background: 'primary.default',
+                                  color: 'neutral.white',
+                                  borderWidth: '1px',
+                                  borderColor: 'primary.default'
+                                }}
+                                onClick={() => setIsActive(!isActive)}
+                                py={5}
+                                me='20px'
+                              >
+                                {isActive ? 'Hide review form' : '       Leave review'}
+                              </Button>
+                            ) : (
+                              <Link to='/signup'>
+                                <Button
+                                  background='neutral.white'
+                                  fontSize='2xs'
+                                  fontWeight='bold'
+                                  variant='solid'
+                                  color='primary.default'
+                                  borderWidth='1px'
+                                  borderColor='primary.default'
+                                  _hover={{
+                                    background: 'primary.default',
+                                    color: 'neutral.white',
+                                    borderWidth: '1px',
+                                    borderColor: 'primary.default'
+                                  }}
+                                  onClick={() => setIsActive(!isActive)}
+                                  py={5}
+                                  me='20px'
+                                >
+                                  Login or Signup to leave a comment
+                                </Button>
+                              </Link>
+                            )}
                           </Box>
                         </Box>
                       </Box>
