@@ -650,13 +650,13 @@ export default function Restaurant() {
                                     <Box me={6} display='flex' alignItems='center'>
                                       <Like />
                                       <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                                        {item.likes}
+                                        {item.likes.length}
                                       </Text>
                                     </Box>
                                     <Box display='flex' alignItems='center'>
                                       <Dislike />
                                       <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                                        {item.dislikes}
+                                        {item.dislikes.length}
                                       </Text>
                                     </Box>
                                   </Box>
