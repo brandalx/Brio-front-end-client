@@ -245,6 +245,51 @@ export default function Restaurant() {
     return (prefinalrateAmount / numarray.length).toFixed(2);
   };
 
+  const postLike = async (_body) => {
+    try {
+      let url = API_URL + '/restaurants/comment/add/like';
+
+      const finalBody = {
+        commentId: _body,
+        restaurantId: params['id']
+      };
+      const data = await handleApiMethod(url, 'POST', finalBody);
+
+      const url2 = API_URL + '/restaurants/' + params['id'];
+
+      const data2 = await handleApiGet(url2);
+
+      setComments(data2.reviews);
+      handleUsersPublicData(data2.reviews);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const postDislike = async (_body) => {
+    try {
+      let url = API_URL + '/restaurants/comment/add/dislike';
+
+      const finalBody = {
+        commentId: _body,
+        restaurantId: params['id']
+      };
+      const data = await handleApiMethod(url, 'POST', finalBody);
+
+      const url2 = API_URL + '/restaurants/' + params['id'];
+
+      const data2 = await handleApiGet(url2);
+
+      setComments([]);
+      setComments(data2.reviews);
+
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Box background='bg' py='50px' data-aos='fade-up'>
@@ -648,13 +693,17 @@ export default function Restaurant() {
                                   </Box>
                                   <Box mt={4} display='flex' alignItems='center'>
                                     <Box me={6} display='flex' alignItems='center'>
-                                      <Like />
+                                      <Button onClick={() => postLike(item.commentRef)}>
+                                        <Like />
+                                      </Button>
                                       <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
                                         {item.likes.length}
                                       </Text>
                                     </Box>
                                     <Box display='flex' alignItems='center'>
-                                      <Dislike />
+                                      <Button onClick={() => postDislike(item.commentRef)}>
+                                        <Dislike />
+                                      </Button>
                                       <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
                                         {item.dislikes.length}
                                       </Text>
