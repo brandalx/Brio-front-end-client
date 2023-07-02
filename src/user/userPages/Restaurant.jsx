@@ -74,9 +74,11 @@ export default function Restaurant() {
       const data = await handleApiGet(url);
 
       setAr(data);
-      setComments(data.reviews);
+      let commentsarray = data.reviews;
+      commentsarray.reverse();
+      setComments(commentsarray);
 
-      await handleUsersPublicData(data.reviews);
+      await handleUsersPublicData(commentsarray);
       await handleProductApi(data);
       console.log(data);
       await handleUserApi();
@@ -226,8 +228,9 @@ export default function Restaurant() {
         const url2 = API_URL + '/restaurants/' + params['id'];
 
         const data = await handleApiGet(url2);
-
-        setComments(data.reviews);
+        let commentsarray = data.reviews;
+        commentsarray.reverse();
+        setComments();
         handleUsersPublicData(data.reviews);
       }
     } catch (error) {
@@ -281,9 +284,10 @@ export default function Restaurant() {
       const url2 = API_URL + '/restaurants/' + params['id'];
 
       const data2 = await handleApiGet(url2);
-
       setComments([]);
-      setComments(data2.reviews);
+      let commentsarray = data2.reviews;
+      commentsarray.reverse();
+      setComments(commentsarray);
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -306,7 +310,9 @@ export default function Restaurant() {
       const data2 = await handleApiGet(url2);
 
       setComments([]);
-      setComments(data2.reviews);
+      let commentsarray = data2.reviews;
+      commentsarray.reverse();
+      setComments(commentsarray);
 
       console.log(data);
     } catch (error) {
