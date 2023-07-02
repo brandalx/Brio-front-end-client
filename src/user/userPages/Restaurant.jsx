@@ -176,6 +176,16 @@ export default function Restaurant() {
     console.log(_bodyData);
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+    return formattedDate;
+  };
+
   return (
     <>
       <Box background='bg' py='50px' data-aos='fade-up'>
@@ -531,7 +541,7 @@ export default function Restaurant() {
                                           {' '}
                                           <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
                                             {/* 10 days ago */}
-                                            {item.datecreated}
+                                            {formatDate(item.datecreated)}
                                           </Text>
                                         </Box>
                                       </Box>
