@@ -84,21 +84,31 @@ export default function Restaurant() {
   };
 
   let getUserName = (userid) => {
-    const user = usersArr.find((item) => item._id === userid);
-    if (user) {
-      return user.firstname + ' ' + user.lastname;
+    try {
+      const user = usersArr.find((item) => item._id === userid);
+      if (user) {
+        return user.firstname + ' ' + user.lastname;
+      }
+      return '';
+    } catch (error) {
+      console.log(error);
+      return '';
     }
-    return '';
   };
 
   let getUserAvatar = (userid) => {
-    const user = usersArr.find((item) => item._id === userid);
-    if (user) {
-      let stringAvatar = API_URL + '/' + user.avatar;
-      console.log(stringAvatar);
-      return stringAvatar;
+    try {
+      const user = usersArr.find((item) => item._id === userid);
+      if (user) {
+        let stringAvatar = API_URL + '/' + user.avatar;
+        console.log(stringAvatar);
+        return stringAvatar;
+      }
+      return '';
+    } catch (error) {
+      console.log(error);
+      return '';
     }
-    return '';
   };
 
   useEffect(() => {
