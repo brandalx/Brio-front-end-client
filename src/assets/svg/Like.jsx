@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Like({ color = '#83859C' }) {
+export default function Like({ color = '#83859C', fill = 'none' }) {
   return (
     <div>
       <svg
@@ -11,7 +11,7 @@ export default function Like({ color = '#83859C' }) {
         viewBox='0 0 24 24'
         strokeWidth={2}
         stroke={color}
-        fill='none'
+        fill={fill}
         strokeLinecap='round'
         strokeLinejoin='round'
       >

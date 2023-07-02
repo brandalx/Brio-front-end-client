@@ -37,6 +37,7 @@ export default function Restaurant() {
   const REACT_APP_MAPBOX_TOKEN = import.meta.env.VITE_MAPBOXTOKEN;
   const [userRef, setUserRef] = useState();
   const [restaurantArr, setAr] = useState([]);
+  const [userArr, setUserArr] = useState([]);
   const [productArr, setProductAr] = useState([]);
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState(null);
@@ -48,10 +49,13 @@ export default function Restaurant() {
 
   const handleRestaurantApi = async () => {
     const url = API_URL + '/restaurants/' + params['id'];
-
+    const url2 = API_URL + '/users/info/user';
     try {
       setLoading(true);
       const data = await handleApiGet(url);
+      const data2 = await handleApiGet(url2);
+      console.log(data2);
+      setUserArr(data2);
       setAr(data);
       setComments(data.reviews);
 
@@ -292,6 +296,33 @@ export default function Restaurant() {
     }
   };
 
+  const defineUserLike = (_itembody) => {
+    if (userArr && comments) {
+      const isLike = _itembody.likes.find((item, index) => {
+        return item === userArr._id; // you should return the comparison result here
+      });
+
+      if (isLike) {
+        return <Like color='#4E60FF' fill='#4E60FF' />;
+      } else {
+        return <Like />;
+      }
+    }
+  };
+
+  const defineUserDisLike = (_itembody) => {
+    if (userArr && comments) {
+      const isLike = _itembody.dislikes.find((item, index) => {
+        return item === userArr._id; // you should return the comparison result here
+      });
+
+      if (isLike) {
+        return <Dislike color='#4E60FF' fill='#4E60FF' />;
+      } else {
+        return <Dislike />;
+      }
+    }
+  };
   return (
     <>
       <Box background='bg' py='50px' data-aos='fade-up'>
@@ -491,7 +522,7 @@ export default function Restaurant() {
                               )}
                             </Box>
                             <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
-                              {comments.length} votes
+                              {comments.length === 1 ? 'vote' : 'votes'}
                             </Text>
                           </Box>
                           <Box>
@@ -695,17 +726,13 @@ export default function Restaurant() {
                                   </Box>
                                   <Box mt={4} display='flex' alignItems='center'>
                                     <Box me={6} display='flex' alignItems='center'>
-                                      <Button onClick={() => postLike(item._id)}>
-                                        <Like />
-                                      </Button>
+                                      <Button onClick={() => postLike(item._id)}>{defineUserLike(item)}</Button>
                                       <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
                                         {item.likes.length}
                                       </Text>
                                     </Box>
                                     <Box display='flex' alignItems='center'>
-                                      <Button onClick={() => postDislike(item._id)}>
-                                        <Dislike />
-                                      </Button>
+                                      <Button onClick={() => postDislike(item._id)}>{defineUserDisLike(item)}</Button>
                                       <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
                                         {item.dislikes.length}
                                       </Text>
