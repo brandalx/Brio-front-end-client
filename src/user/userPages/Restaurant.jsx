@@ -206,6 +206,7 @@ export default function Restaurant() {
         const data = await handleApiGet(url2);
 
         setComments(data.reviews);
+        handleUsersPublicData(data.reviews);
       }
     } catch (error) {
       console.log(error);
