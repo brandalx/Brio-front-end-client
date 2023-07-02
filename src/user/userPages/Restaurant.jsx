@@ -12,7 +12,14 @@ import {
   FormLabel,
   FormErrorMessage,
   Textarea,
-  useToast
+  useToast,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
@@ -29,6 +36,7 @@ import Like from '../../assets/svg/Like';
 import Dislike from '../../assets/svg/Dislike';
 import { useForm } from 'react-hook-form';
 import { FormControl, Input, Select } from '@chakra-ui/react';
+import { Popover } from '@chakra-ui/react';
 
 export default function Restaurant() {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -47,21 +55,31 @@ export default function Restaurant() {
 
   const [usersArr, setUsersArr] = useState();
 
-  const handleRestaurantApi = async () => {
-    const url = API_URL + '/restaurants/' + params['id'];
+  const handleUserApi = async () => {
     const url2 = API_URL + '/users/info/user';
+
     try {
-      setLoading(true);
-      const data = await handleApiGet(url);
       const data2 = await handleApiGet(url2);
       console.log(data2);
       setUserArr(data2);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleRestaurantApi = async () => {
+    const url = API_URL + '/restaurants/' + params['id'];
+    try {
+      setLoading(true);
+      const data = await handleApiGet(url);
+
       setAr(data);
       setComments(data.reviews);
 
       await handleUsersPublicData(data.reviews);
       await handleProductApi(data);
       console.log(data);
+      await handleUserApi();
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -726,13 +744,133 @@ export default function Restaurant() {
                                   </Box>
                                   <Box mt={4} display='flex' alignItems='center'>
                                     <Box me={6} display='flex' alignItems='center'>
-                                      <Button onClick={() => postLike(item._id)}>{defineUserLike(item)}</Button>
+                                      {!localStorage[TOKEN_KEY] ? (
+                                        <Popover>
+                                          <PopoverTrigger>
+                                            <Button>{defineUserLike(item)}</Button>
+                                          </PopoverTrigger>
+                                          <PopoverContent>
+                                            <PopoverArrow />
+                                            <PopoverCloseButton />
+                                            <PopoverHeader>Login or Signup </PopoverHeader>
+                                            <PopoverBody>
+                                              Please, login or signup first to like this comment.
+                                            </PopoverBody>
+                                            <PopoverFooter>
+                                              <Link to='/login'>
+                                                <Button
+                                                  me={2}
+                                                  w={{ base: '50%', md: 'initial' }}
+                                                  background='primary.default'
+                                                  fontWeight='bold'
+                                                  variant='solid'
+                                                  color='neutral.white'
+                                                  borderWidth='1px'
+                                                  borderColor='neutral.white'
+                                                  _hover={{
+                                                    background: 'neutral.white',
+                                                    color: 'primary.default',
+                                                    borderWidth: '1px',
+                                                    borderColor: 'primary.default'
+                                                  }}
+                                                  py={3}
+                                                >
+                                                  Login
+                                                </Button>
+                                              </Link>
+                                              <Link to='/signup'>
+                                                <Button
+                                                  w={{ base: '50%', md: 'initial' }}
+                                                  background='primary.default'
+                                                  fontWeight='bold'
+                                                  variant='solid'
+                                                  color='neutral.white'
+                                                  borderWidth='1px'
+                                                  borderColor='neutral.white'
+                                                  _hover={{
+                                                    background: 'neutral.white',
+                                                    color: 'primary.default',
+                                                    borderWidth: '1px',
+                                                    borderColor: 'primary.default'
+                                                  }}
+                                                  py={3}
+                                                >
+                                                  Signup
+                                                </Button>
+                                              </Link>
+                                            </PopoverFooter>
+                                          </PopoverContent>
+                                        </Popover>
+                                      ) : (
+                                        <Button onClick={() => postLike(item._id)}>{defineUserLike(item)}</Button>
+                                      )}
+
                                       <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
                                         {item.likes.length}
                                       </Text>
                                     </Box>
                                     <Box display='flex' alignItems='center'>
-                                      <Button onClick={() => postDislike(item._id)}>{defineUserDisLike(item)}</Button>
+                                      {!localStorage[TOKEN_KEY] ? (
+                                        <Popover>
+                                          <PopoverTrigger>
+                                            <Button>{defineUserDisLike(item)}</Button>
+                                          </PopoverTrigger>
+                                          <PopoverContent>
+                                            <PopoverArrow />
+                                            <PopoverCloseButton />
+                                            <PopoverHeader>Login or Signup </PopoverHeader>
+                                            <PopoverBody>
+                                              Please, login or signup first to dislike this comment.
+                                            </PopoverBody>
+                                            <PopoverFooter>
+                                              <Link to='/login'>
+                                                <Button
+                                                  me={2}
+                                                  w={{ base: '50%', md: 'initial' }}
+                                                  background='primary.default'
+                                                  fontWeight='bold'
+                                                  variant='solid'
+                                                  color='neutral.white'
+                                                  borderWidth='1px'
+                                                  borderColor='neutral.white'
+                                                  _hover={{
+                                                    background: 'neutral.white',
+                                                    color: 'primary.default',
+                                                    borderWidth: '1px',
+                                                    borderColor: 'primary.default'
+                                                  }}
+                                                  py={3}
+                                                >
+                                                  Login
+                                                </Button>
+                                              </Link>
+                                              <Link to='/signup'>
+                                                <Button
+                                                  w={{ base: '50%', md: 'initial' }}
+                                                  background='primary.default'
+                                                  fontWeight='bold'
+                                                  variant='solid'
+                                                  color='neutral.white'
+                                                  borderWidth='1px'
+                                                  borderColor='neutral.white'
+                                                  _hover={{
+                                                    background: 'neutral.white',
+                                                    color: 'primary.default',
+                                                    borderWidth: '1px',
+                                                    borderColor: 'primary.default'
+                                                  }}
+                                                  py={3}
+                                                >
+                                                  Signup
+                                                </Button>
+                                              </Link>
+                                            </PopoverFooter>
+                                          </PopoverContent>
+                                        </Popover>
+                                      ) : (
+                                        <Button onClick={() => postDislike(item._id)}>{defineUserDisLike(item)}</Button>
+                                      )}
+
                                       <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
                                         {item.dislikes.length}
                                       </Text>
