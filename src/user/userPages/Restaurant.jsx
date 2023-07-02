@@ -54,6 +54,7 @@ export default function Restaurant() {
       const data = await handleApiGet(url);
       setAr(data);
       setComments(data.reviews);
+
       await handleUsersPublicData(data.reviews);
       await handleProductApi(data);
       console.log(data);
@@ -230,6 +231,17 @@ export default function Restaurant() {
       day: 'numeric'
     });
     return formattedDate;
+  };
+
+  const handleOverallRate = (_commentsdata) => {
+    let numarray = [];
+    _commentsdata.forEach((item) => {
+      if (item.rate != null) {
+        numarray.push(item.rate);
+      }
+    });
+    let prefinalrateAmount = numarray.reduce((a, b) => a + b, 0);
+    return (prefinalrateAmount / numarray.length).toFixed(2);
   };
 
   return (
@@ -416,15 +428,19 @@ export default function Restaurant() {
                         <Box display='flex' justifyContent='space-between' alignItems='center'>
                           <Box display='flex' alignItems='center'>
                             <Text me={2} color='primary.default' fontWeight='semibold' fontSize='sm'>
-                              4.2
+                              {comments.length > 0 && handleOverallRate(comments)}
                             </Text>
                             <Box me={2} display='flex'>
-                              <Star color='#4E60FF' />
-                              <Star color='#4E60FF' />
-                              <Star color='#4E60FF' />
-                              <Star color='#4E60FF' />
-                              <Star />
-                              <Star />
+                              {[...Array(Math.floor(comments.length > 0 && handleOverallRate(comments)))].map(
+                                (_, i) => (
+                                  <Star key={i} color='#4E60FF' />
+                                )
+                              )}
+                              {[...Array(5 - Math.floor(comments.length > 0 && handleOverallRate(comments)))].map(
+                                (_, i) => (
+                                  <Star key={i} />
+                                )
+                              )}
                             </Box>
                             <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
                               {comments.length} votes
