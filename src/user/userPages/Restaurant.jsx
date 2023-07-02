@@ -11,14 +11,15 @@ import {
   Divider,
   FormLabel,
   FormErrorMessage,
-  Textarea
+  Textarea,
+  useToast
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useParams } from 'react-router-dom';
-import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import axios from 'axios';
 
 import Logo from '../../assets/svg/Logo';
@@ -169,13 +170,58 @@ export default function Restaurant() {
 
   const {
     handleSubmit,
+    setValue,
     register,
     formState: { errors, isSubmitting }
   } = useForm();
   const onSubForm = (_bodyData) => {
     console.log(_bodyData);
+    handleCommentPost(_bodyData);
   };
+  const toast = useToast();
+  const handleCommentPost = async (_bodyData) => {
+    try {
+      const url = API_URL + '/restaurants/comment/add';
 
+      const finalBody = {
+        commentRef: params['id'],
+        rate: _bodyData.rate,
+        comment: _bodyData.comment || null
+      };
+      const data = await handleApiMethod(url, 'POST', finalBody);
+
+      if (data.msg === true) {
+        toast({
+          title: 'Your comment added.',
+          description: "We've added your comment!.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+        clearValues();
+
+        const url2 = API_URL + '/restaurants/' + params['id'];
+
+        const data = await handleApiGet(url2);
+
+        setComments(data.reviews);
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast({
+        title: 'Error when adding your comment',
+        description: 'Error when adding your comment. Please, try again',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+    }
+  };
+  const clearValues = () => {
+    setValue('rate', '');
+    setValue('comment', '');
+  };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString('en-US', {
@@ -454,7 +500,10 @@ export default function Restaurant() {
                                           })}
                                           type='text'
                                           background='neutral.white'
-                                          _placeholder={{ color: 'neutral.gray' }}
+                                          _placeholder={{
+                                            fontSize: '3xs',
+                                            color: 'neutral.gray'
+                                          }}
                                           borderRadius='8px'
                                           fontSize='2xs'
                                           placeholder='Add your feedback about this restaurant!'
@@ -463,7 +512,7 @@ export default function Restaurant() {
                                           {errors.comment && errors.comment.message}
                                         </FormErrorMessage>
                                       </FormControl>
-                                      <FormControl mt={2} w='20%' isInvalid={errors.rate} id='comment'>
+                                      <FormControl mt={2} w='50%' isInvalid={errors.rate} id='rate'>
                                         <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                                           Rating
                                         </FormLabel>
@@ -478,7 +527,10 @@ export default function Restaurant() {
                                           })}
                                           type='number'
                                           background='neutral.white'
-                                          _placeholder={{ color: 'neutral.gray' }}
+                                          _placeholder={{
+                                            fontSize: '3xs',
+                                            color: 'neutral.gray'
+                                          }}
                                           borderRadius='8px'
                                           fontSize='2xs'
                                           placeholder='Rate from 1 to 5'
@@ -554,12 +606,12 @@ export default function Restaurant() {
                                       <Box display='flex'>
                                         <Box>
                                           <Box me={2} display='flex'>
-                                            <Star color='#4E60FF' />
-                                            <Star color='#4E60FF' />
-                                            <Star color='#4E60FF' />
-                                            <Star color='#4E60FF' />
-                                            <Star />
-                                            <Star />
+                                            {[...Array(Math.floor(item.rate))].map((_, i) => (
+                                              <Star key={i} color='#4E60FF' />
+                                            ))}
+                                            {[...Array(5 - Math.floor(item.rate))].map((_, i) => (
+                                              <Star key={i} />
+                                            ))}
                                           </Box>
                                         </Box>
                                         <Box>
