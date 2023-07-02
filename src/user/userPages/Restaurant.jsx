@@ -253,14 +253,15 @@ export default function Restaurant() {
         commentId: _body,
         restaurantId: params['id']
       };
+      console.log(finalBody);
       const data = await handleApiMethod(url, 'POST', finalBody);
 
       const url2 = API_URL + '/restaurants/' + params['id'];
 
       const data2 = await handleApiGet(url2);
 
+      setComments([]);
       setComments(data2.reviews);
-      handleUsersPublicData(data2.reviews);
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -275,6 +276,7 @@ export default function Restaurant() {
         commentId: _body,
         restaurantId: params['id']
       };
+      console.log(finalBody);
       const data = await handleApiMethod(url, 'POST', finalBody);
 
       const url2 = API_URL + '/restaurants/' + params['id'];
@@ -693,7 +695,7 @@ export default function Restaurant() {
                                   </Box>
                                   <Box mt={4} display='flex' alignItems='center'>
                                     <Box me={6} display='flex' alignItems='center'>
-                                      <Button onClick={() => postLike(item.commentRef)}>
+                                      <Button onClick={() => postLike(item._id)}>
                                         <Like />
                                       </Button>
                                       <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
@@ -701,7 +703,7 @@ export default function Restaurant() {
                                       </Text>
                                     </Box>
                                     <Box display='flex' alignItems='center'>
-                                      <Button onClick={() => postDislike(item.commentRef)}>
+                                      <Button onClick={() => postDislike(item._id)}>
                                         <Dislike />
                                       </Button>
                                       <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
