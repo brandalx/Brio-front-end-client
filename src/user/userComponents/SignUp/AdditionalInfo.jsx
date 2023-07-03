@@ -10,11 +10,13 @@ import {
   Flex,
   FormErrorMessage
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 export default function AdditionalInfo({ mainBody, setMainBody }) {
+  const [phone, setPhone] = useState('');
+  const isValid = () => phone.length > 6;
   const navigate = useNavigate();
 
   const handleGoBack = () => {
@@ -26,6 +28,7 @@ export default function AdditionalInfo({ mainBody, setMainBody }) {
     register,
     formState: { errors, isSubmitting }
   } = useForm();
+
   const onSubForm = (_bodyData) => {
     setMainBody((prevState) => ({
       ...prevState,
@@ -61,13 +64,15 @@ export default function AdditionalInfo({ mainBody, setMainBody }) {
                       type='number'
                       {...register('phone', {
                         required: true,
-                        minLength: { value: 2, message: 'Minimum length should be 2' }
+                        minLength: { value: 6, message: 'Minimum length should be 6' }
                       })}
                       background='neutral.white'
                       _placeholder={{ color: 'neutral.gray' }}
                       borderRadius='8px'
                       fontSize='2xs'
                       placeholder='(217) 555-0113'
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
                     />
                     <FormErrorMessage p={0} m={0} fontSize='3xs'>
                       {errors.phone && errors.phone.message}
@@ -87,7 +92,7 @@ export default function AdditionalInfo({ mainBody, setMainBody }) {
                     <Box>
                       <Button
                         type='submit'
-                        isDisabled={false}
+                        isDisabled={!isValid()}
                         w='100%'
                         background='primary.default'
                         fontWeight='bold'
