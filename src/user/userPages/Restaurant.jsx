@@ -230,7 +230,7 @@ export default function Restaurant() {
         const data = await handleApiGet(url2);
         let commentsarray = data.reviews;
         commentsarray.reverse();
-        setComments();
+        setComments(commentsarray);
         handleUsersPublicData(data.reviews);
       }
     } catch (error) {
@@ -531,22 +531,22 @@ export default function Restaurant() {
                         <Box display='flex' justifyContent='space-between' alignItems='center'>
                           <Box display='flex' alignItems='center'>
                             <Text me={2} color='primary.default' fontWeight='semibold' fontSize='sm'>
-                              {comments.length > 0 && handleOverallRate(comments)}
+                              {comments && comments.length > 0 && handleOverallRate(comments)}
                             </Text>
                             <Box me={2} display='flex'>
-                              {[...Array(Math.floor(comments.length > 0 && handleOverallRate(comments)))].map(
-                                (_, i) => (
-                                  <Star key={i} color='#4E60FF' />
-                                )
-                              )}
-                              {[...Array(5 - Math.floor(comments.length > 0 && handleOverallRate(comments)))].map(
-                                (_, i) => (
-                                  <Star key={i} />
-                                )
-                              )}
+                              {comments &&
+                                comments.length > 0 &&
+                                [...Array(Math.floor(comments.length > 0 && handleOverallRate(comments)))].map(
+                                  (_, i) => <Star key={i} color='#4E60FF' />
+                                )}
+                              {comments &&
+                                comments.length > 0 &&
+                                [...Array(5 - Math.floor(comments.length > 0 && handleOverallRate(comments)))].map(
+                                  (_, i) => <Star key={i} />
+                                )}
                             </Box>
                             <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
-                              {comments.length === 1 ? 'vote' : 'votes'}
+                              {comments && comments.length === 1 ? 'vote' : 'votes'}
                             </Text>
                           </Box>
                           <Box>
@@ -573,26 +573,9 @@ export default function Restaurant() {
                               </Button>
                             ) : (
                               <Link to='/signup'>
-                                <Button
-                                  background='neutral.white'
-                                  fontSize='2xs'
-                                  fontWeight='bold'
-                                  variant='solid'
-                                  color='primary.default'
-                                  borderWidth='1px'
-                                  borderColor='primary.default'
-                                  _hover={{
-                                    background: 'primary.default',
-                                    color: 'neutral.white',
-                                    borderWidth: '1px',
-                                    borderColor: 'primary.default'
-                                  }}
-                                  onClick={() => setIsActive(!isActive)}
-                                  py={5}
-                                  me='20px'
-                                >
+                                <Text decoration='underline' color='neutral.gray' fontWeight='bold' fontSize='12px'>
                                   Login or Signup to leave a comment
-                                </Button>
+                                </Text>
                               </Link>
                             )}
                           </Box>
@@ -701,191 +684,194 @@ export default function Restaurant() {
                         <></>
                       )}
                       <Divider w='100%' />
-                      <Box p={4} overflowY='scroll' h={comments.length > 0 ? '750px' : '280'}>
-                        {comments.length > 0 ? (
+                      <Box p={4} overflowY='scroll' h={comments && comments.length > 0 ? '750px' : '280'}>
+                        {comments && comments.length > 0 ? (
                           <Box>
-                            {comments.map((item, index) => {
-                              return (
-                                <Box my='20px' key={index}>
-                                  <Box display='flex'>
-                                    <Box me={4}>
-                                      <Avatar
-                                        size='md'
-                                        name={getUserName(item.userRef)}
-                                        src={getUserAvatar(item.userRef)}
-                                      />
-                                    </Box>
-                                    <Box display='flex' flexDir='column'>
-                                      <Box>
-                                        <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
-                                          {/* Savannah Miles */}
-                                          {getUserName(item.userRef)}
-                                        </Text>
+                            {comments &&
+                              comments.map((item, index) => {
+                                return (
+                                  <Box my='20px' key={index}>
+                                    <Box display='flex'>
+                                      <Box me={4}>
+                                        <Avatar
+                                          size='md'
+                                          name={getUserName(item.userRef)}
+                                          src={getUserAvatar(item.userRef)}
+                                        />
                                       </Box>
-                                      <Box display='flex'>
+                                      <Box display='flex' flexDir='column'>
                                         <Box>
-                                          <Box me={2} display='flex'>
-                                            {[...Array(Math.floor(item.rate))].map((_, i) => (
-                                              <Star key={i} color='#4E60FF' />
-                                            ))}
-                                            {[...Array(5 - Math.floor(item.rate))].map((_, i) => (
-                                              <Star key={i} />
-                                            ))}
-                                          </Box>
-                                        </Box>
-                                        <Box>
-                                          {' '}
-                                          <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
-                                            {/* 10 days ago */}
-                                            {formatDate(item.datecreated)}
+                                          <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
+                                            {/* Savannah Miles */}
+                                            {getUserName(item.userRef)}
                                           </Text>
                                         </Box>
+                                        <Box display='flex'>
+                                          <Box>
+                                            <Box me={2} display='flex'>
+                                              {comments &&
+                                                [...Array(Math.floor(item.rate))].map((_, i) => (
+                                                  <Star key={i} color='#4E60FF' />
+                                                ))}
+                                              {comments &&
+                                                [...Array(5 - Math.floor(item.rate))].map((_, i) => <Star key={i} />)}
+                                            </Box>
+                                          </Box>
+                                          <Box>
+                                            {' '}
+                                            <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
+                                              {/* 10 days ago */}
+                                              {formatDate(item.datecreated)}
+                                            </Text>
+                                          </Box>
+                                        </Box>
                                       </Box>
                                     </Box>
-                                  </Box>
-                                  <Box mt={2}>
-                                    <Text color='neutral.black' fontWeight='regular' fontSize='2xs'>
-                                      {item.comment}
-                                    </Text>
-                                  </Box>
-                                  <Box mt={4} display='flex' alignItems='center'>
-                                    <Box me={6} display='flex' alignItems='center'>
-                                      {!localStorage[TOKEN_KEY] ? (
-                                        <Popover>
-                                          <PopoverTrigger>
-                                            <Button>{defineUserLike(item)}</Button>
-                                          </PopoverTrigger>
-                                          <PopoverContent>
-                                            <PopoverArrow />
-                                            <PopoverCloseButton />
-                                            <PopoverHeader>Login or Signup </PopoverHeader>
-                                            <PopoverBody>
-                                              Please, login or signup first to like this comment.
-                                            </PopoverBody>
-                                            <PopoverFooter>
-                                              <Link to='/login'>
-                                                <Button
-                                                  me={2}
-                                                  w={{ base: '50%', md: 'initial' }}
-                                                  background='primary.default'
-                                                  fontWeight='bold'
-                                                  variant='solid'
-                                                  color='neutral.white'
-                                                  borderWidth='1px'
-                                                  borderColor='neutral.white'
-                                                  _hover={{
-                                                    background: 'neutral.white',
-                                                    color: 'primary.default',
-                                                    borderWidth: '1px',
-                                                    borderColor: 'primary.default'
-                                                  }}
-                                                  py={3}
-                                                >
-                                                  Login
-                                                </Button>
-                                              </Link>
-                                              <Link to='/signup'>
-                                                <Button
-                                                  w={{ base: '50%', md: 'initial' }}
-                                                  background='primary.default'
-                                                  fontWeight='bold'
-                                                  variant='solid'
-                                                  color='neutral.white'
-                                                  borderWidth='1px'
-                                                  borderColor='neutral.white'
-                                                  _hover={{
-                                                    background: 'neutral.white',
-                                                    color: 'primary.default',
-                                                    borderWidth: '1px',
-                                                    borderColor: 'primary.default'
-                                                  }}
-                                                  py={3}
-                                                >
-                                                  Signup
-                                                </Button>
-                                              </Link>
-                                            </PopoverFooter>
-                                          </PopoverContent>
-                                        </Popover>
-                                      ) : (
-                                        <Button onClick={() => postLike(item._id)}>{defineUserLike(item)}</Button>
-                                      )}
-
-                                      <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                                        {item.likes.length}
+                                    <Box mt={2}>
+                                      <Text color='neutral.black' fontWeight='regular' fontSize='2xs'>
+                                        {item.comment}
                                       </Text>
                                     </Box>
-                                    <Box display='flex' alignItems='center'>
-                                      {!localStorage[TOKEN_KEY] ? (
-                                        <Popover>
-                                          <PopoverTrigger>
-                                            <Button>{defineUserDisLike(item)}</Button>
-                                          </PopoverTrigger>
-                                          <PopoverContent>
-                                            <PopoverArrow />
-                                            <PopoverCloseButton />
-                                            <PopoverHeader>Login or Signup </PopoverHeader>
-                                            <PopoverBody>
-                                              Please, login or signup first to dislike this comment.
-                                            </PopoverBody>
-                                            <PopoverFooter>
-                                              <Link to='/login'>
-                                                <Button
-                                                  me={2}
-                                                  w={{ base: '50%', md: 'initial' }}
-                                                  background='primary.default'
-                                                  fontWeight='bold'
-                                                  variant='solid'
-                                                  color='neutral.white'
-                                                  borderWidth='1px'
-                                                  borderColor='neutral.white'
-                                                  _hover={{
-                                                    background: 'neutral.white',
-                                                    color: 'primary.default',
-                                                    borderWidth: '1px',
-                                                    borderColor: 'primary.default'
-                                                  }}
-                                                  py={3}
-                                                >
-                                                  Login
-                                                </Button>
-                                              </Link>
-                                              <Link to='/signup'>
-                                                <Button
-                                                  w={{ base: '50%', md: 'initial' }}
-                                                  background='primary.default'
-                                                  fontWeight='bold'
-                                                  variant='solid'
-                                                  color='neutral.white'
-                                                  borderWidth='1px'
-                                                  borderColor='neutral.white'
-                                                  _hover={{
-                                                    background: 'neutral.white',
-                                                    color: 'primary.default',
-                                                    borderWidth: '1px',
-                                                    borderColor: 'primary.default'
-                                                  }}
-                                                  py={3}
-                                                >
-                                                  Signup
-                                                </Button>
-                                              </Link>
-                                            </PopoverFooter>
-                                          </PopoverContent>
-                                        </Popover>
-                                      ) : (
-                                        <Button onClick={() => postDislike(item._id)}>{defineUserDisLike(item)}</Button>
-                                      )}
+                                    <Box mt={4} display='flex' alignItems='center'>
+                                      <Box me={6} display='flex' alignItems='center'>
+                                        {!localStorage[TOKEN_KEY] ? (
+                                          <Popover>
+                                            <PopoverTrigger>
+                                              <Button>{defineUserLike(item)}</Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent>
+                                              <PopoverArrow />
+                                              <PopoverCloseButton />
+                                              <PopoverHeader>Login or Signup </PopoverHeader>
+                                              <PopoverBody>
+                                                Please, login or signup first to like this comment.
+                                              </PopoverBody>
+                                              <PopoverFooter>
+                                                <Link to='/login'>
+                                                  <Button
+                                                    me={2}
+                                                    w={{ base: '50%', md: 'initial' }}
+                                                    background='primary.default'
+                                                    fontWeight='bold'
+                                                    variant='solid'
+                                                    color='neutral.white'
+                                                    borderWidth='1px'
+                                                    borderColor='neutral.white'
+                                                    _hover={{
+                                                      background: 'neutral.white',
+                                                      color: 'primary.default',
+                                                      borderWidth: '1px',
+                                                      borderColor: 'primary.default'
+                                                    }}
+                                                    py={3}
+                                                  >
+                                                    Login
+                                                  </Button>
+                                                </Link>
+                                                <Link to='/signup'>
+                                                  <Button
+                                                    w={{ base: '50%', md: 'initial' }}
+                                                    background='primary.default'
+                                                    fontWeight='bold'
+                                                    variant='solid'
+                                                    color='neutral.white'
+                                                    borderWidth='1px'
+                                                    borderColor='neutral.white'
+                                                    _hover={{
+                                                      background: 'neutral.white',
+                                                      color: 'primary.default',
+                                                      borderWidth: '1px',
+                                                      borderColor: 'primary.default'
+                                                    }}
+                                                    py={3}
+                                                  >
+                                                    Signup
+                                                  </Button>
+                                                </Link>
+                                              </PopoverFooter>
+                                            </PopoverContent>
+                                          </Popover>
+                                        ) : (
+                                          <Button onClick={() => postLike(item._id)}>{defineUserLike(item)}</Button>
+                                        )}
 
-                                      <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                                        {item.dislikes.length}
-                                      </Text>
+                                        <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
+                                          {item.likes.length}
+                                        </Text>
+                                      </Box>
+                                      <Box display='flex' alignItems='center'>
+                                        {!localStorage[TOKEN_KEY] ? (
+                                          <Popover>
+                                            <PopoverTrigger>
+                                              <Button>{defineUserDisLike(item)}</Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent>
+                                              <PopoverArrow />
+                                              <PopoverCloseButton />
+                                              <PopoverHeader>Login or Signup </PopoverHeader>
+                                              <PopoverBody>
+                                                Please, login or signup first to dislike this comment.
+                                              </PopoverBody>
+                                              <PopoverFooter>
+                                                <Link to='/login'>
+                                                  <Button
+                                                    me={2}
+                                                    w={{ base: '50%', md: 'initial' }}
+                                                    background='primary.default'
+                                                    fontWeight='bold'
+                                                    variant='solid'
+                                                    color='neutral.white'
+                                                    borderWidth='1px'
+                                                    borderColor='neutral.white'
+                                                    _hover={{
+                                                      background: 'neutral.white',
+                                                      color: 'primary.default',
+                                                      borderWidth: '1px',
+                                                      borderColor: 'primary.default'
+                                                    }}
+                                                    py={3}
+                                                  >
+                                                    Login
+                                                  </Button>
+                                                </Link>
+                                                <Link to='/signup'>
+                                                  <Button
+                                                    w={{ base: '50%', md: 'initial' }}
+                                                    background='primary.default'
+                                                    fontWeight='bold'
+                                                    variant='solid'
+                                                    color='neutral.white'
+                                                    borderWidth='1px'
+                                                    borderColor='neutral.white'
+                                                    _hover={{
+                                                      background: 'neutral.white',
+                                                      color: 'primary.default',
+                                                      borderWidth: '1px',
+                                                      borderColor: 'primary.default'
+                                                    }}
+                                                    py={3}
+                                                  >
+                                                    Signup
+                                                  </Button>
+                                                </Link>
+                                              </PopoverFooter>
+                                            </PopoverContent>
+                                          </Popover>
+                                        ) : (
+                                          <Button onClick={() => postDislike(item._id)}>
+                                            {defineUserDisLike(item)}
+                                          </Button>
+                                        )}
+
+                                        <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
+                                          {item.dislikes.length}
+                                        </Text>
+                                      </Box>
                                     </Box>
+                                    {index === comments.length - 1 ? <></> : <Divider my={4} w='100%' />}
                                   </Box>
-                                  {index === comments.length - 1 ? <></> : <Divider my={4} w='100%' />}
-                                </Box>
-                              );
-                            })}
+                                );
+                              })}
                           </Box>
                         ) : (
                           <Box>
