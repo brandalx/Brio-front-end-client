@@ -28,6 +28,7 @@ import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { API_URL, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import { cartContext } from '../../context/globalContext';
+import { useCheckToken } from '../../services/token';
 export default function Product() {
   const { cartLen, setCartLen } = useContext(cartContext);
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
@@ -41,6 +42,7 @@ export default function Product() {
   const [user, setUser] = useState([]);
   const [amount, setAmount] = useState(1);
   const navigate = useNavigate();
+  const isTokenExpired = useCheckToken();
   const handleAProductApi = async () => {
     // const url = API_URL + '/products';
 
@@ -200,64 +202,92 @@ export default function Product() {
                     </Text>
                   </Skeleton>
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
-                    <Flex justifyContent='space-between' alignItems='center'>
-                      <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                        {!loading && <>$ {arr.price}</>}
-                      </Text>
-                      <Box display='flex' alignItems='center'>
-                        <Button
-                          isDisabled={amount - 1 === 0 ? true : false}
-                          onClick={() => reduceMealAmount()}
-                          _hover={{ bg: 'red', color: 'white' }}
-                          background='neutral.grayLightest'
-                          borderRadius='100px'
-                          py='10px'
-                          px='10px'
-                          fontSize='md'
-                          color='neutral.gray'
-                        >
-                          -
-                        </Button>
-
-                        <Text color='neutral.gray' fontWeight='bold' px={3}>
-                          {amount}
+                    {isTokenExpired ? (
+                      <Box>
+                        <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                          {!loading && <>$ {arr.price}</>}
                         </Text>
-
-                        <Button
-                          onClick={() => addMealAmount()}
-                          _hover={{ bg: 'primary.default', color: 'white' }}
-                          background='neutral.grayLightest'
-                          borderRadius='100px'
-                          py='10px'
-                          px='10px'
-                          fontSize='md'
-                          color='primary.black'
-                        >
-                          +
-                        </Button>
+                        <Link to='/signup'>
+                          <Button
+                            w='100%'
+                            background='primary.default'
+                            fontWeight='bold'
+                            variant='solid'
+                            color='neutral.white'
+                            borderWidth='1px'
+                            borderColor='neutral.white'
+                            _hover={{
+                              background: 'neutral.white',
+                              color: 'primary.default',
+                              borderWidth: '1px',
+                              borderColor: 'primary.default'
+                            }}
+                            py={5}
+                          >
+                            Login or Signup to add product
+                          </Button>
+                        </Link>
                       </Box>
-                      <Button
-                        onClick={() => {
-                          postToCart(arr._id);
-                        }}
-                        rightIcon={<Text fontSize='md'>+</Text>}
-                        background='primary.default'
-                        fontWeight='bold'
-                        variant='solid'
-                        color='neutral.white'
-                        borderWidth='1px'
-                        borderColor='neutral.white'
-                        _hover={{
-                          background: 'neutral.white',
-                          color: 'primary.default',
-                          borderWidth: '1px',
-                          borderColor: 'primary.default'
-                        }}
-                        py={5}
-                      >
-                        Add to cart
-                      </Button>
-                    </Flex>
+                    ) : (
+                      <Flex justifyContent='space-between' alignItems='center'>
+                        <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                          {!loading && <>$ {arr.price}</>}
+                        </Text>
+                        <Box display='flex' alignItems='center'>
+                          <Button
+                            isDisabled={amount - 1 === 0 ? true : false}
+                            onClick={() => reduceMealAmount()}
+                            _hover={{ bg: 'red', color: 'white' }}
+                            background='neutral.grayLightest'
+                            borderRadius='100px'
+                            py='10px'
+                            px='10px'
+                            fontSize='md'
+                            color='neutral.gray'
+                          >
+                            -
+                          </Button>
+
+                          <Text color='neutral.gray' fontWeight='bold' px={3}>
+                            {amount}
+                          </Text>
+
+                          <Button
+                            onClick={() => addMealAmount()}
+                            _hover={{ bg: 'primary.default', color: 'white' }}
+                            background='neutral.grayLightest'
+                            borderRadius='100px'
+                            py='10px'
+                            px='10px'
+                            fontSize='md'
+                            color='primary.black'
+                          >
+                            +
+                          </Button>
+                        </Box>
+                        <Button
+                          onClick={() => {
+                            postToCart(arr._id);
+                          }}
+                          rightIcon={<Text fontSize='md'>+</Text>}
+                          background='primary.default'
+                          fontWeight='bold'
+                          variant='solid'
+                          color='neutral.white'
+                          borderWidth='1px'
+                          borderColor='neutral.white'
+                          _hover={{
+                            background: 'neutral.white',
+                            color: 'primary.default',
+                            borderWidth: '1px',
+                            borderColor: 'primary.default'
+                          }}
+                          py={5}
+                        >
+                          Add to cart
+                        </Button>
+                      </Flex>
+                    )}
                   </Skeleton>
                 </Stack>
                 <Divider py={3} />
