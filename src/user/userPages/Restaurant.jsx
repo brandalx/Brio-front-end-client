@@ -51,6 +51,7 @@ export default function Restaurant() {
   const [address, setAddress] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [comments, setComments] = useState();
+  const [responseFalls, setResponseFalls] = useState(true);
   const params = useParams();
 
   const [usersArr, setUsersArr] = useState();
@@ -81,9 +82,11 @@ export default function Restaurant() {
       await handleUsersPublicData(commentsarray);
       await handleProductApi(data);
       console.log(data);
+      if (data.length === 0) setResponseFalls(false);
       await handleUserApi();
       setLoading(false);
     } catch (error) {
+      setResponseFalls(false);
       setLoading(false);
       console.log(error);
     }
@@ -172,7 +175,7 @@ export default function Restaurant() {
   useEffect(() => {
     // Simulate delay for loading the product array
     setTimeout(() => {
-      if (!loading && productArr.length === 0) {
+      if (!loading && productArr.length === 0 && !responseFalls) {
         setShowOops(true);
       }
     }, 500); // Adjust the delay time as needed
@@ -418,9 +421,14 @@ export default function Restaurant() {
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
             <GridItem w='100%' h='100%'>
               <Box py='25px'>
-                <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
-                  Menu
-                </Text>
+                {loading && productArr.length === 0 ? (
+                  <Skeleton my={4} borderRadius='16px' isLoaded={!loading} minH='100px' />
+                ) : (
+                  <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
+                    Menu
+                  </Text>
+                )}
+
                 <Box>
                   <Grid
                     gridAutoColumns='1fr'
@@ -506,6 +514,17 @@ export default function Restaurant() {
                 </Box>
               </Box>
             </GridItem>
+
+            {loading && (
+              <GridItem py='25px'>
+                <Box mb={4} />
+                <Skeleton my={4} borderRadius='16px' isLoaded={!loading} minH='100px' />
+                <Skeleton my={4} borderRadius='16px' isLoaded={!loading} minH='100px' />
+                <Skeleton my={4} borderRadius='16px' isLoaded={!loading} minH='100px' />
+                <Skeleton my={4} borderRadius='16px' isLoaded={!loading} minH='100px' />
+              </GridItem>
+            )}
+
             {!productArr.length <= 0 && (
               <GridItem>
                 <Box py='25px'>
