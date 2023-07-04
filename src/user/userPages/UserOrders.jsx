@@ -1,5 +1,5 @@
 import { Box, Container, Text, Table, TableContainer, Th, Thead, Tr, useMediaQuery } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import OrdersTableBody from '../userComponents/UserOrdrs/OrdersTableBody';
 import { Link } from 'react-router-dom';
 import { API_URL, handleApiGet } from '../../services/apiServices';
@@ -8,16 +8,22 @@ export default function UserOrders() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
   const [isMobile] = useMediaQuery('(max-width: 575px)');
   const [arr, setArr] = useState();
-  const [isTrue, setIsTrue] = useState(false);
+  const [isTrue, setIsTrue] = useState();
   const handleApi = async () => {
     const urlorder = API_URL + '/orders/user/single';
 
     const dataorders = await handleApiGet(urlorder);
     setArr(dataorders);
+    if (dataorders.length === 0) {
+      setIsTrue(false);
+    }
     if (dataorders.length > 0) {
       setIsTrue(true);
     }
   };
+  useEffect(() => {
+    handleApi();
+  }, [arr]);
   return (
     <>
       <Container maxW='1110px' my={10}>
