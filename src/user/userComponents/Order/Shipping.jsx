@@ -59,10 +59,12 @@ export default function Shipping({ item, userArr, restaurantArr }) {
 
   return (
     <Box pt={4} data-aos='fade-up'>
-      <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
+      <Text fontWeight='semibold' fontSize={{ base: '14px', md: '3xs' }} color='neutral.gray'>
         {isSelf ? 'Pickup' : 'Delivery'} address
       </Text>
-      <Box fontWeight='bold'>{addressString}</Box>
+      <Box fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold'>
+        {addressString}
+      </Box>
       <Skeleton minHeight='320px' my={4} borderRadius='16px' isLoaded={!addressLoading}>
         <Box pt={4}>
           {address ? (
