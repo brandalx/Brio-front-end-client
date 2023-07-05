@@ -776,7 +776,13 @@ export default function Restaurant() {
                                               </PopoverContent>
                                             </Popover>
                                           ) : (
-                                            <Button onClick={() => postLike(item._id)}>{defineUserLike(item)}</Button>
+                                            <Button
+                                              p={2}
+                                              _hover={{ transform: 'scale(1.2) rotate(-5deg)' }}
+                                              onClick={() => postLike(item._id)}
+                                            >
+                                              {defineUserLike(item)}
+                                            </Button>
                                           )}
 
                                           <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
@@ -842,7 +848,11 @@ export default function Restaurant() {
                                               </PopoverContent>
                                             </Popover>
                                           ) : (
-                                            <Button onClick={() => postDislike(item._id)}>
+                                            <Button
+                                              _hover={{ transform: 'scale(1.2) rotate(5deg)' }}
+                                              p={2}
+                                              onClick={() => postDislike(item._id)}
+                                            >
                                               {defineUserDisLike(item)}
                                             </Button>
                                           )}
