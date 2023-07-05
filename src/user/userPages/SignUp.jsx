@@ -90,7 +90,6 @@ export default function SignUp() {
     }
   }, [currentUrl]);
 
-
   useEffect(() => {}, [option2]);
 
   return (

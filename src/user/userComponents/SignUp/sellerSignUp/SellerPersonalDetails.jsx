@@ -115,7 +115,7 @@ export default function SellerPersonalDetails({ type, setMainBody, mainBody }) {
                       _placeholder={{ color: 'neutral.gray' }}
                       borderRadius='8px'
                       fontSize='2xs'
-                      placeholder='John'
+                      placeholder='0509880082'
                     />
                     <FormErrorMessage p={0} m={0} fontSize='3xs'>
                       {errors.phone && errors.phone}
