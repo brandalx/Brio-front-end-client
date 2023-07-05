@@ -26,6 +26,7 @@ export default function Home() {
   const [heightchange, setheightchange] = useState(1);
   const [hovered, setHovered] = useState(false);
   const [sortedArr, setSortedArr] = useState([]);
+  const [sortedArr2, setSortedArr2] = useState([]);
 
   const { city, setCity, isTrue, setIsTrue } = useContext(geolocationContext);
 
@@ -89,7 +90,7 @@ export default function Home() {
     setHovered(false);
   };
 
-  // const sortByTags = (_info) => {};
+  const sortByTags = (_info) => {};
   return (
     <>
       <Preloader loading={loading} />
@@ -369,7 +370,7 @@ export default function Home() {
             All restaurants
           </Text>
           <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
-            <Pickers setSortedArr={setSortedArr} sortedArr={sortedArr} />
+            <Pickers setSortedArr={setSortedArr2} sortedArr={sortedArr2} />
           </Skeleton>
           <Box py={15} display='flex'>
             <Skeleton borderRadius='16px' isLoaded={!loading}>

@@ -25,21 +25,22 @@ const CategoryPicker = ({ sortedArr, setSortedArr, emoji, label, size = '40' }) 
   useEffect(() => {
     if (isPressed) {
       if (sortedArr && sortedArr.length > 0) {
-        let newarr = [...sortedArr, emoji];
+        let newarr = [...sortedArr, { emoji: emoji, label: label }];
         setSortedArr(newarr);
         console.log('sortedArr', newarr);
       } else {
         let newarr = [];
-        newarr.push(emoji);
+        newarr.push({ emoji: emoji, label: label });
         setSortedArr(newarr);
         console.log('sortedArr', newarr);
       }
     }
     if (!isPressed) {
       if (sortedArr && sortedArr.length > 0) {
-        let itemToRemove = emoji;
-        let filteredArray = sortedArr.filter((item) => item !== itemToRemove);
-
+        let itemToRemove = { emoji: emoji, label: label };
+        let filteredArray = sortedArr.filter(
+          (item) => item.emoji !== itemToRemove.emoji || item.label !== itemToRemove.label
+        );
         setSortedArr(filteredArray);
         console.log('sortedArr', filteredArray);
       }
