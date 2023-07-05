@@ -81,7 +81,6 @@ export default function AppRoutes({ isToken }) {
                       <Route path='/restaurant/:id' element={<Restaurant />} />
                       <Route path='/restaurant/product/:id' element={<Product />} />
 
-
                       {/* ----------ALL ADMIN ROUTES------------ */}
                       <Route path='/admin/restaurant/dashboard' element={<RestaurantDashboard />} />
                       <Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />

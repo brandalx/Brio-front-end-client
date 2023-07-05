@@ -42,6 +42,7 @@ export default function OrdersTableBody() {
   const fetchProductData = async (productId) => {
     try {
       const productResponse = await axios.get(`${API_URL}/products/${productId}`);
+      console.log('Fetched product data: ', productResponse.data);
       return productResponse.data;
     } catch (error) {
       console.error('Error fetching product data:', error);
@@ -65,6 +66,7 @@ export default function OrdersTableBody() {
 
         setUserId(userId);
         setRestaurantId(adminResponse.data.restaurant);
+        console.log('Fetched restaurant data: ', adminResponse.data);
 
         if (adminResponse.data.restaurant && Array.isArray(adminResponse.data.restaurant.products)) {
           setRestaurantProducts(adminResponse.data.restaurant.products.map((product) => product.$oid));
@@ -86,24 +88,19 @@ export default function OrdersTableBody() {
         const usersPromise = handleApiGet(API_URL + '/users/getAllUsers');
 
         const [ordersResponse, usersResponse] = await Promise.all([ordersPromise, usersPromise]);
+        console.log('Fetched orders response: ', ordersResponse);
+        console.log('Fetched users response: ', usersResponse);
 
         if (Array.isArray(ordersResponse)) {
           const filteredOrders = ordersResponse
-            .filter((order) => {
-              const doesExist = order.ordersdata.restaurants.includes(restaurantId);
-              return doesExist;
-            })
+            .filter((order) => order.ordersdata.restaurants.includes(restaurantId))
             .map((order) => {
-              const relevantProducts = order.ordersdata.products.filter((product) => {
-                const doesBelong = product.restaurantId === restaurantId;
-                return doesBelong;
-              });
-
+              const relevantProducts = order.ordersdata.products.filter(
+                (product) => product.restaurantId === restaurantId
+              );
               const newOrder = { ...order, ordersdata: { ...order.ordersdata, products: relevantProducts } };
               return newOrder;
             });
-
-          setRelevantOrders(filteredOrders);
 
           const productIds = new Set(
             filteredOrders.flatMap((order) => order.ordersdata.products.map((product) => product.productId))
@@ -114,32 +111,32 @@ export default function OrdersTableBody() {
 
           setProducts(products);
 
-          const usersTotalSpent = filteredOrders.reduce((acc, order) => {
-            const userId = order.userRef;
+          const ordersWithTotalSpent = filteredOrders.map((order) => {
             const productsCost = order.ordersdata.products.reduce((total, product) => {
-              const relatedProduct = products.find((p) => p._id === product.productId);
+              const relatedProduct = products.find(
+                (p) => p._id === product.productId && product.restaurantId === restaurantId
+              );
               return total + (relatedProduct ? relatedProduct.price * product.amount : 0);
             }, 0);
 
             // Adding the shipping and tips to the total cost of products
-            const totalAmount =
-              productsCost + order.userdata.paymentSummary.shipping + order.userdata.paymentSummary.tips;
+            const totalAmount = (
+              productsCost +
+              order.userdata.paymentSummary.shipping +
+              order.userdata.paymentSummary.tips
+            ).toFixed(2);
+            console.log('Fetched products: ', products);
 
-            const foundUser = acc.find((user) => user.id === userId);
+            // Add the totalAmount to the order object itself
+            return { ...order, totalSpent: totalAmount };
+          });
 
-            if (foundUser) {
-              foundUser.totalSpent += totalAmount;
-            } else {
-              acc.push({ id: userId, totalSpent: totalAmount });
-            }
-
-            return acc;
-          }, []);
-
-          setUsersTotalSpent(usersTotalSpent);
+          setRelevantOrders(ordersWithTotalSpent);
+          console.log('Filtered orders with total spent: ', ordersWithTotalSpent);
         }
 
         setOrdersOfUsers(usersResponse);
+        console.log('orders of users: ', ordersOfUsers);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -151,158 +148,158 @@ export default function OrdersTableBody() {
 
   return (
     <Tbody>
-      {Array.isArray(relevantOrders) &&
-        relevantOrders.map((order, index) => {
-          const user = ordersOfUsers.find((u) => u._id === order.userRef);
-          if (!user) return null;
+      {relevantOrders.map((order, index) => {
+        const user = ordersOfUsers.find((u) => u._id === order.userRef) || {};
+        if (!user || !user.address || !user.address[0]) return null;
 
-          return (
-            <Tr key={index} borderBottom='1px solid' borderColor='#EBF1FE'>
-              <Td
-                pl={isMobile ? '10px' : ''}
-                pt='19.5px'
-                pb='19.5px'
-                fontSize='2xs'
-                color='neutral.grayDark'
-                textOverflow='ellipsis'
-                maxW='100px'
-              >
-                {order._id.slice(-5)}
-              </Td>
-              <Td
-                justifyContent='start'
-                flexDirection='row-reverse'
-                display={isTablet ? 'none' : 'flex'}
-                alignItems='center'
-                pt='19.5px'
-                pb='19.5px'
-                fontSize='2xs'
-                color='neutral.grayDark'
-                fontWeight='semibold'
-              >
-                {user.firstname} {user.lastname}
-                <Box mr='12px' w='42px' h='42px'>
-                  <Avatar w='100%' h='100%' borderRadius='full' src={''} name={user.firstname + ' ' + user.lastname} />
-                </Box>
-              </Td>
-              <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-                {user.address[0].city}
-              </Td>
+        return (
+          <Tr key={index} borderBottom='1px solid' borderColor='#EBF1FE'>
+            <Td
+              pl={isMobile ? '10px' : ''}
+              pt='19.5px'
+              pb='19.5px'
+              fontSize='2xs'
+              color='neutral.grayDark'
+              textOverflow='ellipsis'
+              maxW='100px'
+            >
+              {order._id.slice(-5)}
+            </Td>
+            <Td
+              justifyContent='start'
+              flexDirection='row-reverse'
+              display={isTablet ? 'none' : 'flex'}
+              alignItems='center'
+              pt='19.5px'
+              pb='19.5px'
+              fontSize='2xs'
+              color='neutral.grayDark'
+              fontWeight='semibold'
+            >
+              {user.firstname} {user.lastname}
+              <Box mr='12px' w='42px' h='42px'>
+                <Avatar w='100%' h='100%' borderRadius='full' src={''} name={user.firstname + ' ' + user.lastname} />
+              </Box>
+            </Td>
+            <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+              {`${user.address[0].address1}`}
+            </Td>
 
-              <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-                {order.creationDate}
-              </Td>
-              <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-                {new Date(order.creationDate).toDateString() +
-                  ' ' +
-                  new Date(order.creationDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </Td>
+            <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+              {order.creationDate}
+            </Td>
+            <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+              {new Date(order.creationDate).toDateString() +
+                ' ' +
+                new Date(order.creationDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </Td>
 
-              <Td
-                pr={isMobile ? '0' : ''}
-                pl={isMobile ? '5px' : ''}
-                pt='10px'
-                pb='10px'
-                fontSize='2.5xs'
-                color='neutral.black'
-                fontWeight='semibold'
-              >
-                <Flex alignItems='center'>
-                  <Box as='span' me={2}>
-                    <Status
-                      color={
-                        order.status === 'Completed'
-                          ? '#1ABF70'
-                          : order.status === 'In progress'
-                          ? '#4E60FF'
-                          : order.status === 'Canceled'
-                          ? '#FF5C60'
-                          : order.status === 'Suspended'
-                          ? '#FF5C60'
-                          : 'yellow'
-                      }
-                    />
-                  </Box>
-                  {order.userdata.status}
-                </Flex>
-              </Td>
-              <Td
-                pr={isMobile ? '0' : ''}
-                pl={isMobile ? '5px' : ''}
-                pt='10px'
-                pb='10px'
-                fontSize='2.5xs'
-                color='neutral.black'
-                fontWeight='semibold'
-              >
-                {usersTotalSpent.find((user) => user.id === order.userRef)?.totalSpent || 0}
-              </Td>
-              <Td
-                position={isMobile ? 'relative' : ''}
-                right={isMobile ? '10px' : '0'}
-                pl={0}
-                pr={0}
-                pt='10px'
-                pb='10px'
-                fontSize='2xs'
-                fontWeight='bold'
-                color='neutral.black'
-              >
-                <IconButton
-                  icon={<ThreeDots />}
-                  onClick={() => {
-                    if (order.status === 'Canceled') {
-                      setIsOpen(true);
-                      setSelectedOrder(order);
+            <Td
+              pr={isMobile ? '0' : ''}
+              pl={isMobile ? '5px' : ''}
+              pt='10px'
+              pb='10px'
+              fontSize='2.5xs'
+              color='neutral.black'
+              fontWeight='semibold'
+            >
+              <Flex alignItems='center'>
+                <Box as='span' me={2}>
+                  <Status
+                    color={
+                      order.status === 'Completed'
+                        ? '#1ABF70'
+                        : order.status === 'In progress'
+                        ? '#4E60FF'
+                        : order.status === 'Canceled'
+                        ? '#FF5C60'
+                        : order.status === 'Suspended'
+                        ? '#FF5C60'
+                        : 'yellow'
                     }
+                  />
+                </Box>
+                {order.userdata.status}
+              </Flex>
+            </Td>
+            <Td
+              pr={isMobile ? '0' : ''}
+              pl={isMobile ? '5px' : ''}
+              pt='10px'
+              pb='10px'
+              fontSize='2.5xs'
+              color='neutral.black'
+              fontWeight='semibold'
+            >
+              {order.totalSpent || 0}
+            </Td>
+
+            <Td
+              position={isMobile ? 'relative' : ''}
+              right={isMobile ? '10px' : '0'}
+              pl={0}
+              pr={0}
+              pt='10px'
+              pb='10px'
+              fontSize='2xs'
+              fontWeight='bold'
+              color='neutral.black'
+            >
+              <IconButton
+                icon={<ThreeDots />}
+                onClick={() => {
+                  if (order.status === 'Canceled') {
+                    setIsOpen(true);
+                    setSelectedOrder(order);
+                  }
+                }}
+              />
+              <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
+                <ModalOverlay
+                  width='100%'
+                  sx={{
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    zIndex: '10',
+                    bg: 'rgba(0,0,0,0.6)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 />
-                <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
-                  <ModalOverlay
-                    width='100%'
-                    sx={{
-                      position: 'fixed',
-                      top: '0',
-                      left: '0',
-                      width: '100%',
-                      height: '100%',
-                      zIndex: '10',
-                      bg: 'rgba(0,0,0,0.6)',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  />
 
-                  <ModalContent
-                    position='relative'
-                    boxSizing='content-box'
-                    width={['100%', '100%', '100%', '540px']}
-                    maxW='96%'
-                    MaxH='568px'
-                  >
-                    <ModalHeader>Order Details</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>{/* Display order details here */}</ModalBody>
-                    <ModalFooter>
-                      <Button colorScheme='blue' mr={3} onClick={onClose}>
-                        Close
-                      </Button>
-                      <Button
-                        variant='ghost'
-                        onClick={() => {
-                          /* re-order request logic */
-                        }}
-                      >
-                        Re-Order
-                      </Button>
-                    </ModalFooter>
-                  </ModalContent>
-                </Modal>
-              </Td>
-            </Tr>
-          );
-        })}
+                <ModalContent
+                  position='relative'
+                  boxSizing='content-box'
+                  width={['100%', '100%', '100%', '540px']}
+                  maxW='96%'
+                  MaxH='568px'
+                >
+                  <ModalHeader>Order Details</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>{/* Display order details here */}</ModalBody>
+                  <ModalFooter>
+                    <Button colorScheme='blue' mr={3} onClick={onClose}>
+                      Close
+                    </Button>
+                    <Button
+                      variant='ghost'
+                      onClick={() => {
+                        /* re-order request logic */
+                      }}
+                    >
+                      Re-Order
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </Td>
+          </Tr>
+        );
+      })}
     </Tbody>
   );
 }

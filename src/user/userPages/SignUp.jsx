@@ -79,6 +79,15 @@ export default function SignUp() {
     if (currentUrl === '/signup/personal/info/confirmation') {
       setIsStatus(4);
     }
+    if (currentUrl === '/signup/restaurant') {
+      setIsStatus(2);
+    }
+    if (currentUrl === '/signup/restaurant/info') {
+      setIsStatus(3);
+    }
+    if (currentUrl === '/signup/restaurant/info/confirmation') {
+      setIsStatus(4);
+    }
   }, [currentUrl]);
 
   useEffect(() => {}, [option2]);

@@ -82,6 +82,7 @@ const fontSizes = {
   '3xs': '0.75rem', //12px
   '2.5xs': '0.8125rem', //13px
   '2xs': '0.875rem', //14px
+  s: '1rem', //16px
   xs: '1.125rem', //18px
   sm: ' 1.25rem', //20px
   md: '1.5rem', //24px
