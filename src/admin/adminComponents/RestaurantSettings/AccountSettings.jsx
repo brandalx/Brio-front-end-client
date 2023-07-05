@@ -291,7 +291,6 @@ export default function AccountSettings() {
             <EmailNotification />
             {/*////*/}
             {/*////*/}
-            <Badges />
             <GridItem w='100%'>
               <Stack
                 mt={{ base: '0px', md: 4 }}
@@ -308,6 +307,7 @@ export default function AccountSettings() {
                 </Flex>
               </Stack>
             </GridItem>
+            <Badges />
           </Grid>
         </Box>
         <Divider pt={8} />
