@@ -5,6 +5,8 @@ import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
 export default function Restaurants() {
+  const [sortedArrFix, setSortedArrFix] = useState([]);
+
   // todo: add tag into product into backend model and validation
 
   const [arr, setAr] = useState([]);
@@ -36,13 +38,33 @@ export default function Restaurants() {
           <Box py={15}>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Grid templateColumns={{ base: 'repeat(3, 1fr)', md: 'repeat(6, 1fr)' }} gap={4}>
-                <CategoryPicker emoji='pizza' label='Pizza' />
+                <CategoryPicker sortedArr={sortedArrFix} setSortedArr={setSortedArrFix} emoji='pizza' label='Pizza' />
 
-                <CategoryPicker emoji='hamburger' label='Burger' />
-                <CategoryPicker emoji='cut-of-meat' label='   Sushi' />
-                <CategoryPicker emoji='sushi' label='Sushi' />
-                <CategoryPicker emoji='broccoli' label='Vegan' />
-                <CategoryPicker emoji='cupcake' label='  Desserts' />
+                <CategoryPicker
+                  sortedArr={sortedArrFix}
+                  setSortedArr={setSortedArrFix}
+                  emoji='hamburger'
+                  label='Burger'
+                />
+                <CategoryPicker
+                  sortedArr={sortedArrFix}
+                  setSortedArr={setSortedArrFix}
+                  emoji='cut-of-meat'
+                  label='   Sushi'
+                />
+                <CategoryPicker sortedArr={sortedArrFix} setSortedArr={setSortedArrFix} emoji='sushi' label='Sushi' />
+                <CategoryPicker
+                  sortedArr={sortedArrFix}
+                  setSortedArr={setSortedArrFix}
+                  emoji='broccoli'
+                  label='Vegan'
+                />
+                <CategoryPicker
+                  sortedArr={sortedArrFix}
+                  setSortedArr={setSortedArrFix}
+                  emoji='cupcake'
+                  label='  Desserts'
+                />
               </Grid>
             </Skeleton>
           </Box>

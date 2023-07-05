@@ -13,6 +13,7 @@ import { Circle } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { geolocationContext } from '../../context/globalContext';
+import Pickers from '../userComponents/HomePage/Pickers';
 
 export default function Home() {
   // todo: add tag into product into backend model and validation
@@ -24,6 +25,8 @@ export default function Home() {
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [heightchange, setheightchange] = useState(1);
   const [hovered, setHovered] = useState(false);
+  const [sortedArr, setSortedArr] = useState([]);
+
   const { city, setCity, isTrue, setIsTrue } = useContext(geolocationContext);
 
   const handleApi = async () => {
@@ -48,7 +51,6 @@ export default function Home() {
       const data2 = await handleApiGet(urluser);
 
       setUser(data2);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -86,6 +88,8 @@ export default function Home() {
     console.log('Mouse left');
     setHovered(false);
   };
+
+  // const sortByTags = (_info) => {};
   return (
     <>
       <Preloader loading={loading} />
@@ -299,20 +303,10 @@ export default function Home() {
             </Box>
           </Link>
         </Box>
-        {localStorage[TOKEN_KEY] && sessionStorage['isTrue'] && sessionStorage['location'] && (
+        {localStorage[TOKEN_KEY] && sessionStorage['isTrue'] && sessionStorage['location'] && sortedArr && (
           <>
             <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
-              <Box py={30}>
-                <Grid templateColumns={{ base: 'repeat(3, 1fr)', md: 'repeat(6, 1fr)' }} gap={4}>
-                  <CategoryPicker emoji='pizza' label='Pizza' />
-
-                  <CategoryPicker emoji='hamburger' label='Burger' />
-                  <CategoryPicker emoji='cut-of-meat' label='   Sushi' />
-                  <CategoryPicker emoji='sushi' label='Sushi' />
-                  <CategoryPicker emoji='broccoli' label='Vegan' />
-                  <CategoryPicker emoji='cupcake' label='  Desserts' />
-                </Grid>
-              </Box>
+              <Pickers setSortedArr={setSortedArr} sortedArr={sortedArr} />
             </Skeleton>
 
             <Box py='25px'>
@@ -374,19 +368,9 @@ export default function Home() {
           <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>
             All restaurants
           </Text>
-          <Box py={15}>
-            <Skeleton borderRadius='16px' isLoaded={!loading}>
-              <Grid templateColumns={{ base: 'repeat(3, 1fr)', md: 'repeat(6, 1fr)' }} gap={4}>
-                <CategoryPicker emoji='pizza' label='Pizza' />
-
-                <CategoryPicker emoji='hamburger' label='Burger' />
-                <CategoryPicker emoji='cut-of-meat' label='   Sushi' />
-                <CategoryPicker emoji='sushi' label='Sushi' />
-                <CategoryPicker emoji='broccoli' label='Vegan' />
-                <CategoryPicker emoji='cupcake' label='  Desserts' />
-              </Grid>
-            </Skeleton>
-          </Box>
+          <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
+            <Pickers setSortedArr={setSortedArr} sortedArr={sortedArr} />
+          </Skeleton>
           <Box py={15} display='flex'>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Grid templateColumns={{ base: 'repeat(4, 1fr)', sm: 'repeat(4 1fr)', md: 'repeat(6, 1fr)' }} gap={3}>

@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { GridItem, Box, Text } from '@chakra-ui/react';
 import Emoji from 'react-emojis';
 
-const CategoryPicker = ({ emoji, label, size = '40' }) => {
+const CategoryPicker = ({ sortedArr, setSortedArr, emoji, label, size = '40' }) => {
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -22,7 +22,29 @@ const CategoryPicker = ({ emoji, label, size = '40' }) => {
   const borderColor = isPressed ? 'primary.default' : isHovered ? 'primary.default' : 'neutral.grayLightest';
   const borderWidth = '2px';
   const textColor = isPressed ? 'primary.default' : 'primary.gray';
+  useEffect(() => {
+    if (isPressed) {
+      if (sortedArr && sortedArr.length > 0) {
+        let newarr = [...sortedArr, emoji];
+        setSortedArr(newarr);
+        console.log('sortedArr', newarr);
+      } else {
+        let newarr = [];
+        newarr.push(emoji);
+        setSortedArr(newarr);
+        console.log('sortedArr', newarr);
+      }
+    }
+    if (!isPressed) {
+      if (sortedArr && sortedArr.length > 0) {
+        let itemToRemove = emoji;
+        let filteredArray = sortedArr.filter((item) => item !== itemToRemove);
 
+        setSortedArr(filteredArray);
+        console.log('sortedArr', filteredArray);
+      }
+    }
+  }, [isPressed]);
   return (
     <GridItem
       fontWeight='bold'
