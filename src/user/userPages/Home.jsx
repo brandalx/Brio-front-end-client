@@ -19,6 +19,8 @@ export default function Home() {
   // todo: add tag into product into backend model and validation
 
   const [arr, setAr] = useState([]);
+  const [arr2, setAr2] = useState([]);
+  const [keepArr, setKeepArr] = useState([]);
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingModel, setloadingModel] = useState(false);
@@ -37,6 +39,8 @@ export default function Home() {
       const data = await handleApiGet(url);
 
       setAr(data);
+      setAr2(data);
+      setKeepArr(data);
       handleApiUser();
       console.log(data);
     } catch (error) {
@@ -90,7 +94,19 @@ export default function Home() {
     setHovered(false);
   };
 
-  const sortByTags = (_info) => {};
+  useEffect(() => {
+    console.log('kk');
+    sortByTags2(sortedArr);
+  }, [sortedArr]);
+
+  const sortByTags2 = (_info) => {
+    console.log('kk2');
+    const emojis = _info.map((item) => item.emoji); // extract emojis from _info
+    let filteredArr = keepArr.filter(
+      (item, index) => item.tags.some((tag) => emojis.includes(tag.badgeEmoji)) // check if badgeEmoji is in the emojis array
+    );
+    setAr2(filteredArr);
+  };
   return (
     <>
       <Preloader loading={loading} />
@@ -326,7 +342,7 @@ export default function Home() {
                     templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
                     gap={4}
                   >
-                    {arr.map((item, index) => {
+                    {arr2.map((item, index) => {
                       return (
                         <Box key={index}>
                           <Skeleton borderRadius='16px' isLoaded={!loading}>
