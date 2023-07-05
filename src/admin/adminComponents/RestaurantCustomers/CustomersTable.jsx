@@ -80,37 +80,61 @@ export default function CustomersTable() {
   useEffect(() => {
     fetchRestaurantData();
   }, []);
+  const fetchUsersData = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      if (restaurantId) {
-        console.log('Fetching users with orders from restaurant: ', restaurantId); // добавлено логирование
-        try {
-          const usersResponse = await handleApiGet(`${API_URL}/users/getAllUsers`);
-          console.log('Fetched all users: ', usersResponse); // добавлено логирование
-          const users = usersResponse;
+      const decodedToken = jwtDecode(token);
 
-          if (users && Array.isArray(users)) {
-            const filteredUsers = users.filter((user) => {
-              // Проверяем, есть ли у пользователя заказы из этого ресторана
-              return (
-                user.orders && user.orders.some((order) => order.restaurant && order.restaurant.includes(restaurantId))
-              );
+      const userId = decodedToken._id;
+
+      const usersResponse = await axios.get(`${API_URL}/users/getAllUsers`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      const allUsers = usersResponse.data;
+      const usersWithOrdersInMyRestaurant = []; // users who made orders in my restaurant
+
+      for (const user of allUsers) {
+        let totalSpentInMyRestaurant = 0;
+        let hasOrderedInMyRestaurant = false;
+
+        for (const order of user.orders) {
+          if (order.restaurant.includes(restaurantId)) {
+            const orderResponse = await axios.get(`${API_URL}/orders/${order.orderRef}`, {
+              headers: {
+                'x-api-key': token
+              }
             });
 
-            setUsers(filteredUsers);
-            console.log('Filtered users: ', filteredUsers); // добавлено логирование
-            setLoading(false);
-          } else {
-            console.error('Unexpected data structure:', usersResponse);
+            const orderData = orderResponse.data;
+            for (const product of orderData.ordersdata.products) {
+              if (product.restaurantId === restaurantId) {
+                totalSpentInMyRestaurant += product.priceItem * product.amount;
+                hasOrderedInMyRestaurant = true;
+              }
+            }
           }
-        } catch (error) {
-          console.error('Error fetching orders or users:', error);
+        }
+
+        // Only add user to the list if he made an order in my restaurant
+        if (hasOrderedInMyRestaurant) {
+          user.totalSpent = totalSpentInMyRestaurant;
+          usersWithOrdersInMyRestaurant.push(user);
         }
       }
-    };
 
-    fetchOrders();
+      setUsers(usersWithOrdersInMyRestaurant);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching users data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsersData();
   }, [restaurantId]);
 
   return (
@@ -177,16 +201,7 @@ export default function CustomersTable() {
                 color='neutral.black'
                 fontWeight='semibold'
               >
-                $
-                {user.orders
-                  .reduce((sum, order) => {
-                    if (order.status !== 'Canceled') {
-                      return sum + order.paymentSummary.totalAmount;
-                    } else {
-                      return sum;
-                    }
-                  }, 0)
-                  .toFixed(2)}
+                ${user.totalSpent.toFixed(2)}
               </Td>
 
               <Td
