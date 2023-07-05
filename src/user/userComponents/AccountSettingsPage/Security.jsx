@@ -88,8 +88,8 @@ export default function Security() {
         </Text>
         <form onSubmit={handleSubmit(onSubForm)}>
           <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
-            <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-              {/* 2 factor authentication */}
+            {/* <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+        
               Phone number
             </Text>
             <Box pt={5}>
@@ -114,7 +114,7 @@ export default function Security() {
                   </FormControl>
                 </Box>
 
-                {/* <Button
+                <Button
                   mt={{ base: '10px', md: '0px' }}
                   w={{ base: '100%', md: 'initial' }}
                   background='primary.default'
@@ -132,10 +132,13 @@ export default function Security() {
                   py={5}
                 >
                   Turn on
-                </Button> */}
+                </Button> 
               </Flex>
             </Box>
-            <Box pt={10}>
+ */}
+
+            {/* <Box pt={10}> */}
+            <Box>
               <Text mb='16px' fontSize='xs' fontWeight='bold' color='neutral.black'>
                 Change password
               </Text>

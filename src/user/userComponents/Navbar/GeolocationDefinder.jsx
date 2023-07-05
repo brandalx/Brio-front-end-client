@@ -23,11 +23,11 @@ import { useDisclosure } from '@chakra-ui/react';
 
 export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom' }) {
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const { city, setCity } = useContext(geolocationContext);
+  const { city, setCity, update, setUpdate, isTrue, setIsTrue } = useContext(geolocationContext);
   const [loading2, setLoading2] = useState(true);
 
   useEffect(() => {
-    if (!loading && !sessionStorage['location']) {
+    if (!loading && !sessionStorage['location'] && !sessionStorage['isTrue']) {
       onToggle();
     }
   }, [loading]);
@@ -36,46 +36,53 @@ export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom' 
     <Box>
       {!sessionStorage['location'] ? (
         <Box>
-          <Skeleton borderRadius='16px' isLoaded={!loading}>
-            <Box
-              borderColor={'neutral.white'}
-              borderWidth='1px'
-              ml='4px'
-              bg='primary.lightest'
-              _hover={{ bg: 'primary.light' }}
-              color='black'
-              px={'8px'}
-              py={'7.5px'}
-              borderRadius='16px'
-              position='relative'
+          {/* <Skeleton borderRadius='16px' isLoaded={!loading && city}> */}
+          <Box
+            borderColor={'neutral.white'}
+            borderWidth='1px'
+            ml='4px'
+            bg='primary.lightest'
+            _hover={{ bg: 'primary.light' }}
+            color='black'
+            px={'8px'}
+            py={'7.5px'}
+            borderRadius='16px'
+            position='relative'
+          >
+            <Popover
+              returnFocusOnClose={false}
+              isOpen={isOpen}
+              onClose={onClose}
+              placement='bottom'
+              closeOnBlur={false}
             >
-              <Popover
-                returnFocusOnClose={false}
-                isOpen={isOpen}
-                onClose={onClose}
-                placement='bottom'
-                closeOnBlur={false}
-              >
-                <Menu>
-                  <PopoverTrigger>
-                    <MenuButton
-                      onClick={() => onToggle()}
-                      as={Button}
-                      p='6px'
-                      rounded={'full'}
-                      variant={'link'}
-                      cursor={'pointer'}
-                      minW={0}
-                    >
-                      <Geolocation />
-                    </MenuButton>
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <PopoverHeader fontWeight='semibold'>Let us know restaurants nearby</PopoverHeader>
-                    <PopoverArrow />
-                    <PopoverCloseButton />
+              <Menu>
+                <PopoverTrigger>
+                  <MenuButton
+                    onClick={() => {
+                      onToggle();
+                      setUpdate(update + 1);
+                    }}
+                    as={Button}
+                    p='6px'
+                    rounded={'full'}
+                    variant={'link'}
+                    cursor={'pointer'}
+                    minW={0}
+                  >
+                    <Geolocation />
+                  </MenuButton>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <PopoverHeader fontWeight='semibold'>Help us show restaurants nearby</PopoverHeader>
+                  <PopoverArrow />
+                  <PopoverCloseButton />
+                  <Skeleton isLoaded={city} borderRadius='16px' px={2} mx={2}>
                     <PopoverBody>Is your location {city}?</PopoverBody>
-                    <PopoverFooter display='flex' justifyContent='flex-end'>
+                  </Skeleton>
+
+                  <PopoverFooter display='flex' justifyContent='flex-end'>
+                    <Skeleton isLoaded={city} borderRadius='16px' mx={2}>
                       <ButtonGroup size='2xs'>
                         <Button
                           background='neutral.white'
@@ -95,6 +102,7 @@ export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom' 
                           onClick={() => {
                             onClose();
                             setCity(null);
+                            setIsTrue(false);
                           }}
                         >
                           No
@@ -115,87 +123,92 @@ export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom' 
                           }}
                           onClick={() => {
                             sessionStorage.setItem('location', city);
+                            sessionStorage.setItem('isTrue', isTrue);
                             onClose();
                             setCity(city);
+                            setIsTrue(true);
                           }}
                         >
                           Yes
                         </Button>
                       </ButtonGroup>
-                    </PopoverFooter>
-                  </PopoverContent>
-                </Menu>
-              </Popover>
-            </Box>
-          </Skeleton>
+                    </Skeleton>
+                  </PopoverFooter>
+                </PopoverContent>
+              </Menu>
+            </Popover>
+          </Box>
+          {/* </Skeleton> */}
         </Box>
       ) : (
         <Box>
-          <Skeleton borderRadius='16px' isLoaded={!loading}>
-            <Box
-              borderColor={'neutral.white'}
-              borderWidth='1px'
-              ml='4px'
-              bg='primary.lightest'
-              _hover={{ bg: 'primary.light' }}
-              color='black'
-              px={'8px'}
-              py={'7.5px'}
-              borderRadius='16px'
-              position='relative'
-            >
-              <Popover returnFocusOnClose={false} isOpen={isOpen} onClose={onClose} placement={pos} closeOnBlur={false}>
-                <Menu>
-                  <PopoverTrigger>
-                    <MenuButton
-                      onClick={() => onToggle()}
-                      as={Button}
-                      p='6px'
-                      rounded={'full'}
-                      variant={'link'}
-                      cursor={'pointer'}
-                      minW={0}
-                    >
-                      <Geolocation />
-                    </MenuButton>
-                  </PopoverTrigger>
+          {/* <Skeleton borderRadius='16px' isLoaded={!loading}> */}
+          <Box
+            borderColor={'neutral.white'}
+            borderWidth='1px'
+            ml='4px'
+            bg='primary.lightest'
+            _hover={{ bg: 'primary.light' }}
+            color='black'
+            px={'8px'}
+            py={'7.5px'}
+            borderRadius='16px'
+            position='relative'
+          >
+            <Popover returnFocusOnClose={false} isOpen={isOpen} onClose={onClose} placement={pos} closeOnBlur={false}>
+              <Menu>
+                <PopoverTrigger>
+                  <MenuButton
+                    onClick={() => onToggle()}
+                    as={Button}
+                    p='6px'
+                    rounded={'full'}
+                    variant={'link'}
+                    cursor={'pointer'}
+                    minW={0}
+                  >
+                    <Geolocation />
+                  </MenuButton>
+                </PopoverTrigger>
 
-                  <PopoverContent>
-                    <PopoverHeader fontWeight='semibold'>We will show restaurants nearby</PopoverHeader>
-                    <PopoverArrow />
-                    <PopoverCloseButton />
-                    <PopoverBody>Your location is {city}</PopoverBody>
-                    <PopoverFooter display='flex' justifyContent='flex-end'>
-                      <ButtonGroup size='2xs'>
-                        <Button
-                          w={{ base: '100%', md: 'initial' }}
-                          background='primary.default'
-                          fontWeight='bold'
-                          variant='solid'
-                          color='neutral.white'
-                          borderWidth='1px'
-                          borderColor='neutral.white'
-                          _hover={{
-                            background: 'neutral.white',
-                            color: 'primary.default',
-                            borderWidth: '1px',
-                            borderColor: 'primary.default'
-                          }}
-                          onClick={() => {
-                            sessionStorage.removeItem('location');
-                            setCity(null);
-                            onClose();
-                          }}
-                        >
-                          Change
-                        </Button>
-                      </ButtonGroup>
-                    </PopoverFooter>
-                  </PopoverContent>
-                </Menu>
-              </Popover>
-            </Box>
-          </Skeleton>
+                <PopoverContent>
+                  <PopoverHeader fontWeight='semibold'>We will show restaurants nearby</PopoverHeader>
+                  <PopoverArrow />
+                  <PopoverCloseButton />
+                  <PopoverBody>Your location is {city}</PopoverBody>
+                  <PopoverFooter display='flex' justifyContent='flex-end'>
+                    <ButtonGroup size='2xs'>
+                      <Button
+                        w={{ base: '100%', md: 'initial' }}
+                        background='primary.default'
+                        fontWeight='bold'
+                        variant='solid'
+                        color='neutral.white'
+                        borderWidth='1px'
+                        borderColor='neutral.white'
+                        _hover={{
+                          background: 'neutral.white',
+                          color: 'primary.default',
+                          borderWidth: '1px',
+                          borderColor: 'primary.default'
+                        }}
+                        onClick={() => {
+                          sessionStorage.removeItem('location');
+                          sessionStorage.removeItem('isTrue', isTrue);
+                          setCity(null);
+                          setIsTrue(false);
+                          onClose();
+                        }}
+                      >
+                        Change
+                      </Button>
+                    </ButtonGroup>
+                  </PopoverFooter>
+                </PopoverContent>
+              </Menu>
+            </Popover>
+          </Box>
+          {/* </Skeleton> */}
         </Box>
       )}
     </Box>

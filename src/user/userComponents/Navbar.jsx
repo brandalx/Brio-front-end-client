@@ -39,7 +39,7 @@ export default function Navbar() {
   const isTokenExpired = useCheckToken();
   const { cartLen, setCartLen } = useContext(cartContext);
   const { avatarUser, setAvatarUser } = useContext(avatarContext);
-  const { city, setCity } = useContext(geolocationContext);
+  const { city, setCity, isTrue, setIsTrue } = useContext(geolocationContext);
   // useEffect(() => {
   //   if (isTokenExpired) {
   //   }

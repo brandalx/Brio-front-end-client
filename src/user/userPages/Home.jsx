@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useContext, useEffect, useState } from 'react';
 import { Box, Container, Flex, Text, GridItem, Grid, Image, Skeleton } from '@chakra-ui/react';
 import burgertest from '../../assets/images/burgertest.png';
 import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
@@ -6,23 +6,32 @@ import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
 import Preloader from '../../components/Loaders/preloader';
 import { useCheckToken } from '../../services/token';
-
+import caketest from '../../assets/images/caketest.png';
 import Spline from '@splinetool/react-spline';
 import Logo from '../../assets/svg/Logo';
 import { Circle } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
+import { geolocationContext } from '../../context/globalContext';
+import Pickers from '../userComponents/HomePage/Pickers';
 
 export default function Home() {
   // todo: add tag into product into backend model and validation
 
   const [arr, setAr] = useState([]);
+  const [arr2, setAr2] = useState([]);
+  const [keepArr, setKeepArr] = useState([]);
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingModel, setloadingModel] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [heightchange, setheightchange] = useState(1);
   const [hovered, setHovered] = useState(false);
+  const [sortedArr, setSortedArr] = useState([]);
+  const [sortedArr2, setSortedArr2] = useState([]);
+
+  const { city, setCity, isTrue, setIsTrue } = useContext(geolocationContext);
+
   const handleApi = async () => {
     const url = API_URL + '/restaurants';
 
@@ -30,6 +39,8 @@ export default function Home() {
       const data = await handleApiGet(url);
 
       setAr(data);
+      setAr2(data);
+      setKeepArr(data);
       handleApiUser();
       console.log(data);
     } catch (error) {
@@ -45,7 +56,6 @@ export default function Home() {
       const data2 = await handleApiGet(urluser);
 
       setUser(data2);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -82,6 +92,38 @@ export default function Home() {
   const handleMouseLeave = () => {
     console.log('Mouse left');
     setHovered(false);
+  };
+
+  useEffect(() => {
+    sortByTags2(sortedArr);
+  }, [sortedArr]);
+
+  useEffect(() => {
+    sortByTags1(sortedArr2);
+  }, [sortedArr2]);
+
+  const sortByTags2 = (_info) => {
+    if (_info.length === 0) {
+      setAr2(keepArr);
+    } else {
+      const emojis = _info.map((item) => item.emoji); // extract emojis from _info
+      let filteredArr = keepArr.filter(
+        (item, index) => item.tags.some((tag) => emojis.includes(tag.badgeEmoji)) // check if badgeEmoji is in the emojis array
+      );
+      setAr2(filteredArr);
+    }
+  };
+
+  const sortByTags1 = (_info) => {
+    if (_info.length === 0) {
+      setAr(keepArr);
+    } else {
+      const emojis = _info.map((item) => item.emoji); // extract emojis from _info
+      let filteredArr = keepArr.filter(
+        (item, index) => item.tags.some((tag) => emojis.includes(tag.badgeEmoji)) // check if badgeEmoji is in the emojis array
+      );
+      setAr(filteredArr);
+    }
   };
   return (
     <>
@@ -200,7 +242,7 @@ export default function Home() {
               >
                 <Flex alignItems='center'>
                   <Box w='50%'>
-                    <Image src={burgertest} alt='Promotion 1' />
+                    <Image src={caketest} alt='Promotion 1' />
                   </Box>
                   <Box w='50%'>
                     <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
@@ -225,7 +267,7 @@ export default function Home() {
                 h='auto'
                 borderColor='white'
                 borderWidth='1px'
-                bg='primary.light'
+                bg='secondary.light'
                 _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
               >
                 <Flex alignItems='center'>
@@ -267,7 +309,6 @@ export default function Home() {
                   ms={5}
                   textAlign={{ base: 'center', md: 'start' }}
                   fontSize={{ base: 'sm', md: 'dm' }}
-                  lineHeight={{ base: '15px', md: '20px' }}
                   color={hovered ? '#4e60ff' : '#4e60ff'}
                   fontWeight='black'
                 >
@@ -297,82 +338,74 @@ export default function Home() {
             </Box>
           </Link>
         </Box>
-        <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
-          <Box py={30}>
-            <Grid templateColumns={{ base: 'repeat(3, 1fr)', md: 'repeat(6, 1fr)' }} gap={4}>
-              <CategoryPicker emoji='pizza' label='Pizza' />
+        {localStorage[TOKEN_KEY] && sessionStorage['isTrue'] && sessionStorage['location'] && sortedArr && (
+          <>
+            <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
+              <Pickers setSortedArr={setSortedArr} sortedArr={sortedArr} />
+            </Skeleton>
 
-              <CategoryPicker emoji='hamburger' label='Burger' />
-              <CategoryPicker emoji='cut-of-meat' label='   Sushi' />
-              <CategoryPicker emoji='sushi' label='Sushi' />
-              <CategoryPicker emoji='broccoli' label='Vegan' />
-              <CategoryPicker emoji='cupcake' label='  Desserts' />
-            </Grid>
-          </Box>
-        </Skeleton>
-        <Box py='25px'>
-          <Text mb={5} fontWeight='semibold' color='neutral.black' fontSize='sm'>
-            Nearby restaurants
-          </Text>
+            <Box py='25px'>
+              <Text mb={5} fontWeight='semibold' color='neutral.black' fontSize='sm'>
+                Nearby restaurants at {city}
+              </Text>
+              <Skeleton borderRadius='16px' isLoaded={!loading}>
+                <Text pb={4} color='neutral.grayDark' fontSize='3xs'>
+                  Found {arr2.length} restaurants
+                </Text>
+              </Skeleton>
 
-          {!loading && (
-            <Box>
-              <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
-                {arr.map((item, index) => {
-                  return (
-                    <Box key={index}>
-                      <Skeleton borderRadius='16px' isLoaded={!loading}>
-                        <RestaurantCard
-                          _id={item._id}
-                          img={item.image}
-                          title={item.title}
-                          time={item.time}
-                          price={item.minprice}
-                          badgeData={item.tags}
-                        />
-                      </Skeleton>
-                    </Box>
-                  );
-                })}
-              </Grid>
+              {!loading && (
+                <Box>
+                  <Grid
+                    templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+                    gap={4}
+                  >
+                    {arr2.map((item, index) => {
+                      return (
+                        <Box key={index}>
+                          <Skeleton borderRadius='16px' isLoaded={!loading}>
+                            <RestaurantCard
+                              _id={item._id}
+                              img={item.image}
+                              title={item.title}
+                              time={item.time}
+                              price={item.minprice}
+                              badgeData={item.tags}
+                            />
+                          </Skeleton>
+                        </Box>
+                      );
+                    })}
+                  </Grid>
+                </Box>
+              )}
+              {loading && (
+                <Grid
+                  mt={4}
+                  templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+                  gap={4}
+                >
+                  <GridItem minH='350px'>
+                    <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
+                  </GridItem>
+                  <GridItem minH='350px'>
+                    <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
+                  </GridItem>
+                  <GridItem minH='350px'>
+                    <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
+                  </GridItem>
+                </Grid>
+              )}
             </Box>
-          )}
-          {loading && (
-            <Grid
-              mt={4}
-              templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
-              gap={4}
-            >
-              <GridItem minH='350px'>
-                <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
-              </GridItem>
-              <GridItem minH='350px'>
-                <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
-              </GridItem>
-              <GridItem minH='350px'>
-                <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
-              </GridItem>
-            </Grid>
-          )}
-        </Box>
-
+          </>
+        )}
         <Box py='25px'>
           <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>
             All restaurants
           </Text>
-          <Box py={15}>
-            <Skeleton borderRadius='16px' isLoaded={!loading}>
-              <Grid templateColumns={{ base: 'repeat(3, 1fr)', md: 'repeat(6, 1fr)' }} gap={4}>
-                <CategoryPicker emoji='pizza' label='Pizza' />
-
-                <CategoryPicker emoji='hamburger' label='Burger' />
-                <CategoryPicker emoji='cut-of-meat' label='   Sushi' />
-                <CategoryPicker emoji='sushi' label='Sushi' />
-                <CategoryPicker emoji='broccoli' label='Vegan' />
-                <CategoryPicker emoji='cupcake' label='  Desserts' />
-              </Grid>
-            </Skeleton>
-          </Box>
+          <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
+            <Pickers setSortedArr={setSortedArr2} sortedArr={sortedArr2} />
+          </Skeleton>
           <Box py={15} display='flex'>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Grid templateColumns={{ base: 'repeat(4, 1fr)', sm: 'repeat(4 1fr)', md: 'repeat(6, 1fr)' }} gap={3}>

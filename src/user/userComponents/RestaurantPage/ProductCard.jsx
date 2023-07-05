@@ -88,7 +88,7 @@ export default function ProductCard({ img, title, description, price, _id }) {
   const isTokenExpired = useCheckToken();
 
   return (
-    <GridItem w='100%' h={!isTokenExpired ? '420px' : '360px'} bg='neutral.white'>
+    <GridItem w='100%' maxH={!isTokenExpired ? '420px' : '450px'} bg='neutral.white'>
       <Box
         w='100%'
         p={2}
@@ -114,6 +114,9 @@ export default function ProductCard({ img, title, description, price, _id }) {
           <Box w='100%'>
             {isTokenExpired ? (
               <Box>
+                <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                  $ {price}
+                </Text>
                 <Link to='/signup'>
                   <Button
                     w='100%'

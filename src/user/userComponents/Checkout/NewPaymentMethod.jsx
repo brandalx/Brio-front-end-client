@@ -104,6 +104,9 @@ export default function NewPaymentMethod({
         <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
           New payment method
         </Text>
+        <FormLabel pb={2} fontWeight='semibold' fontSize='3xs' color='neutral.grayLight'>
+          We currently accept only "Visa" and "MasterCard"
+        </FormLabel>
 
         <Box mt={4}>
           <form onSubmit={handleSubmit(onSubForm)}>

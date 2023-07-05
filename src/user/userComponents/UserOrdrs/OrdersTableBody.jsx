@@ -60,7 +60,6 @@ export default function OrdersTableBody() {
   const getRestaurantName = (id) => {
     return restaurantar.map((item) => {
       if (item._id === id) {
-        console.log(item.title);
         return item.title;
       }
     });

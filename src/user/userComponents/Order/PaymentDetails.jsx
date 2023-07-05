@@ -1,26 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import PaymentCard from '../AccountSettingsPage/PaymentCard';
-
-export default function PaymentDetails({ item, orders }) {
+import { API_URL } from '../../../services/apiServices';
+import DefaultPaymentMethod from '../AccountSettingsPage/DefaultPaymentMethod';
+import cash from '../../../assets/images/cash.png';
+export default function PaymentDetails({ item, orders, userArr }) {
   const [disabledOptions, setDisabledOptions] = useState(true);
+  const [paymentMethod, setPaymentMethod] = useState('cash');
+
+  const definePaymentMwthod = () => {
+    let cardId = item.userdata.selectedPaymentMethod;
+    userArr.creditdata.map((item, index) => {
+      if (item._id === cardId) {
+        setPaymentMethod(userArr.creditdata[index]);
+      }
+    });
+  };
+  useEffect(() => {
+    definePaymentMwthod();
+  }, []);
   console.log(orders);
+  console.log(item);
   return (
     <Box>
       <Text mb={4} fontSize='xs' fontWeight='bold' color='neutral.black'>
         Payment details
       </Text>
       <Box>
-        <PaymentCard
-          disabledOptions={disabledOptions}
-          item={{
-            cardNumber: '1234 5678 9012 3456',
-            expirationDate: '12/24',
-            cardholder: 'John Doe',
-            cardType: 'visa'
-          }}
-        />
+        {paymentMethod != 'cash' && <PaymentCard item={paymentMethod} disabledOptions={true} />}
+        {paymentMethod === 'cash' && <DefaultPaymentMethod cash={cash} />}
       </Box>
       <Box>
         <Flex my={4} justifyContent='space-between'>

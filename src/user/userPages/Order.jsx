@@ -45,6 +45,7 @@ export default function Order() {
   const [ordersArr2, setOrdersArr2] = useState([]);
   const [restaurantArr, setRestaurantArr] = useState([]);
   const [addressString, setAddressString] = useState(null);
+
   const [isSelf, setIsSelf] = useState(false);
 
   const handleDefineAddress = (orderitem, useritem, restaurantitem) => {
@@ -201,7 +202,7 @@ export default function Order() {
             <Box borderRadius='16px' borderWidth='1px' py={{ base: '50px', md: '20px' }} px='10px' my={5}>
               <Flex w='100%' justifyContent='space-between'>
                 <Box w='100%'>
-                  <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                  <Text fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold' color='neutral.black'>
                     Order status
                   </Text>
                   {/* replace after fetch */}
@@ -210,8 +211,12 @@ export default function Order() {
                     <Skeleton my={2} minH='10px' w='25%' borderRadius='16px' isLoaded={!loading}>
                       <Box display='flex' alignItems='center'>
                         {' '}
-                        {!loading && <Status color={(!loading && colorstatus[findOrder(params['id'])]) || 'red'} />}
-                        <Text ms={2} color='neutral.black' fontSize='2xs'>
+                        {!loading && (
+                          <Box as='span' w='10px'>
+                            <Status color={(!loading && colorstatus[findOrder(params['id'])]) || 'red'} />
+                          </Box>
+                        )}
+                        <Text ms={{ base: 0, md: 2 }} color='neutral.black' fontSize={{ base: '12px', md: '2xs' }}>
                           {(!loading && findOrder(params['id'])) || 'Undefined'}
                         </Text>
                       </Box>
@@ -220,14 +225,23 @@ export default function Order() {
                 </Box>
                 <Box w='100%' textAlign='end' display='flex' flexDir='column' alignItems='end'>
                   <Skeleton my={5} borderRadius='16px' h='10px' isLoaded={!loading}>
-                    <Box display={{ sm: 'none', md: 'block' }}>
+                    <Box>
                       <Box display='flex' alignItems='center'>
-                        <Text me={2} color='neutral.gray' fontSize='2xs'>
+                        <Text display={{ base: 'none', md: 'block' }} fontSize='2xs' me={2} color='neutral.gray'>
                           {/* for second release will still static after that will changed to dynamic according on picked address id */}
                           {isSelf ? '(Pickup at)' : '(Delivery to)'}
                         </Text>
-                        <Text me={2} fontWeight='bold'>
-                          {addressString}
+
+                        <Text display={{ base: 'block', md: 'none' }} fontSize='10px' me={2} color='neutral.gray'>
+                          {/* for second release will still static after that will changed to dynamic according on picked address id */}
+                          {isSelf ? '(Pickup at)' : '(Delivery to)'}
+                        </Text>
+
+                        <Text display={{ base: 'none', md: 'block' }} me={2} fontWeight='bold'>
+                          {addressString && addressString}
+                        </Text>
+                        <Text display={{ base: 'block', md: 'none' }} fontSize='10px' me={2} fontWeight='bold'>
+                          {addressString && addressString}
                         </Text>
                         <Box>
                           <Location />
@@ -237,9 +251,13 @@ export default function Order() {
                   </Skeleton>
                   <Skeleton h='10px' my={2} borderRadius='16px' isLoaded={!loading}>
                     <Box mt={3} display='flex' alignItems='center'>
-                      <Text me={2} color='neutral.gray' fontSize='2xs'>
+                      <Text me={2} display={{ base: 'none', md: 'block' }} color='neutral.gray' fontSize='2xs'>
                         {!loading && formatDate(ordersArr.creationDate)}
                       </Text>
+                      <Text fontSize='10px' mt={5} me={2} display={{ base: 'block', md: 'none' }} color='neutral.gray'>
+                        {!loading && formatDate(ordersArr.creationDate)}
+                      </Text>
+
                       <Box>
                         <Calendar />
                       </Box>
@@ -247,7 +265,7 @@ export default function Order() {
                   </Skeleton>
                 </Box>
               </Flex>
-              <Grid mt={5} templateColumns='0.2fr 1fr 0.2fr 1fr 0.2fr 1fr 0.2fr' gap={2}>
+              <Grid mt={{ base: '50px', md: '40px' }} templateColumns='0.2fr 1fr 0.2fr 1fr 0.2fr 1fr 0.2fr' gap={2}>
                 <GridItem w='fit-content'>
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                     <Box>
@@ -304,10 +322,10 @@ export default function Order() {
                 <Box>
                   <Skeleton h='20px' borderRadius='16px' isLoaded={!loading}>
                     <Box mt={4}>
-                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                      <Text fontSize={{ base: '10px', md: '2xs' }} color='neutral.black' fontWeight='bold'>
                         Order placed
                       </Text>
-                      <Text color='neutral.black' fontSize='3xs'>
+                      <Text fontSize={{ base: '10px', md: '3xs' }} color='neutral.black'>
                         {/* todo: checkif order already delivered */}
                         {placed ? formatTime(Date.now()) : ''}
                       </Text>
@@ -317,10 +335,10 @@ export default function Order() {
                 <Box>
                   <Skeleton h='20px' borderRadius='16px' isLoaded={!loading}>
                     <Box mt={4}>
-                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                      <Text fontSize={{ base: '10px', md: '2xs' }} color='neutral.black' fontWeight='bold'>
                         Order being prepared
                       </Text>
-                      <Text color='neutral.black' fontSize='3xs'>
+                      <Text color='neutral.black' fontSize={{ base: '10px', md: '3xs' }}>
                         {prepared ? formatTime(Date.now()) : ''}
                       </Text>
                     </Box>
@@ -329,10 +347,10 @@ export default function Order() {
                 <Box>
                   <Skeleton h='20px' borderRadius='16px' isLoaded={!loading}>
                     <Box mt={4}>
-                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                      <Text fontSize={{ base: '10px', md: '2xs' }} color='neutral.black' fontWeight='bold'>
                         Out for delivery
                       </Text>
-                      <Text color='neutral.black' fontSize='3xs'>
+                      <Text color='neutral.black' fontSize={{ base: '10px', md: '3xs' }}>
                         {delivery ? formatTime(Date.now()) : ''}
                       </Text>
                     </Box>
@@ -341,10 +359,10 @@ export default function Order() {
                 <Box>
                   <Skeleton h='20px' borderRadius='16px' isLoaded={!loading}>
                     <Box mt={4}>
-                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                      <Text fontSize={{ base: '10px', md: '2xs' }} color='neutral.black' fontWeight='bold'>
                         Delivered
                       </Text>
-                      <Text color='neutral.black' fontSize='3xs'>
+                      <Text color='neutral.black' fontSize={{ base: '10px', md: '3xs' }}>
                         {delivered ? formatTime(Date.now()) : ''}
                       </Text>
                     </Box>
@@ -355,7 +373,7 @@ export default function Order() {
 
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
               <Skeleton borderRadius='16px' isLoaded={!loading}>
-                <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                <Text fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold' color='neutral.black'>
                   Menu {!loading && ordersArr.ordersdata.products.length} meals
                 </Text>
               </Skeleton>
@@ -377,7 +395,7 @@ export default function Order() {
           </GridItem>
           <GridItem w='100%'>
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
-              <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+              <Text fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold' color='neutral.black'>
                 Shipping address
               </Text>
               {!loading && (
@@ -386,7 +404,7 @@ export default function Order() {
             </Box>
             <Skeleton minH='250px' borderRadius='16px' isLoaded={!loading}>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
-                {!loading && <PaymentDetails orders={findOrder(params['id'])} item={ordersArr} />}
+                {!loading && <PaymentDetails userArr={userArr} orders={findOrder(params['id'])} item={ordersArr} />}
               </Box>
             </Skeleton>
           </GridItem>
