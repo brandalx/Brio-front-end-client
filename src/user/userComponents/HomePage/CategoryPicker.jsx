@@ -19,7 +19,7 @@ const CategoryPicker = ({ sortedArr, setSortedArr, emoji, label, size = '40' }) 
   }, [isPressed]);
 
   const bgColor = isPressed ? 'primary.light' : isHovered ? 'primary.lightest' : 'neutral.white';
-  const borderColor = isPressed ? 'primary.default' : isHovered ? 'primary.default' : 'neutral.grayLightest';
+  const borderColor = isPressed ? 'primary.default' : isHovered ? 'neutral.white' : 'neutral.grayLightest';
   const borderWidth = '2px';
   const textColor = isPressed ? 'primary.default' : 'primary.gray';
   useEffect(() => {
