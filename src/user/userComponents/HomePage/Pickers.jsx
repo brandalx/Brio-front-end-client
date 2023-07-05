@@ -13,7 +13,7 @@ export default function Pickers({ sortedArr, setSortedArr }) {
           <CategoryPicker sortedArr={sortedArr} setSortedArr={setSortedArr} emoji='pizza' label='Pizza' />
 
           <CategoryPicker sortedArr={sortedArr} setSortedArr={setSortedArr} emoji='hamburger' label='Burger' />
-          <CategoryPicker sortedArr={sortedArr} setSortedArr={setSortedArr} emoji='cut-of-meat' label='   Sushi' />
+          <CategoryPicker sortedArr={sortedArr} setSortedArr={setSortedArr} emoji='cut-of-meat' label='Beef' />
           <CategoryPicker sortedArr={sortedArr} setSortedArr={setSortedArr} emoji='sushi' label='Sushi' />
           <CategoryPicker sortedArr={sortedArr} setSortedArr={setSortedArr} emoji='broccoli' label='Vegan' />
           <CategoryPicker sortedArr={sortedArr} setSortedArr={setSortedArr} emoji='cupcake' label='  Desserts' />
