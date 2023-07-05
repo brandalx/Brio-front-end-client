@@ -60,7 +60,6 @@ export default function OrdersTableBody() {
   const getRestaurantName = (id) => {
     return restaurantar.map((item) => {
       if (item._id === id) {
-        console.log(item.title);
         return item.title;
       }
     });
@@ -143,7 +142,6 @@ export default function OrdersTableBody() {
                     {(orders.length > 0 && findOrder(item.orderRef)) || 'Undefined'}
                   </Flex>
                 </Td>
-
 
                 <Td
                   transition='all 0.3s'

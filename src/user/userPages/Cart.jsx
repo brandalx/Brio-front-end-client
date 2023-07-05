@@ -157,6 +157,7 @@ export default function Cart() {
   }, [reload]);
 
   useEffect(() => {
+    handleApi();
     handleApiPresummary();
   }, [reload, reload2]);
 

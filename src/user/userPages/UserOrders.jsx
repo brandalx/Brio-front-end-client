@@ -10,15 +10,19 @@ export default function UserOrders() {
   const [arr, setArr] = useState();
   const [isTrue, setIsTrue] = useState();
   const handleApi = async () => {
-    const urlorder = API_URL + '/orders/user/single';
+    try {
+      const urlorder = API_URL + '/orders/user/single';
 
-    const dataorders = await handleApiGet(urlorder);
-    setArr(dataorders);
-    if (dataorders.length === 0) {
-      setIsTrue(false);
-    }
-    if (dataorders.length > 0) {
-      setIsTrue(true);
+      const dataorders = await handleApiGet(urlorder);
+      setArr(dataorders);
+      if (dataorders.length === 0) {
+        setIsTrue(false);
+      }
+      if (dataorders.length > 0) {
+        setIsTrue(true);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   useEffect(() => {
