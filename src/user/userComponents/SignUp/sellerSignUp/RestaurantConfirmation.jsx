@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL, handleApiMethod } from '../../../../services/apiServices';
 
 export default function RestaurantConfirmation({ mainBody }) {
+  const toast = useToast();
   const navigate = useNavigate();
   useEffect(() => {
     console.log(mainBody);
@@ -14,7 +15,6 @@ export default function RestaurantConfirmation({ mainBody }) {
     navigate(-1); // Go back one step in the history
   };
 
-  const toast = useToast();
   const handlePostUser = async (_bodyData) => {
     const restaurantData = {
       title: _bodyData.title,
@@ -39,20 +39,38 @@ export default function RestaurantConfirmation({ mainBody }) {
       admin: adminData
     };
 
-    const createUrl = API_URL + '/createRestaurantAndAdmin';
+    const createUrl = API_URL + '/admin/restaurants/createRestaurantAndAdmin';
 
     try {
       console.log('Creating restaurant and admin with data:', payload);
       const response = await handleApiMethod(createUrl, 'POST', payload);
+      if (response.restaurant._id) {
+        toast({
+          title: 'Account successfuly created.',
+          description: 'Login to begin use our service.',
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+        navigate('/login');
+      }
       console.log('Creation result:', response);
     } catch (error) {
+      toast({
+        title: 'Error when creating new account',
+        description: 'Error when creating your account. PLease,  try again',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
       console.error('An error occurred:', error);
     }
   };
   return (
     <>
-      <Flex h='100%' w='100' justifyContent='center'>
+      <Flex data-aos='zoom-in' h='100%' w='100' justifyContent='center'>
         <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
+          <Box></Box>
           <Box>
             <Box>
               <Text fontSize='xl' fontWeight='bold' color='neutral.black'>
