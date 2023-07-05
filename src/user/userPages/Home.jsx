@@ -95,17 +95,35 @@ export default function Home() {
   };
 
   useEffect(() => {
-    console.log('kk');
     sortByTags2(sortedArr);
   }, [sortedArr]);
 
+  useEffect(() => {
+    sortByTags1(sortedArr2);
+  }, [sortedArr2]);
+
   const sortByTags2 = (_info) => {
-    console.log('kk2');
-    const emojis = _info.map((item) => item.emoji); // extract emojis from _info
-    let filteredArr = keepArr.filter(
-      (item, index) => item.tags.some((tag) => emojis.includes(tag.badgeEmoji)) // check if badgeEmoji is in the emojis array
-    );
-    setAr2(filteredArr);
+    if (_info.length === 0) {
+      setAr2(keepArr);
+    } else {
+      const emojis = _info.map((item) => item.emoji); // extract emojis from _info
+      let filteredArr = keepArr.filter(
+        (item, index) => item.tags.some((tag) => emojis.includes(tag.badgeEmoji)) // check if badgeEmoji is in the emojis array
+      );
+      setAr2(filteredArr);
+    }
+  };
+
+  const sortByTags1 = (_info) => {
+    if (_info.length === 0) {
+      setAr(keepArr);
+    } else {
+      const emojis = _info.map((item) => item.emoji); // extract emojis from _info
+      let filteredArr = keepArr.filter(
+        (item, index) => item.tags.some((tag) => emojis.includes(tag.badgeEmoji)) // check if badgeEmoji is in the emojis array
+      );
+      setAr(filteredArr);
+    }
   };
   return (
     <>
@@ -332,7 +350,7 @@ export default function Home() {
               </Text>
               <Skeleton borderRadius='16px' isLoaded={!loading}>
                 <Text pb={4} color='neutral.grayDark' fontSize='3xs'>
-                  Found {arr.length} restaurants
+                  Found {arr2.length} restaurants
                 </Text>
               </Skeleton>
 
