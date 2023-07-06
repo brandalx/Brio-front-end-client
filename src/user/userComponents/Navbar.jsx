@@ -31,7 +31,7 @@ import { IconShoppingBag } from '@tabler/icons-react';
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import Logo from '../../assets/svg/Logo';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import { useCheckToken } from '../../services/token';
 import { avatarContext, cartContext, geolocationContext } from '../../context/globalContext';
 import GeolocationDefinder from './Navbar/GeolocationDefinder';
@@ -57,6 +57,38 @@ export default function Navbar() {
 
   const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  const clearUserCart = async () => {
+    try {
+      const url = API_URL + '/users/cart/clear';
+
+      const data = await handleApiMethod(url, 'DELETE', null);
+      if (data.msg === true) {
+        toast({
+          title: 'Cart was cleared.',
+          description: "We've deleted items from your cart.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+
+        setCartLen(0);
+        if (isInCart) {
+          window.location.reload();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast({
+        title: 'Error when clearing your cart',
+        description: 'Error when clearing your cart data.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+    }
   };
 
   const genavatar = () => {
@@ -232,9 +264,26 @@ export default function Navbar() {
                             <MenuList>
                               <a href='/user/cart'>
                                 {/* //because it should refresh to update user logged in */}
-
                                 <MenuItem fontWeight='medium'>My cart</MenuItem>
                               </a>
+
+                              {!loading && cartLen > 0 && (
+                                <MenuItem
+                                  onClick={clearUserCart}
+                                  m={0}
+                                  h='100%'
+                                  background='neutral.white'
+                                  variant='solid'
+                                  color='error.default'
+                                  _hover={{
+                                    background: 'error.default',
+                                    color: 'neutral.white'
+                                  }}
+                                  fontWeight='medium'
+                                >
+                                  Clear cart
+                                </MenuItem>
+                              )}
                             </MenuList>
                           </Menu>
                         </Box>
@@ -385,9 +434,26 @@ export default function Navbar() {
                             <MenuList>
                               <a href='/user/cart'>
                                 {/* //because it should refresh to update user logged in */}
-
                                 <MenuItem fontWeight='medium'>My cart</MenuItem>
                               </a>
+
+                              {!loading && cartLen > 0 && (
+                                <MenuItem
+                                  onClick={clearUserCart}
+                                  m={0}
+                                  h='100%'
+                                  background='neutral.white'
+                                  variant='solid'
+                                  color='error.default'
+                                  _hover={{
+                                    background: 'error.default',
+                                    color: 'neutral.white'
+                                  }}
+                                  fontWeight='medium'
+                                >
+                                  Clear cart
+                                </MenuItem>
+                              )}
                             </MenuList>
                           </Menu>
                         </Box>

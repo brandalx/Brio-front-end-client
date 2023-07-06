@@ -340,12 +340,12 @@ export default function Home() {
         </Box>
         {localStorage[TOKEN_KEY] && sessionStorage['isTrue'] && sessionStorage['location'] && sortedArr && (
           <>
-            <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
+            <Skeleton borderRadius='16px' isLoaded={!loading} my={2}>
               <Pickers setSortedArr={setSortedArr} sortedArr={sortedArr} />
             </Skeleton>
 
-            <Box py='25px'>
-              <Text mb={5} fontWeight='semibold' color='neutral.black' fontSize='sm'>
+            <Box pt='25px'>
+              <Text mb={2} fontWeight='semibold' color='neutral.black' fontSize='sm'>
                 Nearby restaurants at {city}
               </Text>
               <Skeleton borderRadius='16px' isLoaded={!loading}>
