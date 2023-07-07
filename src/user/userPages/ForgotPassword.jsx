@@ -252,7 +252,16 @@ export default function ForgotPassword() {
                       </Box>
                     }
                   />
-                  <Route path='/recover' element={<RecoverPassword />} />
+                  <Route
+                    path='/recover'
+                    element={
+                      <RecoverPassword
+                        handleUserSendRecoverChange={handleUserSendRecoverChange}
+                        recoverData={recoverData}
+                        setRecoverData={setRecoverData}
+                      />
+                    }
+                  />
                 </Routes>
                 <Box textAlign='center' py={6}>
                   <Text>
