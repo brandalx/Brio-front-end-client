@@ -109,7 +109,7 @@ export default function ForgotPassword() {
                           <Input
                             id='email'
                             {...register('email', {
-                              required: true,
+                              required: { value: true, message: 'This field is required' },
                               minLength: { value: 6, message: 'Minimum length should be 6' }
                             })}
                             type='email'

@@ -112,8 +112,8 @@ export default function Login() {
                         <Input
                           id='email'
                           {...register('email', {
-                            required: true,
-                            minLength: { value: 2, message: 'Minimum length should be 2' }
+                            required: { value: true, message: 'This field is required' },
+                            minLength: { value: 6, message: 'Minimum length should be 6' }
                           })}
                           type='email'
                           background='neutral.white'
@@ -135,8 +135,8 @@ export default function Login() {
 
                         <Input
                           {...register('password', {
-                            required: true,
-                            minLength: { value: 2, message: 'Minimum length should be 5' }
+                            required: { value: true, message: 'This field is required' },
+                            minLength: { value: 6, message: 'Minimum length should be 6' }
                           })}
                           id='password'
                           type='password'
