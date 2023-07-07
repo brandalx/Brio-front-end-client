@@ -607,9 +607,17 @@ export default function Restaurant() {
                                             min='1'
                                             max='5'
                                             {...register('rate', {
-                                              required: true,
-                                              min: { value: 1, message: 'minimum is 1' },
-                                              max: { value: 5, message: 'maximum is 5' }
+                                              required: 'This field is required',
+                                              validate: (value) => {
+                                                const number = Number(value);
+                                                if (isNaN(number)) {
+                                                  return 'Please enter a valid number';
+                                                } else if (number < 1) {
+                                                  return 'Minimum is 1';
+                                                } else if (number > 5) {
+                                                  return 'Maximum is 5';
+                                                }
+                                              }
                                             })}
                                             type='number'
                                             background='neutral.white'

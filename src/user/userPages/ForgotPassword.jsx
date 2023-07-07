@@ -17,13 +17,15 @@ import {
   Grid,
   GridItem,
   Icon,
-  useToast
+  useToast,
+  FormErrorMessage
 } from '@chakra-ui/react';
-import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaChevronLeft } from 'react-icons/fa';
+import { useForm } from 'react-hook-form';
 
 export default function ForgotPassword() {
   const toast = useToast();
@@ -34,7 +36,7 @@ export default function ForgotPassword() {
     event.preventDefault();
     const email = emailRef.current.value;
 
-    if (emailRef.length < 5) {
+    if (email.length < 5) {
       emailRef.current.style.borderColor = 'red';
       return;
     } else {
@@ -42,6 +44,18 @@ export default function ForgotPassword() {
     }
 
     // handleSubmit(event);
+  };
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting }
+  } = useForm();
+  const onSubForm = (_bodyData) => {
+    console.log(_bodyData);
   };
   return (
     <>
@@ -81,52 +95,57 @@ export default function ForgotPassword() {
                       Forgot Password
                     </Text>
                     <Text fontSize='2xs' color='neutral.grayDark'>
-                      Enter the email associated with your account and we’ll send an email with instructions to reset
-                      your password.
+                      Enter the email and phone number associated with your account.
                     </Text>
                   </Box>
                   <Box mt='20px'>
-                    <form onSubmit={onSubmit}>
+                    <form onSubmit={handleSubmit(onSubForm)}>
                       <Stack spacing={4}>
-                        <FormControl id='email'>
+                        <FormControl id='email' isInvalid={errors.email}>
                           <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                             Email
                           </FormLabel>
 
                           <Input
-                            ref={emailRef}
-                            id='name'
-                            required
+                            id='email'
+                            {...register('email', {
+                              required: true,
+                              minLength: { value: 6, message: 'Minimum length should be 6' }
+                            })}
                             type='email'
                             background='neutral.white'
                             _placeholder={{ color: 'neutral.gray' }}
                             borderRadius='8px'
                             fontSize='2xs'
                             placeholder='name@example.com'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                           />
+                          <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                            {errors.email && errors.email.message}
+                          </FormErrorMessage>
                         </FormControl>
 
                         <Stack spacing={10}>
-                          <Link to='/'>
-                            <Button
-                              w='100%'
-                              background='primary.default'
-                              fontWeight='bold'
-                              variant='solid'
-                              color='neutral.white'
-                              borderWidth='1px'
-                              borderColor='neutral.white'
-                              _hover={{
-                                background: 'neutral.white',
-                                color: 'primary.default',
-                                borderWidth: '1px',
-                                borderColor: 'primary.default'
-                              }}
-                              py={5}
-                            >
-                              Send instructions
-                            </Button>
-                          </Link>
+                          <Button
+                            type='submit'
+                            w='100%'
+                            background='primary.default'
+                            fontWeight='bold'
+                            variant='solid'
+                            color='neutral.white'
+                            borderWidth='1px'
+                            borderColor='neutral.white'
+                            _hover={{
+                              background: 'neutral.white',
+                              color: 'primary.default',
+                              borderWidth: '1px',
+                              borderColor: 'primary.default'
+                            }}
+                            py={5}
+                          >
+                            Send instructions
+                          </Button>
                         </Stack>
                       </Stack>
                     </form>
