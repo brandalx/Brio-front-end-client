@@ -27,8 +27,10 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { FaChevronLeft } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import RecoverPassword from '../userComponents/ForgotPassword/RecoverPassword';
+import { API_URL, handleApiMethod } from '../../services/apiServices';
 
 export default function ForgotPassword() {
+  const [recoverData, setRecoverData] = useState();
   const toast = useToast();
   const emailRef = useRef();
   // const [state, handleSubmit] = useForm('xpzeyzgq');
@@ -45,6 +47,64 @@ export default function ForgotPassword() {
     }
 
     // handleSubmit(event);
+  };
+
+  const handleUserSendRecoverRequest = async (_bodyData) => {
+    try {
+      const url = API_URL + '/users/recoverrequest';
+      const data = await handleApiMethod(url, 'POST', _bodyData);
+      if (data.msg === true) {
+        navigate('recover');
+      }
+    } catch (error) {
+      console.log(error);
+
+      if (error.response.data.err === 'Address already exists') {
+        toast({
+          title: 'Duplicated address',
+          description: `Error when adding new address - such address already exist.`,
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      } else {
+        toast({
+          title: 'Error when adding new address',
+          description: 'Error when adding new address',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    }
+  };
+
+  const handleUserSendRecoverChange = async (_bodyData) => {
+    try {
+      const url = API_URL + '/users/recoverrequestdata';
+      const data = await handleApiMethod(url, 'POST', _bodyData);
+      if (data.msg === true) {
+        toast({
+          title: 'Password recovered.',
+          description: "We've recovered your password.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+        navigate('/login');
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast({
+        title: 'Error when recovering your password',
+        description: 'Please try again later',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+      navigate('/recoverpassword');
+    }
   };
 
   const navigate = useNavigate();
@@ -64,6 +124,7 @@ export default function ForgotPassword() {
   }, [isSubmitting]);
   const onSubForm = (_bodyData) => {
     console.log(_bodyData);
+    handleUserSendRecoverRequest(_bodyData);
   };
 
   //   <Route
