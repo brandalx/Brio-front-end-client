@@ -20,12 +20,13 @@ import {
   useToast,
   FormErrorMessage
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaChevronLeft } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
+import RecoverPassword from '../userComponents/ForgotPassword/RecoverPassword';
 
 export default function ForgotPassword() {
   const toast = useToast();
@@ -46,17 +47,30 @@ export default function ForgotPassword() {
     // handleSubmit(event);
   };
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting }
   } = useForm();
+
+  useEffect(() => {
+    if (isSubmitting) {
+      console.log('isSubmitting');
+    }
+    if (!isSubmitting) {
+      console.log('isNOTSubmitting');
+    }
+  }, [isSubmitting]);
   const onSubForm = (_bodyData) => {
     console.log(_bodyData);
   };
+
+  //   <Route
+  //   path='/personal'
+  //   element={<PersonalDetails setMainBody={setMainBody} mainBody={mainBody} type={option2} />}
+  // />
+
   return (
     <>
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
@@ -78,80 +92,107 @@ export default function ForgotPassword() {
                     </Text>
                   </Flex>
                 </Box>
-
-                <Box data-aos='fade-up'>
-                  <Box pb={10} w='100%' display='flex' justifyItems='flex-startx'>
-                    <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
-                      <Flex alignItems='center'>
-                        <Icon as={FaChevronLeft} mr={1} boxSize={4} />
-                        <Text color='neutral.black' fontSize='xs'>
-                          <Link to='/login'> Back to login</Link>
-                        </Text>
-                      </Flex>
-                    </Button>
-                  </Box>
-                  <Box>
-                    <Text fontSize='xl' fontWeight='extrabold' color='neutral.black'>
-                      Forgot Password
-                    </Text>
-                    <Text fontSize='2xs' color='neutral.grayDark'>
-                      Enter the email and phone number associated with your account.
-                    </Text>
-                  </Box>
-                  <Box mt='20px'>
-                    <form onSubmit={handleSubmit(onSubForm)}>
-                      <Stack spacing={4}>
-                        <FormControl id='email' isInvalid={errors.email}>
-                          <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                            Email
-                          </FormLabel>
-
-                          <Input
-                            id='email'
-                            {...register('email', {
-                              required: { value: true, message: 'This field is required' },
-                              minLength: { value: 6, message: 'Minimum length should be 6' }
-                            })}
-                            type='email'
-                            background='neutral.white'
-                            _placeholder={{ color: 'neutral.gray' }}
-                            borderRadius='8px'
-                            fontSize='2xs'
-                            placeholder='name@example.com'
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                          />
-                          <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                            {errors.email && errors.email.message}
-                          </FormErrorMessage>
-                        </FormControl>
-
-                        <Stack spacing={10}>
-                          <Button
-                            type='submit'
-                            w='100%'
-                            background='primary.default'
-                            fontWeight='bold'
-                            variant='solid'
-                            color='neutral.white'
-                            borderWidth='1px'
-                            borderColor='neutral.white'
-                            _hover={{
-                              background: 'neutral.white',
-                              color: 'primary.default',
-                              borderWidth: '1px',
-                              borderColor: 'primary.default'
-                            }}
-                            py={5}
-                          >
-                            Send instructions
+                <Routes>
+                  <Route
+                    path='/'
+                    element={
+                      <Box data-aos='fade-up'>
+                        <Box pb={10} w='100%' display='flex' justifyItems='flex-startx'>
+                          <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
+                            <Flex alignItems='center'>
+                              <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+                              <Text color='neutral.black' fontSize='xs'>
+                                <Link to='/login'> Back to login</Link>
+                              </Text>
+                            </Flex>
                           </Button>
-                        </Stack>
-                      </Stack>
-                    </form>
-                  </Box>
-                </Box>
+                        </Box>
+                        <Box>
+                          <Text fontSize='xl' fontWeight='extrabold' color='neutral.black'>
+                            Forgot Password
+                          </Text>
+                          <Text fontSize='2xs' color='neutral.grayDark'>
+                            Enter the email and phone number associated with your account.
+                          </Text>
+                        </Box>
+                        <Box mt='20px'>
+                          <form onSubmit={handleSubmit(onSubForm)}>
+                            <Stack spacing={4}>
+                              <FormControl id='email' isInvalid={errors.email}>
+                                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                                  Email
+                                </FormLabel>
 
+                                <Input
+                                  id='email'
+                                  {...register('email', {
+                                    required: { value: true, message: 'This field is required' },
+                                    minLength: { value: 6, message: 'Minimum length should be 6' }
+                                  })}
+                                  type='email'
+                                  background='neutral.white'
+                                  _placeholder={{ color: 'neutral.gray' }}
+                                  borderRadius='8px'
+                                  fontSize='2xs'
+                                  placeholder='name@example.com'
+                                />
+                                <FormErrorMessage p={0} mt={2} fontSize='3xs'>
+                                  {errors.email && errors.email.message}
+                                </FormErrorMessage>
+                              </FormControl>
+
+                              <FormControl id='phone' isInvalid={errors.phone}>
+                                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                                  Phone
+                                </FormLabel>
+
+                                <Input
+                                  id='phone'
+                                  {...register('phone', {
+                                    required: { value: true, message: 'This field is required' },
+                                    minLength: { value: 6, message: 'Minimum length should be 6' }
+                                  })}
+                                  type='number'
+                                  background='neutral.white'
+                                  _placeholder={{ color: 'neutral.gray' }}
+                                  borderRadius='8px'
+                                  fontSize='2xs'
+                                  placeholder='+123456789'
+                                />
+                                <FormErrorMessage p={0} mt={2} fontSize='3xs'>
+                                  {errors.phone && errors.phone.message}
+                                </FormErrorMessage>
+                              </FormControl>
+
+                              <Stack spacing={10}>
+                                <Button
+                                  type='submit'
+                                  w='100%'
+                                  background='primary.default'
+                                  fontWeight='bold'
+                                  variant='solid'
+                                  color='neutral.white'
+                                  borderWidth='1px'
+                                  borderColor='neutral.white'
+                                  _hover={{
+                                    background: 'neutral.white',
+                                    color: 'primary.default',
+                                    borderWidth: '1px',
+                                    borderColor: 'primary.default'
+                                  }}
+                                  py={5}
+                                >
+                                  Send instructions
+                                </Button>
+                              </Stack>
+                            </Stack>
+                          </form>
+                        </Box>
+                      </Box>
+                    }
+                  />
+                  <Route path='/recover' element={<RecoverPassword />} />
+                </Routes>
                 <Box textAlign='center' py={6}>
                   <Text>
                     Do you have any questions?

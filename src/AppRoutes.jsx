@@ -65,7 +65,7 @@ export default function AppRoutes({ isToken }) {
                         {/* ----------ALL USERS ROUTES------------ */}
                         <Route path='/' element={<Home />} />
                         <Route path='/login' element={<Login />} />
-                        <Route path='/recoverpassword' element={<Forgotpassword />} />
+                        <Route path='/recoverpassword/*' element={<Forgotpassword />} />
                         <Route path='/signup/*' element={<SignUp />} />
 
                         {/* <Route path='/personal' element={<PersonalDetails />} />
