@@ -124,7 +124,7 @@ export default function Login() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                         />
-                        <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                        <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                           {errors.email && errors.email.message}
                         </FormErrorMessage>
                       </FormControl>
@@ -148,7 +148,7 @@ export default function Login() {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                         />
-                        <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                        <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                           {errors.password && errors.password.message}
                         </FormErrorMessage>
                       </FormControl>

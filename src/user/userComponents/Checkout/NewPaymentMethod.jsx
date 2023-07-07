@@ -119,7 +119,7 @@ export default function NewPaymentMethod({
 
                   <Input
                     {...register('cardNumber', {
-                      required: true,
+                      required: { value: true, message: 'This field is required' },
                       minLength: { value: 6, message: 'Minimum length should be 6' },
                       maxLength: { value: 20, message: 'Maximum length should be 20' }
                     })}
@@ -133,7 +133,7 @@ export default function NewPaymentMethod({
                     fontSize='2xs'
                     placeholder='XXXX - XXXX - XXXX - XXXX'
                   />
-                  <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                  <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                     {errors.cardNumber && errors.cardNumber.message}
                   </FormErrorMessage>
                 </FormControl>
@@ -145,7 +145,7 @@ export default function NewPaymentMethod({
                   </FormLabel>
                   <Input
                     {...register('expirationDate', {
-                      required: true,
+                      required: { value: true, message: 'This field is required' },
                       minLength: { value: 4, message: 'Minimum length should be 4' },
                       maxLength: { value: 4, message: 'Maximum length should be 4' }
                     })}
@@ -157,7 +157,7 @@ export default function NewPaymentMethod({
                     fontSize='2xs'
                     placeholder='MM / YYYY'
                   />{' '}
-                  <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                  <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                     {errors.expirationDate && errors.expirationDate.message}
                   </FormErrorMessage>
                 </FormControl>
@@ -175,7 +175,7 @@ export default function NewPaymentMethod({
 
                   <Input
                     {...register('securityCode', {
-                      required: true,
+                      required: { value: true, message: 'This field is required' },
                       minLength: { value: 3, message: 'Minimum length should be 3' },
                       maxLength: { value: 6, message: 'Maximum length should be 6' }
                     })}
@@ -187,7 +187,7 @@ export default function NewPaymentMethod({
                     fontSize='2xs'
                     placeholder='XXX'
                   />
-                  <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                  <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                     {errors.securityCode && errors.securityCode.message}
                   </FormErrorMessage>
                 </FormControl>
@@ -204,7 +204,7 @@ export default function NewPaymentMethod({
 
                     <Input
                       {...register('cardholder', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 4, message: 'Minimum length should be 4' }
                       })}
                       isDisabled={switcher}
@@ -215,7 +215,7 @@ export default function NewPaymentMethod({
                       fontSize='2xs'
                       placeholder='Enter name on card'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.cardholder && errors.cardholder.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -228,7 +228,7 @@ export default function NewPaymentMethod({
                     </FormLabel>
                     <Select
                       {...register('cardType', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 4, message: 'Choose card type' }
                       })}
                       isDisabled={switcher}
@@ -240,7 +240,7 @@ export default function NewPaymentMethod({
                       <option value={'visa'}>Visa</option>
                       <option value={'mastercard'}>Master Card</option>
                     </Select>
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.cardType && errors.cardType.message}
                     </FormErrorMessage>
                   </FormControl>

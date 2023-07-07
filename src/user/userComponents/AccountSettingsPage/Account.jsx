@@ -243,7 +243,7 @@ export default function Account() {
                     <Input
                       id='firstname'
                       {...register('firstname', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -254,7 +254,7 @@ export default function Account() {
                       // defaultValue={!loading && arr.firstname}
                       placeholder='First name'
                     />{' '}
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.firstname && errors.firstname.message}
                     </FormErrorMessage>
                   </Skeleton>
@@ -270,7 +270,8 @@ export default function Account() {
                     <Input
                       id='lastname'
                       {...register('lastname', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
+
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -281,7 +282,7 @@ export default function Account() {
                       // defaultValue={!loading && arr.lastname}
                       placeholder='Last name'
                     />{' '}
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.lastname && errors.lastname.message}
                     </FormErrorMessage>
                   </Skeleton>
@@ -297,7 +298,7 @@ export default function Account() {
                     <Input
                       id='email'
                       {...register('email', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
 
                         pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Enter valid email' },
 
@@ -311,7 +312,7 @@ export default function Account() {
                       // defaultValue={!loading && arr.email}
                       placeholder='example@gmail.com'
                     />{' '}
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.email && errors.email.message}
                     </FormErrorMessage>
                   </Skeleton>
@@ -332,7 +333,8 @@ export default function Account() {
                     <Input
                       id='phone'
                       {...register('phone', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
+
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='phone'
@@ -343,7 +345,7 @@ export default function Account() {
                       // defaultValue={!loading && arr.phone}
                       placeholder='+123456789'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.phone && errors.phone.message}
                     </FormErrorMessage>
                   </Skeleton>

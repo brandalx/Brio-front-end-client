@@ -594,7 +594,7 @@ export default function Restaurant() {
                                             fontSize='2xs'
                                             placeholder='Add your feedback about this restaurant!'
                                           />
-                                          <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                                          <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                                             {errors.comment && errors.comment.message}
                                           </FormErrorMessage>
                                         </FormControl>
@@ -629,7 +629,7 @@ export default function Restaurant() {
                                             fontSize='2xs'
                                             placeholder='Rate from 1 to 5'
                                           />
-                                          <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                                          <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                                             {errors.rate && errors.rate.message}
                                           </FormErrorMessage>
                                         </FormControl>

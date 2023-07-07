@@ -121,7 +121,7 @@ export default function ForgotPassword() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                           />
-                          <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                          <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                             {errors.email && errors.email.message}
                           </FormErrorMessage>
                         </FormControl>
