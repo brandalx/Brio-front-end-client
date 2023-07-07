@@ -27,33 +27,28 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { FaChevronLeft } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import RecoverPassword from '../userComponents/ForgotPassword/RecoverPassword';
-import { API_URL, handleApiMethod } from '../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiMethod } from '../../services/apiServices';
 
 export default function ForgotPassword() {
   const [recoverData, setRecoverData] = useState();
   const toast = useToast();
-  const emailRef = useRef();
+
   // const [state, handleSubmit] = useForm('xpzeyzgq');
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-    const email = emailRef.current.value;
-
-    if (email.length < 5) {
-      emailRef.current.style.borderColor = 'red';
-      return;
-    } else {
-      emailRef.current.style.borderColor = 'green';
-    }
-
-    // handleSubmit(event);
-  };
-
+  useEffect(() => {
+    setRecoverData({ token: null });
+  }, []);
   const handleUserSendRecoverRequest = async (_bodyData) => {
+    console.log(_bodyData);
     try {
       const url = API_URL + '/users/recoverrequest';
       const data = await handleApiMethod(url, 'POST', _bodyData);
       if (data.msg === true) {
+        setRecoverData(data.token);
+        console.log(data.token);
+
+        setValue('email', '');
+        setValue('phone', '');
+
         navigate('recover');
       }
     } catch (error) {
@@ -71,7 +66,7 @@ export default function ForgotPassword() {
     try {
       const url = API_URL + '/users/recoverrequestdata';
       const data = await handleApiMethod(url, 'POST', _bodyData);
-      if (data.msg === true) {
+      if (data.token) {
         toast({
           title: 'Password recovered.',
           description: "We've recovered your password.",
@@ -79,7 +74,9 @@ export default function ForgotPassword() {
           duration: 9000,
           isClosable: true
         });
-        navigate('/login');
+
+        localStorage.setItem(TOKEN_KEY, data.token);
+        navigate('/');
       }
     } catch (error) {
       console.log(error);
@@ -99,6 +96,7 @@ export default function ForgotPassword() {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors, isSubmitting }
   } = useForm();
 
@@ -231,7 +229,7 @@ export default function ForgotPassword() {
                                   }}
                                   py={5}
                                 >
-                                  Send instructions
+                                  Continue
                                 </Button>
                               </Stack>
                             </Stack>
