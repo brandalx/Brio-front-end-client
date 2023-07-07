@@ -58,27 +58,15 @@ export default function ForgotPassword() {
       }
     } catch (error) {
       console.log(error);
-
-      if (error.response.data.err === 'Address already exists') {
-        toast({
-          title: 'Duplicated address',
-          description: `Error when adding new address - such address already exist.`,
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
-      } else {
-        toast({
-          title: 'Error when adding new address',
-          description: 'Error when adding new address',
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
-      }
+      toast({
+        title: 'Error when checking your info',
+        description: 'Make sure the provided data is correct and try again',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
     }
   };
-
   const handleUserSendRecoverChange = async (_bodyData) => {
     try {
       const url = API_URL + '/users/recoverrequestdata';

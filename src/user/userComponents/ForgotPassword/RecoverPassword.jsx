@@ -58,7 +58,7 @@ export default function RecoverPassword({ handleUserSendRecoverChange, recoverDa
             Enter the new password for your account
           </Text>
         </Box>
-        <FormControl id='password' isInvalid={errors.password}>
+        <FormControl mt={4} id='password' isInvalid={errors.password}>
           <FormLabel color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
             Password
           </FormLabel>
@@ -82,7 +82,7 @@ export default function RecoverPassword({ handleUserSendRecoverChange, recoverDa
             {errors.password && errors.password.message}
           </FormErrorMessage>
         </FormControl>
-        <FormControl id='confirmpassword' isInvalid={errors.confirmpassword}>
+        <FormControl mt={4} id='confirmpassword' isInvalid={errors.confirmpassword}>
           <FormLabel color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
             Confirm Password
           </FormLabel>
