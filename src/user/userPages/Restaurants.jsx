@@ -52,12 +52,13 @@ export default function Restaurants() {
           <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>
             All restaurants
           </Text>
-          <Box py={15}>
+          <Box py='10px'>
             <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
               <Pickers setSortedArr={setSortedArr} sortedArr={sortedArr} />
             </Skeleton>
           </Box>
-          <Box py={15} display='flex'>
+          {/* todo: add filters */}
+          {/* <Box py={15} display='flex'>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Grid templateColumns={{ base: 'repeat(4, 1fr)', sm: 'repeat(4 1fr)', md: 'repeat(6, 1fr)' }} gap={3}>
                 <GridItem h='auto'>
@@ -158,8 +159,8 @@ export default function Restaurants() {
                 </GridItem>
               </Grid>
             </Skeleton>
-          </Box>
-          <Box py={15}>
+          </Box> */}
+          <Box py='5px'>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Text py={4} color='neutral.grayDark' fontSize='3xs'>
                 Found {arr.length} restaurants

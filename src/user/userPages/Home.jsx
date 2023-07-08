@@ -340,7 +340,7 @@ export default function Home() {
         </Box>
         {localStorage[TOKEN_KEY] && sessionStorage['isTrue'] && sessionStorage['location'] && sortedArr && (
           <>
-            <Skeleton borderRadius='16px' isLoaded={!loading} my={2}>
+            <Skeleton borderRadius='16px' isLoaded={!loading} my='5px'>
               <Pickers setSortedArr={setSortedArr} sortedArr={sortedArr} />
             </Skeleton>
 
@@ -403,10 +403,11 @@ export default function Home() {
           <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>
             All restaurants
           </Text>
-          <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
+          <Skeleton borderRadius='16px' isLoaded={!loading} my='5px'>
             <Pickers setSortedArr={setSortedArr2} sortedArr={sortedArr2} />
           </Skeleton>
-          <Box py={15} display='flex'>
+          {/* todo: add filters */}
+          {/* <Box py={15} display='flex'>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Grid templateColumns={{ base: 'repeat(4, 1fr)', sm: 'repeat(4 1fr)', md: 'repeat(6, 1fr)' }} gap={3}>
                 <GridItem h='auto'>
@@ -513,7 +514,7 @@ export default function Home() {
                 </GridItem>
               </Grid>
             </Skeleton>
-          </Box>
+          </Box> */}
           <Box py={15}>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Text py={4} color='neutral.grayDark' fontSize='3xs'>
