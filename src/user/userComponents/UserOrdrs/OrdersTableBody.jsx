@@ -57,13 +57,19 @@ export default function OrdersTableBody() {
     }
   };
 
-  const getRestaurantName = (id) => {
-    return restaurantar.map((item) => {
-      if (item._id === id) {
-        return item.title;
+  const getRestaurantName = (() => {
+    let returnedTitles = new Set();
+    return (id) => {
+      const restaurant = restaurantar.find((item) => item._id === id && !returnedTitles.has(item.title));
+
+      if (restaurant) {
+        returnedTitles.add(restaurant.title);
+        return restaurant.title;
       }
-    });
-  };
+
+      return undefined;
+    };
+  })();
 
   useEffect(() => {
     handleApi();
@@ -113,9 +119,13 @@ export default function OrdersTableBody() {
                 >
                   {item.restaurant.length > 0 &&
                     item.restaurant.map((item2, index2) => {
+                      const restaurantName = getRestaurantName(item2);
+                      if (!restaurantName) {
+                        return null; // Skip this iteration if the restaurant name has already been used
+                      }
                       return (
                         <Box key={index2} bg='neutral.grayLightest' borderRadius='100px' px={4} py={1} me={2}>
-                          {getRestaurantName(item2)}
+                          {restaurantName}
                         </Box>
                       );
                     })}
