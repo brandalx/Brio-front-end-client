@@ -49,7 +49,14 @@ export default function Shipping({ item, userArr, restaurantArr }) {
       finaladdressobj = restaurantObj.location + ' ' + restaurantObj.address;
       setIsSelf(true);
     }
-    setAddressString(finaladdressobj.replace(/%20/g, ' '));
+    setAddressString(
+      finaladdressobj && finaladdressobj.address && finaladdressobj.address.length > 10
+        ? finaladdressobj.address.replace(/%20/g, ' ')
+        : finaladdressobj && finaladdressobj.address
+        ? finaladdressobj.address
+        : null
+    );
+
     handleMapApi(finaladdressobj);
   };
 
