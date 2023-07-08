@@ -57,19 +57,10 @@ export default function OrdersTableBody() {
     }
   };
 
-  const getRestaurantName = (() => {
-    let returnedTitles = new Set();
-    return (id) => {
-      const restaurant = restaurantar.find((item) => item._id === id && !returnedTitles.has(item.title));
-
-      if (restaurant) {
-        returnedTitles.add(restaurant.title);
-        return restaurant.title;
-      }
-
-      return undefined;
-    };
-  })();
+  const getRestaurantName = (id) => {
+    const restaurant = restaurantar.find((item) => item._id === id);
+    return restaurant ? restaurant.title : '';
+  };
 
   useEffect(() => {
     handleApi();
@@ -118,14 +109,10 @@ export default function OrdersTableBody() {
                   fontWeight='semibold'
                 >
                   {item.restaurant.length > 0 &&
-                    item.restaurant.map((item2, index2) => {
-                      const restaurantName = getRestaurantName(item2);
-                      if (!restaurantName) {
-                        return null; // Skip this iteration if the restaurant name has already been used
-                      }
+                    Array.from(new Set(item.restaurant)).map((item2, index2) => {
                       return (
                         <Box key={index2} bg='neutral.grayLightest' borderRadius='100px' px={4} py={1} me={2}>
-                          {restaurantName}
+                          {getRestaurantName(item2)}
                         </Box>
                       );
                     })}
