@@ -512,7 +512,11 @@ export default function Restaurant() {
                           <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
                             Overall rating
                           </Text>
-                          <Box display='flex' justifyContent='space-between' alignItems='center'>
+                          <Box
+                            display={{ base: 'initial', md: 'flex' }}
+                            justifyContent='space-between'
+                            alignItems='center'
+                          >
                             <Box display='flex' alignItems='center'>
                               <Text me={2} color='primary.default' fontWeight='semibold' fontSize='sm'>
                                 {comments && comments.length > 0 && handleOverallRate(comments)}
@@ -551,6 +555,7 @@ export default function Restaurant() {
                                   }}
                                   onClick={() => setIsActive(!isActive)}
                                   py={5}
+                                  mt={{ base: '8px', md: '0px' }}
                                   me='20px'
                                 >
                                   {isActive ? 'Hide review form' : '       Leave review'}

@@ -159,13 +159,13 @@ export default function Login() {
                           align={'start'}
                           justify={'space-between'}
                         >
-                          <Flex alignItems='center'>
+                          {/* <Flex alignItems='center'>
                             <Checkbox mr='2'>
                               <Text color='neutral.black' fontSize='2xs'>
                                 Keep me logged in
                               </Text>
                             </Checkbox>
-                          </Flex>
+                          </Flex> */}
                         </Stack>
 
                         <Button
