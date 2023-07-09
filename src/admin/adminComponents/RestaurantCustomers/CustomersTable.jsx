@@ -101,30 +101,41 @@ export default function CustomersTable() {
         let totalSpentInMyRestaurant = 0;
         let hasOrderedInMyRestaurant = false;
 
-        for (const order of user.orders) {
-          if (order.restaurant.includes(restaurantId)) {
-            const orderResponse = await axios.get(`${API_URL}/orders/${order.orderRef}`, {
-              headers: {
-                'x-api-key': token
+        if (user.orders) {
+          for (const order of user.orders) {
+            if (order.restaurant.includes(restaurantId)) {
+              const orderResponse = await axios.get(`${API_URL}/orders/${order.orderRef}`, {
+                headers: {
+                  'x-api-key': token
+                }
+              });
+              if (order.paymentSummary) {
+                if (order.paymentSummary.shipping) {
+                  totalSpentInMyRestaurant += order.paymentSummary.shipping;
+                }
+                if (order.paymentSummary) {
+                  totalSpentInMyRestaurant += order.paymentSummary.tips;
+                }
+              } else {
+                console.warn(`Payment summary data is missing for order: ${order.orderRef}`);
               }
-            });
-
-            const orderData = orderResponse.data;
-            for (const product of orderData.ordersdata.products) {
-              if (product.restaurantId === restaurantId) {
-                totalSpentInMyRestaurant += product.priceItem * product.amount;
-                hasOrderedInMyRestaurant = true;
+              const orderData = orderResponse.data;
+              for (const product of orderData.ordersdata.products) {
+                if (product.restaurantId === restaurantId) {
+                  totalSpentInMyRestaurant += product.priceItem;
+                  hasOrderedInMyRestaurant = true;
+                }
               }
             }
           }
         }
 
-        // Only add user to the list if he made an order in my restaurant
         if (hasOrderedInMyRestaurant) {
           user.totalSpent = totalSpentInMyRestaurant;
           usersWithOrdersInMyRestaurant.push(user);
         }
       }
+
 
       setUsers(usersWithOrdersInMyRestaurant);
       setLoading(false);
@@ -181,16 +192,17 @@ export default function CustomersTable() {
               </Td>
 
               <Td
-                display={isTablet ? 'none' : ''}
-                pr={isMobile ? '0' : ''}
-                pl={isMobile ? '5px' : ''}
-                pt='10px'
-                pb='10px'
-                fontSize='2.5xs'
-                color='neutral.grayDark'
+                  display={isTablet ? 'none' : ''}
+                  pr={isMobile ? '0' : ''}
+                  pl={isMobile ? '5px' : ''}
+                  pt='10px'
+                  pb='10px'
+                  fontSize='2.5xs'
+                  color='neutral.grayDark'
               >
-                {user.orders.length}
+                {user.orders.filter(order => order.restaurant.includes(restaurantId)).length}
               </Td>
+
               <Td
                 pl={isMobile ? '0' : ''}
                 pr={isMobile ? '0' : ''}
