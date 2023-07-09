@@ -4,12 +4,15 @@ import CategoryMenu from '../adminComponents/AdminRestaurantMenu/CategoryMenu';
 import ListOfProducts from '../adminComponents/AdminRestaurantMenu/ListOfProducts';
 import { Container, Grid, GridItem } from '@chakra-ui/react';
 import { API_URL, handleApiGet } from '../../services/apiServices';
+import jwtDecode from "jwt-decode";
+import axios from "axios";
 
 export default function RestaurantMenu() {
   const [categories, setCategories] = useState([]);
   const [productsByCategory, setProductsByCategory] = useState({});
   const [selectedCategory, setSelectedCategory] = useState('Choose category');
   const [categoryCounts, setCategoryCounts] = useState({});
+  const [restaurantId, setRestaurantId] = useState();
 
   const fetchRestaurant = async () => {
     try {
@@ -20,17 +23,42 @@ export default function RestaurantMenu() {
       throw error;
     }
   };
+  const fetchRestaurantData = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
 
+      const decodedToken = jwtDecode(token);
+
+      const userId = decodedToken._id;
+
+      const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      setRestaurantId(adminResponse.data.restaurant);
+
+    } catch (error) {
+      console.error('Error fetching restaurant data:', error);
+    }
+  };
+
+  useEffect(()=>{
+    console.log(restaurantId)
+  },[restaurantId])
   const fetchCategories = async () => {
     try {
       const restaurants = await fetchRestaurant();
       let allCategories = [];
       for (let restaurant of restaurants) {
-        if (restaurant && restaurant.categories && restaurant.categories.length > 0) {
+        if (restaurant && restaurant.categories && restaurant.categories.length > 0 && restaurant._id === restaurantId) {
           const response = await Promise.all(
-            restaurant.categories.map((id) => handleApiGet(`${API_URL}/admin/categories/${id.toString()}`))
+              restaurant.categories.map((id) => handleApiGet(`${API_URL}/admin/categories/${id.toString()}`))
           );
-          allCategories = [...allCategories, ...response];
+          // Фильтрация категорий по restaurantRef и restaurantId
+          const filteredCategories = response.filter(category => category.restaurantRef?.$oid === restaurantId);
+          allCategories = [...allCategories, ...filteredCategories];
         }
       }
       setCategories(allCategories);
@@ -40,6 +68,8 @@ export default function RestaurantMenu() {
       console.error('Error fetching categories:', error);
     }
   };
+
+
 
   const fetchProducts = async (categories) => {
     try {

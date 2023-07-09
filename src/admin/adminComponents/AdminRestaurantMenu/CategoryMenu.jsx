@@ -16,6 +16,8 @@ import theme from '../../../utils/theme';
 import ModalRestaurantMenu from './ModalRestaurantMenu';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import ModalNewCategory from './ModalNewCategory';
+import jwtDecode from "jwt-decode";
+import axios from "axios";
 
 export default function CategoryMenu({ selectedCategory, onCategoryChange, categoryCounts }) {
   const [loading, setLoading] = useState(true);
@@ -24,6 +26,39 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedItem, setSelectedItem] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [restaurantId, setRestaurantId] = useState();
+
+  const fetchRestaurantData = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+
+      const decodedToken = jwtDecode(token);
+
+      const userId = decodedToken._id;
+
+      const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      setRestaurantId(adminResponse.data.restaurant);
+
+    } catch (error) {
+      console.error('Error fetching restaurant data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRestaurantData();
+  }, []);
+
+  useEffect(() => {
+    console.log(restaurantId);
+    if (restaurantId) {
+      fetchCategories();
+    }
+  }, [restaurantId]);
 
   const fetchRestaurant = async () => {
     try {
@@ -31,7 +66,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
       return response;
     } catch (error) {
       console.error('Error fetching restaurant:', error);
-      throw error; // Это приведет к тому, что ошибка будет выброшена в fetchCategories
+      throw error;
     }
   };
 
@@ -42,7 +77,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
       for (let restaurant of restaurants) {
         if (restaurant && restaurant.categories && restaurant.categories.length > 0) {
           const response = await Promise.all(
-            restaurant.categories.map((id) => handleApiGet(`${API_URL}/admin/categories/${id.toString()}`))
+              restaurant.categories.map((id) => handleApiGet(`${API_URL}/admin/categories/${id.toString()}`))
           );
           allCategories = [...allCategories, ...response];
         }
@@ -62,13 +97,10 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
       setLoading(false);
     }
   };
+
   useEffect(() => {
     // Fetch products based on the selectedCategory
   }, [selectedCategory]);
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
   useEffect(() => {
     console.log(categories);
@@ -78,6 +110,10 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
     onCategoryChange(category.categoryName);
     setSelectedItem(category._id);
   };
+
+  if (!restaurantId) {
+    return null; // Если restaurantId не определено, возвращаем null для скрытия компонента
+  }
   return (
     <GridItem width='100%' overflow='hidden' colSpan={4}>
       <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
