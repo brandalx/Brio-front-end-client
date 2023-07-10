@@ -250,93 +250,95 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
         </Grid>
         <Divider pt={4} />
       </Box>
-      <Modal size='xl' isCentered isOpen={isOpen} onClose={onClose}>
-        {overlay}
-        <ModalContent>
-          <ModalHeader>
-            <ModalCloseButton />
-            <Text mt={{ base: 8, md: 0 }} fontSize='xs' fontWeight='bold' color='neutral.black' textAlign={'center'}>
-              Are you sure you want to delete this item?
-            </Text>
-          </ModalHeader>
+      <Box>
+        <Modal size='xl' isCentered isOpen={isOpen} onClose={onClose}>
+          {overlay}
+          <ModalContent>
+            <ModalHeader>
+              <ModalCloseButton />
+              <Text mt={{ base: 8, md: 0 }} fontSize='xs' fontWeight='bold' color='neutral.black' textAlign={'center'}>
+                Are you sure you want to delete this item?
+              </Text>
+            </ModalHeader>
 
-          <ModalBody>
-            <Link to={`/restaurant/product/${item._id}`}>
-              <Box
-                transition='all 0.3s'
-                _hover={{ bg: 'neutral.grayLightest', transition: 'all 0.3s' }}
-                borderRadius='12px'
-                p={2}
-              >
-                <Box display='flex' alignItems='center'>
-                  <Box me={2}>
-                    <Image borderRadius='12px' maxH='72px' maxW='72px' src={item.image} />
-                  </Box>
-                  <Box>
-                    <Box>
-                      <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
-                        {item.title}
-                      </Text>
+            <ModalBody>
+              <Link to={`/restaurant/product/${item._id}`}>
+                <Box
+                  transition='all 0.3s'
+                  _hover={{ bg: 'neutral.grayLightest', transition: 'all 0.3s' }}
+                  borderRadius='12px'
+                  p={2}
+                >
+                  <Box display='flex' alignItems='center'>
+                    <Box me={2}>
+                      <Image borderRadius='12px' maxH='72px' maxW='72px' src={item.image} />
                     </Box>
                     <Box>
-                      <Text color='neutral.grayDark' fontSize='2xs'>
-                        {cutInfoText}
-                      </Text>
+                      <Box>
+                        <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
+                          {item.title}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text color='neutral.grayDark' fontSize='2xs'>
+                          {cutInfoText}
+                        </Text>
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
-              </Box>
-            </Link>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              me={2}
-              onClick={onClose}
-              type='submit'
-              w={{ base: '50%', md: 'initial' }}
-              background='primary.default'
-              fontWeight='bold'
-              variant='solid'
-              color='neutral.white'
-              borderWidth='1px'
-              borderColor='neutral.white'
-              _hover={{
-                background: 'neutral.white',
-                color: 'primary.default',
-                borderWidth: '1px',
-                borderColor: 'primary.default'
-              }}
-              py={5}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                onClose();
-                handleItemDelete(targetIdRewrite);
-              }}
-              w={{ base: '50%', md: 'initial' }}
-              fontSize='2xs'
-              fontWeight='bold'
-              variant='solid'
-              borderWidth='1px'
-              borderColor='error.default'
-              background='error.default'
-              color='neutral.white'
-              _hover={{
-                background: 'neutral.white',
-                color: 'error.default',
-                borderWidth: '1px',
-                borderColor: 'error.default'
-              }}
-              py={5}
-              me='20px'
-            >
-              Remove item
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+              </Link>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                me={2}
+                onClick={onClose}
+                type='submit'
+                w={{ base: '50%', md: 'initial' }}
+                background='primary.default'
+                fontWeight='bold'
+                variant='solid'
+                color='neutral.white'
+                borderWidth='1px'
+                borderColor='neutral.white'
+                _hover={{
+                  background: 'neutral.white',
+                  color: 'primary.default',
+                  borderWidth: '1px',
+                  borderColor: 'primary.default'
+                }}
+                py={5}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  onClose();
+                  handleItemDelete(targetIdRewrite);
+                }}
+                w={{ base: '50%', md: 'initial' }}
+                fontSize='2xs'
+                fontWeight='bold'
+                variant='solid'
+                borderWidth='1px'
+                borderColor='error.default'
+                background='error.default'
+                color='neutral.white'
+                _hover={{
+                  background: 'neutral.white',
+                  color: 'error.default',
+                  borderWidth: '1px',
+                  borderColor: 'error.default'
+                }}
+                py={5}
+                me='20px'
+              >
+                Remove item
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </Box>
     </>
   );
 }

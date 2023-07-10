@@ -37,6 +37,7 @@ import useGeolocation from './hooks/useGeolocation';
 import { geolocationContext } from './context/globalContext';
 import About from './user/userPages/About';
 import ScrollToTopDefault from './utils/ScrollToTopDefault';
+import Search from './user/userPages/Search';
 export default function AppRoutes({ isToken }) {
   const [cartLen, setCartLen] = useState(0);
   const [avatarUser, setAvatarUser] = useState(null);
@@ -81,6 +82,7 @@ export default function AppRoutes({ isToken }) {
                         )}
                         <Route path='/deals' element={<Deals />} />
                         <Route path='/about/' element={<About />} />
+                        <Route path='/search/' element={<Search />} />
                         <Route path='/restaurant/' element={<Restaurants />} />
                         <Route path='/restaurant/:id' element={<Restaurant />} />
                         <Route path='/restaurant/product/:id' element={<Product />} />
