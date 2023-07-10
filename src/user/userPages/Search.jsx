@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Button,
@@ -11,13 +11,19 @@ import {
   chakra
 } from '@chakra-ui/react';
 import Logo from '../../assets/svg/Logo';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Input } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { Icon } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
 
 export default function Search() {
+  const location = useLocation();
+  const [searchString, setSearchString] = useState(location.state.searchinfo || '');
+
+  useEffect(() => {
+    console.log(searchString);
+  });
   return (
     <Container maxW='1110px'>
       <Box>
@@ -48,10 +54,13 @@ export default function Search() {
             <Box display='flex' justifyContent='center'>
               <Box display='flex' justifyItems='center' w='90%'>
                 <InputGroup size='md' fontSize='md' mx='auto'>
-                  <InputRightElement pointerEvents='none'>
-                    <AiOutlineSearch color='#828282' size={14} />
+                  <InputRightElement>
+                    <Button>
+                      <AiOutlineSearch color='#828282' size={14} />
+                    </Button>
                   </InputRightElement>
                   <Input
+                    defaultValue={searchString}
                     background='neutral.grayLightest'
                     _placeholder={{ color: 'neutral.gray' }}
                     borderRadius={100}
