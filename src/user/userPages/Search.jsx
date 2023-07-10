@@ -4,8 +4,10 @@ import {
   Button,
   Container,
   Flex,
+  GridItem,
   InputGroup,
   InputRightElement,
+  Skeleton,
   Text,
   VisuallyHidden,
   chakra
@@ -16,18 +18,54 @@ import { Input } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { Icon } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
+import { API_URL, handleApiGet } from '../../services/apiServices';
+import { Grid } from '@chakra-ui/react';
 
 export default function Search() {
   const location = useLocation();
   const [searchString, setSearchString] = useState((location.state && location.state.searchinfo) || '');
+  const [arr, setArr] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isInSearch, setIsInSearch] = useState(false);
 
   useEffect(() => {
     console.log(searchString);
-  });
+    if (location.state && location.state.searchinfo) {
+      handleApiSearch(searchString);
+    }
+  }, []);
+
+  const handleApiSearch = async (_searchQuery) => {
+    setIsInSearch(true);
+    setLoading(true);
+    const url = API_URL + `/products/single/search?s=${_searchQuery}`;
+    try {
+      const data = await handleApiGet(url);
+      setArr(data);
+
+      console.log(data);
+      const timeout = setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+
+      return () => clearTimeout(timeout);
+    } catch (error) {
+      setIsInSearch(false);
+      setLoading(false);
+      console.log(error);
+    }
+  };
   return (
     <Container maxW='1110px'>
       <Box>
-        <Box data-aos='zoom-in' display='flex' justifyContent='center' alignItems='center' height='90vh'>
+        <Box
+          //   data-aos='zoom-in'
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          transition='all 0.3s'
+          height={isInSearch ? '40vh' : '90vh'}
+        >
           <Box
             textAlign='center'
             w='100%' // set width to 50%
@@ -104,6 +142,25 @@ export default function Search() {
             )}
           </Box>
         </Box>
+        {loading && (
+          <Box mb='150px'>
+            <Grid
+              mt={4}
+              templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+              gap={4}
+            >
+              <GridItem minH='350px'>
+                <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
+              </GridItem>
+              <GridItem minH='350px'>
+                <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
+              </GridItem>
+              <GridItem minH='350px'>
+                <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
+              </GridItem>
+            </Grid>
+          </Box>
+        )}
       </Box>
     </Container>
   );
