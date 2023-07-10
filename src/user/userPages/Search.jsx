@@ -51,8 +51,8 @@ export default function Search() {
             Search
           </Text> */}
 
-            <Box display='flex' justifyContent='center'>
-              <Box display='flex' justifyItems='center' w='90%'>
+            <Box display={{ base: 'initial', md: 'flex' }} justifyContent='center'>
+              <Box display='flex' justifyItems='center' w={{ base: '100%', md: '90%' }}>
                 <InputGroup size='md' fontSize='md' mx='auto'>
                   <InputRightElement>
                     <Button>
@@ -72,6 +72,8 @@ export default function Search() {
               </Box>
               <Box mx={2}>
                 <Button
+                  w={{ base: '100%', md: 'initial' }}
+                  mt={{ base: 5, md: 0 }}
                   px={4}
                   borderRadius={100}
                   background='primary.default'
