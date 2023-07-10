@@ -189,6 +189,8 @@ export default function Navbar() {
                   fontWeight='bold'
                   fontSize='2xs'
                   _hover={{
+                    borderRadius: '16px',
+                    background: 'primary.light',
                     textDecoration: 'none',
                     color: 'primary.default'
                   }}
@@ -210,6 +212,8 @@ export default function Navbar() {
                     fontWeight='bold'
                     fontSize='2xs'
                     _hover={{
+                      borderRadius: '16px',
+                      background: 'primary.light',
                       textDecoration: 'none',
                       color: 'primary.default'
                     }}
@@ -229,6 +233,8 @@ export default function Navbar() {
                       fontWeight='bold'
                       fontSize='2xs'
                       _hover={{
+                        borderRadius: '16px',
+                        background: 'primary.light',
                         textDecoration: 'none',
                         color: 'primary.default'
                       }}
