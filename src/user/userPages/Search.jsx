@@ -55,6 +55,15 @@ export default function Search() {
       console.log(error);
     }
   };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // console.log(searchTerm);
+
+    if (searchString.length > 0) {
+      handleApiSearch(searchString);
+    }
+  };
   return (
     <Container maxW='1110px'>
       <Box>
@@ -88,22 +97,26 @@ export default function Search() {
 
             <Box display={{ base: 'initial', md: 'flex' }} justifyContent='center'>
               <Box display='flex' justifyItems='center' w={{ base: '100%', md: '90%' }}>
-                <InputGroup size='md' fontSize='md' mx='auto'>
-                  <InputRightElement>
-                    <Button>
-                      <AiOutlineSearch color='#828282' size={14} />
-                    </Button>
-                  </InputRightElement>
-                  <Input
-                    defaultValue={searchString}
-                    background='neutral.grayLightest'
-                    _placeholder={{ color: 'neutral.gray' }}
-                    borderRadius={100}
-                    fontSize='2xs'
-                    type='text'
-                    placeholder='Search...'
-                  />
-                </InputGroup>
+                <form style={{ width: '100%' }} onSubmit={handleSearch}>
+                  <InputGroup size='md' fontSize='md' mx='auto'>
+                    <InputRightElement>
+                      <Button>
+                        <AiOutlineSearch color='#828282' size={14} />
+                      </Button>
+                    </InputRightElement>
+                    <Input
+                      value={searchString}
+                      onChange={(e) => setSearchString(e.target.value)}
+                      defaultValue={searchString}
+                      background='neutral.grayLightest'
+                      _placeholder={{ color: 'neutral.gray' }}
+                      borderRadius={100}
+                      fontSize='2xs'
+                      type='text'
+                      placeholder='Search...'
+                    />
+                  </InputGroup>
+                </form>
               </Box>
 
               <Box mx={2}>
