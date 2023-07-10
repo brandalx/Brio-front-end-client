@@ -49,6 +49,10 @@ export default function Navbar() {
   const mobileNav = useDisclosure();
   const location = useLocation();
   const isInCart = location.pathname.startsWith('/user/cart');
+  const isInRestaurants = location.pathname.startsWith('/restaurant');
+  const isInMyOrders = location.pathname.startsWith('/user/orders');
+
+  const isInDeals = location.pathname.startsWith('/deals');
 
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
@@ -190,7 +194,14 @@ export default function Navbar() {
                   }}
                 >
                   <Link fontSize='fontSizes.2xs' to='/restaurant'>
-                    Restaurants
+                    <Text
+                      fontWeight={isInRestaurants ? 'bold' : 'regular'}
+                      m={0}
+                      p={0}
+                      color={isInRestaurants ? 'primary.default' : 'neutral.black'}
+                    >
+                      Restaurants
+                    </Text>
                   </Link>
                 </Button>
                 <Link to='/deals'>
@@ -204,7 +215,9 @@ export default function Navbar() {
                     }}
                   >
                     {' '}
-                    Deals
+                    <Text m={0} p={0} color={isInDeals ? 'primary.default' : 'neutral.black'}>
+                      Deals
+                    </Text>
                   </Button>
                 </Link>
                 {localStorage[TOKEN_KEY] && (
@@ -220,9 +233,12 @@ export default function Navbar() {
                         color: 'primary.default'
                       }}
                     >
-                      <Link fontSize='fontSizes.2xs' to='/user/orders'>
-                        My orders
-                      </Link>
+                      {' '}
+                      <Text m={0} p={0} color={isInMyOrders ? 'primary.default' : 'neutral.black'}>
+                        <Link fontSize='fontSizes.2xs' to='/user/orders'>
+                          My orders
+                        </Link>
+                      </Text>
                     </Button>
                   </>
                 )}
@@ -604,14 +620,32 @@ export default function Navbar() {
                         </Link>
                       </Text>
                     </Box>
-                    <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
+                    <Button
+                      color={isInRestaurants ? 'primary.default' : 'neutral.black'}
+                      fontWeight='extrabold'
+                      fontSize='xs'
+                      variant='ghost'
+                      mb='24px'
+                    >
                       <Link to='/restaurant'>Restaurants</Link>
                     </Button>
-                    <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
+                    <Button
+                      color={isInDeals ? 'primary.default' : 'neutral.black'}
+                      fontWeight='extrabold'
+                      fontSize='xs'
+                      variant='ghost'
+                      mb='24px'
+                    >
                       <Link to='/deals'>Deals </Link>
                     </Button>
                     {localStorage[TOKEN_KEY] && (
-                      <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
+                      <Button
+                        color={isInMyOrders ? 'primary.default' : 'neutral.black'}
+                        fontWeight='extrabold'
+                        fontSize='xs'
+                        variant='ghost'
+                        mb='24px'
+                      >
                         <Link to='/user/orders'>My orders</Link>
                       </Button>
                     )}{' '}
