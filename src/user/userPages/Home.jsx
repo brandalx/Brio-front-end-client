@@ -15,6 +15,7 @@ import { Button } from '@chakra-ui/react';
 import { geolocationContext } from '../../context/globalContext';
 import Pickers from '../userComponents/HomePage/Pickers';
 import SearchInput from '../userComponents/Search/SearchInput';
+import Arrow from '../../assets/svg/Arrow';
 
 export default function Home() {
   // todo: add tag into product into backend model and validation
@@ -219,6 +220,26 @@ export default function Home() {
             </Box>
 
             <Box borderRadius='16px' h={`${heightchange}px`} w='100%'>
+              <Box display={{ base: 'none', lg: 'block' }} position='relative'>
+                <Box position='absolute'>
+                  <Text
+                    style={{ transform: 'translateX(480px) translateY(-10px)' }}
+                    mt={2}
+                    ms={5}
+                    textAlign={{ base: 'center', md: 'start' }}
+                    fontSize={{ base: '2xs', md: '2xs' }}
+                    lineHeight={{ base: '15px', md: '20px' }}
+                    color='white'
+                    fontWeight='black'
+                  >
+                    Touchable!
+                  </Text>
+
+                  <Box style={{ transform: 'translateX(500px) translateY(-80px) scale(0.4)' }}>
+                    <Arrow />
+                  </Box>
+                </Box>
+              </Box>
               <Spline scene='https://draft.spline.design/wzcQPaZUf8Lx1H2y/scene.splinecode' onLoad={onload} />
             </Box>
           </Flex>
