@@ -19,7 +19,7 @@ import { FaChevronLeft } from 'react-icons/fa';
 
 export default function Search() {
   const location = useLocation();
-  const [searchString, setSearchString] = useState(location.state.searchinfo || '');
+  const [searchString, setSearchString] = useState((location.state && location.state.searchinfo) || '');
 
   useEffect(() => {
     console.log(searchString);
@@ -47,9 +47,6 @@ export default function Search() {
             <Text fontSize='2xl' fontWeight='extrabold' color='primary.default'>
               Search
             </Text>
-            {/* <Text fontSize='sm' fontWeight='BOLD' color='neutral.grayDark'>
-            Search
-          </Text> */}
 
             <Box display={{ base: 'initial', md: 'flex' }} justifyContent='center'>
               <Box display='flex' justifyItems='center' w={{ base: '100%', md: '90%' }}>
@@ -70,6 +67,7 @@ export default function Search() {
                   />
                 </InputGroup>
               </Box>
+
               <Box mx={2}>
                 <Button
                   w={{ base: '100%', md: 'initial' }}
@@ -95,6 +93,15 @@ export default function Search() {
                 </Button>
               </Box>
             </Box>
+            {location.state && location.state.searchinfo && (
+              <Text mt={2} fontSize='2xs' fontWeight='medium' color='neutral.grayDark'>
+                Showing results by request{' '}
+                <Box color='primary.default' as='span'>
+                  {' '}
+                  {searchString}
+                </Box>
+              </Text>
+            )}
           </Box>
         </Box>
       </Box>
