@@ -13,20 +13,23 @@ import {
   chakra
 } from '@chakra-ui/react';
 import Logo from '../../assets/svg/Logo';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Input } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { Icon } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 import { Grid } from '@chakra-ui/react';
+import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 
 export default function Search() {
   const location = useLocation();
   const [searchString, setSearchString] = useState((location.state && location.state.searchinfo) || '');
   const [arr, setArr] = useState([]);
+  const [staticSearch, setStaticSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const [isInSearch, setIsInSearch] = useState(false);
+  const [isFirst, setIsFirst] = useState(0);
 
   useEffect(() => {
     console.log(searchString);
@@ -36,8 +39,10 @@ export default function Search() {
   }, []);
 
   const handleApiSearch = async (_searchQuery) => {
+    setIsFirst(1);
     setIsInSearch(true);
     setLoading(true);
+    setStaticSearch(_searchQuery);
     const url = API_URL + `/products/single/search?s=${_searchQuery}`;
     try {
       const data = await handleApiGet(url);
@@ -46,7 +51,7 @@ export default function Search() {
       console.log(data);
       const timeout = setTimeout(() => {
         setLoading(false);
-      }, 2000);
+      }, 1000);
 
       return () => clearTimeout(timeout);
     } catch (error) {
@@ -55,7 +60,10 @@ export default function Search() {
       console.log(error);
     }
   };
-
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+  const navigate = useNavigate();
   const handleSearch = (e) => {
     e.preventDefault();
     // console.log(searchTerm);
@@ -66,6 +74,20 @@ export default function Search() {
   };
   return (
     <Container maxW='1110px'>
+      <Button
+        data-aos='fade-right'
+        onClick={() => handleGoBack()}
+        mt={5}
+        _hover={{ transform: 'scale(1.010)' }}
+        transition='transform 0.2s ease-in-out'
+      >
+        <Flex transition={'all 0.1s'} _hover={{ color: 'neutral.gray', transition: 'all 0.1s' }} alignItems='center'>
+          <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+          <Text color='neutral.black' fontSize='xs'>
+            Back
+          </Text>
+        </Flex>
+      </Button>
       <Box>
         <Box
           //   data-aos='zoom-in'
@@ -73,7 +95,7 @@ export default function Search() {
           justifyContent='center'
           alignItems='center'
           transition='all 0.3s'
-          height={isInSearch ? '40vh' : '90vh'}
+          height={isInSearch ? '40vh' : '80vh'}
         >
           <Box
             textAlign='center'
@@ -95,15 +117,10 @@ export default function Search() {
               Search
             </Text>
 
-            <Box display={{ base: 'initial', md: 'flex' }} justifyContent='center'>
-              <Box display='flex' justifyItems='center' w={{ base: '100%', md: '90%' }}>
-                <form style={{ width: '100%' }} onSubmit={handleSearch}>
+            <form style={{ width: '100%' }} onSubmit={handleSearch}>
+              <Box display={{ base: 'initial', md: 'flex' }} justifyContent='center'>
+                <Box display='flex' justifyItems='center' w={{ base: '100%', md: '90%' }}>
                   <InputGroup size='md' fontSize='md' mx='auto'>
-                    <InputRightElement>
-                      <Button>
-                        <AiOutlineSearch color='#828282' size={14} />
-                      </Button>
-                    </InputRightElement>
                     <Input
                       value={searchString}
                       onChange={(e) => setSearchString(e.target.value)}
@@ -116,40 +133,51 @@ export default function Search() {
                       placeholder='Search...'
                     />
                   </InputGroup>
-                </form>
-              </Box>
+                </Box>
 
-              <Box mx={2}>
-                <Button
-                  w={{ base: '100%', md: 'initial' }}
-                  mt={{ base: 5, md: 0 }}
-                  px={4}
-                  borderRadius={100}
-                  background='primary.default'
-                  fontWeight='bold'
-                  variant='solid'
-                  color='neutral.white'
-                  borderWidth='1px'
-                  borderColor='neutral.white'
-                  _hover={{
-                    background: 'neutral.white',
-                    color: 'primary.default',
-                    borderWidth: '1px',
-                    borderColor: 'primary.default'
-                  }}
-                  py={5}
-                >
-                  <Icon as={AiOutlineSearch} mr={1} boxSize={4} />
-                  Search
-                </Button>
+                <Box mx={2}>
+                  <Button
+                    type='submit'
+                    w={{ base: '100%', md: 'initial' }}
+                    mt={{ base: 5, md: 0 }}
+                    px={4}
+                    borderRadius={100}
+                    background='primary.default'
+                    fontWeight='bold'
+                    variant='solid'
+                    color='neutral.white'
+                    borderWidth='1px'
+                    borderColor='neutral.white'
+                    _hover={{
+                      background: 'neutral.white',
+                      color: 'primary.default',
+                      borderWidth: '1px',
+                      borderColor: 'primary.default'
+                    }}
+                    py={5}
+                  >
+                    <Icon as={AiOutlineSearch} mr={1} boxSize={4} />
+                    Search
+                  </Button>
+                </Box>
               </Box>
-            </Box>
-            {location.state && location.state.searchinfo && (
+            </form>
+
+            {arr.length > 0 && (
               <Text mt={2} fontSize='2xs' fontWeight='medium' color='neutral.grayDark'>
                 Showing results by request{' '}
                 <Box color='primary.default' as='span'>
                   {' '}
-                  {searchString}
+                  {staticSearch}
+                </Box>
+              </Text>
+            )}
+            {arr.length === 0 && isFirst > 0 && (
+              <Text mt={2} fontSize='2xs' fontWeight='medium' color='neutral.grayDark'>
+                We didn't find anything by your request
+                <Box color='primary.default' as='span'>
+                  {' '}
+                  {staticSearch}
                 </Box>
               </Text>
             )}
@@ -159,9 +187,12 @@ export default function Search() {
           <Box mb='150px'>
             <Grid
               mt={4}
-              templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+              templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)', md: 'repeat(4, 1fr)' }}
               gap={4}
             >
+              <GridItem minH='350px'>
+                <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
+              </GridItem>
               <GridItem minH='350px'>
                 <Skeleton minH='350px' borderRadius='16px' isLoaded={!loading} />
               </GridItem>
@@ -174,6 +205,30 @@ export default function Search() {
             </Grid>
           </Box>
         )}
+        <Box mb='150px'>
+          <Grid
+            gridAutoColumns='1fr'
+            gridAutoRows='1fr'
+            templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)', md: 'repeat(4, 1fr)' }}
+            gap={2}
+          >
+            {!loading &&
+              arr.length > 0 &&
+              arr.map((item, index) => (
+                <Box key={index}>
+                  <Skeleton borderRadius='16px' isLoaded={!loading}>
+                    <ProductCard
+                      _id={item._id}
+                      img={item.image}
+                      title={item.title}
+                      description={item.description}
+                      price={item.price}
+                    />
+                  </Skeleton>
+                </Box>
+              ))}
+          </Grid>
+        </Box>
       </Box>
     </Container>
   );

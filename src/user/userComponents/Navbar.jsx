@@ -166,7 +166,7 @@ export default function Navbar() {
                     </Button>
                   </InputRightElement>
                   <Input
-                    value={searchTerm}
+                    defaultValue={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     background='neutral.grayLightest'
                     _placeholder={{ color: 'neutral.gray' }}

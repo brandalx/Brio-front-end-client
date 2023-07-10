@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { geolocationContext } from '../../context/globalContext';
 import Pickers from '../userComponents/HomePage/Pickers';
+import SearchInput from '../userComponents/Search/SearchInput';
 
 export default function Home() {
   // todo: add tag into product into backend model and validation
@@ -223,7 +224,9 @@ export default function Home() {
           </Flex>
         </Box>
       </Container>
-
+      <Box pt={15} pb='50px'>
+        <SearchInput />
+      </Box>
       <Container maxW='1110px' py={15}>
         <Skeleton borderRadius='16px' height={loading ? '250px' : '0px'} isLoaded={loading} my={loading ? 2 : 0} />
         <Box>
