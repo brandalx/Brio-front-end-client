@@ -16,8 +16,8 @@ import theme from '../../../utils/theme';
 import ModalRestaurantMenu from './ModalRestaurantMenu';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import ModalNewCategory from './ModalNewCategory';
-import jwtDecode from "jwt-decode";
-import axios from "axios";
+import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 
 export default function CategoryMenu({ selectedCategory, onCategoryChange, categoryCounts }) {
   const [loading, setLoading] = useState(true);
@@ -43,7 +43,6 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
       });
 
       setRestaurantId(adminResponse.data.restaurant);
-
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
     }
@@ -77,7 +76,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
       for (let restaurant of restaurants) {
         if (restaurant && restaurant.categories && restaurant.categories.length > 0) {
           const response = await Promise.all(
-              restaurant.categories.map((id) => handleApiGet(`${API_URL}/admin/categories/${id.toString()}`))
+            restaurant.categories.map((id) => handleApiGet(`${API_URL}/admin/categories/${id.toString()}`))
           );
           allCategories = [...allCategories, ...response];
         }

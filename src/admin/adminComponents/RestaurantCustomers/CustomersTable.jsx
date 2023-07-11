@@ -136,7 +136,6 @@ export default function CustomersTable() {
         }
       }
 
-
       setUsers(usersWithOrdersInMyRestaurant);
       setLoading(false);
     } catch (error) {
@@ -192,15 +191,15 @@ export default function CustomersTable() {
               </Td>
 
               <Td
-                  display={isTablet ? 'none' : ''}
-                  pr={isMobile ? '0' : ''}
-                  pl={isMobile ? '5px' : ''}
-                  pt='10px'
-                  pb='10px'
-                  fontSize='2.5xs'
-                  color='neutral.grayDark'
+                display={isTablet ? 'none' : ''}
+                pr={isMobile ? '0' : ''}
+                pl={isMobile ? '5px' : ''}
+                pt='10px'
+                pb='10px'
+                fontSize='2.5xs'
+                color='neutral.grayDark'
               >
-                {user.orders.filter(order => order.restaurant.includes(restaurantId)).length}
+                {user.orders.filter((order) => order.restaurant.includes(restaurantId)).length}
               </Td>
 
               <Td

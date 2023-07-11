@@ -4,8 +4,8 @@ import CategoryMenu from '../adminComponents/AdminRestaurantMenu/CategoryMenu';
 import ListOfProducts from '../adminComponents/AdminRestaurantMenu/ListOfProducts';
 import { Container, Grid, GridItem } from '@chakra-ui/react';
 import { API_URL, handleApiGet } from '../../services/apiServices';
-import jwtDecode from "jwt-decode";
-import axios from "axios";
+import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 
 export default function RestaurantMenu() {
   const [categories, setCategories] = useState([]);
@@ -38,26 +38,30 @@ export default function RestaurantMenu() {
       });
 
       setRestaurantId(adminResponse.data.restaurant);
-
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
     }
   };
 
-  useEffect(()=>{
-    console.log(restaurantId)
-  },[restaurantId])
+  useEffect(() => {
+    console.log(restaurantId);
+  }, [restaurantId]);
   const fetchCategories = async () => {
     try {
       const restaurants = await fetchRestaurant();
       let allCategories = [];
       for (let restaurant of restaurants) {
-        if (restaurant && restaurant.categories && restaurant.categories.length > 0 && restaurant._id === restaurantId) {
+        if (
+          restaurant &&
+          restaurant.categories &&
+          restaurant.categories.length > 0 &&
+          restaurant._id === restaurantId
+        ) {
           const response = await Promise.all(
-              restaurant.categories.map((id) => handleApiGet(`${API_URL}/admin/categories/${id.toString()}`))
+            restaurant.categories.map((id) => handleApiGet(`${API_URL}/admin/categories/${id.toString()}`))
           );
           // Фильтрация категорий по restaurantRef и restaurantId
-          const filteredCategories = response.filter(category => category.restaurantRef?.$oid === restaurantId);
+          const filteredCategories = response.filter((category) => category.restaurantRef?.$oid === restaurantId);
           allCategories = [...allCategories, ...filteredCategories];
         }
       }
@@ -68,8 +72,6 @@ export default function RestaurantMenu() {
       console.error('Error fetching categories:', error);
     }
   };
-
-
 
   const fetchProducts = async (categories) => {
     try {

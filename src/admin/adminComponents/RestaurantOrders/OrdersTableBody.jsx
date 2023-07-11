@@ -113,16 +113,16 @@ export default function OrdersTableBody() {
           const ordersWithTotalSpent = filteredOrders.map((order) => {
             const productsCost = order.ordersdata.products.reduce((total, product) => {
               const relatedProduct = products.find(
-                  (p) => p._id === product.productId && product.restaurantId === restaurantId
+                (p) => p._id === product.productId && product.restaurantId === restaurantId
               );
               return total + (relatedProduct ? relatedProduct.price * product.amount : 0);
             }, 0);
 
             // Adding the shipping and tips to the total cost of products
             const totalAmount = (
-                (  productsCost +
-                    order.userdata.paymentSummary.shipping +
-                    order.userdata.paymentSummary.tips)
+              productsCost +
+              order.userdata.paymentSummary.shipping +
+              order.userdata.paymentSummary.tips
             ).toFixed(2);
             console.log('Fetched products: ', products);
 

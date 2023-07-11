@@ -13,8 +13,6 @@ export const TOKEN_KEY = 'x-api-key';
 //to-do : change for another token / add others
 
 export const handleApiGet = async (_url) => {
-  // headers: -> sends through a token that sits in the local storage
-  // Even if there is no local storage information, we will not get an error
   try {
     const resp = await axios({
       url: _url,
@@ -22,10 +20,15 @@ export const handleApiGet = async (_url) => {
         'x-api-key': localStorage[TOKEN_KEY]
       }
     });
+
     return resp.data;
   } catch (err) {
-    // throw -> reject is equivalent to error
-    // So we know there is a problem with the request
+    // We assume that the API returns a 404 status when a category is not found in the database
+    if (err.response && err.response.status === 404) {
+      return null;
+    }
+
+    // If the error is not about a category not being found, rethrow the error
     throw err;
   }
 };
