@@ -9,6 +9,8 @@ export default function Shipping({ item, userArr, restaurantArr }) {
   const [address, setAddress] = useState(null);
   const [addressLoading, setAddressLoading] = useState(true);
   const [addressString, setAddressString] = useState();
+  const [addressStringToPrint, setAddressStringToPrint] = useState();
+
   const [isSelf, setIsSelf] = useState(false);
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
   const REACT_APP_opencagedata = import.meta.env.VITE_OPENCAGEDATA;
@@ -49,15 +51,17 @@ export default function Shipping({ item, userArr, restaurantArr }) {
       finaladdressobj = restaurantObj.location + ' ' + restaurantObj.address;
       setIsSelf(true);
     }
-    setAddressString(
-      finaladdressobj && finaladdressobj.address && finaladdressobj.address.length > 10
-        ? finaladdressobj.address.replace(/%20/g, ' ')
-        : finaladdressobj && finaladdressobj.address
-        ? finaladdressobj.address
-        : null
-    );
 
-    handleMapApi(finaladdressobj);
+    let finalstr;
+
+    if (finaladdressobj && finaladdressobj.address && finaladdressobj.address.length > 10) {
+      finalstr = finaladdressobj.address.replace(/%20/g, ' ');
+      setAddressString(finalstr);
+    } else {
+      finalstr = finaladdressobj.address;
+      setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
+      setAddressString(finalstr);
+    }
   };
 
   useEffect(() => {
@@ -70,7 +74,7 @@ export default function Shipping({ item, userArr, restaurantArr }) {
         {isSelf ? 'Pickup' : 'Delivery'} address
       </Text>
       <Box fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold'>
-        {addressString}
+        {addressStringToPrint}
       </Box>
       <Skeleton minHeight='320px' my={4} borderRadius='16px' isLoaded={!addressLoading}>
         <Box pt={4}>

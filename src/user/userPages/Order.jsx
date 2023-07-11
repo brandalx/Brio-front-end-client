@@ -45,7 +45,7 @@ export default function Order() {
   const [ordersArr2, setOrdersArr2] = useState([]);
   const [restaurantArr, setRestaurantArr] = useState([]);
   const [addressString, setAddressString] = useState(null);
-
+  const [addressStringToPrint, setAddressStringToPrint] = useState();
   const [isSelf, setIsSelf] = useState(false);
 
   const handleDefineAddress = (orderitem, useritem, restaurantitem) => {
@@ -68,14 +68,22 @@ export default function Order() {
     const restaurantObj = restaurantitem.find((restaurant) => restaurant._id === finaladdress);
     if (restaurantObj) {
       finaladdressobj = restaurantObj.location + ' ' + restaurantObj.address;
+
       setIsSelf(true);
     }
-    setAddressString(
-      finaladdressobj && finaladdressobj.address && finaladdressobj.address.length > 10
-        ? finaladdressobj.address.replace(/%20/g, ' ')
-        : finaladdressobj.address
-    );
+
+    let finalstr;
+
+    if (finaladdressobj && finaladdressobj.address && finaladdressobj.address.length > 10) {
+      finalstr = finaladdressobj.address.replace(/%20/g, ' ');
+      setAddressString(finalstr);
+    } else {
+      finalstr = finaladdressobj.address;
+      setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
+      setAddressString(finalstr);
+    }
   };
+
   const params = useParams();
   const handleApi = async () => {
     const userurl = API_URL + '/users/info/user';
@@ -242,10 +250,10 @@ export default function Order() {
                         </Text>
 
                         <Text display={{ base: 'none', md: 'block' }} me={2} fontWeight='bold'>
-                          {addressString && addressString}
+                          {addressStringToPrint && addressStringToPrint}
                         </Text>
                         <Text display={{ base: 'block', md: 'none' }} fontSize='10px' me={2} fontWeight='bold'>
-                          {addressString && addressString}
+                          {addressStringToPrint && addressStringToPrint}
                         </Text>
                         <Box>
                           <Location />

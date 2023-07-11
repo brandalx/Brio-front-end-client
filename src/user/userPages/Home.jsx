@@ -246,7 +246,7 @@ export default function Home() {
             </Box>
 
             <Box borderRadius='16px' h={`${heightchange}px`} w='100%'>
-              <Box display={{ base: 'none', lg: 'block' }} position='relative'>
+              <Box className='vibrate-1' display={{ base: 'none', lg: 'block' }} position='relative'>
                 <Box position='absolute'>
                   <Text
                     style={{ transform: 'translateX(480px) translateY(-10px)' }}
