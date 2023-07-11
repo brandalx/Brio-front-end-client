@@ -41,8 +41,9 @@ export default function Home() {
       const data = await handleApiGet(url);
 
       setAr(data);
-      setAr2(data);
+
       setKeepArr(data);
+
       handleApiUser();
       console.log(data);
     } catch (error) {
@@ -61,6 +62,25 @@ export default function Home() {
     } catch (error) {
       console.log(error);
     }
+  };
+  const handleSortedByLocation = (_data) => {
+    if (typeof city !== 'string' || city.length === 0) {
+      console.error('Invalid city value:', city);
+      return;
+    }
+
+    let prefinalArr = [];
+    const cityRegex = new RegExp(city, 'i');
+
+    _data.map((item, index) => {
+      console.log(item.location);
+      console.log(cityRegex);
+      if (cityRegex.test(item.location)) {
+        prefinalArr.push(item);
+      }
+    });
+
+    setAr2(prefinalArr);
   };
 
   useEffect(() => {
@@ -127,6 +147,12 @@ export default function Home() {
       setAr(filteredArr);
     }
   };
+
+  useEffect(() => {
+    if (localStorage[TOKEN_KEY] && sessionStorage['isTrue'] && sessionStorage['location'] && sortedArr) {
+      handleSortedByLocation(arr);
+    }
+  }, [city, setCity, sortedArr]);
   return (
     <>
       <Preloader loading={loading} />
@@ -377,6 +403,34 @@ export default function Home() {
                   Found {arr2.length} restaurants
                 </Text>
               </Skeleton>
+              {arr2.length === 0 && (
+                <Skeleton borderRadius='16px' isLoaded={!loading}>
+                  <Box
+                    style={{ transition: 'all 0.3s' }}
+                    cursor='pointer'
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    borderRadius='16px'
+                    py={5}
+                    borderColor='white'
+                    borderWidth='1px'
+                    bg='primary.light'
+                    _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
+                  >
+                    <Flex justifyContent='center' alignItems={{ base: 'none', md: 'center' }}>
+                      <Text
+                        ms={5}
+                        textAlign={{ base: 'center', md: 'start' }}
+                        fontSize={{ base: 'sm', md: 'dm' }}
+                        color={hovered ? '#4e60ff' : '#4e60ff'}
+                        fontWeight='black'
+                      >
+                        Sorry we didn't found restaurants nearby at {city} : (
+                      </Text>
+                    </Flex>
+                  </Box>
+                </Skeleton>
+              )}
 
               {!loading && (
                 <Box>
