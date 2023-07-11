@@ -10,7 +10,6 @@ export default function Shipping({ item, userArr, restaurantArr }) {
   const [addressLoading, setAddressLoading] = useState(true);
   const [addressString, setAddressString] = useState();
   const [addressStringToPrint, setAddressStringToPrint] = useState();
-
   const [isSelf, setIsSelf] = useState(false);
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
   const REACT_APP_opencagedata = import.meta.env.VITE_OPENCAGEDATA;
@@ -55,13 +54,14 @@ export default function Shipping({ item, userArr, restaurantArr }) {
     let finalstr;
 
     if (finaladdressobj && finaladdressobj.address && finaladdressobj.address.length > 10) {
-      finalstr = finaladdressobj.address.replace(/%20/g, ' ');
-      setAddressString(finalstr);
+      setAddressString(finaladdressobj.address);
+      setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
     } else {
       finalstr = finaladdressobj.address;
       setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
       setAddressString(finalstr);
     }
+    handleMapApi(finaladdressobj);
   };
 
   useEffect(() => {

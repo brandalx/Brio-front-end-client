@@ -75,8 +75,8 @@ export default function Order() {
     let finalstr;
 
     if (finaladdressobj && finaladdressobj.address && finaladdressobj.address.length > 10) {
+      setAddressString(finaladdressobj.address);
       finalstr = finaladdressobj.address.replace(/%20/g, ' ');
-      setAddressString(finalstr);
     } else {
       finalstr = finaladdressobj.address;
       setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
