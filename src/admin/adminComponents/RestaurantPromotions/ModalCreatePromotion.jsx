@@ -17,6 +17,8 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import React, { useEffect, useState } from 'react';
 import { API_URL } from '../../../services/apiServices';
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfPromotion }) {
   const { control, handleSubmit, reset } = useForm();
@@ -25,6 +27,37 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
   const [image, setImage] = useState(null);
   const [days, setDays] = useState([]);
   const arrDaysOfTheWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  const [restaurantId, setRestaurantId] = useState('');
+  const [restaurantName, setRestaurantName] = useState('');
+
+  const fetchRestaurantData = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+
+      const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      const restaurantResponse = await axios.get(`${API_URL}/restaurants/${adminResponse.data.restaurant}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      setRestaurantId(adminResponse.data.restaurant);
+      setRestaurantName(restaurantResponse.data.title);
+    } catch (error) {
+      console.error('Error fetching restaurant data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRestaurantData();
+  }, []);
 
   const dayMapper = {
     SUN: 'Sunday',
@@ -58,29 +91,28 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
     return [year, month, day].join('-');
   };
 
-  const createPromotion = async (discountDetails, startDate, endDate, restaurantName, image, discountDays) => {
-    const payload = {
-      discountDetails: discountDetails,
-      startDate: startDate,
-      endDate: endDate,
-      restaurantName: restaurantName,
-      image: image,
-      discountDays: discountDays
-    };
-
+  const createPromotion = async (discountDetails, startDate, endDate, image) => {
+    const payload = new FormData();
+    payload.append('discountDetails', discountDetails);
+    payload.append('startDate', startDate);
+    payload.append('endDate', endDate);
+    payload.append('restaurantRef', restaurantId);
+    payload.append('image', image);
+    payload.append('discountDays', days);
+    payload.append('restaurantName', restaurantName);
     try {
+      const token = localStorage.getItem('x-api-key');
+
       const response = await fetch(API_URL + '/admin/promotions', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'x-api-key': token
         },
-        body: JSON.stringify(payload)
+        body: payload
       });
-
       if (!response.ok) {
         throw new Error('Failed to create promotion');
       }
-
       const data = await response.json();
       return data;
     } catch (error) {
@@ -89,14 +121,12 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
   };
 
   const handlePublishPromotion = async (data) => {
-    const { discountDetails, startDate, endDate, restaurantName, image, discountDays } = data;
-
-    // Convert dates to Date objects
+    console.log('Submitting Data:', data); // log data here
+    const { discountDetails, startDate, endDate, image, discountDays, restaurantName, restaurantRef } = data;
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
     console.log(startDateObj + ' ' + endDateObj);
 
-    // Проверка корректности дат
     if (startDateObj > endDateObj) {
       console.error('End date cannot be before start date.');
       return;
@@ -106,8 +136,9 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
         discountDetails,
         formatDate(startDateObj), // Convert to YYYY-MM-DD string before sending
         formatDate(endDateObj), // Convert to YYYY-MM-DD string before sending
-        restaurantName,
         image,
+        restaurantName,
+        restaurantRef,
         discountDays
       );
 
@@ -124,10 +155,25 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
   };
 
   const onSubmit = (data) => {
-    handlePublishPromotion({ ...data, discountDays: days });
+    console.log('Form Data That i Got and wanna see:', data);
+
+    handlePublishPromotion({
+      ...data,
+      discountDetails: data.discountDetails,
+      startDate: data.startDate,
+      endDate: data.endDate,
+      image: data.image,
+      restaurantName: restaurantName, // from state
+      restaurantRef: restaurantId, // from state
+      discountDays: days // from state, not data
+    });
     console.log(data);
     console.log(data.endDate);
     console.log(data.startDate);
+    console.log(data.restaurantRef);
+    console.log(data.discountDetails);
+    console.log(data.restaurantName);
+    console.log(data.days);
     reset();
     setDays([]);
   };
@@ -242,7 +288,7 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
             <Box display='flex' flexDirection='column' gap={3}>
               <InputGroup mt='20px' display='flex' flexDirection='column'>
                 <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>
-                  Name
+                  Discount details
                 </Text>
                 <Controller
                   control={control}
