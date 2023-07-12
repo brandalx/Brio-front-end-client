@@ -90,7 +90,7 @@ export default function Order() {
     }
   };
   const toast = useToast();
-  const handleChangeStatus = async (_status, _orderid) => {
+  const handleChangeStatus = async (_orderid, _status) => {
     try {
       const url = API_URL + '/orders/status/change';
       const body = {
@@ -99,9 +99,11 @@ export default function Order() {
       };
 
       const data = await handleApiMethod(url, 'PUT', body);
-      if (data.acknowledged === true) {
+
+      if (data.msg === true) {
+        await handleApi();
         toast({
-          title: 'Order status changes to .' + _status,
+          title: 'Order status changed to ' + _status,
           description: "We've changed order status.",
           status: 'success',
           duration: 9000,
@@ -259,6 +261,7 @@ export default function Order() {
                           </MenuButton>
                           <MenuList>
                             <MenuItem
+                              onClick={() => handleChangeStatus(params['id'], 'Cancelled')}
                               m={0}
                               h='100%'
                               background='neutral.white'
