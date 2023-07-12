@@ -201,7 +201,7 @@ export default function Order() {
   };
   //todo: replace with post wehn updating post time and status
   useEffect(() => {
-    const timer = setInterval(updateState, 10 * 1000);
+    const timer = setInterval(updateState, 60 * 6000);
 
     return () => clearInterval(timer);
   }, [placed, prepared, delivery, delivered]);
@@ -230,7 +230,7 @@ export default function Order() {
         setDelivered(true);
       } else if (currentOrder === 'Placed') {
         setPlaced(true);
-      } else if (currentOrder === 'Prepared') {
+      } else if (currentOrder === 'In progress') {
         setPlaced(true);
         setPrepared(true);
       } else if (currentOrder === 'Delivery') {
@@ -305,8 +305,8 @@ export default function Order() {
                   {/* replace after fetch */}
 
                   <Box mt={3}>
-                    <Skeleton my={2} minH='10px' w='25%' borderRadius='16px' isLoaded={!loading}>
-                      <Box display='flex' alignItems='center'>
+                    <Skeleton my={2} minH='10px' maxW='45%' borderRadius='16px' isLoaded={!loading}>
+                      <Box w='100%' display='flex' alignItems='center'>
                         {' '}
                         {!loading && (
                           <Box as='span' w='10px'>
@@ -351,7 +351,7 @@ export default function Order() {
                       <Text me={2} display={{ base: 'none', md: 'block' }} color='neutral.gray' fontSize='2xs'>
                         {!loading && formatDate(ordersArr.creationDate)}
                       </Text>
-                      <Text fontSize='10px' mt={5} me={2} display={{ base: 'block', md: 'none' }} color='neutral.gray'>
+                      <Text fontSize='10px' me={2} display={{ base: 'block', md: 'none' }} color='neutral.gray'>
                         {!loading && formatDate(ordersArr.creationDate)}
                       </Text>
 
