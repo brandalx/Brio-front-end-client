@@ -74,7 +74,6 @@ export default function Restaurant() {
   const handleRestaurantApi = async () => {
     const url = API_URL + '/restaurants/' + params['id'];
     try {
-      setLoading(true);
       const data = await handleApiGet(url);
 
       setAr(data);
@@ -87,7 +86,6 @@ export default function Restaurant() {
       console.log(data);
       if (data.length === 0) setResponseFalls(false);
       await handleUserApi();
-      setLoading(false);
     } catch (error) {
       setResponseFalls(false);
       setLoading(false);
@@ -100,8 +98,6 @@ export default function Restaurant() {
   };
   const handleProductApi = async (data) => {
     try {
-      setLoading(true);
-
       const tempProductArr = [];
       console.log('data');
       console.log(data);
@@ -115,7 +111,6 @@ export default function Restaurant() {
       }
       console.log(tempProductArr);
       setProductAr(tempProductArr);
-      setLoading(false);
     } catch (error) {
       setShowOops(true);
 
@@ -202,7 +197,6 @@ export default function Restaurant() {
       setAddress(data);
     } catch (error) {
       console.log(error);
-      setLoading(false);
     }
   };
   useEffect(() => {
