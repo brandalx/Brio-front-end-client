@@ -24,6 +24,38 @@ export default function Security() {
   const [userId, setUserId] = useState(null);
   const [restaurantId, setRestaurantId] = useState(null);
   const [admins, setAdmins] = useState([]);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleChangePassword = async () => {
+    if (newPassword !== confirmPassword) {
+      console.error('New password and confirm password do not match');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('x-api-key');
+      await axios.put(
+        `${API_URL}/users/security`,
+        {
+          previouspassword: currentPassword,
+          password: newPassword,
+          confirmpassword: confirmPassword // Add this line
+        },
+        {
+          headers: {
+            'x-api-key': token // Setting header with token
+          }
+        }
+      );
+
+      console.log('Password changed successfully');
+      // You may want to clear the password fields here
+    } catch (error) {
+      console.error('Error changing password:', error);
+    }
+  };
 
   const fetchAdmin = async () => {
     try {
@@ -68,7 +100,7 @@ export default function Security() {
     try {
       const token = localStorage.getItem('x-api-key');
       const response = await axios.put(
-        `${API_URL}/restaurants/${restaurantId}`,
+        `${API_URL}/users/${userId}`,
         {
           phone: newPhone
         },
@@ -78,13 +110,11 @@ export default function Security() {
           }
         }
       );
-
       console.log(response.data); // Выводим обновленные данные
     } catch (error) {
       console.error('Error updating phone number:', error);
     }
   };
-
   const [phoneNumber, setPhoneNumber] = useState(''); // Состояние для номера телефона
 
   const handlePhoneChange = (e) => {
@@ -158,7 +188,6 @@ export default function Security() {
                 <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                   Current password
                 </FormLabel>
-
                 <Input
                   w={{ base: '100%', md: '90%' }}
                   type='password'
@@ -167,14 +196,14 @@ export default function Security() {
                   borderRadius='8px'
                   fontSize='2xs'
                   placeholder='Enter current password'
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
                 />
               </FormControl>
-
               <FormControl id='newpassword' mt={{ base: 5, md: 0 }}>
                 <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                   New password
                 </FormLabel>
-
                 <Input
                   w={{ base: '100%', md: '90%' }}
                   type='password'
@@ -183,13 +212,14 @@ export default function Security() {
                   borderRadius='8px'
                   fontSize='2xs'
                   placeholder='Enter new password'
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                 />
               </FormControl>
               <FormControl id='conpassword' mt={{ base: 5, md: 0 }}>
                 <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                   Confirm new password
                 </FormLabel>
-
                 <Input
                   w={{ base: '100%', md: '90%' }}
                   type='password'
@@ -198,6 +228,8 @@ export default function Security() {
                   borderRadius='8px'
                   fontSize='2xs'
                   placeholder='Confirm new password'
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </FormControl>
             </Flex>
@@ -220,7 +252,7 @@ export default function Security() {
                   borderWidth: '1px',
                   borderColor: 'primary.default'
                 }}
-                onClick={handleTurnOn}
+                onClick={handleChangePassword}
                 py={5}
               >
                 Change password
