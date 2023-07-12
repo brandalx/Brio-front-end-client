@@ -114,6 +114,23 @@ export default function Order() {
       console.log(error);
     }
   };
+  const handleChangeStatus2 = async (_orderid, _status) => {
+    try {
+      const url = API_URL + '/orders/status/change';
+      const body = {
+        orderId: _orderid,
+        orderstatus: _status
+      };
+
+      const data = await handleApiMethod(url, 'PUT', body);
+
+      if (data.msg === true) {
+        await handleApi();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const params = useParams();
   const handleApi = async () => {
@@ -173,15 +190,18 @@ export default function Order() {
   const updateState = () => {
     if (placed && !prepared) {
       setPrepared(true);
+      handleChangeStatus2(params['id'], 'Prepared');
     } else if (placed && prepared && !delivery) {
       setDelivery(true);
+      handleChangeStatus2(params['id'], 'In progress');
     } else if (placed && prepared && delivery && !delivered) {
       setDelivered(true);
+      handleChangeStatus2(params['id'], 'Completed');
     }
   };
   //todo: replace with post wehn updating post time and status
   useEffect(() => {
-    const timer = setInterval(updateState, 60 * 1000);
+    const timer = setInterval(updateState, 10 * 1000);
 
     return () => clearInterval(timer);
   }, [placed, prepared, delivery, delivered]);
@@ -205,7 +225,6 @@ export default function Order() {
     if (userArr._id) {
       if (currentOrder === 'Cancelled' || currentOrder === 'Completed') {
         setPlaced(true);
-        console.log('ok');
         setPrepared(true);
         setDelivery(true);
         setDelivered(true);
