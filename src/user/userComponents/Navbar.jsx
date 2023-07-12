@@ -117,6 +117,7 @@ export default function Navbar() {
     handleApi();
     genavatar();
   }, []);
+
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
     sessionStorage.removeItem('location');

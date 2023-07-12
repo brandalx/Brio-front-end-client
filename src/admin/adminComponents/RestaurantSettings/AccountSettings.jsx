@@ -12,12 +12,13 @@ import {
   Textarea,
   Stack,
   Checkbox,
-  Divider
+  Divider,
+  useToast
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import EmailNotification from './EmailNotification';
 import Badges from './Badges';
@@ -102,6 +103,20 @@ export default function AccountSettings() {
     } catch (error) {
       console.error('Error fetching restaurant:', error);
     }
+  };
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const onLogOut = () => {
+    localStorage.removeItem('x-api-key');
+    navigate('/login');
+    toast({
+      title: 'Logging out.',
+      description: 'Successfully logged out!',
+      status: 'success',
+      duration: 9000,
+      isClosable: true
+    });
   };
 
   useEffect(() => {
@@ -331,6 +346,7 @@ export default function AccountSettings() {
                 }}
                 py={5}
                 me='20px'
+                onClick={onLogOut}
               >
                 Log out
               </Button>
