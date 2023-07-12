@@ -3,14 +3,41 @@ import { Box, Button, Container, Image, Text, Grid, Divider } from '@chakra-ui/r
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import ValidThrough from '../../../assets/svg/ValidThrough';
 import Location from '../../../assets/svg/Location';
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
-export default function PromotionBlocks() {
+export default function PromotionBlocks({ active }) {
   const [promotions, setPromotion] = useState([]);
+  const [restaurantId, setRestaurantId] = useState('');
+  const [statusMain, setStatus] = useState('active'); // новое состояние для отслеживания текущего статуса
+
+  const fetchRestaurantData = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+
+      const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      setRestaurantId(adminResponse.data.restaurant);
+    } catch (error) {
+      console.error('Error fetching restaurant data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRestaurantData();
+  }, []);
+
   const fetchPromotions = async () => {
     try {
       const response = await handleApiGet(API_URL + '/admin/promotions');
       console.log(response);
-      setPromotion(response);
+      setPromotion(response.filter((promotion) => promotion.restaurantRef == restaurantId));
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -32,7 +59,7 @@ export default function PromotionBlocks() {
 
   useEffect(() => {
     fetchPromotions();
-  }, []);
+  }, [restaurantId]); // добавить restaurantId в список зависимостей useEffect
 
   function formatDate(dateString) {
     const monthNames = [
@@ -58,11 +85,20 @@ export default function PromotionBlocks() {
     return `${day} ${monthNames[monthIndex]}, ${year}`;
   }
 
+  function shouldDisplayPromotion(promotion) {
+    if (!promotion.startDate || !promotion.endDate) {
+      return false;
+    }
+
+    const status = getPromotionStatus(promotion.startDate, promotion.endDate);
+    return status === active;
+  }
+
   return (
     <Box>
       <Container maxW='1110px'>
         <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
-          {promotions.map((promotion, index) => {
+          {promotions.filter(shouldDisplayPromotion).map((promotion, index) => {
             return (
               <Box
                 key={index}
@@ -80,26 +116,31 @@ export default function PromotionBlocks() {
                       textAlign='center'
                       border='1px'
                       borderRadius='full'
-                      width='53px'
-                      height='24px'
+                      width='70px'
+                      display='flex'
+                      alignItems='center'
+                      justifyContent='space-around'
+                      height='40px'
                       borderColor='success.default'
                     >
-                      <Text color='success.default' fontWeight='semibold' p='3px' fontSize='3xs'>
-                        Active
+                      <Text textAlign='center' color='success.default' fontWeight='semibold' p='3px' fontSize='3xs'>
+                        {active}
                       </Text>
                     </Box>
                     <Text fontWeight='bold' fontSize='2xs'>
                       {promotion.discountDetails}
                     </Text>
                   </Box>
-                  <Image
-                    width='112px'
-                    height='92px'
-                    borderRadius='16px'
-                    src={promotion.image}
-                    objectFit='cover'
-                    objectPosition='center'
-                  />
+                  <Box>
+                    <Image
+                      width='112px'
+                      height='92px'
+                      borderRadius='16px'
+                      src={promotion.image}
+                      objectFit='cover'
+                      objectPosition='center'
+                    />
+                  </Box>
                 </Box>
                 <Divider mt='10px' mb='8px' />
                 <Box display='flex' flexDirection='column'>

@@ -40,7 +40,9 @@ import ScrollToTopDefault from './utils/ScrollToTopDefault';
 export default function AppRoutes({ isToken }) {
   const [cartLen, setCartLen] = useState(0);
   const [avatarUser, setAvatarUser] = useState(null);
+
   const { city, setCity, update, setUpdate, isTrue, setIsTrue } = useGeolocation();
+
   return (
     <>
       <globalContext.Provider value={{ isToken }}>
