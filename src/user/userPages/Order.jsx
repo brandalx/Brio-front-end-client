@@ -16,8 +16,14 @@ import {
   Stack,
   Divider,
   Icon,
-  Skeleton
+  Skeleton,
+  useToast,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  MenuButton
 } from '@chakra-ui/react';
+import { Menu as NewMenu } from '@chakra-ui/react';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaChevronLeft } from 'react-icons/fa';
@@ -25,7 +31,7 @@ import Location from '../../assets/svg/Location';
 import ImageGallery from 'react-image-gallery';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useParams } from 'react-router-dom';
-import { API_URL, handleApiGet } from '../../services/apiServices';
+import { API_URL, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import Menu from '../userComponents/Order/Menu';
 import Pickup from '../userComponents/Cart/Pickup';
 import PaymentDetails from '../userComponents/Order/PaymentDetails';
@@ -81,6 +87,29 @@ export default function Order() {
       finalstr = finaladdressobj.address;
       setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
       setAddressString(finalstr);
+    }
+  };
+  const toast = useToast();
+  const handleChangeStatus = async (_status, _orderid) => {
+    try {
+      const url = API_URL + '/orders/status/change';
+      const body = {
+        orderId: _orderid,
+        orderstatus: _status
+      };
+
+      const data = await handleApiMethod(url, 'PUT', body);
+      if (data.acknowledged === true) {
+        toast({
+          title: 'Order status changes to .' + _status,
+          description: "We've changed order status.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -169,26 +198,30 @@ export default function Order() {
   };
 
   useEffect(() => {
-    const currentOrder = findOrder2(params['id']);
-    if (currentOrder.status === 'Canceled' || currentOrder.status === 'Completed') {
-      setPlaced(true);
-      setPrepared(true);
-      setDelivery(true);
-      setDelivered(true);
-    } else if (currentOrder.status === 'Placed') {
-      setPlaced(true);
-    } else if (currentOrder.status === 'Prepared') {
-      setPlaced(true);
-      setPrepared(true);
-    } else if (currentOrder.status === 'Delivery') {
-      setPlaced(true);
-      setPrepared(true);
-      setDelivery(true);
-    } else if (currentOrder.status === 'Delivered') {
-      setPlaced(true);
-      setPrepared(true);
-      setDelivery(true);
-      setDelivered(true);
+    const currentOrder = findOrder(params['id']);
+    console.log(currentOrder);
+    if (userArr._id) {
+      if (currentOrder === 'Cancelled' || currentOrder === 'Completed') {
+        setPlaced(true);
+        console.log('ok');
+        setPrepared(true);
+        setDelivery(true);
+        setDelivered(true);
+      } else if (currentOrder === 'Placed') {
+        setPlaced(true);
+      } else if (currentOrder === 'Prepared') {
+        setPlaced(true);
+        setPrepared(true);
+      } else if (currentOrder === 'Delivery') {
+        setPlaced(true);
+        setPrepared(true);
+        setDelivery(true);
+      } else if (currentOrder === 'Delivered') {
+        setPlaced(true);
+        setPrepared(true);
+        setDelivery(true);
+        setDelivered(true);
+      }
     }
   }, [userArr]);
   // todo: post time when each time step update happens
@@ -217,6 +250,36 @@ export default function Order() {
                   <Text fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold' color='neutral.black'>
                     Order status
                   </Text>
+                  <Box>
+                    <Skeleton my={2} minH={loading ? '10px' : '0px'} w='25%' borderRadius='16px' isLoaded={!loading}>
+                      {findOrder(params['id']) !== 'Cancelled' ? (
+                        <NewMenu>
+                          <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                            Change status
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              m={0}
+                              h='100%'
+                              background='neutral.white'
+                              variant='solid'
+                              color='error.default'
+                              _hover={{
+                                background: 'error.default',
+                                color: 'neutral.white'
+                              }}
+                              fontWeight='medium'
+                            >
+                              Cancel order
+                            </MenuItem>
+                          </MenuList>
+                        </NewMenu>
+                      ) : (
+                        <></>
+                      )}
+                    </Skeleton>
+                  </Box>
+
                   {/* replace after fetch */}
 
                   <Box mt={3}>
@@ -372,7 +435,7 @@ export default function Order() {
                   <Skeleton h='20px' borderRadius='16px' isLoaded={!loading}>
                     <Box mt={4}>
                       <Text fontSize={{ base: '10px', md: '2xs' }} color='neutral.black' fontWeight='bold'>
-                        Delivered
+                        {findOrder(params['id']) === 'Cancelled' ? 'Cancelled' : 'Delivered'}
                       </Text>
                       <Text color='neutral.black' fontSize={{ base: '10px', md: '3xs' }}>
                         {delivered ? formatTime(Date.now()) : ''}
