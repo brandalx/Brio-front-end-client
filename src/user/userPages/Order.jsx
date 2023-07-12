@@ -115,7 +115,7 @@ export default function Order() {
         await handleApi();
         toast({
           title: 'Order status changed to ' + _status,
-          description: "We've changed order status.",
+          description: "We've changed your order status.",
           status: 'success',
           duration: 9000,
           isClosable: true
