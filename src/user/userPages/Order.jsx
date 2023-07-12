@@ -532,6 +532,19 @@ export default function Order() {
                 Are you sure you want to cancel this order?
               </Text>
             </ModalHeader>
+            <ModalBody>
+              <Text>
+                This action cannot be undone. We will cancel your order and return your money. For further information,
+                cancelation fees and more visit our{' '}
+                <Box textDecoration='underline' color='primary.default' as='span'>
+                  <Link to='/'>FAQ center</Link>
+                </Box>{' '}
+                or{' '}
+                <Box textDecoration='underline' color='primary.default' as='span'>
+                  <Link to='/'>Contact Us</Link>{' '}
+                </Box>
+              </Text>
+            </ModalBody>
             <ModalFooter>
               <Box display='flex' justifyContent='center' mx='auto'>
                 <Button
@@ -552,8 +565,9 @@ export default function Order() {
                     borderColor: 'primary.default'
                   }}
                   py={5}
+                  px={4}
                 >
-                  No
+                  Decline
                 </Button>
                 <Button
                   onClick={() => {
