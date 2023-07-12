@@ -296,35 +296,31 @@ export default function AccountSettings() {
             </GridItem>
           </Grid>
         </Box>
-        <Box pt={5}>
-          <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-            Email notifications
-          </Text>
-          <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={{ base: 4, md: 6 }}>
-            {/*////*/}
-            {/*////*/}
-            <EmailNotification />
-            {/*////*/}
-            {/*////*/}
-            <GridItem w='100%'>
-              <Stack
-                mt={{ base: '0px', md: 4 }}
-                direction={{ base: 'column', sm: 'row' }}
-                align={'start'}
-                justify={'space-between'}
-              >
-                <Flex alignItems='center'>
-                  <Checkbox mr='2'>
-                    <Text color='neutral.black' fontSize='2xs'>
-                      Password changes
-                    </Text>
-                  </Checkbox>
-                </Flex>
-              </Stack>
-            </GridItem>
-            <Badges />
-          </Grid>
-        </Box>
+        {/*<Box pt={5}>*/}
+        {/*  <Text fontSize='xs' fontWeight='bold' color='neutral.black'>*/}
+        {/*    Email notifications*/}
+        {/*  </Text>*/}
+        {/*  <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={{ base: 4, md: 6 }}>*/}
+        {/*    <EmailNotification />*/}
+        {/*    <GridItem w='100%'>*/}
+        {/*      <Stack*/}
+        {/*        mt={{ base: '0px', md: 4 }}*/}
+        {/*        direction={{ base: 'column', sm: 'row' }}*/}
+        {/*        align={'start'}*/}
+        {/*        justify={'space-between'}*/}
+        {/*      >*/}
+        {/*        <Flex alignItems='center'>*/}
+        {/*          <Checkbox mr='2'>*/}
+        {/*            <Text color='neutral.black' fontSize='2xs'>*/}
+        {/*              Password changes*/}
+        {/*            </Text>*/}
+        {/*          </Checkbox>*/}
+        {/*        </Flex>*/}
+        {/*      </Stack>*/}
+        {/*    </GridItem>*/}
+        {/*    <Badges />*/}
+        {/*  </Grid>*/}
+        {/*</Box>*/}
         <Divider pt={8} />
         <Box pt={5}>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
