@@ -42,7 +42,7 @@ export default function TableAdmins() {
       });
 
       // Filtering only admins who have userId equal to current user's ID
-      const filteredAdmins = response.data.filter((admin) => admin._id === userId);
+      const filteredAdmins = response.data.filter((admin) => admin.restaurant === restaurantId);
       setAdmins(filteredAdmins);
     } catch (error) {
       console.error('Error fetching admins:', error);
@@ -65,7 +65,13 @@ export default function TableAdmins() {
             <Th color='neutral.gray' fontSize='2xs' fontWeight='bold'>
               Role
             </Th>
-            <Th color='neutral.gray' fontSize='2xs' fontWeight='bold' isNumeric>
+            <Th
+              color='neutral.gray'
+              fontSize='2xs'
+              fontWeight='bold'
+              isNumeric
+              display={['none', 'none', 'none', 'table-cell']}
+            >
               Date Created
             </Th>
           </Tr>
@@ -90,7 +96,7 @@ export default function TableAdmins() {
                     {admin.role}
                   </Flex>
                 </Td>
-                <Td fontSize='2xs' color='neutral.black' isNumeric>
+                <Td fontSize='2xs' color='neutral.black' isNumeric display={['none', 'none', 'none', 'table-cell']}>
                   {new Date(admin.date_created).toLocaleString()}
                 </Td>
               </Tr>

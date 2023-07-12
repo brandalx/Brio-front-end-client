@@ -35,11 +35,24 @@ export default function AccountSettings() {
     address: '',
     description: ''
   });
+  const [originalFormData, setOriginalFormData] = useState({
+    title: '',
+    email: '',
+    phoneNumber: '',
+    address: '',
+    description: ''
+  });
   const [user, setUser] = useState(null);
 
   const handleImageChange = (event) => {
     setImage(URL.createObjectURL(event.target.files[0]));
   };
+
+  const resetForm = () => {
+    setFormData(originalFormData);
+    setImage(null);
+  };
+
   const fetchAdmin = async () => {
     try {
       const token = localStorage.getItem('x-api-key');
@@ -48,7 +61,7 @@ export default function AccountSettings() {
 
       const response = await axios.get(`${API_URL}/users/${userId}`, {
         headers: {
-          'x-api-key': token // Это где вы устанавливаете заголовок с токеном
+          'x-api-key': token
         }
       });
       const restaurantId2 = response.data.restaurant;
@@ -57,11 +70,10 @@ export default function AccountSettings() {
       await fetchRestaurant(restaurantId2);
 
       if (response.data.success) {
-        // Проверка успешности запроса
-        localStorage.setItem('token', response.data.token); // Сохранение токена в хранилище
+        localStorage.setItem('token', response.data.token);
       }
       if (response.data && response.data.restaurant) {
-        console.log(token); // Это должно выводить ваш токен, если он присутствует в localStorage
+        console.log(token);
       }
       setUser(response.data);
       console.log(response.data);
@@ -69,25 +81,25 @@ export default function AccountSettings() {
       console.error('Error fetching user:', error);
     }
   };
+
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
       const updatedRestaurantData = {
-        ...restaurant, // Keep existing fields from the restaurant data
-        ...formData // Update fields with new form data
+        ...restaurant,
+        ...formData
       };
 
-      const token = localStorage.getItem('x-api-key'); // получение токена из локального хранилища
+      const token = localStorage.getItem('x-api-key');
 
       const response = await axios.patch(`${API_URL}/admin/restaurants/${restaurantId}`, updatedRestaurantData, {
         headers: {
-          'x-api-key': token // добавление токена в заголовки
+          'x-api-key': token
         }
       });
       console.log(response.data);
     } catch (error) {
       console.error('Error updating restaurant information:', error);
-      // Display an error message to the user
       alert("There was a problem updating the restaurant's information. Please try again later.");
     }
   };
@@ -95,15 +107,17 @@ export default function AccountSettings() {
   const fetchRestaurant = async (restaurantId) => {
     try {
       const response = await handleApiGet(API_URL + `/admin/restaurants/${restaurantId}`);
-      setRestaurant(response.data); // if the response comes wrapped in a data object
+      setRestaurant(response.data);
       console.log(response.data);
       console.log(response);
       const { title, email, phoneNumber = '', address, description } = response.restaurant;
-      setFormData({ name: title, email, phoneNumber, address, description });
+      setFormData({ title, email, phoneNumber, address, description });
+      setOriginalFormData({ title, email, phoneNumber, address, description });
     } catch (error) {
       console.error('Error fetching restaurant:', error);
     }
   };
+
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -122,6 +136,7 @@ export default function AccountSettings() {
   useEffect(() => {
     fetchAdmin();
   }, []);
+
   useEffect(() => {
     console.log(restaurant);
   }, [restaurant]);
@@ -213,7 +228,7 @@ export default function AccountSettings() {
                 <Input
                   type='text'
                   background='neutral.white'
-                  defaultValue={formData.name}
+                  value={formData.title}
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
@@ -229,7 +244,7 @@ export default function AccountSettings() {
 
                 <Input
                   type='email'
-                  defaultValue={formData.email}
+                  value={formData.email}
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
@@ -250,7 +265,7 @@ export default function AccountSettings() {
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  defaultValue={formData.phoneNumber} // <-- Изменено с 'phone' на 'phoneNumber'
+                  value={formData.phoneNumber}
                   onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
                 />
               </FormControl>
@@ -271,7 +286,7 @@ export default function AccountSettings() {
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  defaultValue={formData.address}
+                  value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 />
               </FormControl>
@@ -289,38 +304,13 @@ export default function AccountSettings() {
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
                   fontSize='2xs'
-                  defaultValue={formData.description}
+                  value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 />
               </FormControl>
             </GridItem>
           </Grid>
         </Box>
-        {/*<Box pt={5}>*/}
-        {/*  <Text fontSize='xs' fontWeight='bold' color='neutral.black'>*/}
-        {/*    Email notifications*/}
-        {/*  </Text>*/}
-        {/*  <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={{ base: 4, md: 6 }}>*/}
-        {/*    <EmailNotification />*/}
-        {/*    <GridItem w='100%'>*/}
-        {/*      <Stack*/}
-        {/*        mt={{ base: '0px', md: 4 }}*/}
-        {/*        direction={{ base: 'column', sm: 'row' }}*/}
-        {/*        align={'start'}*/}
-        {/*        justify={'space-between'}*/}
-        {/*      >*/}
-        {/*        <Flex alignItems='center'>*/}
-        {/*          <Checkbox mr='2'>*/}
-        {/*            <Text color='neutral.black' fontSize='2xs'>*/}
-        {/*              Password changes*/}
-        {/*            </Text>*/}
-        {/*          </Checkbox>*/}
-        {/*        </Flex>*/}
-        {/*      </Stack>*/}
-        {/*    </GridItem>*/}
-        {/*    <Badges />*/}
-        {/*  </Grid>*/}
-        {/*</Box>*/}
         <Divider pt={8} />
         <Box pt={5}>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
@@ -367,6 +357,7 @@ export default function AccountSettings() {
                   }}
                   py={5}
                   me='20px'
+                  onClick={resetForm}
                 >
                   Discard changes
                 </Button>
