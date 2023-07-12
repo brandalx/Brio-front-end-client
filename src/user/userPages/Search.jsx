@@ -23,6 +23,8 @@ import { Grid } from '@chakra-ui/react';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 
 export default function Search() {
+  const [restaurantData, setRestaurantData] = useState([]);
+
   const location = useLocation();
   const [searchString, setSearchString] = useState((location.state && location.state.searchinfo) || '');
   const [arr, setArr] = useState([]);
@@ -72,6 +74,30 @@ export default function Search() {
       handleApiSearch(searchString);
     }
   };
+  const getRestaurantInfo = async (_id) => {
+    try {
+      let url = API_URL + '/restaurants/' + _id;
+      const data = await handleApiGet(url);
+      if (data._id) {
+        return data.title || '';
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    const fetchRestaurantData = async () => {
+      const newData = await Promise.all(
+        arr.map(async (item) => {
+          const name = await getRestaurantInfo(item.restaurantRef);
+          return { ...item, restaurantName: name };
+        })
+      );
+      setRestaurantData(newData);
+    };
+
+    fetchRestaurantData();
+  }, [arr]);
   return (
     <Container maxW='1110px'>
       <Button
@@ -213,18 +239,32 @@ export default function Search() {
             gap={2}
           >
             {!loading &&
-              arr.length > 0 &&
-              arr.map((item, index) => (
+              restaurantData.length > 0 &&
+              restaurantData.map((item, index) => (
                 <Box key={index}>
-                  <Skeleton borderRadius='16px' isLoaded={!loading}>
-                    <ProductCard
-                      _id={item._id}
-                      img={item.image}
-                      title={item.title}
-                      description={item.description}
-                      price={item.price}
-                    />
-                  </Skeleton>
+                  <Box
+                    transition='all 0.3s'
+                    cursor='pointer'
+                    bg='neutral.white'
+                    _hover={{ bg: 'primary.light', transition: 'all 0.3s' }}
+                    border='1px'
+                    borderColor='neutral.grayLightest'
+                    borderRadius='16px'
+                  >
+                    <Text py={2} textAlign='center' color='primary.default' fontSize='xs' fontWeight='black'>
+                      <Link to={'/restaurant/' + item.restaurantRef}>{item.restaurantName}</Link>
+                    </Text>
+
+                    <Skeleton borderRadius='16px' isLoaded={!loading}>
+                      <ProductCard
+                        _id={item._id}
+                        img={item.image}
+                        title={item.title}
+                        description={item.description}
+                        price={item.price}
+                      />
+                    </Skeleton>
+                  </Box>
                 </Box>
               ))}
           </Grid>

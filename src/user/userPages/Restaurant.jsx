@@ -25,7 +25,7 @@ import React, { useEffect, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import axios from 'axios';
 
@@ -37,6 +37,8 @@ import Dislike from '../../assets/svg/Dislike';
 import { useForm } from 'react-hook-form';
 import { FormControl, Input, Select } from '@chakra-ui/react';
 import { Popover } from '@chakra-ui/react';
+import { Icon } from '@chakra-ui/react';
+import { FaChevronLeft } from 'react-icons/fa';
 
 export default function Restaurant() {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -91,6 +93,10 @@ export default function Restaurant() {
       setLoading(false);
       console.log(error);
     }
+  };
+  const navigate = useNavigate();
+  const handleGoBack = () => {
+    navigate(-1); // Go back one step in the history
   };
   const handleProductApi = async (data) => {
     try {
@@ -361,6 +367,14 @@ export default function Restaurant() {
     <>
       <Box background='bg' py='50px' data-aos='fade-up'>
         <Container maxW='1110px'>
+          <Button my={4} _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
+            <Flex alignItems='center'>
+              <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+              <Text onClick={() => handleGoBack()} color='neutral.black' fontSize='xs'>
+                Back
+              </Text>
+            </Flex>
+          </Button>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
             <GridItem w='100%' h='100%'>
               <Flex h='100%'>

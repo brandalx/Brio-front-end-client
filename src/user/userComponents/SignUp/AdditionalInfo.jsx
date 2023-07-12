@@ -80,7 +80,7 @@ export default function AdditionalInfo({ mainBody, setMainBody }) {
                   </FormControl>
 
                   <Stack spacing={10}>
-                    <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                    {/* <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
                       <Flex alignItems='center'>
                         <Checkbox mr='2'>
                           <Text color='neutral.black' fontSize='2xs'>
@@ -88,7 +88,7 @@ export default function AdditionalInfo({ mainBody, setMainBody }) {
                           </Text>
                         </Checkbox>
                       </Flex>
-                    </Stack>
+                    </Stack> */}
                     <Box>
                       <Button
                         type='submit'
