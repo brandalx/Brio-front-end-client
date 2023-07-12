@@ -21,7 +21,13 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  MenuButton
+  MenuButton,
+  ModalOverlay,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalFooter
 } from '@chakra-ui/react';
 import { Menu as NewMenu } from '@chakra-ui/react';
 import 'react-image-gallery/styles/css/image-gallery.css';
@@ -40,6 +46,8 @@ import colorstatus from '../userComponents/UserOrdrs/colorsObject.json';
 import Status from '../../assets/svg/Status';
 import Calendar from '../../assets/svg/Calendar';
 import Shipping from '../userComponents/Order/Shipping';
+import { useDisclosure } from '@chakra-ui/react';
+import { Modal } from '@chakra-ui/react';
 export default function Order() {
   const [placed, setPlaced] = useState(true);
   const [prepared, setPrepared] = useState(false);
@@ -89,6 +97,9 @@ export default function Order() {
       setAddressString(finalstr);
     }
   };
+  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px) hue-rotate(90deg)' />;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [overlay, setOverlay] = React.useState(<OverlayOne />);
   const toast = useToast();
   const handleChangeStatus = async (_orderid, _status) => {
     try {
@@ -201,7 +212,7 @@ export default function Order() {
   };
   //todo: replace with post wehn updating post time and status
   useEffect(() => {
-    const timer = setInterval(updateState, 60 * 6000);
+    const timer = setInterval(updateState, 60 * 1000);
 
     return () => clearInterval(timer);
   }, [placed, prepared, delivery, delivered]);
@@ -280,7 +291,10 @@ export default function Order() {
                           </MenuButton>
                           <MenuList>
                             <MenuItem
-                              onClick={() => handleChangeStatus(params['id'], 'Cancelled')}
+                              onClick={() => {
+                                setOverlay(<OverlayOne />);
+                                onOpen();
+                              }}
                               m={0}
                               h='100%'
                               background='neutral.white'
@@ -507,6 +521,69 @@ export default function Order() {
           </GridItem>
         </Grid>
       </Container>
+
+      <Box>
+        <Modal size='xl' isCentered isOpen={isOpen} onClose={onClose}>
+          {overlay}
+          <ModalContent>
+            <ModalHeader>
+              <ModalCloseButton />
+              <Text mt={{ base: 8, md: 0 }} fontSize='xs' fontWeight='bold' color='neutral.black' textAlign={'center'}>
+                Are you sure you want to cancel this order?
+              </Text>
+            </ModalHeader>
+            <ModalFooter>
+              <Box display='flex' justifyContent='center' mx='auto'>
+                <Button
+                  me={2}
+                  onClick={onClose}
+                  type='submit'
+                  w={{ base: '50%', md: 'initial' }}
+                  background='primary.default'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='neutral.white'
+                  borderWidth='1px'
+                  borderColor='neutral.white'
+                  _hover={{
+                    background: 'neutral.white',
+                    color: 'primary.default',
+                    borderWidth: '1px',
+                    borderColor: 'primary.default'
+                  }}
+                  py={5}
+                >
+                  No
+                </Button>
+                <Button
+                  onClick={() => {
+                    onClose();
+                    handleChangeStatus(params['id'], 'Cancelled');
+                  }}
+                  w={{ base: '50%', md: 'initial' }}
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  variant='solid'
+                  borderWidth='1px'
+                  borderColor='error.default'
+                  background='error.default'
+                  color='neutral.white'
+                  _hover={{
+                    background: 'neutral.white',
+                    color: 'error.default',
+                    borderWidth: '1px',
+                    borderColor: 'error.default'
+                  }}
+                  py={5}
+                  me='20px'
+                >
+                  Cancel order
+                </Button>
+              </Box>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </Box>
     </Box>
   );
 }
