@@ -18,10 +18,12 @@ import _ from 'lodash';
 import MealCard from '../adminComponents/RestaurantDashboard/MealCard';
 import { Button } from '@chakra-ui/button';
 import axios from 'axios';
-import { API_URL } from '../../services/apiServices';
+import { API_URL, TOKEN_KEY } from '../../services/apiServices';
 import jwtDecode from 'jwt-decode';
 import PopularMeals from '../adminComponents/RestaurantDashboard/PopularMeals';
 import { AspectRatio } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { useCheckToken } from '../../services/token';
 
 // Register required Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -40,6 +42,23 @@ export const options = {
 };
 
 export default function RestaurantDashboard() {
+  const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(null); // New state variable
+  const token = localStorage.getItem(TOKEN_KEY);
+  const decodedToken = jwtDecode(token);
+
+  useEffect(() => {
+    if (decodedToken.role !== 'ADMIN') {
+      navigate('/login');
+    } else {
+      setIsAdmin(true); // Only set to true if user is admin
+    }
+  }, [navigate, token]);
+
+  // Don't render rest of the component until we've confirmed the user's role
+  if (isAdmin === null) {
+    return null;
+  }
   const [receivedOrders, setReceivedOrder] = useState(0);
   const [revenue, setRevenue] = useState(0);
   const [restaurantId, setRestaurantId] = useState();

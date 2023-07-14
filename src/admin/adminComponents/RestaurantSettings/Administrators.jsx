@@ -27,9 +27,29 @@ import React, { useEffect, useState } from 'react';
 import TableAdmins from './TableAdmins';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
-import { API_URL } from '../../../services/apiServices';
+import { API_URL, TOKEN_KEY } from '../../../services/apiServices';
+import { useNavigate } from 'react-router-dom';
+import { useCheckToken } from '../../../services/token';
 
 export default function Administrators() {
+  const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(null); // New state variable
+  const token = localStorage.getItem(TOKEN_KEY);
+  const decodedToken = jwtDecode(token);
+
+  useEffect(() => {
+    if (decodedToken.role !== 'ADMIN') {
+      navigate('/login');
+    } else {
+      setIsAdmin(true); // Only set to true if user is admin
+    }
+  }, [navigate, token]);
+
+  // Don't render rest of the component until we've confirmed the user's role
+  if (isAdmin === null) {
+    return null;
+  }
+
   const [restaurantId, setRestaurantId] = useState(null);
   const [users, setUsers] = useState([]);
   const [newAdminId, setNewAdminId] = useState('');
@@ -195,7 +215,7 @@ export default function Administrators() {
         </Flex>
 
         <Box pt={5}>
-          <TableAdmins />
+          <TableAdmins users={users} /> {/* Pass the users array as a prop */}
         </Box>
       </Box>
     </Box>
