@@ -22,6 +22,8 @@ import Status from '../../../../assets/svg/Status';
 import ThreeDots from '../../../../assets/svg/ThreeDots';
 import { API_URL, handleApiGet } from '../../../../services/apiServices';
 import { useParams } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 
 export default function CustomerTableBody() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
@@ -30,17 +32,74 @@ export default function CustomerTableBody() {
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedOrder, setSelectedOrder] = React.useState(null);
+  const [restaurantId, setRestaurantId] = React.useState(null);
   const { userId } = useParams();
   const [isDekstop] = useMediaQuery('(min-width: 1200px)');
+
+  const fetchRestaurantData = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+      const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      setRestaurantId(adminResponse.data.restaurant);
+    } catch (error) {
+      console.error('Error fetching restaurant data:', error);
+    }
+  };
+  useEffect(() => {
+    fetchRestaurantData();
+  }, []);
 
   const onClose = () => setIsOpen(false);
   const fetchOrders = async () => {
     try {
-      const response = await handleApiGet(`${API_URL}/users/${userId}`);
+      const token = localStorage.getItem('x-api-key');
 
-      setUser(response);
+      const response = await handleApiGet(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
 
-      // setLoading(false);
+      console.log('User object:', response.orders);
+      console.log('Userid:', userId);
+
+      if (response && response.orders) {
+        const orders = response.orders.filter((order) => order.restaurant.includes(restaurantId));
+        let newOrders = [];
+        for (let order of orders) {
+          // Проверяем, что все продукты в заказе относятся к текущему ресторану
+          let productsFromThisRestaurant = [];
+          const responseToOrder = await handleApiGet(`${API_URL}/admin/orders/${order.orderRef}`);
+
+          console.log('responseToOrder.data: ', responseToOrder.ordersdata);
+
+          if (responseToOrder) {
+            console.log('responseToOrder.ordersdata.products: ', responseToOrder.ordersdata.products);
+            productsFromThisRestaurant = responseToOrder.ordersdata.products.filter(
+              (product) => product.restaurantId === restaurantId
+            );
+          }
+          console.log('productsFromThisRestaurant: ', productsFromThisRestaurant);
+          // Если есть продукты из текущего ресторана, рассчитываем итоговую сумму
+          if (productsFromThisRestaurant.length > 0) {
+            const totalAmount = productsFromThisRestaurant.reduce((total, product) => total + product.priceItem, 0);
+            let newOrder = { ...order, totalAmountSpent: totalAmount };
+            newOrders.push(newOrder);
+          }
+        }
+
+        let userWithOrderTotals = { ...response.data, orders: newOrders };
+        setUser(userWithOrderTotals);
+      } else {
+        console.error('Orders not found in user data');
+      }
     } catch (error) {
       console.error('Error fetching user:', error);
     }
@@ -48,7 +107,7 @@ export default function CustomerTableBody() {
 
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [restaurantId, userId]);
 
   return (
     <Tbody>
@@ -64,7 +123,7 @@ export default function CustomerTableBody() {
               color='neutral.grayDark'
               maxW='100px'
             >
-              {order._id.slice(-5)}
+              {order.orderRef.slice(-5)}
             </Td>
             <Td
               display={{ base: 'none', sm: 'table-cell' }}
@@ -126,8 +185,9 @@ export default function CustomerTableBody() {
               color='neutral.black'
               fontWeight='semibold'
             >
-              ${order.paymentSummary.totalAmount}
+              ${order.totalAmountSpent}
             </Td>
+
             <Td
               position={isMobile ? 'relative' : ''}
               right={isMobile ? '10px' : '0'}
