@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import RestaurantCustomersList from '../adminComponents/RestaurantCustomers/RestaurantCustomersList';
 import { useNavigate } from 'react-router-dom';
 import { useCheckToken } from '../../services/token';
@@ -14,7 +14,6 @@ export default function RestaurantCustomers() {
       navigate('/login');
     }
   }, [navigate, token]);
-
 
   return <RestaurantCustomersList />;
 }

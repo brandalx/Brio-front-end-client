@@ -30,7 +30,6 @@ export default function Security() {
     }
   }, [navigate, token]);
 
-
   const [userId, setUserId] = useState(null);
   const [restaurantId, setRestaurantId] = useState(null);
   const [admins, setAdmins] = useState([]);

@@ -42,7 +42,6 @@ export default function Administrators() {
     }
   }, [navigate, token]);
 
-
   const [restaurantId, setRestaurantId] = useState(null);
   const [users, setUsers] = useState([]);
   const [newAdminId, setNewAdminId] = useState('');

@@ -20,7 +20,6 @@ export default function RestaurantMenu() {
     }
   }, [navigate, token]);
 
-
   const [categories, setCategories] = useState([]);
   const [productsByCategory, setProductsByCategory] = useState({});
   const [selectedCategory, setSelectedCategory] = useState('Choose category');

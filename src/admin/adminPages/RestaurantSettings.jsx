@@ -20,7 +20,6 @@ export default function RestaurantSettings() {
     }
   }, [navigate, token]);
 
-
   return (
     <Box py={5}>
       <Container maxW='1110px'>

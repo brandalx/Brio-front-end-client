@@ -35,7 +35,7 @@ import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../service
 import { useCheckToken } from '../../services/token';
 import { avatarContext, cartContext, geolocationContext } from '../../context/globalContext';
 import GeolocationDefinder from './Navbar/GeolocationDefinder';
-import jwtDecode from "jwt-decode";
+import jwtDecode from 'jwt-decode';
 export default function Navbar() {
   const isTokenExpired = useCheckToken();
   const { cartLen, setCartLen } = useContext(cartContext);
@@ -49,7 +49,7 @@ export default function Navbar() {
   const mobileNav = useDisclosure();
   const location = useLocation();
   const isInCart = location.pathname.startsWith('/user/cart');
-  const checkerIfAdmin = jwtDecode(localStorage.getItem(TOKEN_KEY)).role === "ADMIN"
+  const checkerIfAdmin = jwtDecode(localStorage.getItem(TOKEN_KEY)).role === 'ADMIN';
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
 
@@ -347,9 +347,9 @@ export default function Navbar() {
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
                             </a>
                             {checkerIfAdmin && (
-                                <Link to="/admin/restaurant/dashboard">
-                                  <MenuItem fontWeight='medium'>Your restaurant</MenuItem>
-                                </Link>
+                              <Link to='/admin/restaurant/dashboard'>
+                                <MenuItem fontWeight='medium'>Your restaurant</MenuItem>
+                              </Link>
                             )}
 
                             <MenuDivider />
@@ -508,6 +508,11 @@ export default function Navbar() {
                               {' '}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
                             </a>
+                            {checkerIfAdmin && (
+                              <Link to='/admin/restaurant/dashboard'>
+                                <MenuItem fontWeight='medium'>Your restaurant</MenuItem>
+                              </Link>
+                            )}
 
                             <MenuDivider />
 

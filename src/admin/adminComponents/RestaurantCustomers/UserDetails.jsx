@@ -18,7 +18,6 @@ export default function UserDetails() {
     }
   }, [navigate, token]);
 
-
   return (
     <Box>
       <Container maxW='1132px' pb='50px'>
