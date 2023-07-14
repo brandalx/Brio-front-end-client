@@ -11,13 +11,13 @@ export default function RestaurantPromotions() {
   const navigate = useNavigate();
   const token = localStorage.getItem(TOKEN_KEY);
   const decodedToken = jwtDecode(token);
+  const [active, setActive] = useState('Active');
 
   useEffect(() => {
     if (decodedToken.role !== 'ADMIN') {
       navigate('/login');
     }
   }, [navigate, token]);
-
 
   return (
     <Box>

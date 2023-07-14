@@ -194,6 +194,9 @@ export default function AdminNavbar() {
                         <MenuItem as={RouterLink} to='/admin/restaurant/settings' fontWeight='medium'>
                           Settings
                         </MenuItem>
+                        <MenuItem as={RouterLink} to='/' fontWeight='medium'>
+                          Client side menu
+                        </MenuItem>
                       </MenuList>
                     </Menu>
                   </Flex>
@@ -248,6 +251,9 @@ export default function AdminNavbar() {
                       <MenuList>
                         <MenuItem as={RouterLink} to='/admin/restaurant/settings' fontWeight='medium'>
                           Settings
+                        </MenuItem>
+                        <MenuItem as={RouterLink} to='/' fontWeight='medium'>
+                          Client side menu
                         </MenuItem>
                       </MenuList>
                     </Menu>
