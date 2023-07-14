@@ -37,6 +37,80 @@ export default function OrdersTableBody() {
   const [restaurantProducts, setRestaurantProducts] = useState([]);
   const [relevantOrders, setRelevantOrders] = useState([]);
   const [products, setProducts] = useState([]);
+  const [userArr, setUserArr] = useState([]);
+  const [usersArr, setUsersArr] = useState([]);
+
+  let handleUsersPublicData = async (_commentsdata) => {
+    try {
+      if (_commentsdata.length > 0) {
+        let allUsers = [];
+        const response = await Promise.all(
+          _commentsdata.map((item) => handleApiGet(`${API_URL}/users/info/public/user/${item._id.toString()}`))
+        );
+        allUsers = [...allUsers, ...response];
+        setUsersArr(allUsers);
+        console.log(allUsers);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleUserApi = async () => {
+    const url2 = API_URL + '/users/getAllUsers';
+    try {
+      const data2 = await handleApiGet(url2);
+      console.log('Data from API:', data2);
+      if (Array.isArray(data2)) {
+        setUserArr(data2);
+        await handleUsersPublicData(data2);
+      } else {
+        console.error('Data from API is not an array:', data2);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  let getUserName = (userid) => {
+    try {
+      if (Array.isArray(usersArr)) {
+        const user = usersArr.find((item) => item._id === userid);
+        if (user) {
+          return user.firstname + ' ' + user.lastname;
+        }
+      }
+      return '';
+    } catch (error) {
+      console.log(error);
+      return '';
+    }
+  };
+
+  let getUserAvatar = (userid) => {
+    try {
+      console.log(`userArr found: ${userArr}: `, userArr);
+
+      const user = userArr.find((item) => item._id === userid);
+      if (user) {
+        // check if user exists
+        console.log(`User found for ID ${userid}: `, user);
+        if (user.avatar) {
+          // check if avatar exists
+          let stringAvatar = API_URL + (API_URL.endsWith('/') ? '' : '/') + user.avatar;
+          console.log(`Avatar URL for user ${userid}: `, stringAvatar);
+          return stringAvatar;
+        } else {
+          console.log(`No avatar found for user ${userid}`);
+        }
+      } else {
+        console.log(`No user found for ID ${userid}`);
+      }
+      return '';
+    } catch (error) {
+      console.log('Error in getUserAvatar: ', error);
+      return '';
+    }
+  };
 
   const fetchProductData = async (productId) => {
     try {
@@ -66,7 +140,7 @@ export default function OrdersTableBody() {
         setUserId(userId);
         setRestaurantId(adminResponse.data.restaurant);
         console.log('Fetched restaurant data: ', adminResponse.data);
-
+        await handleUserApi();
         if (adminResponse.data.restaurant && Array.isArray(adminResponse.data.restaurant.products)) {
           setRestaurantProducts(adminResponse.data.restaurant.products.map((product) => product.$oid));
         }
@@ -145,6 +219,12 @@ export default function OrdersTableBody() {
     fetchAll();
   }, [restaurantId]);
 
+  const formatDate = (date) => {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    const formattedDate = new Date(date).toLocaleDateString('en-US', options);
+    return formattedDate;
+  };
+
   return (
     <Tbody>
       {relevantOrders.map((order, index) => {
@@ -177,7 +257,8 @@ export default function OrdersTableBody() {
             >
               {user.firstname} {user.lastname}
               <Box mr='12px' w='42px' h='42px'>
-                <Avatar w='100%' h='100%' borderRadius='full' src={''} name={user.firstname + ' ' + user.lastname} />
+                {console.log(`Rendering avatar for user ${user._id}`)}
+                <Avatar size='md' name={getUserName(user._id)} src={getUserAvatar(user._id)} />
               </Box>
             </Td>
             <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
@@ -185,12 +266,10 @@ export default function OrdersTableBody() {
             </Td>
 
             <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-              {order.creationDate}
+              {formatDate(order.creationDate)}
             </Td>
             <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-              {new Date(order.creationDate).toDateString() +
-                ' ' +
-                new Date(order.creationDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              {new Date(order.creationDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </Td>
 
             <Td
@@ -206,14 +285,14 @@ export default function OrdersTableBody() {
                 <Box as='span' me={2}>
                   <Status
                     color={
-                      order.status === 'Completed'
+                      order.userdata.status === 'Completed'
                         ? '#1ABF70'
-                        : order.status === 'In progress'
+                        : order.userdata.status === 'In progress'
                         ? '#4E60FF'
-                        : order.status === 'Canceled'
+                        : order.userdata.status === 'Cancelled'
                         ? '#FF5C60'
-                        : order.status === 'Suspended'
-                        ? '#FF5C60'
+                        : order.userdata.status === 'Placed'
+                        ? '#22E57A'
                         : 'yellow'
                     }
                   />
