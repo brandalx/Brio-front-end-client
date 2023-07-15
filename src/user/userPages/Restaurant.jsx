@@ -434,13 +434,23 @@ export default function Restaurant() {
               <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' my={2}>
                 <Flex alignItems='center'>
                   <Box w='100%'>
-                    {address?.results?.length > 0 && (
+                    {address?.results?.length > 0 &&
+                    address.results[0].bounds &&
+                    address.results[0].bounds.northeast.lng ? (
                       <iframe
                         width='100%'
                         src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
                         title='Monochrome'
                         style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '230px' }}
                       />
+                    ) : (
+                      <>
+                        <Box>
+                          <Text py={4} textAlign='center' fontSize='sm' fontWeight='bold' color='neutral.grayDark'>
+                            Sorry, we couldn't find location of this restaurant
+                          </Text>
+                        </Box>
+                      </>
                     )}
                   </Box>
                 </Flex>
