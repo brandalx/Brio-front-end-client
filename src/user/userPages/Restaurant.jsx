@@ -545,7 +545,7 @@ export default function Restaurant() {
                           >
                             <Box display='flex' alignItems='center'>
                               <Text me={2} color='primary.default' fontWeight='semibold' fontSize='sm'>
-                                {comments && comments.length > 0 && handleOverallRate(comments)}
+                                {comments && comments.length > 0 ? handleOverallRate(comments) : 0}
                               </Text>
                               <Box me={2} display='flex'>
                                 {comments &&
@@ -560,7 +560,7 @@ export default function Restaurant() {
                                   )}
                               </Box>
                               <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
-                                {comments && comments.length === 1 ? 'vote' : 'votes'}
+                                {comments && comments.length} {comments && comments.length === 1 ? 'vote' : 'votes'}
                               </Text>
                             </Box>
                             <Box>
