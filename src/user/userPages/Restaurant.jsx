@@ -23,6 +23,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
+import noimagerest from '../../assets/images/noimagerest.jpg';
 
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -397,7 +398,7 @@ export default function Restaurant() {
                           borderWidth='15px'
                           borderColor='neutral.white'
                           borderRadius='16px'
-                          src={restaurantArr.image}
+                          src={restaurantArr.image ? restaurantArr.image : noimagerest}
                         />
                       </Skeleton>
                     </GridItem>

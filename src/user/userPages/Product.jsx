@@ -22,7 +22,7 @@ import {
 import 'react-image-gallery/styles/css/image-gallery.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaChevronLeft } from 'react-icons/fa';
-
+import noimage from '../../assets/images/noimage.jpg';
 import ImageGallery from 'react-image-gallery';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -30,6 +30,7 @@ import { API_URL, handleApiGet, handleApiMethod } from '../../services/apiServic
 import { cartContext } from '../../context/globalContext';
 import { useCheckToken } from '../../services/token';
 export default function Product() {
+  const [isNoImage, setIsNoImage] = useState(false);
   const { cartLen, setCartLen } = useContext(cartContext);
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const thumbnailPosition = isLargerThanMd ? 'left' : 'bottom';
@@ -76,7 +77,22 @@ export default function Product() {
 
       const finalProducts = tempProductArr.filter((item) => item._id !== params['id']);
       setProductsAr(finalProducts);
-      setImageArr(images);
+      if (images.length === 0) {
+        let tempArr = [
+          {
+            original: noimage,
+            thumbnail: noimage
+          }
+        ];
+
+        console.log(tempArr);
+        setImageArr(tempArr);
+        setIsNoImage(true);
+      } else if (images.length > 0) {
+        setImageArr(images);
+        console.log(images);
+      }
+
       handleUserApi();
     } catch (error) {
       setLoading(false);

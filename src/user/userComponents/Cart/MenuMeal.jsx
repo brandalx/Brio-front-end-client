@@ -21,7 +21,7 @@ import { Link } from 'react-router-dom';
 import { Modal, useDisclosure } from '@chakra-ui/react';
 import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { cartContext } from '../../../context/globalContext';
-
+import noimage from '../../../assets/images/noimage.jpg';
 export default function MenuMeal({ user, setReload2, reload2, reload, setReload, item, amount, targetId }) {
   const { cartLen, setCartLen } = useContext(cartContext);
   const [amountMeals, setAmountMeals] = useState(amount);
@@ -161,7 +161,12 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
             <Link to={`/restaurant/product/${item._id}`}>
               <Box display='flex' alignItems='center'>
                 <Box me={2}>
-                  <Image borderRadius='12px' maxH='72px' maxW='72px' src={item.image} />
+                  <Image
+                    borderRadius='12px'
+                    maxH='72px'
+                    maxW='72px'
+                    src={item.image.length > 0 ? item.image : noimage}
+                  />
                 </Box>
                 <Box>
                   <Box>
@@ -271,7 +276,12 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
                 >
                   <Box display='flex' alignItems='center'>
                     <Box me={2}>
-                      <Image borderRadius='12px' maxH='72px' maxW='72px' src={item.image} />
+                      <Image
+                        borderRadius='12px'
+                        maxH='72px'
+                        maxW='72px'
+                        src={item.image.length > 0 ? item.image : noimage}
+                      />
                     </Box>
                     <Box>
                       <Box>

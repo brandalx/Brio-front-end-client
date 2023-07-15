@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import TrashBox from '../../../assets/svg/TrashBox';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import { Link } from 'react-router-dom';
-
+import noimage from '../../../assets/images/noimage.jpg';
 export default function Menu({ item }) {
   const [producAr, setProductAr] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,13 @@ export default function Menu({ item }) {
                 <Box display='flex' alignItems='center'>
                   <Box me={2}>
                     {!loading && (
-                      <Image borderRadius='12px' maxH='72px' maxW='72px' src={producAr.image[0]} alt='image' />
+                      <Image
+                        borderRadius='12px'
+                        maxH='72px'
+                        maxW='72px'
+                        src={producAr.image[0] ? producAr.image[0] : noimage}
+                        alt='image'
+                      />
                     )}
                   </Box>
                   <Box>

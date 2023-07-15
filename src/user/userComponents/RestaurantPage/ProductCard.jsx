@@ -2,6 +2,9 @@ import { Box, GridItem, Image, Text, Button, Flex, Stack, border, useToast } fro
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
+
+import noimage from '../../../assets/images/noimage.jpg';
+
 import { cartContext } from '../../../context/globalContext';
 import { useCheckToken } from '../../../services/token.js';
 export default function ProductCard({ img, title, description, price, _id }) {
@@ -101,7 +104,7 @@ export default function ProductCard({ img, title, description, price, _id }) {
       >
         <Link to={`/restaurant/product/${_id}`}>
           <Box>
-            <Image borderRadius='16px' w='100%' src={img} h='230px' objectFit='cover' />
+            <Image borderRadius='16px' w='100%' src={img.length > 0 ? img : noimage} h='230px' objectFit='cover' />
           </Box>
         </Link>
         <Stack>

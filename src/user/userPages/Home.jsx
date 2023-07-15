@@ -16,7 +16,6 @@ import { geolocationContext } from '../../context/globalContext';
 import Pickers from '../userComponents/HomePage/Pickers';
 import SearchInput from '../userComponents/Search/SearchInput';
 import Arrow from '../../assets/svg/Arrow';
-
 export default function Home() {
   // todo: add tag into product into backend model and validation
 
