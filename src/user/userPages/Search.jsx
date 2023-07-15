@@ -268,6 +268,24 @@ export default function Search() {
                 </Box>
               ))}
           </Grid>
+          {!loading && arr.length > 0 && (
+            <Text mt={5} mx='auto' textAlign='center' fontSize='2xs' fontWeight='extrabold' color='neutral.grayDark'>
+              That's all we found so far :)
+              <Box color='primary.default' as='span'></Box>
+            </Text>
+          )}
+
+          {!loading && arr.length === 0 && (
+            <Text mt={5} mx='auto' textAlign='center' fontSize='2xs' fontWeight='extrabold' color='neutral.grayDark'>
+              Try another search or checkout{' '}
+              <Link as='span' to='/restaurant'>
+                <Text as='span' textDecoration='underline' color='primary.default'>
+                  restaurants available
+                </Text>
+              </Link>
+              <Box color='primary.default' as='span'></Box>
+            </Text>
+          )}
         </Box>
       </Box>
     </Container>
