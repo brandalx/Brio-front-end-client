@@ -350,7 +350,7 @@ export default function Product() {
           </Grid>
           <Box py='30px'>
             <Text color='neutral.black' fontWeight='semibold' fontSize='sm'>
-              Recommended with
+              {!loading && productsArr.length > 0 && '     Recommended with'}
             </Text>
             <Box>
               <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
