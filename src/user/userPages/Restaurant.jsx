@@ -55,20 +55,37 @@ export default function Restaurant() {
   const [comments, setComments] = useState();
   const [responseFalls, setResponseFalls] = useState(true);
   const [showOops, setShowOops] = useState(false);
+  const [categories, SetCategories] = useState([]);
+
   const params = useParams();
 
   const [usersArr, setUsersArr] = useState();
 
   const handleUserApi = async () => {
     const url2 = API_URL + '/users/info/user';
-
+    const url3 = API_URL + '/categories';
     try {
       const data2 = await handleApiGet(url2);
+
       console.log(data2);
+      const data3 = await handleApiGet(url3);
+      console.log(data3);
       setUserArr(data2);
+      handleCategories(data3);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleCategories = (_data) => {
+    let tempArr = [];
+    _data.map((item) => {
+      if (item.restaurantRef === params['id']) {
+        tempArr.push(item);
+      }
+    });
+    SetCategories(tempArr);
+    console.log(tempArr);
   };
 
   const handleRestaurantApi = async () => {
