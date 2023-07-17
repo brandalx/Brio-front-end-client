@@ -257,7 +257,6 @@ export default function OrdersTableBody() {
             >
               {user.firstname} {user.lastname}
               <Box mr='12px' w='42px' h='42px'>
-                {console.log(`Rendering avatar for user ${user._id}`)}
                 <Avatar size='md' name={getUserName(user._id)} src={getUserAvatar(user._id)} />
               </Box>
             </Td>

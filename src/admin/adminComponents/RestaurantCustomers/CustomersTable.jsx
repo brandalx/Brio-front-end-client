@@ -2,9 +2,7 @@ import {
   Avatar,
   Box,
   Button,
-  Flex,
   IconButton,
-  Image,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -36,6 +34,88 @@ export default function CustomersTable() {
   const [isBetween] = useMediaQuery('(min-width: 576px) and (max-width: 600px)');
   const navigate = useNavigate();
   const [restaurantId, setRestaurantId] = useState(null);
+  const [usersArr, setUsersArr] = useState([]);
+  const [userArr, setUserArr] = useState([]);
+
+  ///////////Avatar logic
+  let handleUsersPublicData = async (_commentsdata) => {
+    try {
+      if (_commentsdata.length > 0) {
+        let allUsers = [];
+        const response = await Promise.all(
+          _commentsdata.map((item) => handleApiGet(`${API_URL}/users/info/public/user/${item._id.toString()}`))
+        );
+        allUsers = [...allUsers, ...response];
+        setUsersArr(allUsers);
+        console.log(allUsers);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUserApi = async () => {
+    const url2 = API_URL + '/users/getAllUsers';
+    try {
+      const data2 = await handleApiGet(url2);
+      console.log('Data from API:', data2);
+      if (Array.isArray(data2)) {
+        setUserArr(data2);
+        await handleUsersPublicData(data2);
+      } else {
+        console.error('Data from API is not an array:', data2);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    handleUserApi();
+  }, []);
+  let getUserName = (userid) => {
+    try {
+      if (Array.isArray(usersArr)) {
+        const user = usersArr.find((item) => item._id === userid);
+        if (user) {
+          return user.firstname + ' ' + user.lastname;
+        }
+      }
+      return '';
+    } catch (error) {
+      console.log(error);
+      return '';
+    }
+  };
+
+  let getUserAvatar = (userid) => {
+    try {
+      console.log(`userArr found: ${userArr}: `, userArr);
+
+      const user = userArr.find((item) => item._id === userid);
+      if (user) {
+        // check if user exists
+        console.log(`User found for ID ${userid}: `, user);
+        if (user.avatar) {
+          // check if avatar exists
+          let stringAvatar = API_URL + (API_URL.endsWith('/') ? '' : '/') + user.avatar;
+          console.log(`Avatar URL for user ${userid}: `, stringAvatar);
+          return stringAvatar;
+        } else {
+          console.log(`No avatar found for user ${userid}`);
+        }
+      } else {
+        console.log(`No user found for ID ${userid}`);
+      }
+      return '';
+    } catch (error) {
+      console.log('Error in getUserAvatar: ', error);
+      return '';
+    }
+  };
+
+  ////////////
+
   const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(3px) hue-rotate(90deg)' />;
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
   const [openModalId, setOpenModalId] = useState(null);
@@ -76,7 +156,6 @@ export default function CustomersTable() {
     }
   };
 
-  // Добавим пустой массив в качестве зависимостей для вызова только при первом рендере
   useEffect(() => {
     fetchRestaurantData();
   }, []);
@@ -174,7 +253,7 @@ export default function CustomersTable() {
               >
                 {user.firstname} {user.lastname}
                 <Box mr='12px' w='42px' h='42px'>
-                  <Avatar w='100%' h='100%' borderRadius='full' src={''} name={user.firstname + ' ' + user.lastname} />
+                  <Avatar size='md' name={getUserName(user._id)} src={getUserAvatar(user._id)} />
                 </Box>
               </Td>
               <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>

@@ -74,7 +74,6 @@ export default function CustomerTableBody() {
         const orders = response.orders.filter((order) => order.restaurant.includes(restaurantId));
         let newOrders = [];
         for (let order of orders) {
-          // Проверяем, что все продукты в заказе относятся к текущему ресторану
           let productsFromThisRestaurant = [];
           const responseToOrder = await handleApiGet(`${API_URL}/admin/orders/${order.orderRef}`);
 
@@ -87,7 +86,6 @@ export default function CustomerTableBody() {
             );
           }
           console.log('productsFromThisRestaurant: ', productsFromThisRestaurant);
-          // Если есть продукты из текущего ресторана, рассчитываем итоговую сумму
           if (productsFromThisRestaurant.length > 0) {
             const totalAmount = productsFromThisRestaurant.reduce((total, product) => total + product.priceItem, 0);
             let newOrder = { ...order, totalAmountSpent: totalAmount };
@@ -239,12 +237,7 @@ export default function CustomerTableBody() {
                     <Button colorScheme='blue' mr={3} onClick={onClose}>
                       Close
                     </Button>
-                    <Button
-                      variant='ghost'
-                      onClick={() => {
-                        /* re-order request logic */
-                      }}
-                    >
+                    <Button variant='ghost' onClick={() => {}}>
                       Re-Order
                     </Button>
                   </ModalFooter>
