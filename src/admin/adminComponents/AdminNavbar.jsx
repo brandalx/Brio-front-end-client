@@ -142,43 +142,43 @@ export default function AdminNavbar() {
 
                   <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest' />
                   <Flex spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
-                    <Box
-                      ml='4px'
-                      bg='neutral.grayLightest'
-                      color='black'
-                      px={'8px'}
-                      py={'7.5px'}
-                      borderRadius='16px'
-                      position='relative'
-                    >
-                      <Box
-                        position='absolute'
-                        top='-3px'
-                        right='-4px'
-                        bg='primary.default'
-                        h='20px'
-                        w='20px'
-                        fontSize='10px'
-                        borderRadius='8px'
-                        display='flex'
-                        alignItems='center'
-                        justifyContent='center'
-                        fontWeight='semibold'
-                        color='white'
-                        textAlign='center'
-                        minWidth='20px'
-                      >
-                        7
-                      </Box>
-                      <Menu>
-                        <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                          <Notification />
-                        </MenuButton>
-                        <MenuList>
-                          <MenuItem fontWeight='medium'>Event</MenuItem>
-                        </MenuList>
-                      </Menu>
-                    </Box>
+                    {/*<Box*/}
+                    {/*  ml='4px'*/}
+                    {/*  bg='neutral.grayLightest'*/}
+                    {/*  color='black'*/}
+                    {/*  px={'8px'}*/}
+                    {/*  py={'7.5px'}*/}
+                    {/*  borderRadius='16px'*/}
+                    {/*  position='relative'*/}
+                    {/*>*/}
+                    {/*<Box*/}
+                    {/*  position='absolute'*/}
+                    {/*  top='-3px'*/}
+                    {/*  right='-4px'*/}
+                    {/*  bg='primary.default'*/}
+                    {/*  h='20px'*/}
+                    {/*  w='20px'*/}
+                    {/*  fontSize='10px'*/}
+                    {/*  borderRadius='8px'*/}
+                    {/*  display='flex'*/}
+                    {/*  alignItems='center'*/}
+                    {/*  justifyContent='center'*/}
+                    {/*  fontWeight='semibold'*/}
+                    {/*  color='white'*/}
+                    {/*  textAlign='center'*/}
+                    {/*  minWidth='20px'*/}
+                    {/*>*/}
+                    {/*  7*/}
+                    {/*</Box>*/}
+                    {/*  <Menu>*/}
+                    {/*    /!*<MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>*!/*/}
+                    {/*    /!*  <Notification />*!/*/}
+                    {/*    /!*</MenuButton>*!/*/}
+                    {/*    <MenuList>*/}
+                    {/*      <MenuItem fontWeight='medium'>Event</MenuItem>*/}
+                    {/*    </MenuList>*/}
+                    {/*  </Menu>*/}
+                    {/*</Box>*/}
 
                     <Menu>
                       <MenuButton ml='15px' as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
