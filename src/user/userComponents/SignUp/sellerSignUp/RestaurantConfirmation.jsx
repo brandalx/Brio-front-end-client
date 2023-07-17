@@ -20,7 +20,7 @@ export default function RestaurantConfirmation({ mainBody }) {
       title: _bodyData.title,
       address: _bodyData.address,
       location: _bodyData.location,
-      email: _bodyData.email,
+      email: _bodyData.restaurantEmail,
       description: _bodyData.description,
       company: _bodyData.company
     };
