@@ -56,8 +56,9 @@ export default function RestaurantMenu() {
   };
 
   useEffect(() => {
-    console.log(restaurantId);
-  }, [restaurantId]);
+    fetchRestaurantData();
+  }, []);
+
   const fetchCategories = async () => {
     try {
       const restaurants = await fetchRestaurant();
@@ -88,15 +89,24 @@ export default function RestaurantMenu() {
   const fetchProducts = async (categories) => {
     try {
       let productsByCategory = {};
+      let newCategoryCounts = { ...categoryCounts };
       for (let category of categories) {
         if (category && category.ItemsId && category.ItemsId.length > 0) {
           const response = await Promise.all(
             category.ItemsId.map((id) => handleApiGet(`${API_URL}/admin/products/${id}`))
           );
-          productsByCategory[category._id] = response;
+          // Фильтрация продуктов по restaurantRef и restaurantId
+          const filteredProducts = response.filter((product) => product.restaurantRef?.$oid === restaurantId);
+          productsByCategory[category._id] = filteredProducts;
+
+          // Обновляем подсчеты для этого ресторана
+          newCategoryCounts[restaurantId] = newCategoryCounts[restaurantId] || {};
+          newCategoryCounts[restaurantId][category._id] = filteredProducts.length;
         }
       }
       setProductsByCategory(productsByCategory);
+      setCategoryCounts(newCategoryCounts);
+      console.log('newCategoryCounts: ', newCategoryCounts);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -131,7 +141,6 @@ export default function RestaurantMenu() {
     fetchCategories();
   }, []);
 
-  // Загружаем продукты для первой категории, если она определена
   useEffect(() => {
     if (selectedCategory) {
       fetchProductsForCategory(selectedCategory);
@@ -145,7 +154,7 @@ export default function RestaurantMenu() {
           <CategoryMenu
             selectedCategory={selectedCategory}
             onCategoryChange={handleCategoryChange}
-            categoryCounts={categoryCounts}
+            categoryCounts={categoryCounts[restaurantId] || {}} // Add default value here
           />
         </GridItem>
         <GridItem w='100%'>
@@ -153,7 +162,7 @@ export default function RestaurantMenu() {
             categories={categories}
             products={productsByCategory[selectedCategory]}
             selectedCategory={selectedCategory}
-            categoryCounts={categoryCounts}
+            categoryCounts={categoryCounts[restaurantId] || {}} // Add default value here
             setCategoryCounts={setCategoryCounts}
           />
         </GridItem>

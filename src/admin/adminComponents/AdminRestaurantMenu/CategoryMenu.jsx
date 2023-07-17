@@ -31,9 +31,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
   const fetchRestaurantData = async () => {
     try {
       const token = localStorage.getItem('x-api-key');
-
       const decodedToken = jwtDecode(token);
-
       const userId = decodedToken._id;
 
       const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
@@ -74,44 +72,37 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
       const restaurants = await fetchRestaurant();
       let allCategories = [];
       for (let restaurant of restaurants) {
-        if (restaurant && restaurant.categories && restaurant.categories.length > 0) {
+        if (
+          restaurant &&
+          restaurant.categories &&
+          restaurant.categories.length > 0 &&
+          restaurant._id === restaurantId
+        ) {
           const response = await Promise.all(
             restaurant.categories.map((id) => handleApiGet(`${API_URL}/admin/categories/${id.toString()}`))
           );
-          allCategories = [...allCategories, ...response];
+
+          const filteredCategories = response.filter((category) => category.restaurantRef === restaurantId);
+          console.log('filteredCategories: ', filteredCategories);
+          allCategories = [...allCategories, ...filteredCategories];
         }
       }
+      console.log('allCategories: ', allCategories);
       setCategories(allCategories);
       setLoading(false);
-      // Set the selected category as soon as the categories are fetched
-      if (allCategories.length > 0) {
-        const initialCategory = allCategories[0];
-        // Make sure that products for this category are loaded
-        if (categoryCounts[initialCategory.categoryName] && categoryCounts[initialCategory.categoryName] > 0) {
-          onCategoryChange(initialCategory.categoryName);
-          setSelectedItem(initialCategory._id);
-        }
-      }
+      return allCategories;
     } catch (error) {
-      setLoading(false);
+      console.error('Error fetching categories:', error);
     }
   };
 
-  useEffect(() => {
-    // Fetch products based on the selectedCategory
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    console.log(categories);
-  }, [categories]);
-
   const handleCategoryClick = (category) => {
-    onCategoryChange(category.categoryName);
+    onCategoryChange(category.categoryName, restaurantId);
     setSelectedItem(category._id);
   };
 
   if (!restaurantId) {
-    return null; // Если restaurantId не определено, возвращаем null для скрытия компонента
+    return null;
   }
   return (
     <GridItem width='100%' overflow='hidden' colSpan={4}>
@@ -122,41 +113,44 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
         <Skeleton minH='150px' maxH='300px' borderRadius='16px' />
       ) : (
         <Box w='100%' display='flex' flexDirection='column'>
-          {categories.map((element) => (
-            <Box
-              display='flex'
-              flexDirection='column'
-              justifyContent='center'
-              alignItems='start'
-              key={element._id}
-              ml={isMobile ? 0 : isTablet ? '8px' : 0}
-              mr={isMobile ? 0 : isTablet ? '8px' : 0}
-              width={isMobile ? '100%' : isTablet ? '98%' : '100%'}
-              mb='12px'
-              p='10px'
-              border='2px'
-              borderRadius='16px'
-              cursor='pointer'
-              bg={selectedItem === element._id ? theme.colors.primary.light : 'white'}
-              borderColor={
-                selectedItem === element._id ? theme.colors.primary.default : theme.colors.neutral.grayLightest
-              }
-              _hover={{
-                borderColor: theme.colors.primary.default,
-                transition: '450ms',
-                bg: theme.colors.primary.light
-              }}
-              onClick={() => handleCategoryClick(element)}
-              maxH='72px'
-            >
-              <Heading fontSize='2xs' fontWeight='bold' color='neutral.black'>
-                {element.categoryName.length > 0 ? element.categoryName : 'N/A'}
-              </Heading>
-              <Text fontSize='13px' mt='6px' fontWeight='regular' color='neutral.grayDark'>
-                {categoryCounts[element.categoryName] || 0}
-              </Text>
-            </Box>
-          ))}
+          {console.log('final categories: ', categories)}
+          {categories &&
+            categories.length > 0 &&
+            categories.map((element) => (
+              <Box
+                display='flex'
+                flexDirection='column'
+                justifyContent='center'
+                alignItems='start'
+                key={element._id}
+                ml={isMobile ? 0 : isTablet ? '8px' : 0}
+                mr={isMobile ? 0 : isTablet ? '8px' : 0}
+                width={isMobile ? '100%' : isTablet ? '98%' : '100%'}
+                mb='12px'
+                p='10px'
+                border='2px'
+                borderRadius='16px'
+                cursor='pointer'
+                bg={selectedItem === element._id ? theme.colors.primary.light : 'white'}
+                borderColor={
+                  selectedItem === element._id ? theme.colors.primary.default : theme.colors.neutral.grayLightest
+                }
+                _hover={{
+                  borderColor: theme.colors.primary.default,
+                  transition: '450ms',
+                  bg: theme.colors.primary.light
+                }}
+                onClick={() => handleCategoryClick(element)}
+                maxH='72px'
+              >
+                <Heading fontSize='2xs' fontWeight='bold' color='neutral.black'>
+                  {element.categoryName.length > 0 ? element.categoryName : 'N/A'}
+                </Heading>
+                <Text fontSize='13px' mt='6px' fontWeight='regular' color='neutral.grayDark'>
+                  {element.products.length || 0}
+                </Text>
+              </Box>
+            ))}
         </Box>
       )}
 
@@ -179,7 +173,13 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
           </Button>
         </Box>
       </Box>
-      <ModalRestaurantMenu categoryName={selectedCategory} isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <ModalRestaurantMenu
+        categoryName={selectedCategory}
+        categoryId={selectedItem}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+      />
     </GridItem>
   );
 }
