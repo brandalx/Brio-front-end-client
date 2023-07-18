@@ -40,6 +40,7 @@ import { FormControl, Input, Select } from '@chakra-ui/react';
 import { Popover } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
+import PickersCategory from '../userComponents/RestaurantPage/PickersCategory';
 
 export default function Restaurant() {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -58,7 +59,7 @@ export default function Restaurant() {
   const [showOops, setShowOops] = useState(false);
   const [categories, SetCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState([]);
-
+  const [picked, setIsPicked] = useState(false);
   const params = useParams();
 
   const [usersArr, setUsersArr] = useState();
@@ -481,9 +482,18 @@ export default function Restaurant() {
                       <Box>
                         {categories.length > 0 ? (
                           <>
-                            {categories.map((item, index) => {
-                              return <Text key={index}>{item.categoryName}</Text>;
-                            })}
+                            <Box py='10px'>
+                              <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
+                                <PickersCategory
+                                  categories={categories}
+                                  SetCategories={SetCategories}
+                                  setActiveCategory={setActiveCategory}
+                                  activeCategory={activeCategory}
+                                  picked={picked}
+                                  setIsPicked={setIsPicked}
+                                />
+                              </Skeleton>
+                            </Box>
                           </>
                         ) : (
                           <Text>Restaurant does not have categories</Text>
