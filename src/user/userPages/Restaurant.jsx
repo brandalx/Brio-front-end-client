@@ -479,9 +479,15 @@ export default function Restaurant() {
                       </Text>
 
                       <Box>
-                        {categories.map((item, index) => {
-                          return <Text key={index}>{item.categoryName}</Text>;
-                        })}
+                        {categories.length > 0 ? (
+                          <>
+                            {categories.map((item, index) => {
+                              return <Text key={index}>{item.categoryName}</Text>;
+                            })}
+                          </>
+                        ) : (
+                          <Text>Restaurant does not have categories</Text>
+                        )}
                       </Box>
                     </Box>
                   )}
