@@ -24,7 +24,6 @@ export default function Badges() {
 
       setRestaurantId(adminResponse.data.restaurant);
       console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant); // добавлено логирование
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
     }
@@ -58,8 +57,30 @@ export default function Badges() {
     }
   };
 
-  const addBadge = (badgeTitle, badgeEmoji) => {
-    setSelectedBadges((oldBadges) => [...oldBadges, { badgeTitle, badgeEmoji }]);
+  const addBadge = async (badgeTitle, badgeEmoji) => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+
+      // Получение данных ресторана
+      const response = await axios.get(`${API_URL}/admin/restaurants/${restaurantId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      const existingBadges = response.data.restaurant.tags;
+      console.log('existingBadges: ', existingBadges);
+
+      // Проверка, существует ли уже новый тег в списке тегов ресторана
+      const badgeExists = existingBadges && existingBadges.find((badge) => badge.badgeTitle === badgeTitle);
+      if (badgeExists) {
+        alert('This tag is already exists!');
+      } else {
+        setSelectedBadges((oldBadges) => [...oldBadges, { badgeTitle, badgeEmoji }]);
+      }
+    } catch (error) {
+      console.error('Error while entering tag:', error);
+    }
   };
 
   useEffect(() => {
@@ -79,7 +100,7 @@ export default function Badges() {
           </Text>
           <Box display='flex' flexDirection={{ base: 'column', sm: 'row' }}>
             <Box display='flex' mt='16px'>
-              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Pizza', '🍕')}>
+              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Pizza', 'pizza')}>
                 <Box
                   role='img'
                   aria-label='pizza'
@@ -106,7 +127,7 @@ export default function Badges() {
                   Burger
                 </Text>
               </Box>
-              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Meat', '🥩')}>
+              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Beef', 'cut-of-meat')}>
                 <Box
                   role='img'
                   aria-label='cut of meat'
@@ -134,7 +155,7 @@ export default function Badges() {
                   Sushi
                 </Text>
               </Box>
-              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Vegan', '🥦')}>
+              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Vegan', 'broccoli')}>
                 <Box
                   role='img'
                   aria-label='broccoli'
@@ -147,7 +168,7 @@ export default function Badges() {
                   Vegan
                 </Text>
               </Box>
-              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Desserts', '🧁')}>
+              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Desserts', 'cupcake')}>
                 <Box
                   role='img'
                   aria-label='cupcake'
