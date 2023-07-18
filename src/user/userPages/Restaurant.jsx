@@ -57,6 +57,7 @@ export default function Restaurant() {
   const [responseFalls, setResponseFalls] = useState(true);
   const [showOops, setShowOops] = useState(false);
   const [categories, SetCategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState([]);
 
   const params = useParams();
 
@@ -469,6 +470,20 @@ export default function Restaurant() {
                 <Box py='25px'>
                   {loading && productArr.length === 0 && (
                     <Skeleton my={4} borderRadius='16px' isLoaded={!loading} minH='100px' />
+                  )}
+
+                  {!loading && productArr.length > 0 && (
+                    <Box my={4}>
+                      <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
+                        Categories
+                      </Text>
+
+                      <Box>
+                        {categories.map((item, index) => {
+                          return <Text key={index}>{item.categoryName}</Text>;
+                        })}
+                      </Box>
+                    </Box>
                   )}
 
                   {!loading && productArr.length > 0 && (
