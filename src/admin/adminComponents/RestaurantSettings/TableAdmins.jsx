@@ -1,4 +1,17 @@
-import { Box, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr
+} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import Status from '../../../assets/svg/Status';
 import jwtDecode from 'jwt-decode';
@@ -9,6 +22,7 @@ export default function TableAdmins() {
   const [userId, setUserId] = useState(null);
   const [restaurantId, setRestaurantId] = useState(null);
   const [admins, setAdmins] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Add isLoading state
 
   const fetchAdmin = async () => {
     try {
@@ -30,6 +44,9 @@ export default function TableAdmins() {
     } catch (error) {
       console.error('Error fetching user:', error);
     }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   const fetchAdmins = async () => {
@@ -44,6 +61,7 @@ export default function TableAdmins() {
       // Filtering only admins who have userId equal to current user's ID
       const filteredAdmins = response.data.filter((admin) => admin.restaurant === restaurantId);
       setAdmins(filteredAdmins);
+      setIsLoading(false); // Set isLoading to false after data is fetched
     } catch (error) {
       console.error('Error fetching admins:', error);
     }
@@ -53,6 +71,44 @@ export default function TableAdmins() {
     fetchAdmin();
     fetchAdmins();
   }, [userId]);
+
+  if (isLoading) {
+    // If isLoading is true, display skeleton
+    return (
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>
+              <Skeleton height='20px' borderRadius='8px' />
+            </Th>
+            <Th>
+              <Skeleton height='20px' borderRadius='8px' />
+            </Th>
+            <Th display={['none', 'none', 'none', 'table-cell']}>
+              <Skeleton borderRadius='8px' height='20px' />
+            </Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {[...Array(5)].map((_, i) => (
+            <Tr key={i}>
+              <Td>
+                <SkeletonText mt='4' noOfLines={1} spacing='4' />
+              </Td>
+              <Td>
+                <Flex alignItems='center'>
+                  <SkeletonText ml='4' width='80px' noOfLines={1} />
+                </Flex>
+              </Td>
+              <Td display={['none', 'none', 'none', 'table-cell']}>
+                <SkeletonText mt='4' noOfLines={1} spacing='4' />
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    );
+  }
 
   return (
     <TableContainer overflowX='hidden'>

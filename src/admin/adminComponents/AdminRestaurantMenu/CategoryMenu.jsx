@@ -27,6 +27,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
   const [selectedItem, setSelectedItem] = useState(null);
   const [categories, setCategories] = useState([]);
   const [restaurantId, setRestaurantId] = useState();
+  const [isCategorySelected, setIsCategorySelected] = useState(false);
 
   const fetchRestaurantData = async () => {
     try {
@@ -87,9 +88,9 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
           allCategories = [...allCategories, ...filteredCategories];
         }
       }
-      console.log('allCategories: ', allCategories);
       setCategories(allCategories);
       setLoading(false);
+      setIsCategorySelected(false); // Сбрасываем значение, когда категории обновляются
       return allCategories;
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -99,6 +100,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
   const handleCategoryClick = (category) => {
     onCategoryChange(category.categoryName, restaurantId);
     setSelectedItem(category._id);
+    setIsCategorySelected(true); // Устанавливаем значение, когда категория выбрана
   };
 
   if (!restaurantId) {
@@ -167,7 +169,14 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
           />
         </Box>
         <Box width='100%' border='1px solid #EDEEF2' borderRadius='16px'>
-          <Button onClick={onOpen} width='100%' display='flex' flexDirection='column' h='70px'>
+          <Button
+            onClick={onOpen}
+            width='100%'
+            display='flex'
+            flexDirection='column'
+            h='70px'
+            isDisabled={!isCategorySelected}
+          >
             <AddPlus />
             <Text mt='6px'>New meal item</Text>
           </Button>

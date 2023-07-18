@@ -14,16 +14,12 @@ import {
 import { Line } from 'react-chartjs-2';
 
 import OrdersData from '../adminComponents/RestaurantDashboard/OrdersData';
-import _ from 'lodash';
-import MealCard from '../adminComponents/RestaurantDashboard/MealCard';
-import { Button } from '@chakra-ui/button';
 import axios from 'axios';
 import { API_URL, TOKEN_KEY } from '../../services/apiServices';
 import jwtDecode from 'jwt-decode';
 import PopularMeals from '../adminComponents/RestaurantDashboard/PopularMeals';
-import { AspectRatio } from '@chakra-ui/react';
+import { AspectRatio, Skeleton } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { useCheckToken } from '../../services/token';
 
 // Register required Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -119,7 +115,9 @@ export default function RestaurantDashboard() {
         });
 
         const restaurantId = adminResponse.data.restaurant;
-        setRestaurantId(restaurantId);
+        setTimeout(() => {
+          setRestaurantId(restaurantId);
+        }, 500);
 
         // Then fetch orders
         const orderResponse = await axios.get(`${API_URL}/orders`, {
@@ -163,6 +161,59 @@ export default function RestaurantDashboard() {
 
     fetchRestaurantAndOrdersData();
   }, []);
+
+  if (!restaurantId) {
+    return (
+      <Box py={5}>
+        <Container maxW='1110px'>
+          <Skeleton height='30px' width='150px' my='8px' borderRadius='16px' />
+
+          <Grid
+            templateColumns={{
+              base: 'repeat(1, 1fr)',
+              sm: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+              lg: 'repeat(3, 1fr)',
+              xl: 'repeat(3, 1fr)'
+            }}
+            gap={4}
+          >
+            <GridItem>
+              <Skeleton height='67px' borderRadius='16px' />
+            </GridItem>
+            <GridItem>
+              <Skeleton height='67px' borderRadius='16px' />
+            </GridItem>
+            <GridItem>
+              <Skeleton height='67px' borderRadius='16px' />
+            </GridItem>
+          </Grid>
+          <Grid
+            mb='4'
+            mt='4'
+            templateColumns={{
+              base: 'repeat(1, 1fr)',
+              sm: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+              lg: '2fr 1fr',
+              xl: '2fr 1fr'
+            }}
+            gap={4}
+          >
+            <GridItem w='100%'>
+              <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
+                <Skeleton height='20px' mb='4' />
+                <Skeleton height='350px' borderRadius='16px' />
+              </Box>
+            </GridItem>
+            <GridItem>
+              <Skeleton height='300px' borderRadius='16px' />
+            </GridItem>
+          </Grid>
+        </Container>
+      </Box>
+    );
+  }
 
   /////
   return (

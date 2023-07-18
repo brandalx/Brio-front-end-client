@@ -28,7 +28,6 @@ export default function CustomersTable() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
   const [isMobile] = useMediaQuery('(max-width: 575px)');
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = React.useState(false);
   const options = { year: 'numeric', month: 'short', day: 'numeric' };
   const [isBetween] = useMediaQuery('(min-width: 576px) and (max-width: 600px)');
@@ -36,6 +35,7 @@ export default function CustomersTable() {
   const [restaurantId, setRestaurantId] = useState(null);
   const [usersArr, setUsersArr] = useState([]);
   const [userArr, setUserArr] = useState([]);
+  const [loadingCount, setLoadingCount] = useState(0); // New loading count state variable
 
   ///////////Avatar logic
   let handleUsersPublicData = async (_commentsdata) => {
@@ -135,11 +135,11 @@ export default function CustomersTable() {
     setOpenModalId(null);
   };
   const fetchRestaurantData = async () => {
+    setLoadingCount((count) => count + 1); // Increment loading count
+
     try {
       const token = localStorage.getItem('x-api-key');
-
       const decodedToken = jwtDecode(token);
-
       const userId = decodedToken._id;
 
       const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
@@ -149,22 +149,20 @@ export default function CustomersTable() {
       });
 
       setRestaurantId(adminResponse.data.restaurant);
-      console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant); // добавлено логирование
-      setLoading(false);
+      console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant); // added logging
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
+    } finally {
+      setLoadingCount((count) => count - 1); // Decrement loading count
     }
   };
 
-  useEffect(() => {
-    fetchRestaurantData();
-  }, []);
   const fetchUsersData = async () => {
+    setLoadingCount((count) => count + 1); // Increment loading count
+
     try {
       const token = localStorage.getItem('x-api-key');
-
       const decodedToken = jwtDecode(token);
-
       const userId = decodedToken._id;
 
       const usersResponse = await axios.get(`${API_URL}/users/getAllUsers`, {
@@ -216,15 +214,55 @@ export default function CustomersTable() {
       }
 
       setUsers(usersWithOrdersInMyRestaurant);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching users data:', error);
+    } finally {
+      setLoadingCount((count) => count - 1); // Decrement loading count
     }
   };
 
   useEffect(() => {
     fetchUsersData();
   }, [restaurantId]);
+
+  let loading = loadingCount > 0; // New loading state based on loading count
+
+  useEffect(() => {
+    Promise.all([fetchRestaurantData(), fetchUsersData()]).catch((error) => {
+      console.error('Error fetching data:', error);
+      setLoadingCount((count) => count - 1); // Decrement loading count
+    });
+  }, [restaurantId]);
+
+  if (loading) {
+    return (
+      <Tbody>
+        <Tr>
+          <Td>
+            <Skeleton height='20px' />
+          </Td>
+          <Td display={isMobile ? 'none' : ''}>
+            <Skeleton height='20px' />
+          </Td>
+          <Td display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' />
+          </Td>
+          <Td display={isMobile ? 'none' : ''}>
+            <Skeleton height='20px' />
+          </Td>
+          <Td display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' />
+          </Td>
+          <Td display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' />
+          </Td>
+          <Td display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' />
+          </Td>
+        </Tr>
+      </Tbody>
+    );
+  }
 
   return (
     <Tbody>

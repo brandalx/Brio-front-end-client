@@ -143,11 +143,11 @@ export default function Security() {
         <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
           Security
         </Text>
-        <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
+        <Box borderRadius='16px' borderWidth='1px' py='10px' px='10px'>
           {/*<Text fontSize='xs' fontWeight='bold' color='neutral.black'>*/}
           {/*  2 factor authentication*/}
           {/*</Text>*/}
-          <Box pt={5}>
+          <Box>
             <Flex flexDirection={{ base: 'column', md: 'row' }} alignItems={{ base: 'normal', md: 'flex-end' }}>
               {/*<FormControl id='phone'>*/}
               {/*  <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>*/}
@@ -188,7 +188,7 @@ export default function Security() {
               {/*</Button>*/}
             </Flex>
           </Box>
-          <Text pt='40px' fontSize='xs' fontWeight='bold' color='neutral.black'>
+          <Text pt='' fontSize='xs' fontWeight='bold' color='neutral.black'>
             Change password
           </Text>
           <Box pt={5}>

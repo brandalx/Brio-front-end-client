@@ -13,7 +13,8 @@ import {
   Stack,
   Checkbox,
   Divider,
-  useToast
+  useToast,
+  Skeleton
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { API_URL, handleApiGet, TOKEN_KEY } from '../../../services/apiServices';
@@ -28,6 +29,7 @@ export default function AccountSettings() {
   const navigate = useNavigate();
   const token = localStorage.getItem(TOKEN_KEY);
   const decodedToken = jwtDecode(token);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (decodedToken.role !== 'ADMIN') {
@@ -93,6 +95,11 @@ export default function AccountSettings() {
     }
   };
 
+  useEffect(() => {
+    setLoading(true);
+    fetchAdmin().finally(() => setLoading(false));
+  }, []);
+
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -154,6 +161,66 @@ export default function AccountSettings() {
   useEffect(() => {
     console.log(formData);
   }, [formData]);
+  if (loading) {
+    return (
+      <Box>
+        <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
+          <Box pt={5}>
+            <Skeleton borderRadius='10px' boxSize='20px' my='10px' height='20px' width='200px' />
+            <Flex alignItems='center'>
+              <Box borderWidth='2px' me='20px' borderRadius='12px'>
+                <Skeleton borderRadius='10px' boxSize='80px' />
+              </Box>
+              <Flex flexDirection='row'>
+                <Box me='20px'>
+                  <Skeleton height='44px' width='84px' borderRadius='10px' />
+                </Box>
+                <Skeleton height='44px' width='80px' borderRadius='10px' />
+              </Flex>
+            </Flex>
+            <Box pt={5}>
+              <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr 1fr ' }} gap={6}>
+                <GridItem w='100%'>
+                  <Skeleton height='40px' borderRadius='8px' />
+                </GridItem>
+                <GridItem w='100%'>
+                  <Skeleton height='40px' borderRadius='8px' />
+                </GridItem>
+                <GridItem w='100%'>
+                  <Skeleton height='40px' borderRadius='8px' />
+                </GridItem>
+              </Grid>
+            </Box>
+            <Box pt={6}>
+              <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
+                <GridItem w='100%'>
+                  <Skeleton height='80px' borderRadius='8px' />
+                </GridItem>
+                <GridItem w='100%'>
+                  <Skeleton height='80px' borderRadius='8px' />
+                </GridItem>
+              </Grid>
+            </Box>
+
+            <Divider pt={8} />
+            <Box pt={5}>
+              <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
+                <GridItem w='100%'>
+                  <Skeleton height='40px' width='80px' borderRadius='8px' />
+                </GridItem>
+                <GridItem w='100%'>
+                  <Flex flexDirection={{ base: 'row' }}>
+                    <Skeleton height='40px' width='80px' mr='10px' borderRadius='8px' />
+                    <Skeleton height='40px' width='80px' mr='10px' borderRadius='8px' />
+                  </Flex>
+                </GridItem>
+              </Grid>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box>
@@ -321,6 +388,7 @@ export default function AccountSettings() {
             </GridItem>
           </Grid>
         </Box>
+        <Badges />
         <Divider pt={8} />
         <Box pt={5}>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>

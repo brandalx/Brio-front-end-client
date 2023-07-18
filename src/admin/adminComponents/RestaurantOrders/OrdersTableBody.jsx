@@ -225,6 +225,41 @@ export default function OrdersTableBody() {
     return formattedDate;
   };
 
+  if (loading) {
+    return (
+      <Tbody>
+        {[...Array(3)].map((_, index) => (
+          <Tr key={index} borderBottom='1px solid' borderColor='#EBF1FE'>
+            <Td>
+              <Skeleton height='20px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' />
+            </Td>
+          </Tr>
+        ))}
+      </Tbody>
+    );
+  }
+
   return (
     <Tbody>
       {relevantOrders.map((order, index) => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Container, Image, Text, Grid, Divider } from '@chakra-ui/react';
+import { Box, Button, Container, Image, Text, Grid, Divider, Skeleton } from '@chakra-ui/react';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import ValidThrough from '../../../assets/svg/ValidThrough';
 import Location from '../../../assets/svg/Location';
@@ -9,9 +9,10 @@ import jwtDecode from 'jwt-decode';
 export default function PromotionBlocks({ active }) {
   const [promotions, setPromotion] = useState([]);
   const [restaurantId, setRestaurantId] = useState('');
-  const [statusMain, setStatus] = useState('active'); // новое состояние для отслеживания текущего статуса
+  const [loadingCount, setLoadingCount] = useState(0);
 
   const fetchRestaurantData = async () => {
+    setLoadingCount((count) => count + 1);
     try {
       const token = localStorage.getItem('x-api-key');
       const decodedToken = jwtDecode(token);
@@ -26,6 +27,8 @@ export default function PromotionBlocks({ active }) {
       setRestaurantId(adminResponse.data.restaurant);
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
+    } finally {
+      setLoadingCount((count) => count - 1);
     }
   };
 
@@ -34,12 +37,15 @@ export default function PromotionBlocks({ active }) {
   }, []);
 
   const fetchPromotions = async () => {
+    setLoadingCount((count) => count + 1);
+
     try {
       const response = await handleApiGet(API_URL + '/admin/promotions');
-      console.log(response);
       setPromotion(response.filter((promotion) => promotion.restaurantRef == restaurantId));
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error fetching promotions:', error);
+    } finally {
+      setLoadingCount((count) => count - 1);
     }
   };
 
@@ -92,6 +98,48 @@ export default function PromotionBlocks({ active }) {
 
     const status = getPromotionStatus(promotion.startDate, promotion.endDate);
     return status === active;
+  }
+
+  const loading = loadingCount > 0;
+
+  if (loading) {
+    return (
+      <Container maxW='1110px'>
+        <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
+          {[...Array(3)].map((_, index) => (
+            <Box
+              key={index}
+              display='flex'
+              justifyContent='space-between'
+              flexDirection='column'
+              borderRadius='16px'
+              border='1px'
+              borderColor='neutral.grayLight'
+              p='16px'
+            >
+              <Box display='flex' justifyContent='space-between'>
+                <Box marginRight='10px'>
+                  <Skeleton height='20px' mb='4' />
+                  <Skeleton height='20px' mb='4' />
+                </Box>
+                <Box>
+                  <Skeleton height='92px' width='112px' borderRadius='16px' />
+                </Box>
+              </Box>
+              <Divider mt='10px' mb='8px' />
+              <Box display='flex' flexDirection='column'>
+                <Box>
+                  <Skeleton height='20px' mb='4' />
+                </Box>
+                <Box>
+                  <Skeleton height='20px' />
+                </Box>
+              </Box>
+            </Box>
+          ))}
+        </Grid>
+      </Container>
+    );
   }
 
   return (
