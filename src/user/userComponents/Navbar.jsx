@@ -224,7 +224,7 @@ export default function Navbar() {
                     </Text>
                   </Button>
                 </Link>
-                {localStorage[TOKEN_KEY] && (
+                {localStorage['YH'] && (
                   <>
                     <Box ml='13px' mr='12px' h='20px' w='1px' mx='4' bg='neutral.grayLightest' />
 
