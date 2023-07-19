@@ -209,7 +209,7 @@ export default function Restaurant() {
   }, [restaurantArr]);
 
   const handleLoadings = () => {
-    if (restaurantArr && productArr && address) {
+    if (restaurantArr && productArr && address && keepArr) {
       setLoading(false);
     }
   };
@@ -488,17 +488,16 @@ export default function Restaurant() {
                   {loading && keepArr.length === 0 && (
                     <Skeleton my={4} borderRadius='16px' isLoaded={!loading} minH='100px' />
                   )}
-
-                  <Box my={4}>
-                    <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
-                      Categories
-                    </Text>
-                    {!loading && categories && (
-                      <Box>
-                        {categories ? (
-                          <>
-                            <Box py='10px'>
-                              <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
+                  {!loading && categories && (
+                    <Box my={4}>
+                      <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
+                        Categories
+                      </Text>
+                      {!loading && categories && (
+                        <Box>
+                          {categories ? (
+                            <>
+                              <Box py='10px'>
                                 <PickersCategory
                                   categories={categories}
                                   SetCategories={SetCategories}
@@ -507,15 +506,15 @@ export default function Restaurant() {
                                   picked={picked}
                                   setIsPicked={setIsPicked}
                                 />
-                              </Skeleton>
-                            </Box>
-                          </>
-                        ) : (
-                          <Text>Restaurant does not have categories</Text>
-                        )}
-                      </Box>
-                    )}
-                  </Box>
+                              </Box>
+                            </>
+                          ) : (
+                            <Text>Restaurant does not have categories</Text>
+                          )}
+                        </Box>
+                      )}
+                    </Box>
+                  )}
 
                   {!loading && keepArr.length > 0 && (
                     <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
