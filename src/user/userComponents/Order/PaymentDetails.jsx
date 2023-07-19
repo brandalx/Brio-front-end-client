@@ -18,53 +18,59 @@ export default function PaymentDetails({ item, orders, userArr }) {
     });
   };
   useEffect(() => {
-    definePaymentMwthod();
+    if (item && item.userdata) {
+      definePaymentMwthod();
+    }
   }, []);
   console.log(orders);
   console.log(item);
   return (
-    <Box>
-      <Text mb={4} fontSize='xs' fontWeight='bold' color='neutral.black'>
-        Payment details
-      </Text>
-      <Box>
-        {paymentMethod != 'cash' && <PaymentCard item={paymentMethod} disabledOptions={true} />}
-        {paymentMethod === 'cash' && <DefaultPaymentMethod cash={cash} />}
-      </Box>
-      <Box>
-        <Flex my={4} justifyContent='space-between'>
-          <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
-            Subtotal
+    <>
+      {item && item.userdata && item.userdata.paymentSummary && (
+        <Box>
+          <Text mb={4} fontSize='xs' fontWeight='bold' color='neutral.black'>
+            Payment details
           </Text>
-          <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-            $ {item.userdata.paymentSummary.subtotal}
-          </Text>
-        </Flex>
-        <Flex my={4} justifyContent='space-between'>
-          <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
-            Shipping
-          </Text>
-          <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-            $ {item.userdata.paymentSummary.shipping}
-          </Text>
-        </Flex>
-        <Flex my={4} justifyContent='space-between'>
-          <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
-            Tips
-          </Text>
-          <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-            $ {item.userdata.paymentSummary.tips}
-          </Text>
-        </Flex>
-        <Flex my={4} justifyContent='space-between'>
-          <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
-            Total (tax incl.)
-          </Text>
-          <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
-            $ {item.userdata.paymentSummary.totalAmount}
-          </Text>
-        </Flex>
-      </Box>
-    </Box>
+          <Box>
+            {paymentMethod != 'cash' && <PaymentCard item={paymentMethod} disabledOptions={true} />}
+            {paymentMethod === 'cash' && <DefaultPaymentMethod cash={cash} />}
+          </Box>
+          <Box>
+            <Flex my={4} justifyContent='space-between'>
+              <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
+                Subtotal
+              </Text>
+              <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
+                $ {item.userdata.paymentSummary.subtotal}
+              </Text>
+            </Flex>
+            <Flex my={4} justifyContent='space-between'>
+              <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
+                Shipping
+              </Text>
+              <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
+                $ {item.userdata.paymentSummary.shipping}
+              </Text>
+            </Flex>
+            <Flex my={4} justifyContent='space-between'>
+              <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
+                Tips
+              </Text>
+              <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
+                $ {item.userdata.paymentSummary.tips}
+              </Text>
+            </Flex>
+            <Flex my={4} justifyContent='space-between'>
+              <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
+                Total (tax incl.)
+              </Text>
+              <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
+                $ {item.userdata.paymentSummary.totalAmount}
+              </Text>
+            </Flex>
+          </Box>
+        </Box>
+      )}
+    </>
   );
 }

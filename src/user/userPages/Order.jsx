@@ -485,7 +485,13 @@ export default function Order() {
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
               <Skeleton borderRadius='16px' isLoaded={!loading}>
                 <Text fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold' color='neutral.black'>
-                  Menu {!loading && ordersArr.ordersdata.products.length} meals
+                  Menu{' '}
+                  {!loading &&
+                    ordersArr &&
+                    ordersArr.ordersdata &&
+                    ordersArr.ordersdata.products &&
+                    ordersArr.ordersdata.products.length}{' '}
+                  meals
                 </Text>
               </Skeleton>
 
@@ -498,6 +504,9 @@ export default function Order() {
                   </Box>
                 )}
                 {!loading &&
+                  ordersArr &&
+                  ordersArr.ordersdata &&
+                  ordersArr.ordersdata.products &&
                   ordersArr.ordersdata.products.map((item, key) => {
                     return <Menu key={key} item={item} />;
                   })}
@@ -509,7 +518,7 @@ export default function Order() {
               <Text fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold' color='neutral.black'>
                 Shipping address
               </Text>
-              {!loading && (
+              {!loading && ordersArr && ordersArr.ordersdata && ordersArr.ordersdata.products && (
                 <Shipping userArr={userArr} restaurantArr={restaurantArr} item={ordersArr.userdata.selectedAddress} />
               )}
             </Box>
