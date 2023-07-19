@@ -434,20 +434,22 @@ export default function Home() {
                     gap={4}
                   >
                     {arr2.map((item, index) => {
-                      return (
-                        <Box key={index}>
-                          <Skeleton borderRadius='16px' isLoaded={!loading}>
-                            <RestaurantCard
-                              _id={item._id}
-                              img={item.image}
-                              title={item.title}
-                              time={item.time}
-                              price={item.minprice}
-                              badgeData={item.tags}
-                            />
-                          </Skeleton>
-                        </Box>
-                      );
+                      if (item.products.length > 0) {
+                        return (
+                          <Box key={index}>
+                            <Skeleton borderRadius='16px' isLoaded={!loading}>
+                              <RestaurantCard
+                                _id={item._id}
+                                img={item.image}
+                                title={item.title}
+                                time={item.time}
+                                price={item.minprice}
+                                badgeData={item.tags}
+                              />
+                            </Skeleton>
+                          </Box>
+                        );
+                      }
                     })}
                   </Grid>
                 </Box>
@@ -598,18 +600,20 @@ export default function Home() {
             {!loading && (
               <Box>
                 <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
-                  {arr.map((item) => {
-                    return (
-                      <RestaurantCard
-                        key={item._id}
-                        _id={item._id}
-                        img={item.image}
-                        title={item.title}
-                        time={item.time}
-                        price={item.minprice}
-                        badgeData={item.tags}
-                      />
-                    );
+                  {arr.map((item, index) => {
+                    if (item.products && item.products.length > 0) {
+                      return (
+                        <RestaurantCard
+                          key={index}
+                          _id={item._id}
+                          img={item.image}
+                          title={item.title}
+                          time={item.time}
+                          price={item.minprice}
+                          badgeData={item.tags}
+                        />
+                      );
+                    }
                   })}
                 </Grid>
               </Box>

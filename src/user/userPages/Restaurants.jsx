@@ -171,17 +171,19 @@ export default function Restaurants() {
               <Box>
                 <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
                   {arr.map((item) => {
-                    return (
-                      <RestaurantCard
-                        key={item._id}
-                        _id={item._id}
-                        img={item.image}
-                        title={item.title}
-                        time={item.time}
-                        price={item.minprice}
-                        badgeData={item.tags}
-                      />
-                    );
+                    if (item.products && item.products.length > 0) {
+                      return (
+                        <RestaurantCard
+                          key={item._id}
+                          _id={item._id}
+                          img={item.image}
+                          title={item.title}
+                          time={item.time}
+                          price={item.minprice}
+                          badgeData={item.tags}
+                        />
+                      );
+                    }
                   })}
                 </Grid>
               </Box>
