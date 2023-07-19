@@ -28,15 +28,44 @@ import { FaChevronLeft } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import RecoverPassword from '../userComponents/ForgotPassword/RecoverPassword';
 import { API_URL, TOKEN_KEY, handleApiMethod } from '../../services/apiServices';
+import Code from '../userComponents/ForgotPassword/Code';
 
 export default function ForgotPassword() {
   const [recoverData, setRecoverData] = useState();
+  let [codeData, setCodeData] = useState();
+  let [tokenData1, setTokenData1] = useState();
+  let [tokenData2, setTokenData2] = useState();
   const toast = useToast();
 
   // const [state, handleSubmit] = useForm('xpzeyzgq');
   useEffect(() => {
     setRecoverData({ token: null });
   }, []);
+
+  const handleUserSendRecoverCode = async (_bodyData) => {
+    console.log(_bodyData);
+    try {
+      const url = API_URL + '/users/recoverrequest';
+      const data = await handleApiMethod(url, 'POST', _bodyData);
+      if (data.msg === true) {
+        setRecoverData(data.token);
+        console.log(data.token);
+
+        setValue('email', '');
+
+        navigate('recover');
+      }
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: 'Error when checking your info',
+        description: 'Make sure the provided data is correct and try again',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+    }
+  };
   const handleUserSendRecoverRequest = async (_bodyData) => {
     console.log(_bodyData);
     try {
@@ -47,7 +76,6 @@ export default function ForgotPassword() {
         console.log(data.token);
 
         setValue('email', '');
-        setValue('phone', '');
 
         navigate('recover');
       }
@@ -188,29 +216,6 @@ export default function ForgotPassword() {
                                 </FormErrorMessage>
                               </FormControl>
 
-                              <FormControl id='phone' isInvalid={errors.phone}>
-                                <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                                  Phone
-                                </FormLabel>
-
-                                <Input
-                                  id='phone'
-                                  {...register('phone', {
-                                    required: { value: true, message: 'This field is required' },
-                                    minLength: { value: 6, message: 'Minimum length should be 6' }
-                                  })}
-                                  type='number'
-                                  background='neutral.white'
-                                  _placeholder={{ color: 'neutral.gray' }}
-                                  borderRadius='8px'
-                                  fontSize='2xs'
-                                  placeholder='+123456789'
-                                />
-                                <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                                  {errors.phone && errors.phone.message}
-                                </FormErrorMessage>
-                              </FormControl>
-
                               <Stack spacing={10}>
                                 <Button
                                   type='submit'
@@ -245,6 +250,16 @@ export default function ForgotPassword() {
                         handleUserSendRecoverChange={handleUserSendRecoverChange}
                         recoverData={recoverData}
                         setRecoverData={setRecoverData}
+                      />
+                    }
+                  />
+                  <Route
+                    path='/code'
+                    element={
+                      <Code
+                        handleUserSendRecoverCode={handleUserSendRecoverCode}
+                        codeData={codeData}
+                        tokenData1={tokenData1}
                       />
                     }
                   />
