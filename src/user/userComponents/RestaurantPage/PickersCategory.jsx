@@ -12,25 +12,39 @@ export default function PickersCategory({
 }) {
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-
+  useEffect(() => {
+    if (activeCategory.length === 0 || activeCategory[0] === null) {
+      setIsPicked(false);
+    }
+    if (activeCategory.length > 0) {
+      setIsPicked(true);
+    }
+    console.log(picked);
+  });
   const handleClick = useCallback(
     (categoryIndex) => {
       setIsPressed(!isPressed);
-      // Update the picked state for the clicked category
+      // udspdate the picked state for the clicked category
       const updatedCategories = categories.map((category, index) => {
         if (index === categoryIndex) {
-          return {
+          const updatedCategory = {
             ...category,
             picked: !category.picked
           };
+          if (!updatedCategory.picked) {
+            // remove the unpicked category from activeCategory array
+            setActiveCategory(activeCategory.filter((cat) => cat !== category));
+          } else {
+            setActiveCategory([...activeCategory, updatedCategory]);
+          }
+          return updatedCategory;
         }
         return category;
       });
       SetCategories(updatedCategories);
     },
-    [isPressed, categories, SetCategories]
+    [isPressed, categories, SetCategories, setActiveCategory, activeCategory]
   );
-
   return (
     <div>
       <Box>
