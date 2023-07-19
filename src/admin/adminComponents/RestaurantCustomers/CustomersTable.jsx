@@ -186,16 +186,6 @@ export default function CustomersTable() {
                   'x-api-key': token
                 }
               });
-              if (order.paymentSummary) {
-                if (order.paymentSummary.shipping) {
-                  totalSpentInMyRestaurant += order.paymentSummary.shipping;
-                }
-                if (order.paymentSummary) {
-                  totalSpentInMyRestaurant += order.paymentSummary.tips;
-                }
-              } else {
-                console.warn(`Payment summary data is missing for order: ${order.orderRef}`);
-              }
               const orderData = orderResponse.data;
               for (const product of orderData.ordersdata.products) {
                 if (product.restaurantId === restaurantId) {
