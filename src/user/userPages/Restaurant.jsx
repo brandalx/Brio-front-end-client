@@ -60,6 +60,7 @@ export default function Restaurant() {
   const [categories, SetCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState([]);
   const [picked, setIsPicked] = useState(false);
+  const [keepArr, setKeepArr] = useState([]);
   const params = useParams();
 
   const [usersArr, setUsersArr] = useState();
@@ -131,6 +132,7 @@ export default function Restaurant() {
       }
       console.log(tempProductArr);
       setProductAr(tempProductArr);
+      setKeepArr(tempProductArr);
     } catch (error) {
       setShowOops(true);
 
@@ -138,6 +140,20 @@ export default function Restaurant() {
       console.log(error);
     }
   };
+  useEffect(() => {
+    if (picked) {
+      let tempArr = [];
+      activeCategory.forEach((category) => {
+        category.products.forEach((productId) => {
+          const matchedProduct = keepArr.find((product) => product._id === productId);
+          if (matchedProduct) {
+            tempArr.push(matchedProduct);
+          }
+        });
+      });
+      setProductAr(tempArr);
+    }
+  }, [activeCategory, picked, setIsPicked]);
 
   let getUserName = (userid) => {
     try {
@@ -469,18 +485,17 @@ export default function Restaurant() {
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
               <GridItem w='100%' h='100%'>
                 <Box py='25px'>
-                  {loading && productArr.length === 0 && (
+                  {loading && keepArr.length === 0 && (
                     <Skeleton my={4} borderRadius='16px' isLoaded={!loading} minH='100px' />
                   )}
 
-                  {!loading && productArr.length > 0 && (
-                    <Box my={4}>
-                      <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
-                        Categories
-                      </Text>
-
+                  <Box my={4}>
+                    <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
+                      Categories
+                    </Text>
+                    {!loading && categories && (
                       <Box>
-                        {categories.length > 0 ? (
+                        {categories ? (
                           <>
                             <Box py='10px'>
                               <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
@@ -499,52 +514,91 @@ export default function Restaurant() {
                           <Text>Restaurant does not have categories</Text>
                         )}
                       </Box>
-                    </Box>
-                  )}
+                    )}
+                  </Box>
 
-                  {!loading && productArr.length > 0 && (
+                  {!loading && keepArr.length > 0 && (
                     <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
                       Menu
                     </Text>
                   )}
 
                   <Box>
-                    <Grid
-                      gridAutoColumns='1fr'
-                      gridAutoRows='1fr'
-                      templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
-                      gap={4}
-                    >
-                      {!loading ? (
-                        productArr.length > 0 ? (
-                          productArr.map((item, index) => (
-                            <Box key={index}>
-                              <Skeleton borderRadius='16px' isLoaded={!loading}>
-                                <ProductCard
-                                  _id={item._id}
-                                  img={item.image}
-                                  title={item.title}
-                                  description={item.description}
-                                  price={item.price}
-                                />
-                              </Skeleton>
-                            </Box>
-                          ))
+                    {picked ? (
+                      <Grid
+                        gridAutoColumns='1fr'
+                        gridAutoRows='1fr'
+                        templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
+                        gap={4}
+                      >
+                        {!loading ? (
+                          keepArr.length > 0 ? (
+                            productArr.map((item, index) => (
+                              <Box key={index}>
+                                <Skeleton borderRadius='16px' isLoaded={!loading}>
+                                  <ProductCard
+                                    _id={item._id}
+                                    img={item.image}
+                                    title={item.title}
+                                    description={item.description}
+                                    price={item.price}
+                                  />
+                                </Skeleton>
+                              </Box>
+                            ))
+                          ) : (
+                            <>
+                              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                            </>
+                          )
                         ) : (
                           <>
                             <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
                             <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
                             <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
                           </>
-                        )
-                      ) : (
-                        <>
-                          <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
-                          <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
-                          <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
-                        </>
-                      )}
-                    </Grid>
+                        )}
+                      </Grid>
+                    ) : (
+                      <Grid
+                        gridAutoColumns='1fr'
+                        gridAutoRows='1fr'
+                        templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
+                        gap={4}
+                      >
+                        {!loading ? (
+                          keepArr.length > 0 ? (
+                            keepArr.map((item, index) => (
+                              <Box key={index}>
+                                <Skeleton borderRadius='16px' isLoaded={!loading}>
+                                  <ProductCard
+                                    _id={item._id}
+                                    img={item.image}
+                                    title={item.title}
+                                    description={item.description}
+                                    price={item.price}
+                                  />
+                                </Skeleton>
+                              </Box>
+                            ))
+                          ) : (
+                            <>
+                              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                            </>
+                          )
+                        ) : (
+                          <>
+                            <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                            <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                            <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                          </>
+                        )}
+                      </Grid>
+                    )}
                   </Box>
                 </Box>
               </GridItem>
@@ -559,7 +613,7 @@ export default function Restaurant() {
                 </GridItem>
               )}
 
-              {!productArr.length <= 0 && (
+              {!keepArr.length <= 0 && (
                 <GridItem>
                   <Box py='25px'>
                     <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>

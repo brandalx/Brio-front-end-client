@@ -20,7 +20,7 @@ export default function PickersCategory({
       setIsPicked(true);
     }
     console.log(picked);
-  });
+  }, [activeCategory]);
   const handleClick = useCallback(
     (categoryIndex) => {
       setIsPressed(!isPressed);
@@ -49,7 +49,7 @@ export default function PickersCategory({
     <div>
       <Box>
         <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr 1fr ' }} gap={2}>
-          {categories.length > 0 &&
+          {categories &&
             categories.map((item, index) => {
               const bgColor = item.picked ? 'primary.light' : isHovered ? 'primary.lightest' : 'neutral.white';
               const borderColor = item.picked
