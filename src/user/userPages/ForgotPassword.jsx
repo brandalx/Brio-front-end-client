@@ -337,6 +337,7 @@ export default function ForgotPassword() {
           backgroundRepeat='no-repeat'
           backgroundSize='cover'
           backgroundPosition='center'
+          data-aos='fade-left'
           // bg='linear-gradient(to right, #B2D1FF, #697BFF)'
           h='100vh'
         ></GridItem>

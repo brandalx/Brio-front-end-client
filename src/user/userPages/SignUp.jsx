@@ -35,7 +35,7 @@ import SignupStatus from '../../assets/svg/SignupStatus';
 import SellerPersonalDetails from '../userComponents/SignUp/sellerSignUp/SellerPersonalDetails';
 import RestaurantInfo from '../userComponents/SignUp/sellerSignUp/RestaurantInfo';
 import RestaurantConfirmation from '../userComponents/SignUp/sellerSignUp/RestaurantConfirmation';
-import render1 from '../../assets/images/render7.jpg';
+import render1 from '../../assets/images/render6.jpg';
 function RedirectHandler({ setRedirect }) {
   useEffect(() => {
     setRedirect(true);
@@ -98,6 +98,7 @@ export default function SignUp() {
     <>
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 2fr' }} gap={0}>
         <GridItem
+          data-aos='fade-right'
           backgroundImage={render1}
           backgroundRepeat='no-repeat'
           backgroundSize='cover'
@@ -112,11 +113,11 @@ export default function SignUp() {
                 <Box title='Homepage' display='flex' alignItems='center'>
                   <Link to='/'>
                     {' '}
-                    <Logo color='#4E60FF' />
+                    <Logo color='white' />
                   </Link>
                   <VisuallyHidden>Brio</VisuallyHidden>
                 </Box>
-                <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='2'>
+                <Text fontSize='sm' fontWeight='extrabold' color='white' ml='2'>
                   <Link to='/'> Brio</Link>
                 </Text>
               </Flex>

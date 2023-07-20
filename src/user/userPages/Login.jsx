@@ -25,7 +25,7 @@ import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
 import { API_URL, TOKEN_KEY, handleApiMethod } from '../../services/apiServices';
-import render1 from '../../assets/images/render6.jpg';
+import render1 from '../../assets/images/render7.jpg';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -245,6 +245,7 @@ export default function Login() {
           </GridItem>
         </Container>
         <GridItem
+          data-aos='fade-left'
           backgroundImage={render1}
           backgroundRepeat='no-repeat'
           backgroundSize='cover'
