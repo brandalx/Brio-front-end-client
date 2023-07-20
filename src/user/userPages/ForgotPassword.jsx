@@ -23,6 +23,8 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/svg/Logo';
+import render1 from '../../assets/images/render8.jpg';
+
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaChevronLeft } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
@@ -331,7 +333,11 @@ export default function ForgotPassword() {
         <GridItem
           display={{ base: 'none', md: 'inline-flex' }}
           w='100%'
-          bg='linear-gradient(to right, #B2D1FF, #697BFF)'
+          backgroundImage={render1}
+          backgroundRepeat='no-repeat'
+          backgroundSize='cover'
+          backgroundPosition='center'
+          // bg='linear-gradient(to right, #B2D1FF, #697BFF)'
           h='100vh'
         ></GridItem>
       </Grid>
