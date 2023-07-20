@@ -91,7 +91,7 @@ export default function ForgotPassword() {
       }
     } catch (error) {
       console.log(error);
-      if (error.response && error.response.data.err.expiredAt) {
+      if (error.response && error.response.data && error.response.data.err && error.response.data.err.expiredAt) {
         toast({
           title: 'Code time expired',
           description: `Please try again.`,
@@ -136,7 +136,7 @@ export default function ForgotPassword() {
       }
     } catch (error) {
       console.log(error);
-      if (error.response && error.response.data.err.expiredAt) {
+      if (error.response && error.response.data && error.response.data.err && error.response.data.err.expiredAt) {
         toast({
           title: 'Code time expired',
           description: `Please try again.`,
