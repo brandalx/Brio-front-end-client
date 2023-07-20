@@ -69,13 +69,12 @@ export default function Restaurant() {
     const url2 = API_URL + '/users/info/user';
     const url3 = API_URL + '/categories';
     try {
-      const data2 = await handleApiGet(url2);
-
-      console.log(data2);
       const data3 = await handleApiGet(url3);
-      console.log(data3);
-      setUserArr(data2);
       handleCategories(data3);
+      console.log(data3);
+      const data2 = await handleApiGet(url2);
+      console.log(data2);
+      setUserArr(data2);
     } catch (error) {
       console.log(error);
     }
