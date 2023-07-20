@@ -56,8 +56,6 @@ export default function ForgotPassword() {
         });
         console.log(data.token);
 
-        setValue('email', '');
-
         navigate('code');
       }
     } catch (error) {
@@ -74,32 +72,54 @@ export default function ForgotPassword() {
   const handleUserSendRecoverCode = async (_bodyData) => {
     console.log(_bodyData);
     try {
-      const url = API_URL + '/users/recoverrequest';
-      const data = await handleApiMethod(url, 'POST', _bodyData);
+      const url = API_URL + '/users/recoverrequestcheck';
+      let finalBody = {
+        token: recoverData.token,
+        code: _bodyData.code
+      };
+      const data = await handleApiMethod(url, 'POST', finalBody);
       if (data.msg === true) {
-        setRecoverData(data.token);
-        console.log(data.token);
+        setRecoverData({
+          token: data.token,
+          code: codeData
+        });
 
-        setValue('email', '');
-
+        console.log(data.token, codeData);
         navigate('recover');
       }
     } catch (error) {
       console.log(error);
-      toast({
-        title: 'Error when checking your info',
-        description: 'Make sure the provided data is correct and try again',
-        status: 'error',
-        duration: 9000,
-        isClosable: true
-      });
+      if (error.response && error.response.data.err.expiredAt) {
+        toast({
+          title: 'Code time expired',
+          description: `Please try again.`,
+          status: 'warning',
+          duration: 9000,
+          isClosable: true
+        });
+        navigate('/recoverpassword');
+      } else {
+        toast({
+          title: 'Code you provided is incorrect',
+          description: 'Make sure the provided code is correct and try again',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      }
     }
   };
 
   const handleUserSendRecoverChange = async (_bodyData) => {
     try {
+      let finalBody = {
+        token: recoverData.token,
+        code: recoverData.code,
+        password: _bodyData.password,
+        confirmpassword: _bodyData.confirmpassword
+      };
       const url = API_URL + '/users/recoverrequestdata';
-      const data = await handleApiMethod(url, 'POST', _bodyData);
+      const data = await handleApiMethod(url, 'POST', finalBody);
       if (data.token) {
         toast({
           title: 'Password recovered.',
@@ -114,15 +134,25 @@ export default function ForgotPassword() {
       }
     } catch (error) {
       console.log(error);
-
-      toast({
-        title: 'Error when recovering your password',
-        description: 'Please try again later',
-        status: 'error',
-        duration: 9000,
-        isClosable: true
-      });
-      navigate('/recoverpassword');
+      if (error.response && error.response.data.err.expiredAt) {
+        toast({
+          title: 'Code time expired',
+          description: `Please try again.`,
+          status: 'warning',
+          duration: 9000,
+          isClosable: true
+        });
+        navigate('/recoverpassword');
+      } else {
+        toast({
+          title: 'Error when recovering your password',
+          description: 'Please try again',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+        navigate('/recoverpassword');
+      }
     }
   };
 

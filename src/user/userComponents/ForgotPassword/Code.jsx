@@ -60,13 +60,10 @@ export default function Code({ handleUserSendRecoverCode, codeData, setCodeData 
               Enter the verification code we've just sent you
             </Text>
           </Box>
-          <FormControl mt={4} id='password' isInvalid={errors.code}>
-            <FormLabel textAlign='center' color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-              Verification code
-            </FormLabel>
-
+          <FormControl my={5} id='password' isInvalid={errors.code}>
             <HStack>
               <PinInput
+                mask
                 id='code'
                 type='text'
                 onChange={(value) => {
