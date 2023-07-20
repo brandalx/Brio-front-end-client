@@ -8,7 +8,10 @@ import {
   Stack,
   Flex,
   Icon,
-  Text
+  Text,
+  PinInputField,
+  HStack,
+  PinInput
 } from '@chakra-ui/react';
 
 import React, { useState } from 'react';
@@ -16,22 +19,25 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
 
-export default function Code({ codeData, tokenData }) {
+export default function Code({ handleUserSendRecoverCode, codeData, setCodeData }) {
   const navigate = useNavigate();
 
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    watch,
+    setValue
   } = useForm();
 
   const onSubForm = (_bodyData) => {
     console.log(_bodyData);
-    let finalBody = {
-      token: tokenData,
-      code: codeData
-    };
+    handleUserSendRecoverCode(_bodyData);
   };
+
+  const codeWatch = watch('code', '');
+
+  const isValid = () => codeWatch.length === 6;
   return (
     <Box>
       <form onSubmit={handleSubmit(onSubForm)}>
@@ -48,58 +54,41 @@ export default function Code({ codeData, tokenData }) {
           </Box>
           <Box>
             <Text fontSize='xl' fontWeight='extrabold' color='neutral.black'>
-              New password
+              Verification code
             </Text>
             <Text fontSize='2xs' color='neutral.grayDark'>
-              Enter the new password for your account
+              Enter the verification code we've just sent you
             </Text>
           </Box>
-          <FormControl mt={4} id='password' isInvalid={errors.password}>
-            <FormLabel color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-              Password
+          <FormControl mt={4} id='password' isInvalid={errors.code}>
+            <FormLabel textAlign='center' color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
+              Verification code
             </FormLabel>
 
-            <Input
-              id='password'
-              {...register('password', {
-                required: { value: true, message: 'This field is required' },
-                minLength: { value: 2, message: 'Minimum length should be 2' }
-              })}
-              type='password'
-              background='neutral.white'
-              _placeholder={{ color: 'neutral.gray' }}
-              borderRadius='8px'
-              fontSize='2xs'
-              placeholder='min. 8 characters'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <HStack>
+              <PinInput
+                id='code'
+                type='text'
+                onChange={(value) => {
+                  setValue('code', value);
+                  setCodeData(value);
+                }}
+              >
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+              </PinInput>
+            </HStack>
+
             <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-              {errors.password && errors.password.message}
+              {errors.code && errors.code.message}
             </FormErrorMessage>
-          </FormControl>
-          <FormControl mt={4} id='confirmpassword' isInvalid={errors.confirmpassword}>
-            <FormLabel color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-              Confirm Password
-            </FormLabel>
 
-            <Input
-              id='confirmpassword'
-              {...register('confirmpassword', {
-                required: { value: true, message: 'This field is required' },
-                minLength: { value: 2, message: 'Minimum length should be 2' }
-              })}
-              type='password'
-              background='neutral.white'
-              _placeholder={{ color: 'neutral.gray' }}
-              borderRadius='8px'
-              fontSize='2xs'
-              placeholder='min. 8 characters'
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
             <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-              {errors.confirmpassword && errors.confirmpassword.message}
+              {errors.code && errors.code.message}
             </FormErrorMessage>
           </FormControl>
 

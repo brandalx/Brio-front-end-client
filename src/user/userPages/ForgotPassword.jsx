@@ -32,16 +32,45 @@ import Code from '../userComponents/ForgotPassword/Code';
 
 export default function ForgotPassword() {
   const [recoverData, setRecoverData] = useState();
-  let [codeData, setCodeData] = useState();
+  let [codeData, setCodeData] = useState('');
   let [tokenData1, setTokenData1] = useState();
   let [tokenData2, setTokenData2] = useState();
   const toast = useToast();
 
   // const [state, handleSubmit] = useForm('xpzeyzgq');
   useEffect(() => {
-    setRecoverData({ token: null });
+    setRecoverData({
+      token: null,
+      code: null
+    });
   }, []);
+  const handleUserSendRecoverRequest = async (_bodyData) => {
+    console.log(_bodyData);
+    try {
+      const url = API_URL + '/users/recoverrequest';
+      const data = await handleApiMethod(url, 'POST', _bodyData);
+      if (data.msg === true) {
+        setRecoverData({
+          token: data.token,
+          code: null
+        });
+        console.log(data.token);
 
+        setValue('email', '');
+
+        navigate('code');
+      }
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: 'Error when checking your info',
+        description: 'Make sure the provided data is correct and try again',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+    }
+  };
   const handleUserSendRecoverCode = async (_bodyData) => {
     console.log(_bodyData);
     try {
@@ -66,30 +95,7 @@ export default function ForgotPassword() {
       });
     }
   };
-  const handleUserSendRecoverRequest = async (_bodyData) => {
-    console.log(_bodyData);
-    try {
-      const url = API_URL + '/users/recoverrequest';
-      const data = await handleApiMethod(url, 'POST', _bodyData);
-      if (data.msg === true) {
-        setRecoverData(data.token);
-        console.log(data.token);
 
-        setValue('email', '');
-
-        navigate('recover');
-      }
-    } catch (error) {
-      console.log(error);
-      toast({
-        title: 'Error when checking your info',
-        description: 'Make sure the provided data is correct and try again',
-        status: 'error',
-        duration: 9000,
-        isClosable: true
-      });
-    }
-  };
   const handleUserSendRecoverChange = async (_bodyData) => {
     try {
       const url = API_URL + '/users/recoverrequestdata';
@@ -245,13 +251,7 @@ export default function ForgotPassword() {
                   />
                   <Route
                     path='/recover'
-                    element={
-                      <RecoverPassword
-                        handleUserSendRecoverChange={handleUserSendRecoverChange}
-                        recoverData={recoverData}
-                        setRecoverData={setRecoverData}
-                      />
-                    }
+                    element={<RecoverPassword handleUserSendRecoverChange={handleUserSendRecoverChange} />}
                   />
                   <Route
                     path='/code'
@@ -259,7 +259,7 @@ export default function ForgotPassword() {
                       <Code
                         handleUserSendRecoverCode={handleUserSendRecoverCode}
                         codeData={codeData}
-                        tokenData1={tokenData1}
+                        setCodeData={setCodeData}
                       />
                     }
                   />
