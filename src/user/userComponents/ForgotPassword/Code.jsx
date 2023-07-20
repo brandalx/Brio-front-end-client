@@ -61,24 +61,26 @@ export default function Code({ handleUserSendRecoverCode, codeData, setCodeData 
             </Text>
           </Box>
           <FormControl my={5} id='password' isInvalid={errors.code}>
-            <HStack>
-              <PinInput
-                mask
-                id='code'
-                type='text'
-                onChange={(value) => {
-                  setValue('code', value);
-                  setCodeData(value);
-                }}
-              >
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-              </PinInput>
-            </HStack>
+            <Box display='flex' justifyContent='center'>
+              <HStack>
+                <PinInput
+                  mask
+                  id='code'
+                  type='text'
+                  onChange={(value) => {
+                    setValue('code', value);
+                    setCodeData(value);
+                  }}
+                >
+                  <PinInputField />
+                  <PinInputField />
+                  <PinInputField />
+                  <PinInputField />
+                  <PinInputField />
+                  <PinInputField />
+                </PinInput>
+              </HStack>
+            </Box>
 
             <FormErrorMessage p={0} mt={2} fontSize='3xs'>
               {errors.code && errors.code.message}
@@ -127,6 +129,9 @@ export default function Code({ handleUserSendRecoverCode, codeData, setCodeData 
               </Link>
             </Box>
           </Stack>
+          <Text my={4} fontSize='3xs' color='neutral.grayDark' textAlign='center'>
+            Don't see the verification code? Make sure to check your 'spam' folder.
+          </Text>
         </Box>
       </form>
     </Box>
