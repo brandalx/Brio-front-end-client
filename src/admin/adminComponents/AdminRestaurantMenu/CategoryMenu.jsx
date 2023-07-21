@@ -18,6 +18,8 @@ import { API_URL, handleApiGet } from '../../../services/apiServices';
 import ModalNewCategory from './ModalNewCategory';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
+import TrashBox from '../../../assets/svg/TrashBox';
+import { useToast } from '@chakra-ui/react';
 
 export default function CategoryMenu({ selectedCategory, onCategoryChange, categoryCounts }) {
   const [loading, setLoading] = useState(true);
@@ -28,6 +30,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
   const [categories, setCategories] = useState([]);
   const [restaurantId, setRestaurantId] = useState();
   const [isCategorySelected, setIsCategorySelected] = useState(false);
+  const toast = useToast();
 
   const fetchRestaurantData = async () => {
     try {
@@ -43,7 +46,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
 
       setRestaurantId(adminResponse.data.restaurant);
     } catch (error) {
-      console.error('Ошибка при получении данных ресторана:', error);
+      console.error('Error:', error);
     }
   };
 
@@ -63,7 +66,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
       const response = await handleApiGet(API_URL + '/admin/restaurants');
       return response;
     } catch (error) {
-      console.error('Ошибка при получении ресторана:', error);
+      console.error('Error while getting restaurant:', error);
       throw error;
     }
   };
@@ -107,6 +110,66 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
     setIsCategorySelected(true);
   };
 
+  const deleteCategory = async (id) => {
+    const token = localStorage.getItem('x-api-key');
+    try {
+      // fetch the category to delete, to get its products
+      const categoryResponse = await axios.get(`${API_URL}/admin/categories/${id}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      await axios.delete(`${API_URL}/admin/categories/${id}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      // remove products from restaurant
+      await removeProductsFromRestaurant(categoryResponse.data.products);
+
+      // If successful, update the categories state and show a toast
+      fetchCategories();
+      toast({
+        title: 'Category deleted.',
+        description: 'The category has been successfully deleted.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      });
+    } catch (error) {
+      console.error('Error deleting category:', error);
+      toast({
+        title: 'An error occurred.',
+        description: 'Unable to delete category.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+    }
+  };
+
+  const removeProductsFromRestaurant = async (productIds) => {
+    const token = localStorage.getItem('x-api-key');
+    try {
+      await axios.put(
+        `${API_URL}/admin/restaurants/${restaurantId}`,
+        {
+          operation: 'remove',
+          products: productIds
+        },
+        {
+          headers: {
+            'x-api-key': token
+          }
+        }
+      );
+    } catch (error) {
+      console.error('Error removing products from restaurant:', error);
+    }
+  };
+
   if (!restaurantId) {
     return null;
   }
@@ -123,6 +186,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
             categories.length > 0 &&
             categories.map((element) => (
               <Box
+                position='relative' // add this line
                 display='flex'
                 flexDirection='column'
                 justifyContent='center'
@@ -151,9 +215,13 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
                 <Heading fontSize='2xs' fontWeight='bold' color='neutral.black'>
                   {element.categoryName.length > 0 ? element.categoryName : 'N/A'}
                 </Heading>
+
                 <Text fontSize='13px' mt='6px' fontWeight='regular' color='neutral.grayDark'>
                   {element.products.length || 0}
                 </Text>
+                <Button onClick={() => deleteCategory(element._id)} position='absolute' top={2} right={2}>
+                  <TrashBox />
+                </Button>
               </Box>
             ))}
         </Box>
