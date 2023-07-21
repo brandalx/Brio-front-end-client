@@ -215,7 +215,6 @@ export default function RestaurantDashboard() {
     );
   }
 
-  /////
   return (
     <>
       <Box py={5}>

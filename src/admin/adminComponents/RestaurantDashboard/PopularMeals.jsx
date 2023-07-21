@@ -10,6 +10,7 @@ import axios from 'axios';
 export default function PopularMeals() {
   const [mealArray, setMealArray] = useState([]);
   const [restaurantId, setRestaurantId] = useState();
+  const [showAll, setShowAll] = useState(false);
 
   const fetchRestaurantData = async () => {
     try {
@@ -35,13 +36,16 @@ export default function PopularMeals() {
 
   const fetchOrders = async () => {
     try {
-      const response = await handleApiGet(`${API_URL}/orders`);
-      console.log('Orders response:', response);
+      const ordersResponse = await handleApiGet(`${API_URL}/orders`);
+      const productsResponse = await handleApiGet(`${API_URL}/products`);
 
-      const relevantOrders = response.filter((order) => order.ordersdata.restaurants.includes(restaurantId));
+      const relevantOrders = ordersResponse.filter((order) => order.ordersdata.restaurants.includes(restaurantId));
+
+      const restaurantProducts = productsResponse.filter((product) => product.restaurantId === restaurantId);
 
       const productsCount = {};
 
+      // Count how many times each product has been ordered
       relevantOrders.forEach((order) => {
         order.ordersdata.products.forEach((product) => {
           if (product.restaurantId === restaurantId) {
@@ -50,21 +54,32 @@ export default function PopularMeals() {
         });
       });
 
-      const sortedProductIds = Object.keys(productsCount)
-        .sort((a, b) => productsCount[b] - productsCount[a])
-        .slice(0, 6);
+      // Ensure all products are in the productsCount object
+      restaurantProducts.forEach((product) => {
+        if (!productsCount[product._id]) {
+          productsCount[product._id] = 0;
+        }
+      });
 
-      const topProducts = await Promise.all(
-        sortedProductIds.map((productId) => axios.get(`${API_URL}/products/${productId}`))
+      const sortedProductIds = Object.keys(productsCount).sort((a, b) => productsCount[b] - productsCount[a]);
+      const productIdsToShow = showAll ? sortedProductIds : sortedProductIds.slice(0, 3);
+
+      console.log('All product ids: ', sortedProductIds); // Debug: print all product ids
+      console.log('Product ids to show: ', productIdsToShow); // Debug: print product ids to show
+
+      const topProducts = await Promise.allSettled(
+        productIdsToShow.map((productId) => axios.get(`${API_URL}/products/${productId}`))
       );
 
       setMealArray(
-        topProducts.map((response, index) => ({
-          image: response.data.image,
-          title: response.data.name,
-          amount: productsCount[sortedProductIds[index]],
-          price: response.data.price
-        }))
+        topProducts
+          .filter((result) => result.status === 'fulfilled') // Filter out any failed promises
+          .map((result, index) => ({
+            image: result.value.data.image,
+            title: result.value.data.title,
+            amount: productsCount[sortedProductIds[index]],
+            price: result.value.data.price
+          }))
       );
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -75,7 +90,7 @@ export default function PopularMeals() {
     if (restaurantId) {
       fetchOrders();
     }
-  }, [restaurantId]); // Зависимость от restaurantId
+  }, [restaurantId, showAll]);
 
   return (
     <GridItem w='100%'>
@@ -91,6 +106,7 @@ export default function PopularMeals() {
           })}
         </Box>
         <Button
+          onClick={() => setShowAll(!showAll)}
           mx='auto'
           mt={4}
           w='100%'
@@ -109,7 +125,7 @@ export default function PopularMeals() {
           }}
           py={5}
         >
-          Show all meals
+          {showAll ? 'Show less meals' : 'Show all meals'}
         </Button>
       </Box>
     </GridItem>
