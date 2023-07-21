@@ -12,7 +12,8 @@ import {
   Textarea,
   Divider,
   Checkbox,
-  Stack, useToast
+  Stack,
+  useToast
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
@@ -41,11 +42,11 @@ export default function Security() {
   const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
       toast({
-        title: "Error changing password",
-        description: "New password and confirm password do not match",
-        status: "error",
+        title: 'Error changing password',
+        description: 'New password and confirm password do not match',
+        status: 'error',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       });
       return;
     }
@@ -53,37 +54,35 @@ export default function Security() {
     try {
       const token = localStorage.getItem('x-api-key');
       await axios.put(
-          `${API_URL}/users/security`,
-          {
-            previouspassword: currentPassword,
-            password: newPassword,
-            confirmpassword: confirmPassword // Add this line
-          },
-          {
-            headers: {
-              'x-api-key': token // Setting header with token
-            }
+        `${API_URL}/users/security`,
+        {
+          previouspassword: currentPassword,
+          password: newPassword,
+          confirmpassword: confirmPassword // Add this line
+        },
+        {
+          headers: {
+            'x-api-key': token // Setting header with token
           }
+        }
       );
       toast({
-        title: "Password changed",
-        description: "Password was successfully changed.",
-        status: "success",
+        title: 'Password changed',
+        description: 'Password was successfully changed.',
+        status: 'success',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       });
-
 
       // You may want to clear the password fields here
     } catch (error) {
-
       // Show error toast notification
       toast({
-        title: "Error changing password",
+        title: 'Error changing password',
         description: error.message,
-        status: "error",
+        status: 'error',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       });
     }
   };
@@ -102,7 +101,6 @@ export default function Security() {
 
       setRestaurantId(response.data.restaurant);
       setUserId(userId);
-
     } catch (error) {
       console.error('Error fetching user:', error);
     }

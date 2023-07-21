@@ -181,7 +181,6 @@ export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, 
 
       await updateRestaurant(restaurantRef, newProduct._id);
 
-
       setProduct((prevProducts) => [...prevProducts, { ...newProduct }]);
       onClose();
     } catch (error) {
@@ -221,7 +220,6 @@ export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, 
   const handleImageChange = (event) => {
     setImage(URL.createObjectURL(event.target.files[0]));
   };
-
 
   return (
     <Modal

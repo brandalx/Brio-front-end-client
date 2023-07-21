@@ -13,7 +13,8 @@ import {
   ModalHeader,
   ModalOverlay,
   Modal,
-  useDisclosure, useToast
+  useDisclosure,
+  useToast
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import TableAdmins from './TableAdmins';
@@ -88,17 +89,17 @@ export default function Administrators() {
       const token = localStorage.getItem('x-api-key');
 
       const adminResponse = await axios.post(
-          `${API_URL}/users/addAdminByEmail`,
-          {
-            email: newAdminEmail,
-            restaurant: restaurantId,
-            role: 'ADMIN'
-          },
-          {
-            headers: {
-              'x-api-key': token
-            }
+        `${API_URL}/users/addAdminByEmail`,
+        {
+          email: newAdminEmail,
+          restaurant: restaurantId,
+          role: 'ADMIN'
+        },
+        {
+          headers: {
+            'x-api-key': token
           }
+        }
       );
       setPassword('');
       setNewAdminEmail('');
@@ -106,56 +107,54 @@ export default function Administrators() {
 
       fetchUsers();
       toast({
-        title: "Admin added",
-        description: "New admin was successfully added.",
-        status: "success",
+        title: 'Admin added',
+        description: 'New admin was successfully added.',
+        status: 'success',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       });
     } catch (error) {
       toast({
-        title: "Error adding admin",
+        title: 'Error adding admin',
         description: error.message,
-        status: "error",
+        status: 'error',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       });
     }
   };
-
 
   const handleInviteClick = async () => {
     try {
       const token = localStorage.getItem('x-api-key');
       const response = await axios.post(
-          `${API_URL}/users/verifyPassword`,
-          {
-            password: myPassword,
-            hash: password
-          },
-          {
-            headers: {
-              'x-api-key': token
-            }
+        `${API_URL}/users/verifyPassword`,
+        {
+          password: myPassword,
+          hash: password
+        },
+        {
+          headers: {
+            'x-api-key': token
           }
+        }
       );
 
       if (response.data.match) {
         addAdmin(newAdminEmail);
       } else {
         toast({
-          title: "Wrong password",
-          description: "The password you have entered is incorrect.",
-          status: "error",
+          title: 'Wrong password',
+          description: 'The password you have entered is incorrect.',
+          status: 'error',
           duration: 9000,
-          isClosable: true,
+          isClosable: true
         });
       }
     } catch (error) {
       console.error('Error verifying password:', error);
     }
   };
-
 
   return (
     <Box>
@@ -222,5 +221,5 @@ export default function Administrators() {
         </Box>
       </Box>
     </Box>
-  )
+  );
 }

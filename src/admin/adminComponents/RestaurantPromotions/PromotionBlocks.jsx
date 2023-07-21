@@ -232,12 +232,7 @@ export default function PromotionBlocks({ active }) {
                     </Text>
                   </Box>
                   <Box width='100%' height='100%'>
-                    <Image
-                      borderRadius='16px'
-                      src={promotion.image}
-                      objectFit='cover'
-                      objectPosition='center'
-                    />
+                    <Image borderRadius='16px' src={promotion.image} objectFit='cover' objectPosition='center' />
                   </Box>
                 </Box>
                 <Divider mt='10px' mb='8px' />

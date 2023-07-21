@@ -136,7 +136,9 @@ export default function RestaurantDashboard() {
             if (order.ordersdata.restaurants.includes(restaurantId) && order.userdata.status === 'Placed') {
               newOrders[orderMonth].orderReceivedCount++;
             }
-
+            if (order.ordersdata.restaurants.includes(restaurantId) && order.userdata.status === 'In progress') {
+              newOrders[orderMonth].orderReceivedCount++;
+            }
             if (order.ordersdata.restaurants.includes(restaurantId) && order.userdata.status === 'Completed') {
               newOrders[orderMonth].orderCount++;
             }

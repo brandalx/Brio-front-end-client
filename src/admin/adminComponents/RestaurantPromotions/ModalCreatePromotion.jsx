@@ -101,7 +101,6 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
     }
   };
 
-
   const formatDate = (date) => {
     let month = '' + (date.getMonth() + 1),
       day = '' + date.getDate(),

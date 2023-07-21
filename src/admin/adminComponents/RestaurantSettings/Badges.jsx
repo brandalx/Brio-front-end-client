@@ -1,4 +1,4 @@
-import {Button, Flex, Text, GridItem, Checkbox, Stack, Box, useToast} from '@chakra-ui/react';
+import { Button, Flex, Text, GridItem, Checkbox, Stack, Box, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
@@ -24,6 +24,7 @@ export default function Badges() {
       });
 
       setRestaurantId(adminResponse.data.restaurant);
+      console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant);
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
     }
@@ -36,33 +37,33 @@ export default function Badges() {
 
         for (let badge of selectedBadges) {
           await axios.put(
-              `${API_URL}/admin/restaurants/${restaurantId}/badge/add`,
-              {
-                badgeTitle: badge.badgeTitle,
-                badgeEmoji: badge.badgeEmoji
-              },
-              {
-                headers: {
-                  'x-api-key': token
-                }
+            `${API_URL}/admin/restaurants/${restaurantId}/badge/add`,
+            {
+              badgeTitle: badge.badgeTitle,
+              badgeEmoji: badge.badgeEmoji
+            },
+            {
+              headers: {
+                'x-api-key': token
               }
+            }
           );
         }
         setSelectedBadges([]); // Reset selected badges
         toast({
-          title: "Badges updated",
-          description: "Badges were successfully updated.",
-          status: "success",
+          title: 'Badges updated',
+          description: 'Badges were successfully updated.',
+          status: 'success',
           duration: 9000,
-          isClosable: true,
+          isClosable: true
         });
       } catch (error) {
         toast({
-          title: "Error updating badges",
+          title: 'Error updating badges',
           description: error.message,
-          status: "error",
+          status: 'error',
           duration: 9000,
-          isClosable: true,
+          isClosable: true
         });
       }
     } else {
@@ -85,11 +86,11 @@ export default function Badges() {
       const badgeExists = existingBadges && existingBadges.find((badge) => badge.badgeTitle === badgeTitle);
       if (badgeExists) {
         toast({
-          title: "Error updating badges",
+          title: 'Error updating badges',
           description: 'This tag is already exists',
-          status: "error",
+          status: 'error',
           duration: 9000,
-          isClosable: true,
+          isClosable: true
         });
       } else {
         setSelectedBadges((oldBadges) => [...oldBadges, { badgeTitle, badgeEmoji }]);

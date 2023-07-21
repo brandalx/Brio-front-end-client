@@ -88,7 +88,6 @@ export default function CustomersTable() {
 
   let getUserAvatar = (userid) => {
     try {
-
       const user = userArr.find((item) => item._id === userid);
       if (user) {
         // check if user exists

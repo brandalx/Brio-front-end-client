@@ -38,7 +38,6 @@ export default function TableAdmins() {
 
       setRestaurantId(response.data.restaurant);
       setUserId(userId);
-
     } catch (error) {
       console.error('Error fetching user:', error);
     }

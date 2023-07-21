@@ -71,7 +71,6 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
 
       setRestaurantId(response.data.restaurant);
       setUserId(userId);
-
     } catch (error) {
       console.error('An error occurred while getting users data:', error);
     }
@@ -259,7 +258,6 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                     <Button onClick={() => setSelectedProduct(item)}>
                       <Pen />
                     </Button>
-                    <Copy />
                     <Button onClick={() => handleTrashClick(item._id, item.categoryId)}>
                       <TrashBox />
                     </Button>
@@ -275,7 +273,6 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                   <Button onClick={() => setSelectedProduct(item)}>
                     <Pen />
                   </Button>
-                  <Copy />
                   <Button onClick={() => handleTrashClick(item._id, item.categoryId)}>
                     <TrashBox />
                   </Button>
