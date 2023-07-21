@@ -77,9 +77,9 @@ export default function CustomerTableBody() {
           let productsFromThisRestaurant = [];
           const responseToOrder = await handleApiGet(`${API_URL}/admin/orders/${order.orderRef}`);
 
-          console.log('responseToOrder.data: ', responseToOrder.ordersdata);
+          if (responseToOrder && responseToOrder.ordersdata) {
+            console.log('responseToOrder.data: ', responseToOrder.ordersdata);
 
-          if (responseToOrder) {
             console.log('responseToOrder.ordersdata.products: ', responseToOrder.ordersdata.products);
             productsFromThisRestaurant = responseToOrder.ordersdata.products.filter(
               (product) => product.restaurantId === restaurantId
@@ -164,7 +164,7 @@ export default function CustomerTableBody() {
                         ? '#4E60FF'
                         : order.status === 'Canceled'
                         ? '#FF5C60'
-                        : order.status === 'Suspended'
+                        : order.status === 'Placed'
                         ? '#FF5C60'
                         : 'yellow'
                     }

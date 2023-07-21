@@ -8,10 +8,10 @@ import ModalNoteRedactor from './ModalNoteRedactor';
 
 export default function CustomerProfile() {
   const [user, setUser] = useState(null);
-  const [note, setNote] = useState(''); // New state for the note field
+  const [note, setNote] = useState('');
   const { userId } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [role, setRole] = useState(null); // New state for the role
+  const [role, setRole] = useState(null);
 
   const fetchUser = async () => {
     try {
