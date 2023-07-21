@@ -38,7 +38,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
       setProducts(response);
       setLoading(false);
     } catch (error) {
-      console.error('Ошибка при получении продуктов:', error);
+      console.error('Error while fetching products:', error);
     }
   };
 
@@ -59,17 +59,41 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
 
       console.log(response.data);
     } catch (error) {
-      console.error('Ошибка при получении данных пользователя:', error);
+      console.error('An error occurred while getting users data:', error);
     }
   };
 
-  const removeProductFromRestaurant = async (productId) => {
-    try {
-      const token = localStorage.getItem('x-api-key');
+  async function removeProductFromRestaurant(restaurantId, productId) {
+    const token = localStorage.getItem('x-api-key');
 
-      const response = await axios.put(
-        `${API_URL}/restaurants/${restaurantId}/product/remove`,
-        { productId },
+    try {
+      const response = await fetch(`${API_URL}/admin/restaurants/${restaurantId}`, {
+        method: 'PATCH',
+        headers: {
+          'x-api-key': token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ $pull: { products: productId } })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to remove product from restaurant');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('An error occurred while removing the product from the restaurant: ', error);
+    }
+  }
+
+  const deleteProduct = async (productId, categoryId) => {
+    const token = localStorage.getItem('x-api-key');
+
+    try {
+      await axios.patch(
+        `${API_URL}/admin/categories/${categoryId}`,
+        { $pull: { products: productId } },
         {
           headers: {
             'x-api-key': token,
@@ -78,19 +102,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
         }
       );
 
-      if (response.status !== 200) {
-        throw new Error('Ошибка при удалении продукта из ресторана');
-      }
-    } catch (error) {
-      console.error('Ошибка при удалении продукта из ресторана:', error);
-    }
-  };
-
-  const deleteProduct = async (productId) => {
-    const token = localStorage.getItem('x-api-key');
-
-    try {
-      await removeProductFromRestaurant(productId);
+      await removeProductFromRestaurant(restaurantId, productId);
 
       const response = await axios.delete(`${API_URL}/admin/products/${productId}`, {
         headers: {
@@ -100,12 +112,12 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
       });
 
       if (response.status !== 200) {
-        throw new Error('Ошибка при удалении продукта');
+        throw new Error('err while deleting product:');
       }
 
       await fetchProducts();
     } catch (error) {
-      console.error('Ошибка при удалении продукта:', error);
+      console.error('err while deleting product:', error);
     }
   };
 
@@ -130,8 +142,8 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
     fetchAdmin();
   }, [products]);
 
-  const handleTrashClick = (productId) => {
-    deleteProduct(productId);
+  const handleTrashClick = (productId, categoryId) => {
+    deleteProduct(productId, categoryId);
   };
 
   return (
@@ -213,7 +225,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                       <Pen />
                     </Button>
                     <Copy />
-                    <Button onClick={() => handleTrashClick(item._id)}>
+                    <Button onClick={() => handleTrashClick(item._id, item.categoryId)}>
                       <TrashBox />
                     </Button>
                   </Box>
@@ -229,7 +241,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                     <Pen />
                   </Button>
                   <Copy />
-                  <Button onClick={() => handleTrashClick(item._id)}>
+                  <Button onClick={() => handleTrashClick(item._id, item.categoryId)}>
                     <TrashBox />
                   </Button>
                 </Box>
@@ -247,7 +259,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                     {item.ingredients.join(', ')}
                   </Text>
                 </Box>
-                <Box>
+                <Box padding='3px'>
                   <Heading fontSize='' lineHeight='24px' fontWeight='bold'>
                     Nutritional value
                   </Heading>
