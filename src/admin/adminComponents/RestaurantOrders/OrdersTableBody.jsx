@@ -49,7 +49,6 @@ export default function OrdersTableBody() {
         );
         allUsers = [...allUsers, ...response];
         setUsersArr(allUsers);
-        console.log(allUsers);
       }
     } catch (error) {
       console.log(error);
@@ -59,7 +58,6 @@ export default function OrdersTableBody() {
     const url2 = API_URL + '/users/getAllUsers';
     try {
       const data2 = await handleApiGet(url2);
-      console.log('Data from API:', data2);
       if (Array.isArray(data2)) {
         setUserArr(data2);
         await handleUsersPublicData(data2);
@@ -88,19 +86,17 @@ export default function OrdersTableBody() {
 
   let getUserAvatar = (userid) => {
     try {
-      console.log(`userArr found: ${userArr}: `, userArr);
 
       const user = userArr.find((item) => item._id === userid);
       if (user) {
         // check if user exists
-        console.log(`User found for ID ${userid}: `, user);
         if (user.avatar) {
           // check if avatar exists
           let stringAvatar = API_URL + (API_URL.endsWith('/') ? '' : '/') + user.avatar;
-          console.log(`Avatar URL for user ${userid}: `, stringAvatar);
+          // console.log(`Avatar URL for user ${userid}: `, stringAvatar);
           return stringAvatar;
         } else {
-          console.log(`No avatar found for user ${userid}`);
+          // console.log(`No avatar found for user ${userid}`);
         }
       } else {
         console.log(`No user found for ID ${userid}`);
@@ -115,7 +111,6 @@ export default function OrdersTableBody() {
   const fetchProductData = async (productId) => {
     try {
       const productResponse = await axios.get(`${API_URL}/products/${productId}`);
-      console.log('Fetched product data: ', productResponse.data);
       return productResponse.data;
     } catch (error) {
       console.error('Error fetching product data:', error);
@@ -139,7 +134,6 @@ export default function OrdersTableBody() {
 
         setUserId(userId);
         setRestaurantId(adminResponse.data.restaurant);
-        console.log('Fetched restaurant data: ', adminResponse.data);
         await handleUserApi();
         if (adminResponse.data.restaurant && Array.isArray(adminResponse.data.restaurant.products)) {
           setRestaurantProducts(adminResponse.data.restaurant.products.map((product) => product.$oid));
@@ -161,8 +155,6 @@ export default function OrdersTableBody() {
         const usersPromise = handleApiGet(API_URL + '/users/getAllUsers');
 
         const [ordersResponse, usersResponse] = await Promise.all([ordersPromise, usersPromise]);
-        console.log('Fetched orders response: ', ordersResponse);
-        console.log('Fetched users response: ', usersResponse);
 
         if (Array.isArray(ordersResponse)) {
           const filteredOrders = ordersResponse
@@ -194,18 +186,18 @@ export default function OrdersTableBody() {
 
             // Adding the shipping and tips to the total cost of products
             const totalAmount = productsCost.toFixed(2);
-            console.log('Fetched products: ', products);
+            // console.log('Fetched products: ', products);
 
             // Add the totalAmount to the order object itself
             return { ...order, totalSpent: totalAmount };
           });
 
           setRelevantOrders(ordersWithTotalSpent);
-          console.log('Filtered orders with total spent: ', ordersWithTotalSpent);
+          // console.log('Filtered orders with total spent: ', ordersWithTotalSpent);
         }
 
         setOrdersOfUsers(usersResponse);
-        console.log('orders of users: ', ordersOfUsers);
+        // console.log('orders of users: ', ordersOfUsers);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

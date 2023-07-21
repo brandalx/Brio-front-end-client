@@ -1,4 +1,4 @@
-import { Button, Flex, Text, GridItem, Checkbox, Stack, Box } from '@chakra-ui/react';
+import {Button, Flex, Text, GridItem, Checkbox, Stack, Box, useToast} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
@@ -7,6 +7,7 @@ import { API_URL } from '../../../services/apiServices';
 export default function Badges() {
   const [restaurantId, setRestaurantId] = useState(null);
   const [selectedBadges, setSelectedBadges] = useState([]);
+  const toast = useToast();
 
   const fetchRestaurantData = async () => {
     try {
@@ -23,7 +24,6 @@ export default function Badges() {
       });
 
       setRestaurantId(adminResponse.data.restaurant);
-      console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant);
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
     }
@@ -36,21 +36,34 @@ export default function Badges() {
 
         for (let badge of selectedBadges) {
           await axios.put(
-            `${API_URL}/admin/restaurants/${restaurantId}/badge/add`,
-            {
-              badgeTitle: badge.badgeTitle,
-              badgeEmoji: badge.badgeEmoji
-            },
-            {
-              headers: {
-                'x-api-key': token
+              `${API_URL}/admin/restaurants/${restaurantId}/badge/add`,
+              {
+                badgeTitle: badge.badgeTitle,
+                badgeEmoji: badge.badgeEmoji
+              },
+              {
+                headers: {
+                  'x-api-key': token
+                }
               }
-            }
           );
         }
         setSelectedBadges([]); // Reset selected badges
+        toast({
+          title: "Badges updated",
+          description: "Badges were successfully updated.",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
       } catch (error) {
-        console.error('Error updating restaurant data:', error);
+        toast({
+          title: "Error updating badges",
+          description: error.message,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
       }
     } else {
       console.error('Restaurant id is not available');
@@ -68,11 +81,16 @@ export default function Badges() {
       });
 
       const existingBadges = response.data.restaurant.tags;
-      console.log('existingBadges: ', existingBadges);
 
       const badgeExists = existingBadges && existingBadges.find((badge) => badge.badgeTitle === badgeTitle);
       if (badgeExists) {
-        alert('This tag is already exists!');
+        toast({
+          title: "Error updating badges",
+          description: 'This tag is already exists',
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
       } else {
         setSelectedBadges((oldBadges) => [...oldBadges, { badgeTitle, badgeEmoji }]);
       }
@@ -84,10 +102,6 @@ export default function Badges() {
   useEffect(() => {
     fetchRestaurantData();
   }, []);
-
-  useEffect(() => {
-    console.log(selectedBadges);
-  }, [selectedBadges]);
 
   return (
     <GridItem w='100%'>

@@ -147,18 +147,6 @@ export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, 
       const adminData = await fetchAdminData(); // Удалите adminId из параметров функции
       const restaurantRef = adminData.restaurant;
 
-      console.log('Publishing product:', {
-        price,
-        title,
-        description,
-        ingredients,
-        nutritionals,
-        restaurantRef,
-        image,
-        categoryId,
-        categoryName
-      });
-
       const newProduct = await createProduct(
         image,
         price,
@@ -174,8 +162,6 @@ export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, 
 
       try {
         const token = localStorage.getItem('x-api-key');
-        console.log('categoryId:', categoryId);
-        console.log('newProduct._id:', newProduct._id);
 
         if (!categoryId || !newProduct._id) {
           console.error('Missing categoryId or newProduct._id');
@@ -195,7 +181,6 @@ export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, 
 
       await updateRestaurant(restaurantRef, newProduct._id);
 
-      console.log('Created product:', newProduct);
 
       setProduct((prevProducts) => [...prevProducts, { ...newProduct }]);
       onClose();
@@ -229,7 +214,6 @@ export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, 
   };
 
   const onSubmit = (data) => {
-    console.log('Form submitted:', data);
     handlePublishProduct(data);
     reset();
   };
@@ -238,7 +222,6 @@ export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, 
     setImage(URL.createObjectURL(event.target.files[0]));
   };
 
-  console.log('ModalRestaurantMenu rendered');
 
   return (
     <Modal

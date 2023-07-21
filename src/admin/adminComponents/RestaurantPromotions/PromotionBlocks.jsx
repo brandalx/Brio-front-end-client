@@ -63,7 +63,7 @@ export default function PromotionBlocks({ active }) {
 
     try {
       const response = await handleApiGet(API_URL + '/admin/promotions');
-      setPromotion(response.filter((promotion) => promotion.restaurantRef == restaurantId));
+      setPromotion(response.filter((promotion) => promotion.restaurantRef === restaurantId));
     } catch (error) {
       console.error('Error fetching promotions:', error);
     } finally {
@@ -211,7 +211,7 @@ export default function PromotionBlocks({ active }) {
                 p='16px'
               >
                 <Box display='flex' justifyContent='space-between'>
-                  <Box marginRight='10px'>
+                  <Box marginRight='10px' width='100%'>
                     <Box
                       textAlign='center'
                       border='1px'
@@ -231,10 +231,8 @@ export default function PromotionBlocks({ active }) {
                       {promotion.discountDetails}
                     </Text>
                   </Box>
-                  <Box>
+                  <Box width='100%' height='100%'>
                     <Image
-                      width='112px'
-                      height='92px'
                       borderRadius='16px'
                       src={promotion.image}
                       objectFit='cover'

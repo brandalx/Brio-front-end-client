@@ -66,7 +66,6 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
   }, []);
 
   useEffect(() => {
-    console.log(restaurantId);
     if (restaurantId) {
       fetchCategories();
     }
@@ -98,7 +97,6 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
           );
 
           const filteredCategories = response.filter((category) => category.restaurantRef === restaurantId);
-          console.log('filteredCategories: ', filteredCategories);
           const updatedCategories = filteredCategories.map((category) => ({
             ...category,
             products: Array.from(new Set(category.products))

@@ -104,7 +104,6 @@ export default function RestaurantMenu() {
       }
       setProductsByCategory(productsByCategory);
       setCategoryCounts(newCategoryCounts);
-      console.log('newCategoryCounts: ', newCategoryCounts);
     } catch (error) {
       console.error('Error fetching products:', error);
     }

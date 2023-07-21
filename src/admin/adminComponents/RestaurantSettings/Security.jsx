@@ -12,7 +12,7 @@ import {
   Textarea,
   Divider,
   Checkbox,
-  Stack
+  Stack, useToast
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
@@ -29,6 +29,7 @@ export default function Security() {
       navigate('/login');
     }
   }, [navigate, token]);
+  const toast = useToast();
 
   const [userId, setUserId] = useState(null);
   const [restaurantId, setRestaurantId] = useState(null);
@@ -39,30 +40,51 @@ export default function Security() {
 
   const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
-      console.error('New password and confirm password do not match');
+      toast({
+        title: "Error changing password",
+        description: "New password and confirm password do not match",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
       return;
     }
 
     try {
       const token = localStorage.getItem('x-api-key');
       await axios.put(
-        `${API_URL}/users/security`,
-        {
-          previouspassword: currentPassword,
-          password: newPassword,
-          confirmpassword: confirmPassword // Add this line
-        },
-        {
-          headers: {
-            'x-api-key': token // Setting header with token
+          `${API_URL}/users/security`,
+          {
+            previouspassword: currentPassword,
+            password: newPassword,
+            confirmpassword: confirmPassword // Add this line
+          },
+          {
+            headers: {
+              'x-api-key': token // Setting header with token
+            }
           }
-        }
       );
+      toast({
+        title: "Password changed",
+        description: "Password was successfully changed.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
 
-      console.log('Password changed successfully');
+
       // You may want to clear the password fields here
     } catch (error) {
-      console.error('Error changing password:', error);
+
+      // Show error toast notification
+      toast({
+        title: "Error changing password",
+        description: error.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
   };
 
@@ -81,7 +103,6 @@ export default function Security() {
       setRestaurantId(response.data.restaurant);
       setUserId(userId);
 
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching user:', error);
     }
@@ -117,7 +138,6 @@ export default function Security() {
           }
         }
       );
-      console.log(response.data);
     } catch (error) {
       console.error('Error updating phone number:', error);
     }

@@ -72,7 +72,6 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
       setRestaurantId(response.data.restaurant);
       setUserId(userId);
 
-      console.log(response.data);
     } catch (error) {
       console.error('An error occurred while getting users data:', error);
     }

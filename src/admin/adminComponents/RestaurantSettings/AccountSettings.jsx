@@ -85,11 +85,7 @@ export default function AccountSettings() {
       if (response.data.success) {
         localStorage.setItem('token', response.data.token);
       }
-      if (response.data && response.data.restaurant) {
-        console.log(token);
-      }
       setUser(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching user:', error);
     }
@@ -115,7 +111,6 @@ export default function AccountSettings() {
           'x-api-key': token
         }
       });
-      console.log(response.data);
     } catch (error) {
       console.error('Error updating restaurant information:', error);
       alert("There was a problem updating the restaurant's information. Please try again later.");
@@ -126,8 +121,6 @@ export default function AccountSettings() {
     try {
       const response = await handleApiGet(API_URL + `/admin/restaurants/${restaurantId}`);
       setRestaurant(response.data);
-      console.log(response.data);
-      console.log(response);
       const { title, email, phoneNumber = '', address, description } = response.restaurant;
       setFormData({ title, email, phoneNumber, address, description });
       setOriginalFormData({ title, email, phoneNumber, address, description });
@@ -154,13 +147,6 @@ export default function AccountSettings() {
     fetchAdmin();
   }, []);
 
-  useEffect(() => {
-    console.log(restaurant);
-  }, [restaurant]);
-
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
   if (loading) {
     return (
       <Box>

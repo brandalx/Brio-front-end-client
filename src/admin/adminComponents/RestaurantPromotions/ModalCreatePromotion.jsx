@@ -76,7 +76,6 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
       const products = await Promise.all(productPromises);
 
       setProductsOfRestaurant(products);
-      console.log('Products: ', products);
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
     }
@@ -100,12 +99,8 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
     if (!days.includes(dayMapper[day])) {
       setDays((prevDays) => [...prevDays, dayMapper[day]]);
     }
-    console.log(days);
   };
 
-  useEffect(() => {
-    console.log(days);
-  }, [days]);
 
   const formatDate = (date) => {
     let month = '' + (date.getMonth() + 1),
@@ -114,7 +109,6 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
 
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
-    console.log(year + ' ' + month + ' ' + day);
     return [year, month, day].join('-');
   };
 
@@ -141,7 +135,6 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
       }
     }
 
-    // Создаем новую акцию, если все проверки пройдены
     const payload = {
       discountDetails,
       startDate,

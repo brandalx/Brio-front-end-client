@@ -47,7 +47,6 @@ export default function CustomersTable() {
         );
         allUsers = [...allUsers, ...response];
         setUsersArr(allUsers);
-        console.log(allUsers);
       }
     } catch (error) {
       console.log(error);
@@ -58,7 +57,6 @@ export default function CustomersTable() {
     const url2 = API_URL + '/users/getAllUsers';
     try {
       const data2 = await handleApiGet(url2);
-      console.log('Data from API:', data2);
       if (Array.isArray(data2)) {
         setUserArr(data2);
         await handleUsersPublicData(data2);
@@ -90,16 +88,13 @@ export default function CustomersTable() {
 
   let getUserAvatar = (userid) => {
     try {
-      console.log(`userArr found: ${userArr}: `, userArr);
 
       const user = userArr.find((item) => item._id === userid);
       if (user) {
         // check if user exists
-        console.log(`User found for ID ${userid}: `, user);
         if (user.avatar) {
           // check if avatar exists
           let stringAvatar = API_URL + (API_URL.endsWith('/') ? '' : '/') + user.avatar;
-          console.log(`Avatar URL for user ${userid}: `, stringAvatar);
           return stringAvatar;
         } else {
           console.log(`No avatar found for user ${userid}`);
@@ -149,7 +144,7 @@ export default function CustomersTable() {
       });
 
       setRestaurantId(adminResponse.data.restaurant);
-      console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant);
+      // console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant);
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
     } finally {
@@ -196,6 +191,7 @@ export default function CustomersTable() {
                 });
               } catch (error) {
                 if (error.response && error.response.status === 404) {
+                  console.log(`Order ${order.orderRef} not found`); // Log the not found order
                 } else {
                   throw error;
                 }
@@ -230,7 +226,7 @@ export default function CustomersTable() {
 
   useEffect(() => {
     Promise.all([fetchRestaurantData(), fetchUsersData()]).catch((error) => {
-      console.error('Error fetching data:', error);
+      // console.error('Error fetching data:', error);
       setLoadingCount((count) => count - 1);
     });
   }, [restaurantId]);

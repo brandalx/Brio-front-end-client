@@ -40,7 +40,6 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
         headers: { 'x-api-key': token }
       })
       .then((response) => {
-        console.log(response);
         onClose(); // Close the modal
       })
       .catch((error) => {

@@ -4,7 +4,6 @@ import { Box, Text } from '@chakra-ui/layout';
 import React from 'react';
 
 export default function MealCard({ image, title, amount, price }) {
-  console.log('title: ', title);
   return (
     <Box display='flex' justifyContent='space-between' alignItems='center' mt={4}>
       <Box display='flex' alignItems='center'>

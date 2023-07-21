@@ -45,7 +45,6 @@ export default function PopularMeals() {
 
       const productsCount = {};
 
-      // Count how many times each product has been ordered
       relevantOrders.forEach((order) => {
         order.ordersdata.products.forEach((product) => {
           if (product.restaurantId === restaurantId) {
@@ -54,7 +53,6 @@ export default function PopularMeals() {
         });
       });
 
-      // Ensure all products are in the productsCount object
       restaurantProducts.forEach((product) => {
         if (!productsCount[product._id]) {
           productsCount[product._id] = 0;
@@ -64,16 +62,13 @@ export default function PopularMeals() {
       const sortedProductIds = Object.keys(productsCount).sort((a, b) => productsCount[b] - productsCount[a]);
       const productIdsToShow = showAll ? sortedProductIds : sortedProductIds.slice(0, 3);
 
-      console.log('All product ids: ', sortedProductIds); // Debug: print all product ids
-      console.log('Product ids to show: ', productIdsToShow); // Debug: print product ids to show
-
       const topProducts = await Promise.allSettled(
         productIdsToShow.map((productId) => axios.get(`${API_URL}/products/${productId}`))
       );
 
       setMealArray(
         topProducts
-          .filter((result) => result.status === 'fulfilled') // Filter out any failed promises
+          .filter((result) => result.status === 'fulfilled')
           .map((result, index) => ({
             image: result.value.data.image,
             title: result.value.data.title,

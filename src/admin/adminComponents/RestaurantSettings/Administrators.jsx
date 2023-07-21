@@ -3,17 +3,9 @@ import {
   Button,
   Flex,
   Text,
-  Image,
   FormControl,
   FormLabel,
   Input,
-  GridItem,
-  Grid,
-  Textarea,
-  Divider,
-  Checkbox,
-  Stack,
-  Container,
   ModalFooter,
   ModalBody,
   ModalCloseButton,
@@ -21,7 +13,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Modal,
-  useDisclosure
+  useDisclosure, useToast
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import TableAdmins from './TableAdmins';
@@ -29,7 +21,6 @@ import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import { API_URL, TOKEN_KEY } from '../../../services/apiServices';
 import { useNavigate } from 'react-router-dom';
-import { useCheckToken } from '../../../services/token';
 
 export default function Administrators() {
   const navigate = useNavigate();
@@ -44,10 +35,11 @@ export default function Administrators() {
 
   const [restaurantId, setRestaurantId] = useState(null);
   const [users, setUsers] = useState([]);
-  const [newAdminId, setNewAdminId] = useState('');
+  const [newAdminEmail, setNewAdminEmail] = useState('');
   const [password, setPassword] = useState('');
   const [myPassword, setMyPassword] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
 
   useEffect(() => {
     const fetchRestaurantData = async () => {
@@ -64,7 +56,6 @@ export default function Administrators() {
 
         setRestaurantId(adminResponse.data.restaurant);
         setPassword(adminResponse.data.password);
-        console.log('Fetched restaurant data: ', adminResponse.data);
       } catch (error) {
         console.error('Error fetching restaurant data:', error);
       }
@@ -83,7 +74,6 @@ export default function Administrators() {
       });
 
       setUsers(adminResponse.data);
-      console.log('Fetched restaurant data: ', adminResponse.data);
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
     }
@@ -93,58 +83,79 @@ export default function Administrators() {
     fetchUsers();
   }, []);
 
-  const addAdmin = async (userId) => {
+  const addAdmin = async () => {
     try {
       const token = localStorage.getItem('x-api-key');
 
       const adminResponse = await axios.post(
-        `${API_URL}/users/${userId}/addAdmin`,
-        {
-          restaurant: restaurantId,
-          role: 'ADMIN'
-        },
-        {
-          headers: {
-            'x-api-key': token
+          `${API_URL}/users/addAdminByEmail`,
+          {
+            email: newAdminEmail,
+            restaurant: restaurantId,
+            role: 'ADMIN'
+          },
+          {
+            headers: {
+              'x-api-key': token
+            }
           }
-        }
       );
       setPassword('');
-      setNewAdminId('');
+      setNewAdminEmail('');
       onClose();
 
-      console.log('Added new admin: ', adminResponse.data);
-      fetchUsers(); // Refresh the user list
+      fetchUsers();
+      toast({
+        title: "Admin added",
+        description: "New admin was successfully added.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
     } catch (error) {
-      console.error('Error adding new admin:', error);
+      toast({
+        title: "Error adding admin",
+        description: error.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
   };
+
 
   const handleInviteClick = async () => {
     try {
       const token = localStorage.getItem('x-api-key');
       const response = await axios.post(
-        `${API_URL}/users/verifyPassword`,
-        {
-          password: myPassword,
-          hash: password
-        },
-        {
-          headers: {
-            'x-api-key': token
+          `${API_URL}/users/verifyPassword`,
+          {
+            password: myPassword,
+            hash: password
+          },
+          {
+            headers: {
+              'x-api-key': token
+            }
           }
-        }
       );
 
       if (response.data.match) {
-        addAdmin(newAdminId);
+        addAdmin(newAdminEmail);
       } else {
-        alert('Неверный пароль');
+        toast({
+          title: "Wrong password",
+          description: "The password you have entered is incorrect.",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
       }
     } catch (error) {
       console.error('Error verifying password:', error);
     }
   };
+
 
   return (
     <Box>
@@ -185,8 +196,8 @@ export default function Administrators() {
               <ModalCloseButton />
               <ModalBody>
                 <FormControl id='admin-id' isRequired>
-                  <FormLabel>Admin ID</FormLabel>
-                  <Input type='text' value={newAdminId} onChange={(e) => setNewAdminId(e.target.value)} />
+                  <FormLabel>Admin Email</FormLabel>
+                  <Input type='text' value={newAdminEmail} onChange={(e) => setNewAdminEmail(e.target.value)} />
                 </FormControl>
                 <FormControl id='password' isRequired>
                   <FormLabel>Your Password</FormLabel>
@@ -211,5 +222,5 @@ export default function Administrators() {
         </Box>
       </Box>
     </Box>
-  );
+  )
 }

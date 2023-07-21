@@ -20,7 +20,6 @@ export default function CustomerProfile() {
       setRole(response.role);
 
       setNote(response.notes);
-      console.log(response);
     } catch (error) {
       console.error('Error fetching user:', error);
     }

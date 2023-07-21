@@ -2,41 +2,58 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { API_URL, handleApiGet, handleApiPost } from '../../../services/apiServices';
 import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  useMediaQuery
+    Button,
+    FormControl,
+    FormLabel,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    useMediaQuery, useToast
 } from '@chakra-ui/react';
 
 export default function ModalNoteRedactor({ isOpen, onClose, user, fetchUser, userId, note }) {
   const [isLilMob] = useMediaQuery('(max-width: 350px)');
   const { control, handleSubmit } = useForm();
+    const toast = useToast();
 
-  const handleNoteSubmit = async (data) => {
-    console.log(data);
-
-    if (user && userId) {
-      try {
+    const handleNoteSubmit = async (data) => {
         console.log(data);
 
-        await handleApiPost(API_URL + '/users/' + userId + '/notes', { notes: data.notes });
-        fetchUser();
-        onClose();
-      } catch (error) {
-        console.error('Error updating note:', error);
-      }
-    } else {
-      console.error('User or user.id is undefined');
-    }
-  };
+        if (user && userId) {
+            try {
+                await handleApiPost(API_URL + '/users/' + userId + '/notes', { notes: data.notes });
+                fetchUser();
+                onClose();
+
+                // Show a success toast notification
+                toast({
+                    title: "Note updated",
+                    description: "The note was successfully updated.",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                });
+            } catch (error) {
+                console.error('Error updating note:', error);
+
+                // Show an error toast notification
+                toast({
+                    title: "Error updating note",
+                    description: "An error occurred while updating the note.",
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                });
+            }
+        } else {
+            console.error('User or user.id is undefined');
+        }
+    };
 
   return (
     <>

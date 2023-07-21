@@ -75,14 +75,14 @@ export default function CustomerTableBody() {
           const responseToOrder = await handleApiGet(`${API_URL}/admin/orders/${order.orderRef}`);
 
           if (responseToOrder && responseToOrder.ordersdata) {
-            console.log('responseToOrder.data: ', responseToOrder.ordersdata);
+            // console.log('responseToOrder.data: ', responseToOrder.ordersdata);
 
-            console.log('responseToOrder.ordersdata.products: ', responseToOrder.ordersdata.products);
+            // console.log('responseToOrder.ordersdata.products: ', responseToOrder.ordersdata.products);
             productsFromThisRestaurant = responseToOrder.ordersdata.products.filter(
               (product) => product.restaurantId === restaurantId
             );
           }
-          console.log('productsFromThisRestaurant: ', productsFromThisRestaurant);
+          // console.log('productsFromThisRestaurant: ', productsFromThisRestaurant);
           if (productsFromThisRestaurant.length > 0) {
             const totalAmount = productsFromThisRestaurant.reduce((total, product) => total + product.priceItem, 0);
             let newOrder = {
