@@ -15,7 +15,14 @@ import {
   Skeleton,
   Avatar,
   FormErrorMessage,
-  useToast
+  useToast,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverBody,
+  PopoverHeader,
+  ButtonGroup
 } from '@chakra-ui/react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { API_URL, TOKEN_KEY, handleApiDelete, handleApiGet, handleApiMethod } from '../../../services/apiServices';
@@ -23,12 +30,14 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { avatarContext } from '../../../context/globalContext';
+import { Popover } from '@chakra-ui/react';
 
 export default function Account() {
   const { avatarUser, setAvatarUser } = useContext(avatarContext);
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
   const [reload, setReload] = useState(0);
+  const initRef = useRef();
 
   const removeAvatar = async () => {
     try {
@@ -252,32 +261,91 @@ export default function Account() {
                 py={5}
                 me='20px'
               >
-                Change
+                {!loading && arr.avatar != '' ? 'Change' : 'Upload'}
               </Button>
             </form>
             {!loading && arr.avatar != '' && (
               <form>
-                <Button
-                  onClick={() => removeAvatar()}
-                  w={{ base: '100%', md: 'initial' }}
-                  background='neutral.white'
-                  fontSize='2xs'
-                  fontWeight='bold'
-                  variant='solid'
-                  color='error.default'
-                  borderWidth='1px'
-                  borderColor='error.default'
-                  _hover={{
-                    background: 'error.default',
-                    color: 'neutral.white',
-                    borderWidth: '1px',
-                    borderColor: 'error.default'
-                  }}
-                  py={5}
-                  me='20px'
-                >
-                  Remove
-                </Button>
+                <Box>
+                  <Popover>
+                    {({ isOpen, onClose }) => (
+                      <>
+                        <PopoverTrigger>
+                          <Button
+                            w={{ base: '100%', md: 'initial' }}
+                            background='neutral.white'
+                            fontSize='2xs'
+                            fontWeight='bold'
+                            variant='solid'
+                            color='error.default'
+                            borderWidth='1px'
+                            borderColor='error.default'
+                            _hover={{
+                              background: 'error.default',
+                              color: 'neutral.white',
+                              borderWidth: '1px',
+                              borderColor: 'error.default'
+                            }}
+                            py={5}
+                            me='20px'
+                          >
+                            Remove
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <PopoverArrow />
+                          <PopoverCloseButton />
+                          <PopoverHeader>Confirmation!</PopoverHeader>
+                          <PopoverBody>Are you sure you want to remove your avatar?</PopoverBody>
+                          <ButtonGroup size='sm'>
+                            <Button
+                              w={{ base: '50%', md: 'initial' }}
+                              background='error.default'
+                              fontWeight='bold'
+                              variant='solid'
+                              fontSize='2xs'
+                              color='neutral.white'
+                              borderWidth='1px'
+                              borderColor='neutral.white'
+                              _hover={{
+                                background: 'neutral.white',
+                                color: 'primary.default',
+                                borderWidth: '1px',
+                                borderColor: 'error.default'
+                              }}
+                              onClick={() => removeAvatar()}
+                              py={3}
+                            >
+                              Yes
+                            </Button>
+                            <Button
+                              ref={initRef}
+                              fontSize='2xs'
+                              me={2}
+                              w={{ base: '50%', md: 'initial' }}
+                              background='primary.default'
+                              fontWeight='bold'
+                              variant='solid'
+                              color='neutral.white'
+                              borderWidth='1px'
+                              borderColor='neutral.white'
+                              _hover={{
+                                background: 'neutral.white',
+                                color: 'primary.default',
+                                borderWidth: '1px',
+                                borderColor: 'primary.default'
+                              }}
+                              onClick={onClose}
+                              py={3}
+                            >
+                              Cancel
+                            </Button>
+                          </ButtonGroup>
+                        </PopoverContent>
+                      </>
+                    )}
+                  </Popover>
+                </Box>
               </form>
             )}
           </Flex>
