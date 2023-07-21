@@ -87,10 +87,15 @@ export default function Home() {
 
     try {
       const data = await handleApiGet(url);
+      let tempArrRest = [];
+      data.map((item, index) => {
+        if (item.products && item.products.length > 0) {
+          tempArrRest.push(item);
+        }
+      });
+      setAr(tempArrRest);
 
-      setAr(data);
-
-      setKeepArr(data);
+      setKeepArr(tempArrRest);
 
       handleApiUser();
       console.log(data);
@@ -128,7 +133,14 @@ export default function Home() {
       }
     });
 
-    setAr2(prefinalArr);
+    let tempArrRest = [];
+    prefinalArr.map((item, index) => {
+      if (item.products && item.products.length > 0) {
+        tempArrRest.push(item);
+      }
+    });
+
+    setAr2(tempArrRest);
   };
 
   useEffect(() => {

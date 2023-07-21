@@ -18,8 +18,14 @@ export default function Restaurants() {
 
     try {
       const data = await handleApiGet(url);
-      setAr(data);
-      setKeepArr(data);
+      let tempArrRest = [];
+      data.map((item, index) => {
+        if (item.products && item.products.length > 0) {
+          tempArrRest.push(item);
+        }
+      });
+      setAr(tempArrRest);
+      setKeepArr(tempArrRest);
       console.log(data);
       setLoading(false);
     } catch (error) {
