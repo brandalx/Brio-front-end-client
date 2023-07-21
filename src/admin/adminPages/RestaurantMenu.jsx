@@ -73,7 +73,6 @@ export default function RestaurantMenu() {
           const response = await Promise.all(
             restaurant.categories.map((id) => handleApiGet(`${API_URL}/admin/categories/${id.toString()}`))
           );
-          // Фильтрация категорий по restaurantRef и restaurantId
           const filteredCategories = response.filter((category) => category.restaurantRef?.$oid === restaurantId);
           allCategories = [...allCategories, ...filteredCategories];
         }
@@ -95,11 +94,9 @@ export default function RestaurantMenu() {
           const response = await Promise.all(
             category.ItemsId.map((id) => handleApiGet(`${API_URL}/admin/products/${id}`))
           );
-          // Фильтрация продуктов по restaurantRef и restaurantId
           const filteredProducts = response.filter((product) => product.restaurantRef?.$oid === restaurantId);
           productsByCategory[category._id] = filteredProducts;
 
-          // Обновляем подсчеты для этого ресторана
           newCategoryCounts[restaurantId] = newCategoryCounts[restaurantId] || {};
           newCategoryCounts[restaurantId][category._id] = filteredProducts.length;
         }
@@ -131,7 +128,6 @@ export default function RestaurantMenu() {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    // Загружаем продукты, если они еще не были загружены
     if (!productsByCategory[category]) {
       fetchProductsForCategory(category);
     }

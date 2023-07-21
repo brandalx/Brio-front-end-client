@@ -23,7 +23,7 @@ export default function Badges() {
       });
 
       setRestaurantId(adminResponse.data.restaurant);
-      console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant); // добавлено логирование
+      console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant);
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
     }
@@ -61,7 +61,6 @@ export default function Badges() {
     try {
       const token = localStorage.getItem('x-api-key');
 
-      // Получение данных ресторана
       const response = await axios.get(`${API_URL}/admin/restaurants/${restaurantId}`, {
         headers: {
           'x-api-key': token
@@ -71,7 +70,6 @@ export default function Badges() {
       const existingBadges = response.data.restaurant.tags;
       console.log('existingBadges: ', existingBadges);
 
-      // Проверка, существует ли уже новый тег в списке тегов ресторана
       const badgeExists = existingBadges && existingBadges.find((badge) => badge.badgeTitle === badgeTitle);
       if (badgeExists) {
         alert('This tag is already exists!');

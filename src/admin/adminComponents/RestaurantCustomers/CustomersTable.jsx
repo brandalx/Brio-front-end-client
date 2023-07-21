@@ -149,16 +149,16 @@ export default function CustomersTable() {
       });
 
       setRestaurantId(adminResponse.data.restaurant);
-      console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant); // added logging
+      console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant);
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
     } finally {
-      setLoadingCount((count) => count - 1); // Decrement loading count
+      setLoadingCount((count) => count - 1);
     }
   };
 
   const fetchUsersData = async () => {
-    setLoadingCount((count) => count + 1); // Increment loading count
+    setLoadingCount((count) => count + 1);
 
     try {
       const token = localStorage.getItem('x-api-key');
@@ -172,42 +172,53 @@ export default function CustomersTable() {
       });
 
       const allUsers = usersResponse.data;
-      const usersWithOrdersInMyRestaurant = []; // users who made orders in my restaurant
+      const usersWithOrdersInMyRestaurant = [];
 
-      for (const user of allUsers) {
+      const usersPromises = allUsers.map(async (user) => {
         let totalSpentInMyRestaurant = 0;
         let hasOrderedInMyRestaurant = false;
 
         if (user.orders) {
-          for (const order of user.orders) {
+          const ordersPromises = user.orders.map(async (order) => {
             if (order.restaurant.includes(restaurantId)) {
-              const orderResponse = await axios.get(`${API_URL}/orders/${order.orderRef}`, {
-                headers: {
-                  'x-api-key': token
-                }
-              });
-              const orderData = orderResponse.data;
-              for (const product of orderData.ordersdata.products) {
-                if (product.restaurantId === restaurantId) {
-                  totalSpentInMyRestaurant += product.priceItem;
-                  hasOrderedInMyRestaurant = true;
+              try {
+                const orderResponse = await axios.get(`${API_URL}/orders/${order.orderRef}`, {
+                  headers: {
+                    'x-api-key': token
+                  }
+                });
+                const orderData = orderResponse.data;
+                orderData.ordersdata.products.forEach((product) => {
+                  if (product.restaurantId === restaurantId && orderData.userdata.status === 'Completed') {
+                    totalSpentInMyRestaurant += product.priceItem;
+                    hasOrderedInMyRestaurant = true;
+                  }
+                });
+              } catch (error) {
+                if (error.response && error.response.status === 404) {
+                } else {
+                  throw error;
                 }
               }
             }
-          }
+          });
+
+          await Promise.all(ordersPromises);
         }
 
         if (hasOrderedInMyRestaurant) {
           user.totalSpent = totalSpentInMyRestaurant;
           usersWithOrdersInMyRestaurant.push(user);
         }
-      }
+      });
+
+      await Promise.all(usersPromises);
 
       setUsers(usersWithOrdersInMyRestaurant);
     } catch (error) {
       console.error('Error fetching users data:', error);
     } finally {
-      setLoadingCount((count) => count - 1); // Decrement loading count
+      setLoadingCount((count) => count - 1);
     }
   };
 
@@ -215,12 +226,12 @@ export default function CustomersTable() {
     fetchUsersData();
   }, [restaurantId]);
 
-  let loading = loadingCount > 0; // New loading state based on loading count
+  let loading = loadingCount > 0;
 
   useEffect(() => {
     Promise.all([fetchRestaurantData(), fetchUsersData()]).catch((error) => {
       console.error('Error fetching data:', error);
-      setLoadingCount((count) => count - 1); // Decrement loading count
+      setLoadingCount((count) => count - 1);
     });
   }, [restaurantId]);
 

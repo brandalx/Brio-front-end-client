@@ -26,7 +26,6 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
   const { control, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
-    // Объединение данных формы с константными данными и отправка PATCH-запроса
     const combinedData = {
       ...data,
       _id: item._id, // use the item's _id
@@ -35,7 +34,6 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
       image: item.image // use the item's images
     };
 
-    // Assume you have a token
     const token = localStorage.getItem('x-api-key');
     axios
       .patch(`http://localhost:3001/admin/products/${item._id}`, combinedData, {

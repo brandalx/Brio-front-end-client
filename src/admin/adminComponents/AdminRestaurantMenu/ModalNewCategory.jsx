@@ -34,11 +34,10 @@ export default function ModalNewCategory({ fetchCategories, setCategories }) {
 
       const response = await axios.get(`${API_URL}/users/${userId}`, {
         headers: {
-          'x-api-key': token // Это где вы устанавливаете заголовок с токеном
+          'x-api-key': token
         }
       });
 
-      // Устанавливаем ID ресторана
       setRestaurantId(response.data.restaurant);
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -47,7 +46,7 @@ export default function ModalNewCategory({ fetchCategories, setCategories }) {
 
   const createNewCategory = async (name, items) => {
     const amount = 0;
-    const token = localStorage.getItem('x-api-key'); // get the token
+    const token = localStorage.getItem('x-api-key');
     return await handleApiPost(
       API_URL + '/admin/categories',
       {
@@ -57,14 +56,12 @@ export default function ModalNewCategory({ fetchCategories, setCategories }) {
         amount
       },
       { 'x-api-key': token }
-    ); // pass the token in headers
+    );
   };
 
   const handlePublishCategory = async () => {
-    // Assuming you have an array of new items ID
     const newItemsId = [];
 
-    // Ensure the restaurantId is set and newItemsId is an array
     if (!restaurantId || !Array.isArray(newItemsId)) {
       console.error('The restaurant ID is not set or the items is not an array');
       return;
@@ -72,12 +69,7 @@ export default function ModalNewCategory({ fetchCategories, setCategories }) {
 
     try {
       const newCategory = await createNewCategory(categoryName, newItemsId);
-      // Add the new category to the list of categories
-      setCategories((prevCategories) => [
-        ...prevCategories,
-        { ...newCategory, amount: 0 } // Add the amount field to the new category
-      ]);
-      // If successful, close the modal
+      setCategories((prevCategories) => [...prevCategories, { ...newCategory, amount: 0 }]);
       onClose();
     } catch (error) {
       console.error('An error occurred while publishing the category:', error);

@@ -74,15 +74,14 @@ export default function Security() {
 
       const response = await axios.get(`${API_URL}/users/${userId}`, {
         headers: {
-          'x-api-key': token // Это где вы устанавливаете заголовок с токеном
+          'x-api-key': token
         }
       });
 
-      // Устанавливаем ID ресторана и пользователя
       setRestaurantId(response.data.restaurant);
       setUserId(userId);
 
-      console.log(response.data); // Выводим данные о пользователе и ресторане
+      console.log(response.data);
     } catch (error) {
       console.error('Error fetching user:', error);
     }
@@ -93,11 +92,10 @@ export default function Security() {
       const token = localStorage.getItem('x-api-key');
       const response = await axios.get(`${API_URL}/users/getAllUsers`, {
         headers: {
-          'x-api-key': token // Setting header with token
+          'x-api-key': token
         }
       });
 
-      // Filtering only admins who have userId equal to current user's ID
       const filteredAdmins = response.data.filter((admin) => admin._id === userId);
       setAdmins(filteredAdmins);
     } catch (error) {
@@ -119,19 +117,19 @@ export default function Security() {
           }
         }
       );
-      console.log(response.data); // Выводим обновленные данные
+      console.log(response.data);
     } catch (error) {
       console.error('Error updating phone number:', error);
     }
   };
-  const [phoneNumber, setPhoneNumber] = useState(''); // Состояние для номера телефона
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const handlePhoneChange = (e) => {
-    setPhoneNumber(e.target.value); // Обновляем значение номера телефона при изменении поля ввода
+    setPhoneNumber(e.target.value);
   };
 
   const handleTurnOn = () => {
-    updatePhoneNumber(phoneNumber); // Вызываем функцию обновления номера телефона при клике на кнопку
+    updatePhoneNumber(phoneNumber);
   };
   useEffect(() => {
     fetchAdmin();

@@ -32,15 +32,14 @@ export default function TableAdmins() {
 
       const response = await axios.get(`${API_URL}/users/${userId}`, {
         headers: {
-          'x-api-key': token // Это где вы устанавливаете заголовок с токеном
+          'x-api-key': token
         }
       });
 
-      // Устанавливаем ID ресторана и пользователя
       setRestaurantId(response.data.restaurant);
       setUserId(userId);
 
-      console.log(response.data); // Выводим данные о пользователе и ресторане
+      console.log(response.data);
     } catch (error) {
       console.error('Error fetching user:', error);
     }

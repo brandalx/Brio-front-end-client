@@ -43,7 +43,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
 
       setRestaurantId(adminResponse.data.restaurant);
     } catch (error) {
-      console.error('Error fetching restaurant data:', error);
+      console.error('Ошибка при получении данных ресторана:', error);
     }
   };
 
@@ -63,7 +63,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
       const response = await handleApiGet(API_URL + '/admin/restaurants');
       return response;
     } catch (error) {
-      console.error('Error fetching restaurant:', error);
+      console.error('Ошибка при получении ресторана:', error);
       throw error;
     }
   };
@@ -85,22 +85,26 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
 
           const filteredCategories = response.filter((category) => category.restaurantRef === restaurantId);
           console.log('filteredCategories: ', filteredCategories);
-          allCategories = [...allCategories, ...filteredCategories];
+          const updatedCategories = filteredCategories.map((category) => ({
+            ...category,
+            products: Array.from(new Set(category.products))
+          }));
+          allCategories = [...allCategories, ...updatedCategories];
         }
       }
       setCategories(allCategories);
       setLoading(false);
-      setIsCategorySelected(false); // Сбрасываем значение, когда категории обновляются
+      setIsCategorySelected(false);
       return allCategories;
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error('err:', error);
     }
   };
 
   const handleCategoryClick = (category) => {
     onCategoryChange(category.categoryName, restaurantId);
     setSelectedItem(category._id);
-    setIsCategorySelected(true); // Устанавливаем значение, когда категория выбрана
+    setIsCategorySelected(true);
   };
 
   if (!restaurantId) {
@@ -115,7 +119,6 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
         <Skeleton minH='150px' maxH='300px' borderRadius='16px' />
       ) : (
         <Box w='100%' display='flex' flexDirection='column'>
-          {console.log('final categories: ', categories)}
           {categories &&
             categories.length > 0 &&
             categories.map((element) => (
@@ -178,7 +181,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
             isDisabled={!isCategorySelected}
           >
             <AddPlus />
-            <Text mt='6px'>New meal item</Text>
+            <Text mt='6px'>New meal</Text>
           </Button>
         </Box>
       </Box>
