@@ -29,6 +29,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { API_URL, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import { cartContext } from '../../context/globalContext';
 import { useCheckToken } from '../../services/token';
+import { Badge } from '@chakra-ui/react';
 export default function Product() {
   const [isNoImage, setIsNoImage] = useState(false);
   const { cartLen, setCartLen } = useContext(cartContext);
@@ -44,6 +45,59 @@ export default function Product() {
   const [amount, setAmount] = useState(1);
   const navigate = useNavigate();
   const isTokenExpired = useCheckToken();
+
+  const [promotions, setPromotions] = useState([]);
+  const [activePromotions, setActivePromotions] = useState([]);
+  const [currentPromotion, setCurrentPromotion] = useState([]);
+  let lastPromotions = [];
+  const handlePromotions = async () => {
+    try {
+      const url = API_URL + '/admin/promotions';
+      const data = await handleApiGet(url);
+      console.log(data);
+      setPromotions(data);
+
+      let tempArr = [];
+      // let tempArr2 = [];
+      let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      let dayName = days[new Date().getDay()]; // get the day of the week
+      //for both start and end dates
+      // data.forEach((item) => {
+      //   let startDate = new Date(item.startDate); // parse startDate into a Date object
+      //   let endDate = new Date(item.endDate); // parse endDate into a Date object
+      //   if (item.discountDays.includes(dayName) && new Date() >= startDate && new Date() < endDate) {
+      //     tempArr.push(item);
+      //   }
+      // });
+
+      //for only end date
+      data.forEach((item) => {
+        let startDate = new Date(item.startDate); // parse startDate into a Date object
+        let endDate = new Date(item.endDate); // parse endDate into a Date object
+        if (item.discountDays.includes(dayName) && new Date() < endDate) {
+          tempArr.push(item);
+        }
+      });
+
+      // let rnd1, rnd2;
+      // do {
+      //   rnd1 = Math.floor(Math.random() * tempArr.length);
+      //   rnd2 = Math.floor(Math.random() * tempArr.length);
+      // } while (rnd2 === rnd1 || lastPromotions.includes(rnd1) || lastPromotions.includes(rnd2));
+
+      // tempArr2.push(data[rnd1]);
+      // tempArr2.push(data[rnd2]);
+
+      console.log(tempArr);
+      setActivePromotions(tempArr);
+      let promotion = tempArr.find((promo) => promo.discountProducts.includes(params['id']));
+      setCurrentPromotion(promotion || null);
+
+      // lastPromotions = [rnd1, rnd2]; // remember the last promotions
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleAProductApi = async () => {
     // const url = API_URL + '/products';
 
@@ -113,6 +167,7 @@ export default function Product() {
   };
 
   useEffect(() => {
+    handlePromotions();
     handleAProductApi();
     setAmount(1);
   }, [params['id']]);
@@ -209,7 +264,16 @@ export default function Product() {
                 <Stack>
                   <Skeleton borderRadius='16px' isLoaded={!loading} minH='40px'>
                     <Text mt={2} color='neutral.black' fontSize='md' fontWeight='bold'>
-                      {!loading && <>{arr.title}</>}
+                      {!loading && (
+                        <>
+                          {arr.title}{' '}
+                          {currentPromotion && (
+                            <Badge bg='primary.default' color='white' fontSize='3xs'>
+                              {currentPromotion.discountPercent}% off
+                            </Badge>
+                          )}{' '}
+                        </>
+                      )}
                     </Text>
                   </Skeleton>
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
