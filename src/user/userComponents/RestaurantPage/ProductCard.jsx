@@ -7,11 +7,12 @@ import noimage from '../../../assets/images/noimage.jpg';
 
 import { cartContext } from '../../../context/globalContext';
 import { useCheckToken } from '../../../services/token.js';
-export default function ProductCard({ img, title, description, price, _id }) {
+export default function ProductCard({ img, title, description, price, _id, promotion }) {
   const { cartLen, setCartLen } = useContext(cartContext);
   const toast = useToast();
   const [userar, setUserAr] = useState([]);
   const [priceCount, setPriceCount] = useState(1);
+
   const handleApi = async () => {
     const url = API_URL + '/users/info/user';
     try {
@@ -24,6 +25,7 @@ export default function ProductCard({ img, title, description, price, _id }) {
   };
   useEffect(() => {
     handleApi();
+    console.log(promotion);
   }, []);
   const handlePriceAdd = () => {
     setPriceCount(priceCount + 1);
@@ -110,9 +112,11 @@ export default function ProductCard({ img, title, description, price, _id }) {
         <Stack>
           <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
             {title}{' '}
-            <Badge bg='primary.default' color='white' fontSize='3xs'>
-              20% off
-            </Badge>
+            {promotion && (
+              <Badge bg='primary.default' color='white' fontSize='3xs'>
+                {promotion.discountPercent}% off
+              </Badge>
+            )}
           </Text>
           <Text color='neutral.gray' fontSize='3xs'>
             {description.length > 0 && cutInfoText}

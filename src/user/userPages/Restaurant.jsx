@@ -62,6 +62,8 @@ export default function Restaurant() {
   const [picked, setIsPicked] = useState(false);
   const [keepArr, setKeepArr] = useState([]);
   const params = useParams();
+  const [promotions, setPromotions] = useState([]);
+  const [activePromotions, setActivePromotions] = useState([]);
 
   const [usersArr, setUsersArr] = useState();
 
@@ -183,8 +185,57 @@ export default function Restaurant() {
   };
 
   useEffect(() => {
+    handlePromotions();
     handleRestaurantApi();
   }, []);
+
+  let lastPromotions = [];
+  const handlePromotions = async () => {
+    try {
+      const url = API_URL + '/admin/promotions';
+      const data = await handleApiGet(url);
+      console.log(data);
+      setPromotions(data);
+
+      let tempArr = [];
+      // let tempArr2 = [];
+      let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      let dayName = days[new Date().getDay()]; // get the day of the week
+      //for both start and end dates
+      // data.forEach((item) => {
+      //   let startDate = new Date(item.startDate); // parse startDate into a Date object
+      //   let endDate = new Date(item.endDate); // parse endDate into a Date object
+      //   if (item.discountDays.includes(dayName) && new Date() >= startDate && new Date() < endDate) {
+      //     tempArr.push(item);
+      //   }
+      // });
+
+      //for only end date
+      data.forEach((item) => {
+        let startDate = new Date(item.startDate); // parse startDate into a Date object
+        let endDate = new Date(item.endDate); // parse endDate into a Date object
+        if (item.discountDays.includes(dayName) && new Date() < endDate) {
+          tempArr.push(item);
+        }
+      });
+
+      // let rnd1, rnd2;
+      // do {
+      //   rnd1 = Math.floor(Math.random() * tempArr.length);
+      //   rnd2 = Math.floor(Math.random() * tempArr.length);
+      // } while (rnd2 === rnd1 || lastPromotions.includes(rnd1) || lastPromotions.includes(rnd2));
+
+      // tempArr2.push(data[rnd1]);
+      // tempArr2.push(data[rnd2]);
+
+      console.log(tempArr);
+      setActivePromotions(tempArr);
+
+      // lastPromotions = [rnd1, rnd2]; // remember the last promotions
+    } catch (error) {
+      console.log(error);
+    }
+  };
   let handleUsersPublicData = async (_commentsdata) => {
     try {
       if (_commentsdata.length > 0) {
@@ -531,19 +582,27 @@ export default function Restaurant() {
                       >
                         {!loading ? (
                           keepArr.length > 0 ? (
-                            productArr.map((item, index) => (
-                              <Box key={index}>
-                                <Skeleton borderRadius='16px' isLoaded={!loading}>
-                                  <ProductCard
-                                    _id={item._id}
-                                    img={item.image}
-                                    title={item.title}
-                                    description={item.description}
-                                    price={item.price}
-                                  />
-                                </Skeleton>
-                              </Box>
-                            ))
+                            productArr.map((item, index) => {
+                              // Find the promotion where the product id is included in its discountProducts
+                              let promotion = activePromotions.find((promo) =>
+                                promo.discountProducts.includes(item._id)
+                              );
+
+                              return (
+                                <Box key={index}>
+                                  <Skeleton borderRadius='16px' isLoaded={!loading}>
+                                    <ProductCard
+                                      promotion={promotion || null} // Pass the found promotion. If no promotion is found, it will be null
+                                      _id={item._id}
+                                      img={item.image}
+                                      title={item.title}
+                                      description={item.description}
+                                      price={item.price}
+                                    />
+                                  </Skeleton>
+                                </Box>
+                              );
+                            })
                           ) : (
                             <>
                               <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
@@ -568,19 +627,27 @@ export default function Restaurant() {
                       >
                         {!loading ? (
                           keepArr.length > 0 ? (
-                            keepArr.map((item, index) => (
-                              <Box key={index}>
-                                <Skeleton borderRadius='16px' isLoaded={!loading}>
-                                  <ProductCard
-                                    _id={item._id}
-                                    img={item.image}
-                                    title={item.title}
-                                    description={item.description}
-                                    price={item.price}
-                                  />
-                                </Skeleton>
-                              </Box>
-                            ))
+                            keepArr.map((item, index) => {
+                              // Find the promotion where the product id is included in its discountProducts
+                              let promotion = activePromotions.find((promo) =>
+                                promo.discountProducts.includes(item._id)
+                              );
+
+                              return (
+                                <Box key={index}>
+                                  <Skeleton borderRadius='16px' isLoaded={!loading}>
+                                    <ProductCard
+                                      promotion={promotion || null} // Pass the found promotion. If no promotion is found, it will be null
+                                      _id={item._id}
+                                      img={item.image}
+                                      title={item.title}
+                                      description={item.description}
+                                      price={item.price}
+                                    />
+                                  </Skeleton>
+                                </Box>
+                              );
+                            })
                           ) : (
                             <>
                               <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
