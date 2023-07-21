@@ -150,7 +150,6 @@ export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, 
       );
 
       await updateCategory(categoryId, newProduct._id);
-      await updateRestaurant(restaurantRef, newProduct._id);
 
       try {
         const token = localStorage.getItem('x-api-key');
