@@ -30,9 +30,32 @@ export default function Home() {
   const [hovered, setHovered] = useState(false);
   const [sortedArr, setSortedArr] = useState([]);
   const [sortedArr2, setSortedArr2] = useState([]);
-
+  const [promotions, setPromotions] = useState([]);
+  const [activePromotions, setActivePromotions] = useState([]);
   const { city, setCity, isTrue, setIsTrue } = useContext(geolocationContext);
+  const handlePromotions = async () => {
+    try {
+      const url = API_URL + '/admin/promotions';
+      const data = await handleApiGet(url);
+      console.log(data);
+      setPromotions(data);
 
+      let tempArr = [];
+      let rnd1 = Math.floor(Math.random() * data.length);
+      let rnd2;
+      do {
+        rnd2 = Math.floor(Math.random() * data.length);
+      } while (rnd2 === rnd1);
+
+      tempArr.push(data[rnd1]);
+      tempArr.push(data[rnd2]);
+
+      console.log(tempArr);
+      setActivePromotions(tempArr);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleApi = async () => {
     const url = API_URL + '/restaurants';
 
@@ -83,6 +106,7 @@ export default function Home() {
   };
 
   useEffect(() => {
+    handlePromotions();
     handleApi();
   }, []);
 
