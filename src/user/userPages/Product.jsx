@@ -420,10 +420,13 @@ export default function Product() {
               <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
                 {!loading &&
                   productsArr.map((item, index) => {
+                    let promotion = activePromotions.find((promo) => promo.discountProducts.includes(item._id));
+
                     return (
                       <Box key={index}>
                         <Skeleton borderRadius='16px' isLoaded={!loading}>
                           <ProductCard
+                            promotion={promotion || null} // Pass the found promotion. If no promotion is found, it will be null
                             _id={item._id}
                             img={item.image}
                             title={item.title}
