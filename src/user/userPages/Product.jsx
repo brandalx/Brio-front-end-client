@@ -284,9 +284,30 @@ export default function Product() {
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                     {isTokenExpired ? (
                       <Box>
-                        <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                          {!loading && <>$ {arr.price}</>}
-                        </Text>
+                        {currentPromotion ? (
+                          <Box display='flex'>
+                            <Text
+                              me={4}
+                              textDecoration='line-through 4px red'
+                              my={4}
+                              fontWeight='extrabold'
+                              color='neutral.black'
+                              fontSize='md'
+                            >
+                              {!loading && <>$ {arr.price * amount}</>}
+                            </Text>
+                            {currentPromotion && (
+                              <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                                {!loading && <>$ {arr.price * (1 - currentPromotion.discountPercent / 100) * amount}</>}
+                              </Text>
+                            )}
+                          </Box>
+                        ) : (
+                          <Text textDecoration='none' my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                            {!loading && <>$ {arr.price * amount}</>}
+                          </Text>
+                        )}
+
                         <Link to='/signup'>
                           <Button
                             w='100%'
@@ -310,9 +331,38 @@ export default function Product() {
                       </Box>
                     ) : (
                       <Flex justifyContent='space-between' alignItems='center'>
-                        <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                          {!loading && <>$ {arr.price}</>}
-                        </Text>
+                        {currentPromotion ? (
+                          <Box display='flex'>
+                            <Text
+                              me={4}
+                              textDecoration='line-through 4px red'
+                              my={4}
+                              fontWeight='extrabold'
+                              color='neutral.black'
+                              fontSize='md'
+                            >
+                              {!loading && <>$ {arr.price * amount}</>}
+                            </Text>
+                            {currentPromotion && (
+                              <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                                {!loading && <>$ {arr.price * (1 - currentPromotion.discountPercent / 100) * amount}</>}
+                              </Text>
+                            )}
+                          </Box>
+                        ) : (
+                          <>
+                            <Text
+                              textDecoration='none'
+                              my={4}
+                              fontWeight='extrabold'
+                              color='neutral.black'
+                              fontSize='md'
+                            >
+                              {!loading && <>$ {arr.price * amount}</>}
+                            </Text>
+                          </>
+                        )}
+
                         <Box display='flex' alignItems='center'>
                           <Button
                             isDisabled={amount - 1 === 0 ? true : false}

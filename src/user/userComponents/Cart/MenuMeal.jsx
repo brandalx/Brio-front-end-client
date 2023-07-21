@@ -14,8 +14,7 @@ import {
   ModalOverlay,
   transition,
   useToast,
-  Badge,
-  Skeleton
+  Badge
 } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import TrashBox from '../../../assets/svg/TrashBox';
@@ -121,6 +120,7 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
           isClosable: true
         });
         setCartLen(cartLen - 1);
+        handlePromotions();
       }
       setReload(reload + 1);
     } catch (error) {
