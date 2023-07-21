@@ -16,6 +16,9 @@ import { geolocationContext } from '../../context/globalContext';
 import Pickers from '../userComponents/HomePage/Pickers';
 import SearchInput from '../userComponents/Search/SearchInput';
 import Arrow from '../../assets/svg/Arrow';
+function getRandomIndex(length) {
+  return Math.floor(Math.random() * length);
+}
 export default function Home() {
   // todo: add tag into product into backend model and validation
 
@@ -374,47 +377,59 @@ export default function Home() {
               </GridItem>
             </Skeleton> */}
             {activePromotions.length > 0 &&
-              activePromotions.map((item, index) => {
-                return (
-                  <Skeleton key={index} borderRadius='16px' isLoaded={!loading}>
-                    <GridItem
-                      style={{ transition: 'all 0.3s' }}
-                      cursor='pointer'
-                      borderRadius={20}
-                      w='100%'
-                      h='auto'
-                      borderColor='white'
-                      borderWidth='1px'
-                      bg={index % 2 === 0 ? 'secondary.light' : 'primary.light'}
-                      _hover={{
-                        bg: 'white',
-                        borderWidth: '1px',
-                        borderColor: 'primary.default',
-                        transition: 'all 0.3s'
-                      }}
-                    >
-                      <Link to={`/restaurant/${item.restaurantRef}`}>
-                        <Flex alignItems='center'>
-                          <Box w='50%'>
-                            <Image src={burgertest} alt='Promotion 1' />
-                          </Box>
-                          <Box w='50%'>
-                            <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
-                              {item.discountDetails}
-                            </Text>
-                            <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
-                              {item.discountPercent}% OFF
-                            </Text>
-                            <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
-                              at {item.restaurantName}
-                            </Text>
-                          </Box>
-                        </Flex>
-                      </Link>
-                    </GridItem>
-                  </Skeleton>
-                );
-              })}
+              (() => {
+                // Generate two unique random indexes
+                let index1 = getRandomIndex(activePromotions.length);
+                let index2 = getRandomIndex(activePromotions.length);
+                while (index1 === index2) {
+                  index2 = getRandomIndex(activePromotions.length);
+                }
+                // Create a new array containing the two randomly chosen items
+                let randomPromotions = [activePromotions[index1], activePromotions[index2]];
+
+                return randomPromotions.map((item, index) => {
+                  // Your original map function here...
+                  return (
+                    <Skeleton key={index} borderRadius='16px' isLoaded={!loading}>
+                      <GridItem
+                        style={{ transition: 'all 0.3s' }}
+                        cursor='pointer'
+                        borderRadius={20}
+                        w='100%'
+                        h='auto'
+                        borderColor='white'
+                        borderWidth='1px'
+                        bg={index % 2 === 0 ? 'secondary.light' : 'primary.light'}
+                        _hover={{
+                          bg: 'white',
+                          borderWidth: '1px',
+                          borderColor: 'primary.default',
+                          transition: 'all 0.3s'
+                        }}
+                      >
+                        <Link to={`/restaurant/${item.restaurantRef}`}>
+                          <Flex alignItems='center'>
+                            <Box w='50%'>
+                              <Image src={index % 2 === 0 ? burgertest : caketest} alt='Promotion 1' />
+                            </Box>
+                            <Box w='50%'>
+                              <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
+                                {item.discountDetails}
+                              </Text>
+                              <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
+                                {item.discountPercent}% OFF
+                              </Text>
+                              <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
+                                at {item.restaurantName}
+                              </Text>
+                            </Box>
+                          </Flex>
+                        </Link>
+                      </GridItem>
+                    </Skeleton>
+                  );
+                });
+              })()}
           </Grid>
         </Box>
         <Box maxW='1110px' my='45px'>
