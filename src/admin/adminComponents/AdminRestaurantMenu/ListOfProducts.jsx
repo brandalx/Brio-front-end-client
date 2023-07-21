@@ -8,7 +8,8 @@ import {
   Divider,
   Button,
   useBreakpointValue,
-  useMediaQuery
+  useMediaQuery,
+  useToast
 } from '@chakra-ui/react';
 import theme from '../../../utils/theme';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
@@ -32,6 +33,8 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
   const [initialCategory, setInitialCategory] = useState('');
   const [userId, setUserId] = useState(null);
   const [restaurantId, setRestaurantId] = useState(null);
+  const toast = useToast();
+
   const fetchProducts = async () => {
     try {
       const response = await handleApiGet(`${API_URL}/admin/products?categoryName=${selectedCategory}`);
@@ -116,8 +119,22 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
       }
 
       await fetchProducts();
+      toast({
+        title: "Product deleted.",
+        description: "The product has been successfully deleted.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error('err while deleting product:', error);
+      toast({
+        title: "An error occurred.",
+        description: "Unable to delete product.",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
   };
 

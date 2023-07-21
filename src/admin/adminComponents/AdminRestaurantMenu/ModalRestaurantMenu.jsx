@@ -12,7 +12,8 @@ import {
   ModalFooter,
   ModalOverlay,
   Text,
-  useMediaQuery
+  useMediaQuery,
+  useToast
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
@@ -25,6 +26,7 @@ export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, 
   const [product, setProduct] = useState('');
   const [image, setImage] = useState(null);
   const [categoryIDs, setCategoryIDs] = useState({});
+  const toast = useToast();
 
   const fetchAdminData = async () => {
     try {
@@ -102,11 +104,31 @@ export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, 
       }
 
       const data = await response.json();
+
+      // Display the toast here, before the function ends
+      toast({
+        title: "Product created.",
+        description: "The product has been successfully created.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+
       return data;
     } catch (error) {
-      throw new Error('An error occurred while creating the product: ' + error.message);
+      console.error('Error creating product:', error);
+
+      // Display the error toast here
+      toast({
+        title: "An error occurred.",
+        description: "Unable to create product.",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
   };
+
 
   const handlePublishProduct = async (data) => {
     // Удалите adminId из параметров функции
