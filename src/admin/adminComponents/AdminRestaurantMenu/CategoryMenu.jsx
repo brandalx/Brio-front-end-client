@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Button,
@@ -8,7 +8,13 @@ import {
   Text,
   useMediaQuery,
   useDisclosure,
-  Skeleton
+  Skeleton,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay
 } from '@chakra-ui/react';
 import '../../../css/global.css';
 import AddPlus from '../../../assets/svg/AddPlus';
@@ -31,6 +37,11 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
   const [restaurantId, setRestaurantId] = useState();
   const [isCategorySelected, setIsCategorySelected] = useState(false);
   const toast = useToast();
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+
+  const onCloseAlert = () => setIsAlertOpen(false);
+  const cancelRef = useRef();
 
   const fetchRestaurantData = async () => {
     try {
@@ -173,6 +184,11 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
   if (!restaurantId) {
     return null;
   }
+
+  const handleDeleteCategory = (id) => {
+    deleteCategory(id);
+    onCloseAlert();
+  };
   return (
     <GridItem width='100%' overflow='hidden' colSpan={4}>
       <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
@@ -219,13 +235,45 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
                 <Text fontSize='13px' mt='6px' fontWeight='regular' color='neutral.grayDark'>
                   {element.products.length || 0}
                 </Text>
-                <Button onClick={() => deleteCategory(element._id)} position='absolute' top={2} right={2}>
+                <Button
+                  onClick={() => {
+                    setIsAlertOpen(true);
+                    setSelectedId(element._id);
+                  }}
+                  position='absolute'
+                  top={2}
+                  right={2}
+                >
                   <TrashBox />
                 </Button>
               </Box>
             ))}
         </Box>
       )}
+
+      <AlertDialog isOpen={isAlertOpen} leastDestructiveRef={cancelRef} onClose={onCloseAlert}>
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Delete Category
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete this category? All the products in this category will be deleted. This
+              action cannot be undone.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onCloseAlert}>
+                Cancel
+              </Button>
+              <Button colorScheme='red' onClick={() => handleDeleteCategory(selectedId)} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
 
       <Divider mt='21px' />
       <Box width='100%' gap='4' mt='20px' display='flex' justifyContent='space-between'>

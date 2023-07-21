@@ -21,6 +21,7 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import Select from 'react-select';
 import { components } from 'react-select';
+import { useToast } from '@chakra-ui/react';
 
 export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfPromotion }) {
   const { control, handleSubmit, reset } = useForm();
@@ -33,6 +34,7 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
   const [restaurantId, setRestaurantId] = useState('');
   const [restaurantName, setRestaurantName] = useState('');
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const toast = useToast();
 
   const fetchProductData = async (productId) => {
     try {
@@ -126,8 +128,14 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
         }
       });
       for (let promotion of promotions.data) {
+        const promotionStartDate = new Date(promotion.startDate).getTime();
         const promotionEndDate = new Date(promotion.endDate).getTime();
-        if (promotion.discountProducts.includes(productId) && promotionEndDate >= newPromotionStartDate) {
+        const newPromotionEndDate = new Date(endDate).getTime();
+        if (
+          promotion.discountProducts.includes(productId) &&
+          promotionEndDate >= newPromotionStartDate &&
+          promotionStartDate <= newPromotionEndDate
+        ) {
           throw new Error(`Product ${productId} is already participating in another active or scheduled promotion`);
         }
       }
@@ -168,7 +176,7 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
     console.log('Submitting Data:', data);
     const { discountDetails, startDate, endDate, image, discountPercent, discountProducts } = data;
 
-    const productIds = discountProducts.map((product) => product.id);
+    const productIds = discountProducts ? discountProducts.map((product) => product.id) : [];
 
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
@@ -189,8 +197,26 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
 
       setProduct((prevPromotion) => [...prevPromotion, { ...newPromotion }]);
       onClose();
+
+      // Toast for successful promotion creation
+      toast({
+        title: 'Promotion Created',
+        description: 'The promotion has been successfully created.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true
+      });
     } catch (error) {
       console.error('An error occurred while publishing the category:', error);
+
+      // Toast for failed promotion creation
+      toast({
+        title: 'Promotion Creation Failed',
+        description: `An error occurred while creating the promotion: ${error.message}`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
     }
   };
 

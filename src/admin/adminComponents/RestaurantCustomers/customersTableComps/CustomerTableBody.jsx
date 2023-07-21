@@ -67,9 +67,6 @@ export default function CustomerTableBody() {
         }
       });
 
-      console.log('User object:', response.orders);
-      console.log('Userid:', userId);
-
       if (response && response.orders) {
         const orders = response.orders.filter((order) => order.restaurant.includes(restaurantId));
         let newOrders = [];
@@ -88,7 +85,11 @@ export default function CustomerTableBody() {
           console.log('productsFromThisRestaurant: ', productsFromThisRestaurant);
           if (productsFromThisRestaurant.length > 0) {
             const totalAmount = productsFromThisRestaurant.reduce((total, product) => total + product.priceItem, 0);
-            let newOrder = { ...order, totalAmountSpent: totalAmount };
+            let newOrder = {
+              ...order,
+              totalAmountSpent: totalAmount,
+              status: responseToOrder.userdata.status
+            };
             newOrders.push(newOrder);
           }
         }
@@ -104,8 +105,41 @@ export default function CustomerTableBody() {
   };
 
   useEffect(() => {
+    if (user !== null) {
+      setLoading(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
     fetchOrders();
   }, [restaurantId, userId]);
+
+  if (loading) {
+    return (
+      <Tbody>
+        <Tr>
+          <Td>
+            <Skeleton height='20px' />
+          </Td>
+          <Td display={isMobile ? 'none' : ''}>
+            <Skeleton height='20px' />
+          </Td>
+          <Td display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' />
+          </Td>
+          <Td display={isMobile ? 'none' : ''}>
+            <Skeleton height='20px' />
+          </Td>
+          <Td display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' />
+          </Td>
+          <Td display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' />
+          </Td>
+        </Tr>
+      </Tbody>
+    );
+  }
 
   return (
     <Tbody>
@@ -162,10 +196,10 @@ export default function CustomerTableBody() {
                         ? '#1ABF70'
                         : order.status === 'In progress'
                         ? '#4E60FF'
-                        : order.status === 'Canceled'
+                        : order.status === 'Cancelled'
                         ? '#FF5C60'
                         : order.status === 'Placed'
-                        ? '#FF5C60'
+                        ? '#22E57A'
                         : 'yellow'
                     }
                   />

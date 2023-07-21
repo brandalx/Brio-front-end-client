@@ -107,11 +107,11 @@ export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, 
 
       // Display the toast here, before the function ends
       toast({
-        title: "Product created.",
-        description: "The product has been successfully created.",
-        status: "success",
+        title: 'Product created.',
+        description: 'The product has been successfully created.',
+        status: 'success',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       });
 
       return data;
@@ -120,15 +120,14 @@ export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, 
 
       // Display the error toast here
       toast({
-        title: "An error occurred.",
-        description: "Unable to create product.",
-        status: "error",
+        title: 'An error occurred.',
+        description: 'Unable to create product.',
+        status: 'error',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       });
     }
   };
-
 
   const handlePublishProduct = async (data) => {
     // Удалите adminId из параметров функции

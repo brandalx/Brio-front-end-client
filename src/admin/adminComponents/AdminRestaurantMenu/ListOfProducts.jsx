@@ -20,6 +20,15 @@ import Copy from '../../../assets/svg/Copy';
 import TrashBox from '../../../assets/svg/TrashBox';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay
+} from '@chakra-ui/react';
+import { useRef } from 'react';
 
 export default function ListOfProducts({ selectedCategory, categoryCounts, setCategoryCounts }) {
   const gridColumns = useBreakpointValue({ base: '1fr', md: '1fr 4fr' });
@@ -34,6 +43,9 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
   const [userId, setUserId] = useState(null);
   const [restaurantId, setRestaurantId] = useState(null);
   const toast = useToast();
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const onCloseDialog = () => setIsAlertDialogOpen(false);
+  const cancelRef = useRef();
 
   const fetchProducts = async () => {
     try {
@@ -120,20 +132,20 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
 
       await fetchProducts();
       toast({
-        title: "Product deleted.",
-        description: "The product has been successfully deleted.",
-        status: "success",
+        title: 'Product deleted.',
+        description: 'The product has been successfully deleted.',
+        status: 'success',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       });
     } catch (error) {
       console.error('err while deleting product:', error);
       toast({
-        title: "An error occurred.",
-        description: "Unable to delete product.",
-        status: "error",
+        title: 'An error occurred.',
+        description: 'Unable to delete product.',
+        status: 'error',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       });
     }
   };
@@ -160,7 +172,14 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
   }, [products]);
 
   const handleTrashClick = (productId, categoryId) => {
-    deleteProduct(productId, categoryId);
+    setSelectedProduct({ productId, categoryId }); // save the product to be deleted
+    setIsAlertDialogOpen(true); // open the confirmation dialog
+  };
+
+  const confirmDelete = () => {
+    // actually delete the product
+    deleteProduct(selectedProduct.productId, selectedProduct.categoryId);
+    setIsAlertDialogOpen(false);
   };
 
   return (
@@ -263,6 +282,26 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                   </Button>
                 </Box>
               )}
+              <AlertDialog isOpen={isAlertDialogOpen} leastDestructiveRef={cancelRef} onClose={onCloseDialog}>
+                <AlertDialogOverlay>
+                  <AlertDialogContent>
+                    <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                      Delete Product
+                    </AlertDialogHeader>
+
+                    <AlertDialogBody>Are you sure? This action cannot be undone.</AlertDialogBody>
+
+                    <AlertDialogFooter>
+                      <Button ref={cancelRef} onClick={onCloseDialog}>
+                        Cancel
+                      </Button>
+                      <Button colorScheme='red' onClick={confirmDelete} ml={3}>
+                        Delete
+                      </Button>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialogOverlay>
+              </AlertDialog>
               <Divider mt='20px' mb='16px' />
               {selectedProduct === item && (
                 <ModalTextRedactor isOpen={true} onClose={() => setSelectedProduct(null)} item={item} />

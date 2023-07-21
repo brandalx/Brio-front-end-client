@@ -22,7 +22,7 @@ export default function RestaurantMenu() {
 
   const [categories, setCategories] = useState([]);
   const [productsByCategory, setProductsByCategory] = useState({});
-  const [selectedCategory, setSelectedCategory] = useState('Choose category');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [categoryCounts, setCategoryCounts] = useState({});
   const [restaurantId, setRestaurantId] = useState();
 
@@ -77,6 +77,7 @@ export default function RestaurantMenu() {
           allCategories = [...allCategories, ...filteredCategories];
         }
       }
+
       setCategories(allCategories);
       setSelectedCategory(allCategories.length > 0 ? allCategories[0].name : null);
       return allCategories;

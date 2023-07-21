@@ -1,15 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Container, Image, Text, Grid, Divider, Skeleton } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Container,
+  Image,
+  Text,
+  Grid,
+  Divider,
+  Skeleton,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Modal
+} from '@chakra-ui/react';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import ValidThrough from '../../../assets/svg/ValidThrough';
 import Location from '../../../assets/svg/Location';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import { useDisclosure } from '@chakra-ui/react';
+import TrashBox from '../../../assets/svg/TrashBox';
+import { useToast } from '@chakra-ui/react';
 
 export default function PromotionBlocks({ active }) {
   const [promotions, setPromotion] = useState([]);
   const [restaurantId, setRestaurantId] = useState('');
   const [loadingCount, setLoadingCount] = useState(0);
+  const [deletingPromotion, setDeletingPromotion] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
 
   const fetchRestaurantData = async () => {
     setLoadingCount((count) => count + 1);
@@ -90,6 +112,36 @@ export default function PromotionBlocks({ active }) {
 
     return `${day} ${monthNames[monthIndex]}, ${year}`;
   }
+
+  const handleDeletePromotion = async () => {
+    const token = localStorage.getItem('x-api-key');
+    try {
+      await axios.delete(`${API_URL}/admin/promotions/${deletingPromotion._id}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+      // Remove the deleted promotion from the state
+      setPromotion((promotions) => promotions.filter((promotion) => promotion._id !== deletingPromotion._id));
+      onClose();
+      toast({
+        title: 'Promotion deleted.',
+        description: `The promotion "${deletingPromotion?.discountDetails}" was successfully deleted.`,
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      });
+    } catch (error) {
+      console.error('An error occurred while deleting the promotion:', error);
+      toast({
+        title: 'Error deleting promotion.',
+        description: `An error occurred while trying to delete the promotion "${deletingPromotion?.discountDetails}".`,
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+    }
+  };
 
   function shouldDisplayPromotion(promotion) {
     if (!promotion.startDate || !promotion.endDate) {
@@ -205,13 +257,44 @@ export default function PromotionBlocks({ active }) {
                     </Text>
                   </Box>
                   <Box>
-                    <Box display='flex' flexDirection='row' alignItems='center' mt='4px'>
-                      <Location w={12} h={12} />
-                      <Text marginLeft='6px' color='neutral.gray' fontSize='3xs' fontWeight='semibold'>
-                        Restaurant
-                      </Text>
+                    <Box>
+                      <Box display='flex' flexDirection='row' alignItems='center' mt='4px'>
+                        <Location w={12} h={12} />
+                        <Text marginLeft='6px' color='neutral.gray' fontSize='3xs' fontWeight='semibold'>
+                          Restaurant
+                        </Text>
+                      </Box>
+                      <Box display='flex' justifyContent='space-between' alignItems='flex-end'>
+                        <Text color='neutral.black'>{promotion.restaurantName}</Text>
+                        <Button
+                          colorScheme='red'
+                          onClick={() => {
+                            setDeletingPromotion(promotion);
+                            onOpen();
+                          }}
+                        >
+                          <TrashBox />
+                        </Button>
+                      </Box>
+                      <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay />
+                        <ModalContent>
+                          <ModalHeader>Delete Promotion</ModalHeader>
+                          <ModalCloseButton />
+                          <ModalBody>
+                            Are you sure you want to delete the promotion "{deletingPromotion?.discountDetails}"?
+                          </ModalBody>
+                          <ModalFooter>
+                            <Button colorScheme='blue' mr={3} onClick={onClose}>
+                              Cancel
+                            </Button>
+                            <Button colorScheme='red' onClick={handleDeletePromotion}>
+                              <TrashBox />
+                            </Button>
+                          </ModalFooter>
+                        </ModalContent>
+                      </Modal>
                     </Box>
-                    <Text color='neutral.black'>{promotion.restaurantName}</Text>
                   </Box>
                 </Box>
               </Box>
