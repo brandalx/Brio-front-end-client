@@ -32,6 +32,7 @@ export default function Home() {
   const [sortedArr2, setSortedArr2] = useState([]);
   const [promotions, setPromotions] = useState([]);
   const [activePromotions, setActivePromotions] = useState([]);
+  const [dates, setDates] = useState();
   const { city, setCity, isTrue, setIsTrue } = useContext(geolocationContext);
   let lastPromotions = [];
   const handlePromotions = async () => {
@@ -42,23 +43,45 @@ export default function Home() {
       setPromotions(data);
 
       let tempArr = [];
-      let rnd1, rnd2;
-      do {
-        rnd1 = Math.floor(Math.random() * data.length);
-        rnd2 = Math.floor(Math.random() * data.length);
-      } while (rnd2 === rnd1 || lastPromotions.includes(rnd1) || lastPromotions.includes(rnd2));
+      // let tempArr2 = [];
+      let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      let dayName = days[new Date().getDay()]; // get the day of the week
+      //for both start and end dates
+      // data.forEach((item) => {
+      //   let startDate = new Date(item.startDate); // parse startDate into a Date object
+      //   let endDate = new Date(item.endDate); // parse endDate into a Date object
+      //   if (item.discountDays.includes(dayName) && new Date() >= startDate && new Date() < endDate) {
+      //     tempArr.push(item);
+      //   }
+      // });
 
-      tempArr.push(data[rnd1]);
-      tempArr.push(data[rnd2]);
+      //for only end date
+      data.forEach((item) => {
+        let startDate = new Date(item.startDate); // parse startDate into a Date object
+        let endDate = new Date(item.endDate); // parse endDate into a Date object
+        if (item.discountDays.includes(dayName) && new Date() < endDate) {
+          tempArr.push(item);
+        }
+      });
+
+      // let rnd1, rnd2;
+      // do {
+      //   rnd1 = Math.floor(Math.random() * tempArr.length);
+      //   rnd2 = Math.floor(Math.random() * tempArr.length);
+      // } while (rnd2 === rnd1 || lastPromotions.includes(rnd1) || lastPromotions.includes(rnd2));
+
+      // tempArr2.push(data[rnd1]);
+      // tempArr2.push(data[rnd2]);
 
       console.log(tempArr);
       setActivePromotions(tempArr);
 
-      lastPromotions = [rnd1, rnd2]; // remember the last promotions
+      // lastPromotions = [rnd1, rnd2]; // remember the last promotions
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleApi = async () => {
     const url = API_URL + '/restaurants';
 
@@ -304,7 +327,7 @@ export default function Home() {
         <Skeleton borderRadius='16px' height={loading ? '250px' : '0px'} isLoaded={loading} my={loading ? 2 : 0} />
         <Box>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
-            <Skeleton borderRadius='16px' isLoaded={!loading}>
+            {/* <Skeleton borderRadius='16px' isLoaded={!loading}>
               <GridItem
                 style={{ transition: 'all 0.3s' }}
                 cursor='pointer'
@@ -317,7 +340,7 @@ export default function Home() {
                 borderRadius={20}
               >
                 {activePromotions.length > 0 && (
-                  <Link to={`/restaurant/${activePromotions[0].restaurantRef}`}>
+                  <Link to={`/restaurant/${activePromotions[index].restaurantRef}`}>
                     <Flex alignItems='center'>
                       <Box w='50%'>
                         <Image src={caketest} alt='Promotion 1' />
@@ -337,41 +360,49 @@ export default function Home() {
                   </Link>
                 )}
               </GridItem>
-            </Skeleton>
-            <Skeleton borderRadius='16px' isLoaded={!loading}>
-              <GridItem
-                style={{ transition: 'all 0.3s' }}
-                cursor='pointer'
-                borderRadius={20}
-                w='100%'
-                h='auto'
-                borderColor='white'
-                borderWidth='1px'
-                bg='secondary.light'
-                _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
-              >
-                {activePromotions.length > 0 && (
-                  <Link to={`/restaurant/${activePromotions[1].restaurantRef}`}>
-                    <Flex alignItems='center'>
-                      <Box w='50%'>
-                        <Image src={burgertest} alt='Promotion 1' />
-                      </Box>
-                      <Box w='50%'>
-                        <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
-                          {activePromotions.length > 0 && activePromotions[1].discountDetails}
-                        </Text>
-                        <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
-                          {activePromotions.length > 0 && activePromotions[1].discountPercent}% OFF
-                        </Text>
-                        <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
-                          at {activePromotions.length > 0 && activePromotions[1].restaurantName}
-                        </Text>
-                      </Box>
-                    </Flex>
-                  </Link>
-                )}
-              </GridItem>
-            </Skeleton>
+            </Skeleton> */}
+            {activePromotions.length > 0 &&
+              activePromotions.map((item, index) => {
+                return (
+                  <Skeleton key={index} borderRadius='16px' isLoaded={!loading}>
+                    <GridItem
+                      style={{ transition: 'all 0.3s' }}
+                      cursor='pointer'
+                      borderRadius={20}
+                      w='100%'
+                      h='auto'
+                      borderColor='white'
+                      borderWidth='1px'
+                      bg={index % 2 === 0 ? 'secondary.light' : 'primary.light'}
+                      _hover={{
+                        bg: 'white',
+                        borderWidth: '1px',
+                        borderColor: 'primary.default',
+                        transition: 'all 0.3s'
+                      }}
+                    >
+                      <Link to={`/restaurant/${item.restaurantRef}`}>
+                        <Flex alignItems='center'>
+                          <Box w='50%'>
+                            <Image src={burgertest} alt='Promotion 1' />
+                          </Box>
+                          <Box w='50%'>
+                            <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
+                              {item.discountDetails}
+                            </Text>
+                            <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
+                              {item.discountPercent}% OFF
+                            </Text>
+                            <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
+                              at {item.restaurantName}
+                            </Text>
+                          </Box>
+                        </Flex>
+                      </Link>
+                    </GridItem>
+                  </Skeleton>
+                );
+              })}
           </Grid>
         </Box>
         <Box maxW='1110px' my='45px'>
