@@ -18,7 +18,7 @@ import {
   useToast
 } from '@chakra-ui/react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiDelete, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -29,6 +29,33 @@ export default function Account() {
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
   const [reload, setReload] = useState(0);
+
+  const removeAvatar = async () => {
+    try {
+      const url = API_URL + '/users/user/avatar/remove';
+      let data = await handleApiDelete(url);
+      if (data.msg) {
+        toast({
+          title: 'Avatar was removed',
+          description: "We've removed your avatar.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+        handleUserData();
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast({
+        title: 'Error while removing your avatar',
+        description: `Probably you avatar does not exist.`,
+        status: 'warning',
+        duration: 9000,
+        isClosable: true
+      });
+    }
+  };
 
   const handleUserData = async () => {
     const url = API_URL + '/users/info/user';
@@ -228,6 +255,31 @@ export default function Account() {
                 Change
               </Button>
             </form>
+            {!loading && arr.avatar != '' && (
+              <form>
+                <Button
+                  onClick={() => removeAvatar()}
+                  w={{ base: '100%', md: 'initial' }}
+                  background='neutral.white'
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='error.default'
+                  borderWidth='1px'
+                  borderColor='error.default'
+                  _hover={{
+                    background: 'error.default',
+                    color: 'neutral.white',
+                    borderWidth: '1px',
+                    borderColor: 'error.default'
+                  }}
+                  py={5}
+                  me='20px'
+                >
+                  Remove
+                </Button>
+              </form>
+            )}
           </Flex>
         </Box>
 
