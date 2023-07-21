@@ -147,14 +147,27 @@ export default function Menu({ item }) {
                     </Box>
                   </GridItem>
                   <GridItem w='100%' h='100%'>
-                    <Box w='100%' display='flex' justifyContent='center'>
-                      {' '}
-                      <Skeleton borderRadius='16px' isLoaded={!loading}>
-                        <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
-                          {!loading && '$ ' + producAr.price * item.amount}
-                        </Text>
-                      </Skeleton>
-                    </Box>
+                    {!loading && (
+                      <Box w='100%' display='flex' justifyContent='center'>
+                        {' '}
+                        <Skeleton borderRadius='16px' isLoaded={!loading}>
+                          {currentPromotion ? (
+                            <Box display='flex'>
+                              <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
+                                ${' '}
+                                {(producAr.price * (1 - currentPromotion.discountPercent / 100) * item.amount).toFixed(
+                                  2
+                                )}
+                              </Text>
+                            </Box>
+                          ) : (
+                            <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
+                              $ {(producAr.price * item.amount).toFixed(2)}
+                            </Text>
+                          )}
+                        </Skeleton>
+                      </Box>
+                    )}
                   </GridItem>
                 </Grid>
               </Box>
