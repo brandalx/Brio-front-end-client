@@ -1,4 +1,4 @@
-import { Box, GridItem, Image, Text, Button, Flex, Stack, border, useToast } from '@chakra-ui/react';
+import { Box, GridItem, Image, Text, Button, Flex, Stack, border, useToast, Badge } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
@@ -109,7 +109,10 @@ export default function ProductCard({ img, title, description, price, _id }) {
         </Link>
         <Stack>
           <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
-            {title}
+            {title}{' '}
+            <Badge bg='primary.default' color='white' fontSize='3xs'>
+              20% off
+            </Badge>
           </Text>
           <Text color='neutral.gray' fontSize='3xs'>
             {description.length > 0 && cutInfoText}
