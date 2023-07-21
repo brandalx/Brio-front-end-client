@@ -290,9 +290,17 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
                 <GridItem w='100%' h='100%'>
                   <Box w='100%' display='flex' justifyContent='center'>
                     {' '}
-                    <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
-                      $ {(item.price * amountMeals).toFixed(2)}
-                    </Text>
+                    {currentPromotion ? (
+                      <Box display='flex'>
+                        <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
+                          $ {(item.price * (1 - currentPromotion.discountPercent / 100) * amountMeals).toFixed(2)}
+                        </Text>
+                      </Box>
+                    ) : (
+                      <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
+                        $ {(item.price * amountMeals).toFixed(2)}
+                      </Text>
+                    )}
                   </Box>
                 </GridItem>
                 <GridItem w='100%' mt={1}>
