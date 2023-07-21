@@ -33,6 +33,7 @@ export default function Home() {
   const [promotions, setPromotions] = useState([]);
   const [activePromotions, setActivePromotions] = useState([]);
   const { city, setCity, isTrue, setIsTrue } = useContext(geolocationContext);
+  let lastPromotions = [];
   const handlePromotions = async () => {
     try {
       const url = API_URL + '/admin/promotions';
@@ -41,17 +42,19 @@ export default function Home() {
       setPromotions(data);
 
       let tempArr = [];
-      let rnd1 = Math.floor(Math.random() * data.length);
-      let rnd2;
+      let rnd1, rnd2;
       do {
+        rnd1 = Math.floor(Math.random() * data.length);
         rnd2 = Math.floor(Math.random() * data.length);
-      } while (rnd2 === rnd1);
+      } while (rnd2 === rnd1 || lastPromotions.includes(rnd1) || lastPromotions.includes(rnd2));
 
       tempArr.push(data[rnd1]);
       tempArr.push(data[rnd2]);
 
       console.log(tempArr);
       setActivePromotions(tempArr);
+
+      lastPromotions = [rnd1, rnd2]; // remember the last promotions
     } catch (error) {
       console.log(error);
     }
@@ -313,22 +316,26 @@ export default function Home() {
                 _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
                 borderRadius={20}
               >
-                <Flex alignItems='center'>
-                  <Box w='50%'>
-                    <Image src={caketest} alt='Promotion 1' />
-                  </Box>
-                  <Box w='50%'>
-                    <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
-                      All deserts
-                    </Text>
-                    <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
-                      20% OFF
-                    </Text>
-                    <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
-                      Deserty
-                    </Text>
-                  </Box>
-                </Flex>
+                {activePromotions.length > 0 && (
+                  <Link to={`/restaurant/${activePromotions[0].restaurantRef}`}>
+                    <Flex alignItems='center'>
+                      <Box w='50%'>
+                        <Image src={caketest} alt='Promotion 1' />
+                      </Box>
+                      <Box w='50%'>
+                        <Text fontSize='xs' color='neutral.black' fontWeight='medium'>
+                          {activePromotions[0].discountDetails}
+                        </Text>
+                        <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
+                          {activePromotions[0].discountPercent}% OFF
+                        </Text>
+                        <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
+                          at {activePromotions[0].restaurantName}
+                        </Text>
+                      </Box>
+                    </Flex>
+                  </Link>
+                )}
               </GridItem>
             </Skeleton>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
@@ -343,22 +350,26 @@ export default function Home() {
                 bg='secondary.light'
                 _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
               >
-                <Flex alignItems='center'>
-                  <Box w='50%'>
-                    <Image src={burgertest} alt='Promotion 1' />
-                  </Box>
-                  <Box w='50%'>
-                    <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
-                      Big Burgers
-                    </Text>
-                    <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
-                      50% OFF
-                    </Text>
-                    <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
-                      Fooddies
-                    </Text>
-                  </Box>
-                </Flex>
+                {activePromotions.length > 0 && (
+                  <Link to={`/restaurant/${activePromotions[1].restaurantRef}`}>
+                    <Flex alignItems='center'>
+                      <Box w='50%'>
+                        <Image src={burgertest} alt='Promotion 1' />
+                      </Box>
+                      <Box w='50%'>
+                        <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
+                          {activePromotions.length > 0 && activePromotions[1].discountDetails}
+                        </Text>
+                        <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
+                          {activePromotions.length > 0 && activePromotions[1].discountPercent}% OFF
+                        </Text>
+                        <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
+                          at {activePromotions.length > 0 && activePromotions[1].restaurantName}
+                        </Text>
+                      </Box>
+                    </Flex>
+                  </Link>
+                )}
               </GridItem>
             </Skeleton>
           </Grid>
