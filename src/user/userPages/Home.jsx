@@ -378,14 +378,20 @@ export default function Home() {
             </Skeleton> */}
             {activePromotions.length > 0 &&
               (() => {
-                // Generate two unique random indexes
-                let index1 = getRandomIndex(activePromotions.length);
-                let index2 = getRandomIndex(activePromotions.length);
-                while (index1 === index2) {
-                  index2 = getRandomIndex(activePromotions.length);
+                let randomPromotions = [];
+                if (activePromotions.length === 1) {
+                  // If there's only one promotion, just use that.
+                  randomPromotions = [activePromotions[0]];
+                } else {
+                  // Generate two unique random indexes
+                  let index1 = getRandomIndex(activePromotions.length);
+                  let index2 = getRandomIndex(activePromotions.length);
+                  while (index1 === index2) {
+                    index2 = getRandomIndex(activePromotions.length);
+                  }
+                  // Create a new array containing the two randomly chosen items
+                  randomPromotions = [activePromotions[index1], activePromotions[index2]];
                 }
-                // Create a new array containing the two randomly chosen items
-                let randomPromotions = [activePromotions[index1], activePromotions[index2]];
 
                 return randomPromotions.map((item, index) => {
                   // Your original map function here...
@@ -437,8 +443,6 @@ export default function Home() {
             <Box
               style={{ transition: 'all 0.3s' }}
               cursor='pointer'
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
               borderRadius='16px'
               py={5}
               borderColor='white'
@@ -496,8 +500,6 @@ export default function Home() {
                   <Box
                     style={{ transition: 'all 0.3s' }}
                     cursor='pointer'
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
                     borderRadius='16px'
                     py={5}
                     borderColor='white'
