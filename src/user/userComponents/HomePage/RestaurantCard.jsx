@@ -27,7 +27,7 @@ export default function RestaurantCard({ img, title, time, price, badgeData, _id
                         <AiOutlineClockCircle color='#828282' />
                       </Box>
                       <Text color='neutral.gray' fontSize='3xs'>
-                        {time} min • ${price} min price
+                        {time || '10-30'} min • ${price} min price
                       </Text>
                     </Box>
                   )}

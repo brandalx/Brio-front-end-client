@@ -489,7 +489,8 @@ export default function Restaurant() {
                             <AiOutlineClockCircle color='#828282' />
                           </Box>
                           <Text color='neutral.gray' fontSize='3xs'>
-                            {!loading && restaurantArr.time} min • $ {!loading && restaurantArr.minprice} min sum
+                            {(!loading && restaurantArr.time) || '10-30'} min • ${' '}
+                            {(!loading && restaurantArr.minprice) || 10} min sum
                           </Text>
                         </Box>
                       </Skeleton>

@@ -537,8 +537,8 @@ export default function Home() {
                                 _id={item._id}
                                 img={item.image}
                                 title={item.title}
-                                time={item.time}
-                                price={item.minprice}
+                                time={item.time || '10-30'}
+                                price={item.minprice || 10}
                                 badgeData={item.tags}
                               />
                             </Skeleton>
@@ -703,8 +703,8 @@ export default function Home() {
                           _id={item._id}
                           img={item.image}
                           title={item.title}
-                          time={item.time}
-                          price={item.minprice}
+                          time={item.time || '10-30'}
+                          price={item.minprice || 10}
                           badgeData={item.tags}
                         />
                       );
