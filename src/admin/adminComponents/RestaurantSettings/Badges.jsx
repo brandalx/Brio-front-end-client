@@ -106,19 +106,36 @@ export default function Badges() {
 
   return (
     <GridItem w='100%'>
-      <Stack mt={2} direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+      <Stack mt={2} direction={{ base: 'column', md: 'row' }} align={'start'} justify={'space-between'}>
         <Box>
           <Text fontSize='xs' fontWeight='bold' color='neutral.black' mb='8px'>
             Add tags:
           </Text>
-          <Box display='flex' flexDirection={{ base: 'column', sm: 'row' }}>
+          <Box display='flex' flexDirection={{ base: 'column', md: 'row' }}>
             <Box display='flex' mt='16px'>
-              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Pizza', 'pizza')}>
+              <Box
+                minW={{ base: '80px', sm: '100px', md: '65px' }} // Update this line
+                ml={{ base: '3px', sm: '10px' }} // Adjust margins for smaller screens
+                mr={{ base: '3px', sm: '10px' }}
+                padding={{ base: '6px 0', sm: '12px 3px 3px 3px' }} // Adjust padding for smaller screens
+                border='1px solid'
+                borderColor='neutral.grayLight'
+                borderRadius='8px'
+                display='flex'
+                alignItems='center'
+                flexDirection='column'
+                cursor='pointer'
+                onClick={() => addBadge('Pizza', 'pizza')}
+                _hover={{
+                  backgroundColor: 'primary.light'
+                }}
+                transition='400ms'
+              >
                 <Box
                   role='img'
                   aria-label='pizza'
                   className='react-emojis'
-                  style={{ fontSize: '40px', lineHeight: '1' }}
+                  style={{ fontSize: '30px', lineHeight: '1' }}
                 >
                   🍕
                 </Box>
@@ -127,12 +144,29 @@ export default function Badges() {
                 </Text>
               </Box>
 
-              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Burger', 'hamburger')}>
+              <Box
+                minW={{ base: '80px', sm: '100px', md: '65px' }} // Update this line
+                ml={{ base: '3px', sm: '10px' }} // Adjust margins for smaller screens
+                mr={{ base: '3px', sm: '10px' }}
+                padding={{ base: '6px 0', sm: '12px 3px 3px 3px' }} // Adjust padding for smaller screens
+                border='1px solid'
+                borderColor='neutral.grayLight'
+                borderRadius='8px'
+                display='flex'
+                alignItems='center'
+                flexDirection='column'
+                cursor='pointer'
+                onClick={() => addBadge('Burger', 'hamburger')}
+                _hover={{
+                  backgroundColor: 'primary.light'
+                }}
+                transition='400ms'
+              >
                 <Box
                   role='img'
                   aria-label='hamburger'
                   className='react-emojis'
-                  style={{ fontSize: '40px', lineHeight: '1' }}
+                  style={{ fontSize: '30px', lineHeight: '1' }}
                 >
                   🍔
                 </Box>
@@ -140,12 +174,29 @@ export default function Badges() {
                   Burger
                 </Text>
               </Box>
-              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Beef', 'cut-of-meat')}>
+              <Box
+                minW={{ base: '80px', sm: '100px', md: '65px' }} // Update this line
+                ml={{ base: '3px', sm: '10px' }} // Adjust margins for smaller screens
+                mr={{ base: '3px', sm: '10px' }}
+                padding={{ base: '6px 0', sm: '12px 3px 3px 3px' }} // Adjust padding for smaller screens
+                border='1px solid'
+                borderColor='neutral.grayLight'
+                borderRadius='8px'
+                display='flex'
+                alignItems='center'
+                flexDirection='column'
+                cursor='pointer'
+                onClick={() => addBadge('Beef', 'cut-of-meat')}
+                _hover={{
+                  backgroundColor: 'primary.light'
+                }}
+                transition='400ms'
+              >
                 <Box
                   role='img'
                   aria-label='cut of meat'
                   className='react-emojis'
-                  style={{ fontSize: '40px', lineHeight: '1' }}
+                  style={{ fontSize: '30px', lineHeight: '1' }}
                 >
                   🥩
                 </Box>
@@ -155,12 +206,29 @@ export default function Badges() {
               </Box>
             </Box>
             <Box display='flex' mt='16px'>
-              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Sushi', 'sushi')}>
+              <Box
+                minW={{ base: '80px', sm: '100px', md: '65px' }} // Update this line
+                ml={{ base: '3px', sm: '10px' }} // Adjust margins for smaller screens
+                mr={{ base: '3px', sm: '10px' }}
+                padding={{ base: '6px 0', sm: '12px 3px 3px 3px' }} // Adjust padding for smaller screens
+                border='1px solid'
+                borderColor='neutral.grayLight'
+                borderRadius='8px'
+                display='flex'
+                alignItems='center'
+                flexDirection='column'
+                cursor='pointer'
+                onClick={() => addBadge('Sushi', 'sushi')}
+                _hover={{
+                  backgroundColor: 'primary.light'
+                }}
+                transition='400ms'
+              >
                 <Box
                   role='img'
                   aria-label='sushi'
                   className='react-emojis'
-                  style={{ fontSize: '40px', lineHeight: '1' }}
+                  style={{ fontSize: '30px', lineHeight: '1' }}
                 >
                   🍣
                 </Box>
@@ -168,12 +236,29 @@ export default function Badges() {
                   Sushi
                 </Text>
               </Box>
-              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Vegan', 'broccoli')}>
+              <Box
+                minW={{ base: '80px', sm: '100px', md: '65px' }} // Update this line
+                ml={{ base: '3px', sm: '10px' }} // Adjust margins for smaller screens
+                mr={{ base: '3px', sm: '10px' }}
+                padding={{ base: '6px 0', sm: '12px 3px 3px 3px' }} // Adjust padding for smaller screens
+                border='1px solid'
+                borderColor='neutral.grayLight'
+                borderRadius='8px'
+                display='flex'
+                alignItems='center'
+                flexDirection='column'
+                cursor='pointer'
+                onClick={() => addBadge('Vegan', 'broccoli')}
+                _hover={{
+                  backgroundColor: 'primary.light'
+                }}
+                transition='400ms'
+              >
                 <Box
                   role='img'
                   aria-label='broccoli'
                   className='react-emojis'
-                  style={{ fontSize: '40px', lineHeight: '1' }}
+                  style={{ fontSize: '30px', lineHeight: '1' }}
                 >
                   🥦
                 </Box>
@@ -181,12 +266,29 @@ export default function Badges() {
                   Vegan
                 </Text>
               </Box>
-              <Box cursor='pointer' ml='10px' mr='10px' onClick={() => addBadge('Desserts', 'cupcake')}>
+              <Box
+                minW={{ base: '80px', sm: '100px', md: '65px' }} // Update this line
+                ml={{ base: '3px', sm: '10px' }} // Adjust margins for smaller screens
+                mr={{ base: '3px', sm: '10px' }}
+                padding={{ base: '6px 0', sm: '12px 3px 3px 3px' }} // Adjust padding for smaller screens                  border='1px solid'
+                border='1px solid'
+                borderColor='neutral.grayLight'
+                borderRadius='8px'
+                display='flex'
+                alignItems='center'
+                flexDirection='column'
+                cursor='pointer'
+                onClick={() => addBadge('Desserts', 'cupcake')}
+                _hover={{
+                  backgroundColor: 'primary.light'
+                }}
+                transition='400ms'
+              >
                 <Box
                   role='img'
                   aria-label='cupcake'
                   className='react-emojis'
-                  style={{ fontSize: '40px', lineHeight: '1' }}
+                  style={{ fontSize: '30px', lineHeight: '1' }}
                 >
                   🧁
                 </Box>

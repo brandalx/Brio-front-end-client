@@ -192,7 +192,6 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
             key={item._id}
             display='flex'
             flexDirection={isTablet ? 'column' : 'row'}
-            mt='30px'
             flexWrap='wrap'
             borderRadius='16px'
             p={isTablet ? '8px' : '16px 16px 16px 12px'}

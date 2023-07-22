@@ -273,6 +273,7 @@ export default function OrdersTableBody() {
               fontSize='2xs'
               color='neutral.grayDark'
               fontWeight='semibold'
+              border='none'
             >
               {user.firstname} {user.lastname}
               <Box mr='12px' w='42px' h='42px'>
@@ -326,8 +327,7 @@ export default function OrdersTableBody() {
               fontSize='2.5xs'
               color='neutral.black'
               fontWeight='semibold'
-              display='flex'
-              justifyContent='space-around'
+              textAlign='center'
             >
               ${order.totalSpent || 0}
             </Td>
