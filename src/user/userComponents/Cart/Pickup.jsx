@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import defaultmap from '../../../assets/images/defaultmap.png';
 
 import axios from 'axios';
-export default function Pickup({ item }) {
+import { Checkbox, Flex, Radio } from '@chakra-ui/react';
+
+export default function Pickup({ item, pickupLocation, setPickupLocation, setCheckoutBody }) {
   const [address, setAddress] = useState(null);
   const [addressLoading, setAddressLoading] = useState(true);
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -28,26 +30,85 @@ export default function Pickup({ item }) {
     handleMapApi();
   }, []);
 
+  useEffect(() => {
+    if (pickupLocation) {
+      setCheckoutBody((prevState) => ({
+        ...prevState,
+        userdata: {
+          ...prevState.userdata,
+          selectedAddress: item._id
+        }
+      }));
+    }
+
+    if (!pickupLocation) {
+      setCheckoutBody((prevState) => ({
+        ...prevState,
+        userdata: {
+          ...prevState.userdata,
+          selectedAddress: null
+        }
+      }));
+    }
+  }, [pickupLocation]);
+
   return (
-    <Box pt={4}>
+    <Box pt={4} data-aos='fade-up'>
       <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
         Restaurant address
       </Text>
       <Skeleton minHeight='320px' my={4} borderRadius='16px' isLoaded={!addressLoading}>
         <Box pt={4}>
-          {!addressLoading && (
-            <iframe
-              width='100%'
-              src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
-              title='Monochrome'
-              style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '320px' }}
-            />
+          {address ? (
+            <>
+              {!addressLoading &&
+                address.results &&
+                address.results[0] &&
+                address.results[0].bounds &&
+                address.results[0].bounds.northeast &&
+                address.results[0].bounds.northeast.lat && (
+                  <iframe
+                    width='100%'
+                    src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
+                    title='Monochrome'
+                    style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '320px' }}
+                  />
+                )}{' '}
+            </>
+          ) : (
+            <>No address specified</>
           )}
 
           <Box mt={4}>
             <Text fontWeight='bold' fontSize='2xs' color='neutral.black'>
-              {item.location} {item.address}
+              {/* prettier-igonre */}
+
+              {item ? (
+                <>
+                  {' '}
+                  {item.location} {item.address}
+                </>
+              ) : (
+                <>No pickup locations!</>
+              )}
             </Text>
+
+            <Box>
+              {address && (
+                <Flex alignItems='center'>
+                  <Radio
+                    onClick={() => setPickupLocation(!pickupLocation)}
+                    isChecked={pickupLocation}
+                    iconcolor='neutral.white'
+                    mr='2'
+                  >
+                    <Text onClick={() => setPickupLocation(!pickupLocation)} color='neutral.black' fontSize='2xs'>
+                      Choose this location
+                    </Text>
+                  </Radio>
+                </Flex>
+              )}
+            </Box>
             {/* <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
             California State, USA
           </Text>

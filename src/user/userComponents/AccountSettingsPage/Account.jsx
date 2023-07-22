@@ -15,22 +15,65 @@ import {
   Skeleton,
   Avatar,
   FormErrorMessage,
-  useToast
+  useToast,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverBody,
+  PopoverHeader,
+  ButtonGroup
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { API_URL, TOKEN_KEY, handleApiDelete, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { avatarContext } from '../../../context/globalContext';
+import { Popover } from '@chakra-ui/react';
 
 export default function Account() {
+  const { avatarUser, setAvatarUser } = useContext(avatarContext);
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
+  const [reload, setReload] = useState(0);
+  const initRef = useRef();
+
+  const removeAvatar = async () => {
+    try {
+      const url = API_URL + '/users/user/avatar/remove';
+      let data = await handleApiDelete(url);
+      if (data.msg) {
+        toast({
+          title: 'Avatar was removed',
+          description: "We've removed your avatar.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+        handleUserData();
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast({
+        title: 'Error while removing your avatar',
+        description: `Probably you avatar does not exist.`,
+        status: 'warning',
+        duration: 9000,
+        isClosable: true
+      });
+    }
+  };
 
   const handleUserData = async () => {
-    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    const url = API_URL + '/users/info/user';
     try {
       const data = await handleApiGet(url);
       setAr(data);
-      console.log(data);
+      // console.log(data);
+      setAvatarUser(API_URL + '/' + data.avatar + '?t=' + reload);
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -41,18 +84,19 @@ export default function Account() {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors, isSubmitting }
   } = useForm();
 
   const onSubForm = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     handleUserDataPut(_bodyData);
   };
   const toast = useToast();
   const handleUserDataPut = async (_bodyData) => {
     try {
       // const url = API_URL + "/videos/"+params["id"];
-      const url = API_URL + '/users/6464085ed67f7b944b642799/putuserdata';
+      const url = API_URL + '/users/putuserdata';
       const data = await handleApiMethod(url, 'PUT', _bodyData);
       if (data.acknowledged === true) {
         toast({
@@ -87,12 +131,88 @@ export default function Account() {
     }
   };
 
+  const navigate = useNavigate();
+  const onLogOut = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem('location');
+    navigate('/login');
+    toast({
+      title: 'Logged out.',
+      description: 'Successfuly logged out!',
+      status: 'success',
+      duration: 9000,
+      isClosable: true
+    });
+  };
+
   useEffect(() => {
     handleUserData();
-  }, []);
+  }, [reload, avatarUser]);
 
+  const clearValues = () => {
+    setValue('firstname', '');
+    setValue('lastname', '');
+    setValue('email', '');
+    setValue('phone', '');
+  };
+  // todo: finish uploda and add refs
+  const uploadRef = useRef();
+
+  const onSubUpload = (e) => {
+    e.preventDefault();
+
+    handleUploadAvatar();
+  };
+
+  const handleClick = () => {
+    if (uploadRef.current) {
+      uploadRef.current.click();
+    }
+  };
+
+  const handleUploadAvatar = async () => {
+    // console.log(uploadRef.current.files);
+    if (uploadRef.current.files[0]) {
+      try {
+        const fdata = new FormData();
+
+        fdata.append('myFile', uploadRef.current.files[0]);
+        const url = API_URL + '/users/user/avatar';
+
+        const resp = await axios({
+          method: 'POST',
+          url: url,
+          data: fdata,
+          headers: {
+            'x-api-key': localStorage[TOKEN_KEY]
+          }
+        });
+        // console.log(resp.data);
+        if (resp.data.excludedPath) {
+          toast({
+            title: 'Profile image updated.',
+            description: 'Profile image successfuly updeted!',
+            status: 'success',
+            duration: 9000,
+            isClosable: true
+          });
+        }
+
+        setReload(reload + 1);
+      } catch (err) {
+        console.log(err);
+        toast({
+          title: 'Error when updating your profile image',
+          description: 'Error when updating your profile image. Try upload different file',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    }
+  };
   return (
-    <Box>
+    <Box data-aos='fade-up'>
       <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
         Account
       </Text>
@@ -102,6 +222,9 @@ export default function Account() {
         </Text>
         <Box pt={5}>
           <Skeleton borderRadius='16px' isLoaded={!loading} minHeight='20px' my={2} w='50%'>
+            <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark' mb={0}>
+              Welcome back,
+            </FormLabel>
             <Text fontSize='md' fontWeight='black' color='neutral.darkGray'>
               {!loading && `${arr.firstname} ${arr.lastname}`}
             </Text>
@@ -113,48 +236,118 @@ export default function Account() {
                   borderRadius='10px'
                   boxSize='80px'
                   objectFit='cover'
-                  src={arr.avatar || ''}
+                  src={avatarUser || ''}
                   name={`${arr.firstname} ${arr.lastname}`}
                 />
               </Box>
             </Skeleton>
-            <Button
-              background='neutral.white'
-              fontSize='2xs'
-              fontWeight='bold'
-              variant='solid'
-              color='primary.default'
-              borderWidth='1px'
-              borderColor='primary.default'
-              _hover={{
-                background: 'primary.default',
-                color: 'neutral.white',
-                borderWidth: '1px',
-                borderColor: 'primary.default'
-              }}
-              py={5}
-              me='20px'
-            >
-              Change
-            </Button>
-            <Button
-              borderColor='neutral.white'
-              borderWidth='1px'
-              _hover={{
-                background: 'error.default',
-                color: 'neutral.white',
-                borderWidth: '1px',
-                borderColor: 'error.default'
-              }}
-              fontSize='2xs'
-              color='neutral.gray'
-              fontWeight='bold'
-              variant='ghost'
-              py={5}
-              me='20px'
-            >
-              Remove
-            </Button>
+            <form onSubmit={onSubUpload}>
+              <Input ref={uploadRef} type='file' hidden onChange={handleUploadAvatar} />
+              <Button
+                onClick={handleClick}
+                background='neutral.white'
+                fontSize='2xs'
+                fontWeight='bold'
+                variant='solid'
+                color='primary.default'
+                borderWidth='1px'
+                borderColor='primary.default'
+                _hover={{
+                  background: 'primary.default',
+                  color: 'neutral.white',
+                  borderWidth: '1px',
+                  borderColor: 'primary.default'
+                }}
+                py={5}
+                me='20px'
+              >
+                {!loading && arr.avatar != '' ? 'Change' : 'Upload'}
+              </Button>
+            </form>
+            {!loading && arr.avatar && arr.avatar != '' && (
+              <form>
+                <Box>
+                  <Popover>
+                    {({ isOpen, onClose }) => (
+                      <>
+                        <PopoverTrigger>
+                          <Button
+                            w={{ base: '100%', md: 'initial' }}
+                            background='neutral.white'
+                            fontSize='2xs'
+                            fontWeight='bold'
+                            variant='solid'
+                            color='error.default'
+                            borderWidth='1px'
+                            borderColor='error.default'
+                            _hover={{
+                              background: 'error.default',
+                              color: 'neutral.white',
+                              borderWidth: '1px',
+                              borderColor: 'error.default'
+                            }}
+                            py={5}
+                            me='20px'
+                          >
+                            Remove
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <PopoverArrow />
+                          <PopoverCloseButton />
+                          <PopoverHeader>Confirmation!</PopoverHeader>
+                          <PopoverBody>Are you sure you want to remove your avatar?</PopoverBody>
+                          <ButtonGroup size='sm'>
+                            <Button
+                              w={{ base: '50%', md: 'initial' }}
+                              background='error.default'
+                              fontWeight='bold'
+                              variant='solid'
+                              fontSize='2xs'
+                              color='neutral.white'
+                              borderWidth='1px'
+                              borderColor='neutral.white'
+                              _hover={{
+                                background: 'neutral.white',
+                                color: 'primary.default',
+                                borderWidth: '1px',
+                                borderColor: 'error.default'
+                              }}
+                              onClick={() => removeAvatar()}
+                              py={3}
+                            >
+                              Yes
+                            </Button>
+                            <Button
+                              ref={initRef}
+                              fontSize='2xs'
+                              me={2}
+                              w={{ base: '50%', md: 'initial' }}
+                              background='primary.default'
+                              fontWeight='bold'
+                              variant='solid'
+                              color='neutral.white'
+                              borderWidth='1px'
+                              borderColor='neutral.white'
+                              _hover={{
+                                background: 'neutral.white',
+                                color: 'primary.default',
+                                borderWidth: '1px',
+                                borderColor: 'primary.default'
+                              }}
+                              onClick={onClose}
+                              py={3}
+                            >
+                              Cancel
+                            </Button>
+                          </ButtonGroup>
+                        </PopoverContent>
+                      </>
+                    )}
+                  </Popover>
+                </Box>
+              </form>
+            )}
           </Flex>
         </Box>
 
@@ -170,7 +363,7 @@ export default function Account() {
                     <Input
                       id='firstname'
                       {...register('firstname', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -181,7 +374,7 @@ export default function Account() {
                       // defaultValue={!loading && arr.firstname}
                       placeholder='First name'
                     />{' '}
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.firstname && errors.firstname.message}
                     </FormErrorMessage>
                   </Skeleton>
@@ -197,7 +390,8 @@ export default function Account() {
                     <Input
                       id='lastname'
                       {...register('lastname', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
+
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -208,7 +402,7 @@ export default function Account() {
                       // defaultValue={!loading && arr.lastname}
                       placeholder='Last name'
                     />{' '}
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.lastname && errors.lastname.message}
                     </FormErrorMessage>
                   </Skeleton>
@@ -224,7 +418,7 @@ export default function Account() {
                     <Input
                       id='email'
                       {...register('email', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
 
                         pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Enter valid email' },
 
@@ -238,7 +432,7 @@ export default function Account() {
                       // defaultValue={!loading && arr.email}
                       placeholder='example@gmail.com'
                     />{' '}
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.email && errors.email.message}
                     </FormErrorMessage>
                   </Skeleton>
@@ -259,7 +453,8 @@ export default function Account() {
                     <Input
                       id='phone'
                       {...register('phone', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
+
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='phone'
@@ -270,7 +465,7 @@ export default function Account() {
                       // defaultValue={!loading && arr.phone}
                       placeholder='+123456789'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.phone && errors.phone.message}
                     </FormErrorMessage>
                   </Skeleton>
@@ -279,7 +474,7 @@ export default function Account() {
             </Grid>
           </Box>
 
-          <Box pt={5}>
+          {/* <Box pt={5}>
             <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
               Email notifications
             </Text>
@@ -350,12 +545,13 @@ export default function Account() {
                 </Stack>
               </GridItem>
             </Grid>
-          </Box>
+          </Box> */}
           <Divider pt={8} />
           <Box pt={5}>
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr  ' }} gap={6}>
               <GridItem w='100%'>
                 <Button
+                  onClick={() => onLogOut()}
                   w={{ base: '100%', md: 'initial' }}
                   background='neutral.white'
                   fontSize='2xs'
@@ -380,6 +576,7 @@ export default function Account() {
               <GridItem w='100%'>
                 <Flex flexDirection={{ base: 'row' }}>
                   <Button
+                    onClick={() => clearValues()}
                     w={{ base: '50%', md: 'initial' }}
                     background='neutral.white'
                     fontSize='2xs'

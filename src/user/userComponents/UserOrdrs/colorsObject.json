@@ -1,6 +1,11 @@
 {
+  "Placed": "#22E57A",
+  "Prepared": "#8338ec",
   "Completed": "#1ABF70",
   "In progress": "#4E60FF",
+  "Cancelled": "#FF5C60",
   "Canceled": "#FF5C60",
-  "Suspended": "#FF5C60"
+  "Delivery": "#ffafcc",
+  "Suspended": "#FF5C60",
+  "Delivered": "#1ABF70"
 }

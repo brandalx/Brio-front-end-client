@@ -15,7 +15,7 @@ export default function AccountSettings() {
         <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 2fr ' }} gap={6}>
           <GridItem w='100%'>
             {' '}
-            <SettingsMenu />
+            <SettingsMenu data-aos='fade-up' />
           </GridItem>
           <GridItem w='100%'>
             <Routes>

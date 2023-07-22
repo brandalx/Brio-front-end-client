@@ -18,41 +18,70 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { API_URL, handleApiMethod } from '../../../services/apiServices';
 import { kMaxLength } from 'buffer';
-
-export default function NewPaymentMethod({ switcher, updateCreditCard }) {
+import cardValidator from 'card-validator';
+export default function NewPaymentMethod({
+  switcher,
+  updateCreditCard,
+  onSubForm2,
+  handleApi,
+  setIsEditTrue,
+  isEditTrue,
+  clearValues
+}) {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting }
   } = useForm();
   const onSubForm = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     handleUserCardPost(_bodyData);
   };
 
   const toast = useToast();
   const handleUserCardPost = async (_bodyData) => {
     try {
-      // const url = API_URL + "/videos/"+params["id"];
-      const url = API_URL + '/users/6464085ed67f7b944b642799/postusercard';
-      const data = await handleApiMethod(url, 'POST', _bodyData);
-      if (data.msg === true) {
+      const validation = cardValidator.number(_bodyData.cardNumber);
+      let bodytype = _bodyData.cardType.toLowerCase();
+
+      if (validation.card.type.toLowerCase() !== bodytype) {
+        validation.isValid = false;
+      }
+
+      if (!validation.isValid) {
+        // console.log('Credit card is invalid!');
         toast({
-          title: 'New payment method added.',
-          description: "We've added your new payment method.",
-          status: 'success',
+          title: 'Credit card is not valid',
+          description: 'Error when adding new payment method',
+          status: 'error',
           duration: 9000,
           isClosable: true
         });
-        updateCreditCard(_bodyData);
+      } else {
+        // console.log('All fields are valid!');
+
+        const url = API_URL + '/users/postusercard';
+        const data = await handleApiMethod(url, 'POST', _bodyData);
+
+        if (data.msg === true) {
+          toast({
+            title: 'New payment method added.',
+            description: "We've added your new payment method.",
+            status: 'success',
+            duration: 9000,
+            isClosable: true
+          });
+          updateCreditCard(_bodyData);
+          handleApi();
+        }
       }
     } catch (error) {
       console.log(error);
 
-      if (error.response.data.err === 'Such payment method already exists') {
+      if (error.response && error.response.data && error.response.data.err === 'Such payment method already exists') {
         toast({
           title: 'Duplicated payment methods',
-          description: `Error when adding new payment method - such payment method already exist.`,
+          description: `Error when adding new payment method - such payment method already exists.`,
           status: 'error',
           duration: 9000,
           isClosable: true
@@ -71,10 +100,13 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
 
   return (
     <>
-      <Box ms={2} mb={4} mt={10}>
+      <Box ms={2} mb={4} mt={10} data-aos='fade-up'>
         <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
           New payment method
         </Text>
+        <FormLabel pb={2} fontWeight='semibold' fontSize='3xs' color='neutral.grayLight'>
+          We currently accept only "Visa" and "MasterCard"
+        </FormLabel>
 
         <Box mt={4}>
           <form onSubmit={handleSubmit(onSubForm)}>
@@ -87,13 +119,13 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
 
                   <Input
                     {...register('cardNumber', {
-                      required: true,
+                      required: { value: true, message: 'This field is required' },
                       minLength: { value: 6, message: 'Minimum length should be 6' },
                       maxLength: { value: 20, message: 'Maximum length should be 20' }
                     })}
                     isDisabled={switcher}
                     pattern='[0-9]*'
-                    inputmode='numeric'
+                    inputMode='numeric'
                     type='password'
                     background='neutral.white'
                     _placeholder={{ color: 'neutral.gray' }}
@@ -101,7 +133,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                     fontSize='2xs'
                     placeholder='XXXX - XXXX - XXXX - XXXX'
                   />
-                  <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                  <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                     {errors.cardNumber && errors.cardNumber.message}
                   </FormErrorMessage>
                 </FormControl>
@@ -113,7 +145,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                   </FormLabel>
                   <Input
                     {...register('expirationDate', {
-                      required: true,
+                      required: { value: true, message: 'This field is required' },
                       minLength: { value: 4, message: 'Minimum length should be 4' },
                       maxLength: { value: 4, message: 'Maximum length should be 4' }
                     })}
@@ -125,7 +157,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                     fontSize='2xs'
                     placeholder='MM / YYYY'
                   />{' '}
-                  <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                  <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                     {errors.expirationDate && errors.expirationDate.message}
                   </FormErrorMessage>
                 </FormControl>
@@ -143,7 +175,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
 
                   <Input
                     {...register('securityCode', {
-                      required: true,
+                      required: { value: true, message: 'This field is required' },
                       minLength: { value: 3, message: 'Minimum length should be 3' },
                       maxLength: { value: 6, message: 'Maximum length should be 6' }
                     })}
@@ -155,7 +187,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                     fontSize='2xs'
                     placeholder='XXX'
                   />
-                  <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                  <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                     {errors.securityCode && errors.securityCode.message}
                   </FormErrorMessage>
                 </FormControl>
@@ -172,7 +204,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
 
                     <Input
                       {...register('cardholder', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 4, message: 'Minimum length should be 4' }
                       })}
                       isDisabled={switcher}
@@ -183,7 +215,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                       fontSize='2xs'
                       placeholder='Enter name on card'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.cardholder && errors.cardholder.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -196,7 +228,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                     </FormLabel>
                     <Select
                       {...register('cardType', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 4, message: 'Choose card type' }
                       })}
                       isDisabled={switcher}
@@ -208,7 +240,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                       <option value={'visa'}>Visa</option>
                       <option value={'mastercard'}>Master Card</option>
                     </Select>
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.cardType && errors.cardType.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -222,7 +254,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                 alignItems={{ base: 'initial', md: 'center' }}
                 flexDirection={{ base: 'column', md: 'row' }}
               >
-                <Stack
+                {/* <Stack
                   h='100%'
                   mt={4}
                   direction={{ base: 'column', sm: 'row' }}
@@ -236,7 +268,7 @@ export default function NewPaymentMethod({ switcher, updateCreditCard }) {
                       </Text>
                     </Checkbox>
                   </Flex>
-                </Stack>
+                </Stack> */}
                 <Button
                   isLoading={isSubmitting}
                   type='submit'

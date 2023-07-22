@@ -12,35 +12,88 @@ import {
   ModalFooter,
   ModalOverlay,
   Text,
-  useMediaQuery
+  useMediaQuery,
+  useToast
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import '../../../css/global.css';
-import { API_URL, handleApiPost } from '../../../services/apiServices';
-
-export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryName }) {
+import { API_URL } from '../../../services/apiServices';
+import jwtDecode from 'jwt-decode';
+export default function ModalRestaurantMenu({ categoryName, categoryId, isOpen, onOpen, onClose }) {
   const { control, handleSubmit, reset } = useForm();
   const [isLilMob] = useMediaQuery('(max-width: 350px)');
   const [product, setProduct] = useState('');
   const [image, setImage] = useState(null);
+  const [categoryIDs, setCategoryIDs] = useState({});
+  const toast = useToast();
+
+  const fetchAdminData = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const { _id } = jwtDecode(token);
+
+      const response = await fetch(`${API_URL}/users/${_id}`, {
+        method: 'GET',
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch admin data');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error('An error occurred while fetching the admin data: ' + error.message);
+    }
+  };
+  const updateRestaurant = async (restaurantId, productId) => {
+    const token = localStorage.getItem('x-api-key');
+
+    try {
+      const response = await fetch(`${API_URL}/admin/restaurants/${restaurantId}`, {
+        method: 'PATCH',
+        headers: {
+          'x-api-key': token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ $push: { products: productId } })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update restaurant');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('An error occurred while updating the restaurant: ', error);
+    }
+  };
 
   const createProduct = async (items, price, title, description, ingredients, nutritionals, restaurantRef) => {
     const payload = {
       title: title,
       description: description,
-      image: items, // Обновлено
+      image: items,
       price: price,
       ingredients: ingredients,
       nutritionals: nutritionals,
       categoryName: categoryName,
-      restaurantRef: restaurantRef
+      restaurantRef: restaurantRef,
+      categoryId: categoryId
     };
 
     try {
+      const token = localStorage.getItem('x-api-key');
+
       const response = await fetch(API_URL + '/admin/products', {
         method: 'POST',
         headers: {
+          'x-api-key': token,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
@@ -51,49 +104,117 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
       }
 
       const data = await response.json();
+
+      // Display the toast here, before the function ends
+      toast({
+        title: 'Product created.',
+        description: 'The product has been successfully created.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      });
+
       return data;
     } catch (error) {
-      throw new Error('An error occurred while creating the product: ' + error.message);
+      console.error('Error creating product:', error);
+
+      // Display the error toast here
+      toast({
+        title: 'An error occurred.',
+        description: 'Unable to create product.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
     }
   };
 
   const handlePublishProduct = async (data) => {
+    // Удалите adminId из параметров функции
     const {
       price,
       title,
       description,
       ingredients: ingredientsStr,
       nutritionals: nutritionalsStr,
-      restaurantRef
+      items: image
     } = data;
+
     const ingredients = ingredientsStr.split(',').map((ingredient) => ingredient.trim());
     const nutritionals = nutritionalsStr.split(',').map((nutritional) => nutritional.trim());
 
     try {
+      const adminData = await fetchAdminData(); // Удалите adminId из параметров функции
+      const restaurantRef = adminData.restaurant;
+
       const newProduct = await createProduct(
-        image, // Используйте значение image
+        image,
         price,
         title,
         description,
         ingredients,
         nutritionals,
-        restaurantRef
+        restaurantRef,
+        categoryId
       );
-      // Add the new product to the list of products
-      setProduct((prevProducts) => [
-        ...prevProducts,
-        { ...newProduct } // Add the amount field to the new product
-      ]);
-      // If successful, close the modal
+
+      await updateCategory(categoryId, newProduct._id);
+
+      try {
+        const token = localStorage.getItem('x-api-key');
+
+        if (!categoryId || !newProduct._id) {
+          console.error('Missing categoryId or newProduct._id');
+          return;
+        }
+
+        await fetch(`${API_URL}/admin/categories/${categoryId}/add-product/${newProduct._id}`, {
+          method: 'PATCH',
+          headers: {
+            'x-api-key': token,
+            'Content-Type': 'application/json'
+          }
+        });
+      } catch (err) {
+        console.error('An error occurred while adding the product to the category:', err);
+      }
+
+      await updateRestaurant(restaurantRef, newProduct._id);
+
+      setProduct((prevProducts) => [...prevProducts, { ...newProduct }]);
       onClose();
     } catch (error) {
-      console.error('An error occurred while publishing the category:', error);
+      console.error('An error occurred while publishing the product:', error);
+    }
+  };
+
+  const updateCategory = async (categoryId, productId) => {
+    const token = localStorage.getItem('x-api-key');
+
+    try {
+      const response = await fetch(`${API_URL}/admin/categories/${categoryId}`, {
+        method: 'PATCH',
+        headers: {
+          'x-api-key': token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ $push: { products: productId } })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update category');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('An error occurred while updating the category: ', error);
     }
   };
 
   const onSubmit = (data) => {
     handlePublishProduct(data);
-    reset(); // Reset the form values after submission
+    reset();
   };
 
   const handleImageChange = (event) => {
@@ -209,6 +330,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
                 <Controller
                   control={control}
                   name='title'
+                  rules={{ required: true }}
                   defaultValue=''
                   render={({ field }) => (
                     <Input {...field} color='neutral.gray' fontSize='2xs' type='text' placeholder='Enter meal name' />
@@ -328,7 +450,7 @@ export default function ModalRestaurantMenu({ isOpen, onOpen, onClose, categoryN
             p='20px'
             border='1px'
             borderColor='primary.default'
-            onClick={handleSubmit(onSubmit)}
+            onClick={() => handleSubmit(onSubmit)()}
           >
             Publish meal item
           </Button>

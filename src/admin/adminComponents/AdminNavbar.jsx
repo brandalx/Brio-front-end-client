@@ -12,25 +12,42 @@ import {
   IconButton,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
   Text,
   useColorModeValue,
   useDisclosure,
+  useToast,
   VisuallyHidden,
   VStack
 } from '@chakra-ui/react';
 
 import Logo from '../../assets/svg/Logo';
-import { Link, Link as RouterLink } from 'react-router-dom';
+import { Link, Link as RouterLink, useNavigate } from 'react-router-dom';
 import Notification from '../../assets/svg/Notification';
 import { AiOutlineMenu } from 'react-icons/ai';
 import '../../css/global.css';
+import { TOKEN_KEY } from '../../services/apiServices';
 
 export default function AdminNavbar() {
   const bg = useColorModeValue('white', 'gray.800');
   const mobileNav = useDisclosure();
+  const navigate = useNavigate();
+  const toast = useToast();
+  const onLogOut = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem('location');
 
+    navigate('/login');
+    toast({
+      title: 'Loggin out.',
+      description: 'Successfuly logged out!',
+      status: 'success',
+      duration: 9000,
+      isClosable: true
+    });
+  };
   return (
     <>
       <Container overflow-x='hidden' zIndex='9999999' maxW='none' borderBottom='1px solid #EDEEF2' p={0} width='100%'>
@@ -141,49 +158,47 @@ export default function AdminNavbar() {
                   </Box>
 
                   <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest' />
-                  <HStack spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
-                    <Box
-                      ml='4px'
-                      bg='neutral.grayLightest'
-                      color='black'
-                      px={'8px'}
-                      py={'7.5px'}
-                      borderRadius='16px'
-                      position='relative'
-                    >
-                      <Box
-                        position='absolute'
-                        top='-3px'
-                        right='-4px'
-                        bg='primary.default'
-                        h='20px'
-                        w='20px'
-                        fontSize='10px'
-                        borderRadius='8px'
-                        display='flex'
-                        alignItems='center'
-                        justifyContent='center'
-                        fontWeight='semibold'
-                        color='white'
-                        textAlign='center'
-                        minWidth='20px'
-                      >
-                        7
-                      </Box>
-                      <Menu>
-                        <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                          <Notification />
-                        </MenuButton>
-                        <MenuList>
-                          <MenuItem fontWeight='medium'>Event</MenuItem>
-                          <MenuItem fontWeight='medium'>Event</MenuItem>
-                          <MenuItem fontWeight='medium'>Event</MenuItem>
-                        </MenuList>
-                      </Menu>
-                    </Box>
+                  <Flex spacing={6} display={{ base: 'none', md: 'inline-flex' }}>
+                    {/*<Box*/}
+                    {/*  ml='4px'*/}
+                    {/*  bg='neutral.grayLightest'*/}
+                    {/*  color='black'*/}
+                    {/*  px={'8px'}*/}
+                    {/*  py={'7.5px'}*/}
+                    {/*  borderRadius='16px'*/}
+                    {/*  position='relative'*/}
+                    {/*>*/}
+                    {/*<Box*/}
+                    {/*  position='absolute'*/}
+                    {/*  top='-3px'*/}
+                    {/*  right='-4px'*/}
+                    {/*  bg='primary.default'*/}
+                    {/*  h='20px'*/}
+                    {/*  w='20px'*/}
+                    {/*  fontSize='10px'*/}
+                    {/*  borderRadius='8px'*/}
+                    {/*  display='flex'*/}
+                    {/*  alignItems='center'*/}
+                    {/*  justifyContent='center'*/}
+                    {/*  fontWeight='semibold'*/}
+                    {/*  color='white'*/}
+                    {/*  textAlign='center'*/}
+                    {/*  minWidth='20px'*/}
+                    {/*>*/}
+                    {/*  7*/}
+                    {/*</Box>*/}
+                    {/*  <Menu>*/}
+                    {/*    /!*<MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>*!/*/}
+                    {/*    /!*  <Notification />*!/*/}
+                    {/*    /!*</MenuButton>*!/*/}
+                    {/*    <MenuList>*/}
+                    {/*      <MenuItem fontWeight='medium'>Event</MenuItem>*/}
+                    {/*    </MenuList>*/}
+                    {/*  </Menu>*/}
+                    {/*</Box>*/}
 
                     <Menu>
-                      <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                      <MenuButton ml='15px' as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                         <Avatar
                           py='2px'
                           borderRadius='xl'
@@ -196,11 +211,29 @@ export default function AdminNavbar() {
                         <MenuItem as={RouterLink} to='/admin/restaurant/settings' fontWeight='medium'>
                           Settings
                         </MenuItem>
-                        <MenuItem fontWeight='medium'>Event</MenuItem>
-                        <MenuItem fontWeight='medium'>Event</MenuItem>
+                        <MenuItem as={RouterLink} to='/' fontWeight='medium'>
+                          Client side menu
+                        </MenuItem>
+                        <MenuDivider />
+
+                        <MenuItem
+                          onClick={onLogOut}
+                          m={0}
+                          h='100%'
+                          background='neutral.white'
+                          variant='solid'
+                          color='error.default'
+                          _hover={{
+                            background: 'error.default',
+                            color: 'neutral.white'
+                          }}
+                          fontWeight='medium'
+                        >
+                          Log Out
+                        </MenuItem>
                       </MenuList>
                     </Menu>
-                  </HStack>
+                  </Flex>
                 </HStack>
                 {/* Mobile navbar */}
                 <Box display={{ base: 'inline-flex', md: 'none' }}>
@@ -236,11 +269,7 @@ export default function AdminNavbar() {
                         <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                           <Notification />
                         </MenuButton>
-                        <MenuList>
-                          <MenuItem fontWeight='medium'>Event</MenuItem>
-                          <MenuItem fontWeight='medium'>Event</MenuItem>
-                          <MenuItem fontWeight='medium'>Event</MenuItem>
-                        </MenuList>
+                        <MenuList></MenuList>
                       </Menu>
                     </Box>
                     <Menu>
@@ -257,8 +286,26 @@ export default function AdminNavbar() {
                         <MenuItem as={RouterLink} to='/admin/restaurant/settings' fontWeight='medium'>
                           Settings
                         </MenuItem>
-                        <MenuItem fontWeight='medium'>Event</MenuItem>
-                        <MenuItem fontWeight='medium'>Event</MenuItem>
+                        <MenuItem as={RouterLink} to='/' fontWeight='medium'>
+                          Client side menu
+                        </MenuItem>
+                        <MenuDivider />
+
+                        <MenuItem
+                          onClick={onLogOut}
+                          m={0}
+                          h='100%'
+                          background='neutral.white'
+                          variant='solid'
+                          color='error.default'
+                          _hover={{
+                            background: 'error.default',
+                            color: 'neutral.white'
+                          }}
+                          fontWeight='medium'
+                        >
+                          Log Out
+                        </MenuItem>
                       </MenuList>
                     </Menu>
                     <Box ml='13px' mr='12px' h='32px' w='1px' mx='4' bg='neutral.grayLightest' />

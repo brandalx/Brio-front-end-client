@@ -16,8 +16,20 @@ import {
   Stack,
   Divider,
   Icon,
-  Skeleton
+  Skeleton,
+  useToast,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  MenuButton,
+  ModalOverlay,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalFooter
 } from '@chakra-ui/react';
+import { Menu as NewMenu } from '@chakra-ui/react';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaChevronLeft } from 'react-icons/fa';
@@ -25,7 +37,7 @@ import Location from '../../assets/svg/Location';
 import ImageGallery from 'react-image-gallery';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useParams } from 'react-router-dom';
-import { API_URL, handleApiGet } from '../../services/apiServices';
+import { API_URL, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import Menu from '../userComponents/Order/Menu';
 import Pickup from '../userComponents/Cart/Pickup';
 import PaymentDetails from '../userComponents/Order/PaymentDetails';
@@ -33,6 +45,9 @@ import OrderStatus from '../../assets/svg/OrderStatus';
 import colorstatus from '../userComponents/UserOrdrs/colorsObject.json';
 import Status from '../../assets/svg/Status';
 import Calendar from '../../assets/svg/Calendar';
+import Shipping from '../userComponents/Order/Shipping';
+import { useDisclosure } from '@chakra-ui/react';
+import { Modal } from '@chakra-ui/react';
 export default function Order() {
   const [placed, setPlaced] = useState(true);
   const [prepared, setPrepared] = useState(false);
@@ -41,27 +56,118 @@ export default function Order() {
   const [loading, setLoading] = useState(true);
   const [userArr, setUserArr] = useState([]);
   const [ordersArr, setOrdersArr] = useState([]);
+  const [ordersArr2, setOrdersArr2] = useState([]);
   const [restaurantArr, setRestaurantArr] = useState([]);
+  const [addressString, setAddressString] = useState(null);
+  const [addressStringToPrint, setAddressStringToPrint] = useState();
+  const [isSelf, setIsSelf] = useState(false);
+
+  const handleDefineAddress = (orderitem, useritem, restaurantitem) => {
+    let finaladdress = orderitem.userdata.selectedAddress;
+    // console.log(finaladdress);
+    // console.log('ok');
+
+    let finaladdressobj = useritem.address.find((address) => address._id === finaladdress);
+    if (finaladdressobj) {
+      finaladdressobj =
+        finaladdressobj.state +
+        '%20' +
+        finaladdressobj.city +
+        '%20' +
+        finaladdressobj.address1 +
+        '%20' +
+        finaladdressobj.address2;
+    }
+
+    const restaurantObj = restaurantitem.find((restaurant) => restaurant._id === finaladdress);
+    if (restaurantObj) {
+      finaladdressobj = restaurantObj.location + ' ' + restaurantObj.address;
+
+      setIsSelf(true);
+    }
+
+    let finalstr;
+
+    if (finaladdressobj && finaladdressobj.address && finaladdressobj.address.length > 10) {
+      setAddressString(finaladdressobj.address);
+      finalstr = finaladdressobj.address.replace(/%20/g, ' ');
+    } else {
+      finalstr = finaladdressobj.address;
+      setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
+      setAddressString(finalstr);
+    }
+  };
+  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px) hue-rotate(90deg)' />;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [overlay, setOverlay] = React.useState(<OverlayOne />);
+  const toast = useToast();
+  const handleChangeStatus = async (_orderid, _status) => {
+    try {
+      const url = API_URL + '/orders/status/change';
+      const body = {
+        orderId: _orderid,
+        orderstatus: _status
+      };
+
+      const data = await handleApiMethod(url, 'PUT', body);
+
+      if (data.msg === true) {
+        await handleApi();
+        toast({
+          title: 'Order status changed to ' + _status,
+          description: "We've changed your order status.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleChangeStatus2 = async (_orderid, _status) => {
+    try {
+      const url = API_URL + '/orders/status/change';
+      const body = {
+        orderId: _orderid,
+        orderstatus: _status
+      };
+
+      const data = await handleApiMethod(url, 'PUT', body);
+
+      if (data.msg === true) {
+        await handleApi();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const params = useParams();
   const handleApi = async () => {
-    const userurl = API_URL + '/users/6464085ed67f7b944b642799';
+    const userurl = API_URL + '/users/info/user';
     const orderurl = API_URL + '/orders/' + params['id'];
-
+    const orders2url = API_URL + '/orders/user/single';
     try {
       // const data = await handleApiGet(userurl);
       const user = await handleApiGet(userurl);
       const order = await handleApiGet(orderurl);
-      const restauranturl = API_URL + '/restaurants/' + order.restaurantRef;
-      console.log('here is');
-      console.log(restauranturl);
+      // console.log(order);
+      const restauranturl = API_URL + '/restaurants/';
+
+      // console.log(restauranturl);
       const restaurant = await handleApiGet(restauranturl);
+      const orders2 = await handleApiGet(orders2url);
+      // console.log(orders2);
+      setOrdersArr2(orders2);
       setUserArr(user);
       setOrdersArr(order);
       setRestaurantArr(restaurant);
-      console.log(user);
-      console.log(order);
-      console.log(restaurant);
 
+      // console.log(user);
+      // console.log(order);
+      // console.log(restaurant);
+      handleDefineAddress(order, user, restaurant);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -70,9 +176,9 @@ export default function Order() {
   };
 
   const findOrder = (orderId) => {
-    const order = userArr.orders.find((item) => item.orderId === orderId);
+    const order = ordersArr2.find((item) => item._id === orderId);
     if (order) {
-      return order;
+      return order.userdata.status;
     } else {
       return 'Status error';
     }
@@ -95,12 +201,21 @@ export default function Order() {
   const updateState = () => {
     if (placed && !prepared) {
       setPrepared(true);
+      handleChangeStatus2(params['id'], 'Prepared');
     } else if (placed && prepared && !delivery) {
       setDelivery(true);
+      handleChangeStatus2(params['id'], 'In progress');
     } else if (placed && prepared && delivery && !delivered) {
       setDelivered(true);
+      handleChangeStatus2(params['id'], 'Completed');
     }
   };
+  //todo: replace with post wehn updating post time and status
+  useEffect(() => {
+    const timer = setInterval(updateState, 60 * 1000);
+
+    return () => clearInterval(timer);
+  }, [placed, prepared, delivery, delivered]);
 
   const findOrder2 = (orderId) => {
     if (userArr && userArr.orders) {
@@ -116,26 +231,29 @@ export default function Order() {
   };
 
   useEffect(() => {
-    const currentOrder = findOrder2(params['id']);
-    if (currentOrder.status === 'Canceled' || currentOrder.status === 'Completed') {
-      setPlaced(true);
-      setPrepared(true);
-      setDelivery(true);
-      setDelivered(true);
-    } else if (currentOrder.status === 'Placed') {
-      setPlaced(true);
-    } else if (currentOrder.status === 'Prepared') {
-      setPlaced(true);
-      setPrepared(true);
-    } else if (currentOrder.status === 'Delivery') {
-      setPlaced(true);
-      setPrepared(true);
-      setDelivery(true);
-    } else if (currentOrder.status === 'Delivered') {
-      setPlaced(true);
-      setPrepared(true);
-      setDelivery(true);
-      setDelivered(true);
+    const currentOrder = findOrder(params['id']);
+    // console.log(currentOrder);
+    if (userArr._id) {
+      if (currentOrder === 'Cancelled' || currentOrder === 'Completed') {
+        setPlaced(true);
+        setPrepared(true);
+        setDelivery(true);
+        setDelivered(true);
+      } else if (currentOrder === 'Placed') {
+        setPlaced(true);
+      } else if (currentOrder === 'In progress') {
+        setPlaced(true);
+        setPrepared(true);
+      } else if (currentOrder === 'Delivery') {
+        setPlaced(true);
+        setPrepared(true);
+        setDelivery(true);
+      } else if (currentOrder === 'Delivered') {
+        setPlaced(true);
+        setPrepared(true);
+        setDelivery(true);
+        setDelivered(true);
+      }
     }
   }, [userArr]);
   // todo: post time when each time step update happens
@@ -158,44 +276,99 @@ export default function Order() {
         </Button>
         <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '2fr 1fr' }} gap={5}>
           <GridItem w='100%'>
-            <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
+            <Box borderRadius='16px' borderWidth='1px' py={{ base: '50px', md: '20px' }} px='10px' my={5}>
               <Flex w='100%' justifyContent='space-between'>
                 <Box w='100%'>
-                  <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+                  <Text fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold' color='neutral.black'>
                     Order status
                   </Text>
+                  <Box>
+                    <Skeleton my={2} minH={loading ? '10px' : '0px'} w='25%' borderRadius='16px' isLoaded={!loading}>
+                      {findOrder(params['id']) !== 'Cancelled' ? (
+                        <NewMenu>
+                          <MenuButton as={Button} p='6px' rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                            Change status
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              onClick={() => {
+                                setOverlay(<OverlayOne />);
+                                onOpen();
+                              }}
+                              m={0}
+                              h='100%'
+                              background='neutral.white'
+                              variant='solid'
+                              color='error.default'
+                              _hover={{
+                                background: 'error.default',
+                                color: 'neutral.white'
+                              }}
+                              fontWeight='medium'
+                            >
+                              Cancel order
+                            </MenuItem>
+                          </MenuList>
+                        </NewMenu>
+                      ) : (
+                        <></>
+                      )}
+                    </Skeleton>
+                  </Box>
+
                   {/* replace after fetch */}
 
                   <Box mt={3}>
-                    <Skeleton my={2} minH='10px' w='25%' borderRadius='16px' isLoaded={!loading}>
-                      <Box display='flex' alignItems='center'>
+                    <Skeleton my={2} minH='10px' maxW='45%' borderRadius='16px' isLoaded={!loading}>
+                      <Box w='100%' display='flex' alignItems='center'>
                         {' '}
-                        {!loading && <Status color={colorstatus[findOrder(params['id']).status] || 'yellow'} />}
-                        <Text ms={2} color='neutral.black' fontSize='2xs'>
-                          {!loading && findOrder(params['id']).status}
+                        {!loading && (
+                          <Box as='span' w='10px'>
+                            <Status color={(!loading && colorstatus[findOrder(params['id'])]) || 'red'} />
+                          </Box>
+                        )}
+                        <Text ms={{ base: 0, md: 2 }} color='neutral.black' fontSize={{ base: '12px', md: '2xs' }}>
+                          {(!loading && findOrder(params['id'])) || 'Undefined'}
                         </Text>
                       </Box>
                     </Skeleton>
                   </Box>
                 </Box>
                 <Box w='100%' textAlign='end' display='flex' flexDir='column' alignItems='end'>
-                  <Skeleton my={2} borderRadius='16px' h='10px' isLoaded={!loading}>
-                    <Box display='flex' alignItems='center'>
-                      <Text me={2} color='neutral.gray' fontSize='2xs'>
-                        {/* for second release will still static after that will changed to dynamic according on picked address id */}
-                        {!loading && userArr.address[0].city}
-                      </Text>
+                  <Skeleton my={5} borderRadius='16px' h='10px' isLoaded={!loading}>
+                    <Box>
+                      <Box display='flex' alignItems='center'>
+                        <Text display={{ base: 'none', md: 'block' }} fontSize='2xs' me={2} color='neutral.gray'>
+                          {/* for second release will still static after that will changed to dynamic according on picked address id */}
+                          {isSelf ? '(Pickup at)' : '(Delivery to)'}
+                        </Text>
 
-                      <Box>
-                        <Location />
+                        <Text display={{ base: 'block', md: 'none' }} fontSize='10px' me={2} color='neutral.gray'>
+                          {/* for second release will still static after that will changed to dynamic according on picked address id */}
+                          {isSelf ? '(Pickup at)' : '(Delivery to)'}
+                        </Text>
+
+                        <Text display={{ base: 'none', md: 'block' }} me={2} fontWeight='bold'>
+                          {addressStringToPrint && addressStringToPrint}
+                        </Text>
+                        <Text display={{ base: 'block', md: 'none' }} fontSize='10px' me={2} fontWeight='bold'>
+                          {addressStringToPrint && addressStringToPrint}
+                        </Text>
+                        <Box>
+                          <Location />
+                        </Box>
                       </Box>
                     </Box>
                   </Skeleton>
                   <Skeleton h='10px' my={2} borderRadius='16px' isLoaded={!loading}>
                     <Box mt={3} display='flex' alignItems='center'>
-                      <Text me={2} color='neutral.gray' fontSize='2xs'>
-                        {!loading && formatDate(ordersArr.orderedTime)}
+                      <Text me={2} display={{ base: 'none', md: 'block' }} color='neutral.gray' fontSize='2xs'>
+                        {!loading && formatDate(ordersArr.creationDate)}
                       </Text>
+                      <Text fontSize='10px' me={2} display={{ base: 'block', md: 'none' }} color='neutral.gray'>
+                        {!loading && formatDate(ordersArr.creationDate)}
+                      </Text>
+
                       <Box>
                         <Calendar />
                       </Box>
@@ -203,7 +376,7 @@ export default function Order() {
                   </Skeleton>
                 </Box>
               </Flex>
-              <Grid mt={5} templateColumns='0.2fr 1fr 0.2fr 1fr 0.2fr 1fr 0.2fr' gap={2}>
+              <Grid mt={{ base: '50px', md: '40px' }} templateColumns='0.2fr 1fr 0.2fr 1fr 0.2fr 1fr 0.2fr' gap={2}>
                 <GridItem w='fit-content'>
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                     <Box>
@@ -215,7 +388,7 @@ export default function Order() {
                 <GridItem w='100%'>
                   <Box h='100%' display='flex' alignItems='center'>
                     <Skeleton w='100%' borderRadius='16px' isLoaded={!loading}>
-                      <Divider borderWidth='2px' borderColor={placed ? '#1ABF70' : 'neutral.gray'} />
+                      <Divider borderWidth='2px' borderColor={placed && prepared ? '#1ABF70' : 'neutral.gray'} />
                     </Skeleton>
                   </Box>
                 </GridItem>
@@ -260,10 +433,10 @@ export default function Order() {
                 <Box>
                   <Skeleton h='20px' borderRadius='16px' isLoaded={!loading}>
                     <Box mt={4}>
-                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                      <Text fontSize={{ base: '10px', md: '2xs' }} color='neutral.black' fontWeight='bold'>
                         Order placed
                       </Text>
-                      <Text color='neutral.black' fontSize='3xs'>
+                      <Text fontSize={{ base: '10px', md: '3xs' }} color='neutral.black'>
                         {/* todo: checkif order already delivered */}
                         {placed ? formatTime(Date.now()) : ''}
                       </Text>
@@ -273,10 +446,10 @@ export default function Order() {
                 <Box>
                   <Skeleton h='20px' borderRadius='16px' isLoaded={!loading}>
                     <Box mt={4}>
-                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                      <Text fontSize={{ base: '10px', md: '2xs' }} color='neutral.black' fontWeight='bold'>
                         Order being prepared
                       </Text>
-                      <Text color='neutral.black' fontSize='3xs'>
+                      <Text color='neutral.black' fontSize={{ base: '10px', md: '3xs' }}>
                         {prepared ? formatTime(Date.now()) : ''}
                       </Text>
                     </Box>
@@ -285,10 +458,10 @@ export default function Order() {
                 <Box>
                   <Skeleton h='20px' borderRadius='16px' isLoaded={!loading}>
                     <Box mt={4}>
-                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                      <Text fontSize={{ base: '10px', md: '2xs' }} color='neutral.black' fontWeight='bold'>
                         Out for delivery
                       </Text>
-                      <Text color='neutral.black' fontSize='3xs'>
+                      <Text color='neutral.black' fontSize={{ base: '10px', md: '3xs' }}>
                         {delivery ? formatTime(Date.now()) : ''}
                       </Text>
                     </Box>
@@ -297,10 +470,10 @@ export default function Order() {
                 <Box>
                   <Skeleton h='20px' borderRadius='16px' isLoaded={!loading}>
                     <Box mt={4}>
-                      <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
-                        Delivered
+                      <Text fontSize={{ base: '10px', md: '2xs' }} color='neutral.black' fontWeight='bold'>
+                        {findOrder(params['id']) === 'Cancelled' ? 'Cancelled' : 'Delivered'}
                       </Text>
-                      <Text color='neutral.black' fontSize='3xs'>
+                      <Text color='neutral.black' fontSize={{ base: '10px', md: '3xs' }}>
                         {delivered ? formatTime(Date.now()) : ''}
                       </Text>
                     </Box>
@@ -311,8 +484,14 @@ export default function Order() {
 
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
               <Skeleton borderRadius='16px' isLoaded={!loading}>
-                <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                  Menu {!loading && ordersArr.products.length} meals
+                <Text fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold' color='neutral.black'>
+                  Menu{' '}
+                  {!loading &&
+                    ordersArr &&
+                    ordersArr.ordersdata &&
+                    ordersArr.ordersdata.products &&
+                    ordersArr.ordersdata.products.length}{' '}
+                  meals
                 </Text>
               </Skeleton>
 
@@ -325,7 +504,10 @@ export default function Order() {
                   </Box>
                 )}
                 {!loading &&
-                  ordersArr.products.map((item, key) => {
+                  ordersArr &&
+                  ordersArr.ordersdata &&
+                  ordersArr.ordersdata.products &&
+                  ordersArr.ordersdata.products.map((item, key) => {
                     return <Menu key={key} item={item} />;
                   })}
               </Box>
@@ -333,26 +515,98 @@ export default function Order() {
           </GridItem>
           <GridItem w='100%'>
             <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
-              <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
+              <Text fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold' color='neutral.black'>
                 Shipping address
               </Text>
-              {!loading && (
-                <Pickup
-                  item={{
-                    location: restaurantArr.location,
-                    address: restaurantArr.address
-                  }}
-                />
+              {!loading && ordersArr && ordersArr.ordersdata && ordersArr.ordersdata.products && (
+                <Shipping userArr={userArr} restaurantArr={restaurantArr} item={ordersArr.userdata.selectedAddress} />
               )}
             </Box>
             <Skeleton minH='250px' borderRadius='16px' isLoaded={!loading}>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
-                {!loading && <PaymentDetails orders={findOrder(params['id'])} item={userArr} />}
+                {!loading && <PaymentDetails userArr={userArr} orders={findOrder(params['id'])} item={ordersArr} />}
               </Box>
             </Skeleton>
           </GridItem>
         </Grid>
       </Container>
+
+      <Box>
+        <Modal size='xl' isCentered isOpen={isOpen} onClose={onClose}>
+          {overlay}
+          <ModalContent>
+            <ModalHeader>
+              <ModalCloseButton />
+              <Text mt={{ base: 8, md: 0 }} fontSize='xs' fontWeight='bold' color='neutral.black' textAlign={'center'}>
+                Are you sure you want to cancel this order?
+              </Text>
+            </ModalHeader>
+            <ModalBody>
+              <Text>
+                This action cannot be undone. We will cancel your order and return your money. For further information,
+                cancelation fees and more visit our{' '}
+                <Box textDecoration='underline' color='primary.default' as='span'>
+                  <Link to='/'>FAQ center</Link>
+                </Box>{' '}
+                or{' '}
+                <Box textDecoration='underline' color='primary.default' as='span'>
+                  <Link to='/'>Contact Us</Link>{' '}
+                </Box>
+              </Text>
+            </ModalBody>
+            <ModalFooter>
+              <Box display='flex' justifyContent='center' mx='auto'>
+                <Button
+                  me={2}
+                  onClick={onClose}
+                  type='submit'
+                  w={{ base: '50%', md: 'initial' }}
+                  background='primary.default'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='neutral.white'
+                  borderWidth='1px'
+                  borderColor='neutral.white'
+                  _hover={{
+                    background: 'neutral.white',
+                    color: 'primary.default',
+                    borderWidth: '1px',
+                    borderColor: 'primary.default'
+                  }}
+                  py={5}
+                  px={4}
+                >
+                  Decline
+                </Button>
+                <Button
+                  onClick={() => {
+                    onClose();
+                    handleChangeStatus(params['id'], 'Cancelled');
+                  }}
+                  w={{ base: '50%', md: 'initial' }}
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  variant='solid'
+                  borderWidth='1px'
+                  borderColor='error.default'
+                  background='error.default'
+                  color='neutral.white'
+                  _hover={{
+                    background: 'neutral.white',
+                    color: 'error.default',
+                    borderWidth: '1px',
+                    borderColor: 'error.default'
+                  }}
+                  py={5}
+                  me='20px'
+                >
+                  Cancel order
+                </Button>
+              </Box>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </Box>
     </Box>
   );
 }

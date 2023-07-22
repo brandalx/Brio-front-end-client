@@ -10,19 +10,78 @@ import {
   InputLeftAddon,
   InputLeftElement,
   Skeleton,
-  Text
+  Text,
+  useToast
 } from '@chakra-ui/react';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 
-export default function PaymentSummary({ item, loading }) {
+import { cartContext } from '../../../context/globalContext';
+
+export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
+  const { cartLen, setCartLen } = useContext(cartContext);
+  const [tipValue, setTipValue] = useState(0);
+  const tipref = useRef(null);
+  const handleTipChange = () => {
+    const value = tipref.current.value ? tipref.current.value : 0;
+    setTipValue(value);
+  };
+  const navigate = useNavigate();
+  const toast = useToast();
+  const handleOrderPost = async (_bodyData) => {
+    // console.log(_bodyData);
+    try {
+      let preTipValue = Number(tipValue);
+      _bodyData.checkoutBodyData.userdata.paymentSummary.tips = preTipValue;
+      const url = API_URL + '/orders/createorder';
+      const data = await handleApiMethod(url, 'POST', _bodyData);
+      if (data.msg === true) {
+        toast({
+          title: 'Order placed!',
+          description: 'Your food is on the way!',
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+        setCartLen(0);
+
+        const ordersurl = API_URL + '/orders/user/single';
+        const neworderdata = await handleApiGet(ordersurl);
+        const idorder = neworderdata[neworderdata.length - 1]._id;
+        navigate('/user/order/' + idorder);
+      }
+    } catch (error) {
+      console.log(error);
+
+      if (error.response.data.err === 'Order already exists') {
+        toast({
+          title: 'Duplicated orders',
+          description: `Error when placing new order - such order already exist.`,
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      } else {
+        toast({
+          title: 'Error when placing new order',
+          description: 'Error when placing new order. Please, try again',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    }
+  };
+
   return (
     <>
-      <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
+      <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' data-aos='fade-up'>
         <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
           Payment summary
         </Text>
         <Box>
+          {/*
           <Skeleton borderRadius='16px' isLoaded={!loading}>
             <FormControl id='coupon' mt={4}>
               <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
@@ -39,6 +98,8 @@ export default function PaymentSummary({ item, loading }) {
               />
             </FormControl>
           </Skeleton>
+
+  */}
           <Skeleton borderRadius='16px' isLoaded={!loading}>
             <FormControl id='tip' mt={4}>
               <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
@@ -50,7 +111,9 @@ export default function PaymentSummary({ item, loading }) {
                   $
                 </InputLeftElement>
                 <Input
-                  type='text'
+                  ref={tipref}
+                  onChange={handleTipChange}
+                  type='number'
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
                   borderRadius='8px'
@@ -69,7 +132,7 @@ export default function PaymentSummary({ item, loading }) {
                 Subtotal
               </Text>
               <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-                ${!loading && item.orders[0].paymentSummary.subtotal}
+                ${!loading && item.subtotal}
               </Text>
             </Flex>
           </Skeleton>
@@ -79,7 +142,7 @@ export default function PaymentSummary({ item, loading }) {
                 Shipping
               </Text>
               <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-                ${!loading && item.orders[0].paymentSummary.shipping}
+                ${!loading && item.shipping}
               </Text>
             </Flex>
           </Skeleton>
@@ -89,32 +152,37 @@ export default function PaymentSummary({ item, loading }) {
                 Tips
               </Text>
               <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-                ${!loading && item.orders[0].paymentSummary.tips}
+                {/* ${!loading && item.orders[0].paymentSummary.tips} */}${tipValue}
               </Text>
             </Flex>
           </Skeleton>
-          <Skeleton borderRadius='16px' isLoaded={!loading}>
+
+          {/* <Skeleton borderRadius='16px' isLoaded={!loading}>
             <Flex my={4} justifyContent='space-between'>
               <Text fontWeight='semibold' fontSize='3xs' color='neutral.gray'>
                 Discount (coupon)
               </Text>
               <Text fontWeight='semibold' fontSize='3xs' color='neutral.black'>
-                ${!loading && item.orders[0].paymentSummary.discount}
+                 ${!loading && item.orders[0].paymentSummary.discount} 
+                discount
               </Text>
             </Flex>
-          </Skeleton>
+          </Skeleton> */}
+
           <Skeleton borderRadius='16px' isLoaded={!loading}>
             <Flex my={4} justifyContent='space-between'>
               <Text fontWeight='semibold' fontSize='2xs' color='neutral.black'>
                 Total (tax incl.)
               </Text>
               <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
-                ${!loading && item.orders[0].paymentSummary.totalAmount}
+                ${!loading && Number(item.totalAmount) + Number(tipValue)}
               </Text>
             </Flex>
           </Skeleton>
           <Link to='/user/checkout'>
             <Button
+              onClick={() => handleOrderPost(finalCheckoutBody)}
+              isDisabled={finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? false : true}
               w='100%'
               background='primary.default'
               fontSize='2xs'
@@ -131,7 +199,11 @@ export default function PaymentSummary({ item, loading }) {
               }}
               py={5}
             >
-              Submit order
+              {finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? (
+                <> Submit order</>
+              ) : (
+                <> Select payment method</>
+              )}
             </Button>
           </Link>
         </Box>

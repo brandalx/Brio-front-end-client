@@ -8,7 +8,8 @@ import {
   Divider,
   Button,
   useBreakpointValue,
-  useMediaQuery
+  useMediaQuery,
+  useToast
 } from '@chakra-ui/react';
 import theme from '../../../utils/theme';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
@@ -17,6 +18,17 @@ import ModalTextRedactor from './ModalTextRedactor';
 import Pen from '../../../assets/svg/Pen';
 import Copy from '../../../assets/svg/Copy';
 import TrashBox from '../../../assets/svg/TrashBox';
+import jwtDecode from 'jwt-decode';
+import axios from 'axios';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay
+} from '@chakra-ui/react';
+import { useRef } from 'react';
 
 export default function ListOfProducts({ selectedCategory, categoryCounts, setCategoryCounts }) {
   const gridColumns = useBreakpointValue({ base: '1fr', md: '1fr 4fr' });
@@ -27,23 +39,112 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [initialCategory, setInitialCategory] = useState('');
+  const [userId, setUserId] = useState(null);
+  const [restaurantId, setRestaurantId] = useState(null);
+  const toast = useToast();
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const onCloseDialog = () => setIsAlertDialogOpen(false);
+  const cancelRef = useRef();
 
   const fetchProducts = async () => {
     try {
-      const response = await handleApiGet(API_URL + '/admin/products?categoryName=' + selectedCategory);
+      const response = await handleApiGet(`${API_URL}/admin/products?categoryName=${selectedCategory}`);
       setProducts(response);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error while fetching products:', error);
     }
   };
 
-  const deleteProduct = async (productId) => {
+  const fetchAdmin = async () => {
     try {
-      await handleApiDelete(API_URL + '/admin/products/' + productId);
-      await fetchProducts();
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+
+      const response = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      setRestaurantId(response.data.restaurant);
+      setUserId(userId);
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error('An error occurred while getting users data:', error);
+    }
+  };
+
+  async function removeProductFromRestaurant(restaurantId, productId) {
+    const token = localStorage.getItem('x-api-key');
+
+    try {
+      const response = await fetch(`${API_URL}/admin/restaurants/${restaurantId}`, {
+        method: 'PATCH',
+        headers: {
+          'x-api-key': token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ $pull: { products: productId } })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to remove product from restaurant');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('An error occurred while removing the product from the restaurant: ', error);
+    }
+  }
+
+  const deleteProduct = async (productId, categoryId) => {
+    const token = localStorage.getItem('x-api-key');
+
+    try {
+      await axios.patch(
+        `${API_URL}/admin/categories/${categoryId}`,
+        { $pull: { products: productId } },
+        {
+          headers: {
+            'x-api-key': token,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      await removeProductFromRestaurant(restaurantId, productId);
+
+      const response = await axios.delete(`${API_URL}/admin/products/${productId}`, {
+        headers: {
+          'x-api-key': token,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status !== 200) {
+        throw new Error('err while deleting product:');
+      }
+
+      await fetchProducts();
+      toast({
+        title: 'Product deleted.',
+        description: 'The product has been successfully deleted.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      });
+    } catch (error) {
+      console.error('err while deleting product:', error);
+      toast({
+        title: 'An error occurred.',
+        description: 'Unable to delete product.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
     }
   };
 
@@ -52,6 +153,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
 
     products.forEach((item) => {
       const { categoryName } = item;
+      setInitialCategory(categoryName);
       counts[categoryName] = counts[categoryName] ? counts[categoryName] + 1 : 1;
     });
 
@@ -64,25 +166,32 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
 
   useEffect(() => {
     updateCategoryCounts();
+    fetchAdmin();
   }, [products]);
 
-  const handleTrashClick = (productId) => {
-    deleteProduct(productId);
+  const handleTrashClick = (productId, categoryId) => {
+    setSelectedProduct({ productId, categoryId }); // save the product to be deleted
+    setIsAlertDialogOpen(true); // open the confirmation dialog
+  };
+
+  const confirmDelete = () => {
+    // actually delete the product
+    deleteProduct(selectedProduct.productId, selectedProduct.categoryId);
+    setIsAlertDialogOpen(false);
   };
 
   return (
     <GridItem colSpan={8}>
       <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
-        {selectedCategory === null ? 'Breakfast menu' : selectedCategory}
+        {selectedCategory === null ? '' : selectedCategory}
       </Text>
       {products
-        .filter((item) => item.categoryName === selectedCategory)
+        .filter((item) => item.categoryName === selectedCategory && item.restaurantRef === restaurantId)
         .map((item) => (
           <Box
             key={item._id}
             display='flex'
             flexDirection={isTablet ? 'column' : 'row'}
-            mt='30px'
             flexWrap='wrap'
             borderRadius='16px'
             p={isTablet ? '8px' : '16px 16px 16px 12px'}
@@ -148,8 +257,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                     <Button onClick={() => setSelectedProduct(item)}>
                       <Pen />
                     </Button>
-                    <Copy />
-                    <Button onClick={() => handleTrashClick(item._id)}>
+                    <Button onClick={() => handleTrashClick(item._id, item.categoryId)}>
                       <TrashBox />
                     </Button>
                   </Box>
@@ -164,12 +272,31 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                   <Button onClick={() => setSelectedProduct(item)}>
                     <Pen />
                   </Button>
-                  <Copy />
-                  <Button onClick={() => handleTrashClick(item._id)}>
+                  <Button onClick={() => handleTrashClick(item._id, item.categoryId)}>
                     <TrashBox />
                   </Button>
                 </Box>
               )}
+              <AlertDialog isOpen={isAlertDialogOpen} leastDestructiveRef={cancelRef} onClose={onCloseDialog}>
+                <AlertDialogOverlay>
+                  <AlertDialogContent>
+                    <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                      Delete Product
+                    </AlertDialogHeader>
+
+                    <AlertDialogBody>Are you sure? This action cannot be undone.</AlertDialogBody>
+
+                    <AlertDialogFooter>
+                      <Button ref={cancelRef} onClick={onCloseDialog}>
+                        Cancel
+                      </Button>
+                      <Button colorScheme='red' onClick={confirmDelete} ml={3}>
+                        Delete
+                      </Button>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialogOverlay>
+              </AlertDialog>
               <Divider mt='20px' mb='16px' />
               {selectedProduct === item && (
                 <ModalTextRedactor isOpen={true} onClose={() => setSelectedProduct(null)} item={item} />
@@ -183,7 +310,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                     {item.ingredients.join(', ')}
                   </Text>
                 </Box>
-                <Box>
+                <Box padding='3px'>
                   <Heading fontSize='' lineHeight='24px' fontWeight='bold'>
                     Nutritional value
                   </Heading>

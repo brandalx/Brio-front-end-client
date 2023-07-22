@@ -18,26 +18,37 @@ import ThreeDots from '../../../assets/svg/ThreeDots';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import addressError from '../../../assets/images/addressError.jpg';
 import axios from 'axios';
+import { OpenStreetMapProvider } from 'leaflet-geosearch';
+import { Link } from 'react-router-dom';
 
-export default function AdressCard({ item, index }) {
+export default function AdressCard({
+  onitemselected,
+  selectCard,
+  disabledOptions = false,
+  item,
+  index,
+  handleUserAddressDelete,
+  setIsEditTrue,
+  setTargetIndex
+}) {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
   const REACT_APP_opencagedata = import.meta.env.VITE_OPENCAGEDATA;
   const REACT_APP_MAPBOX = import.meta.env.VITE_MAPBOX;
   const REACT_APP_MAPBOX_TOKEN = import.meta.env.VITE_MAPBOXTOKEN;
-
+  const [key, setKey] = useState(2222);
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState(null);
   const [userData, setUserData] = useState([]);
   const [addressLoading, setAddressLoading] = useState(true);
   const [isAddress, setIsAddress] = useState(true);
-
+  const streetProvider = new OpenStreetMapProvider();
   const handleUserApi = async () => {
-    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    const url = API_URL + '/users/info/user';
 
     try {
       const data = await handleApiGet(url);
       setUserData(data);
-      console.log(data);
+      // console.log(data);
       handleMapApi(data);
 
       setLoading(false);
@@ -51,39 +62,44 @@ export default function AdressCard({ item, index }) {
     handleUserApi();
   }, []);
 
-  const handleMapApi = async (data) => {
+  const handleMapApi = async (datasearch) => {
     try {
-      const placeUrl = `${data.address[index].country}%20${data.address[index].state}%20${data.address[index].city}%20${data.address[index].address1}%20${data.address[index].address2}`;
-      let encodelUrl = encodeURIComponent(placeUrl);
-      let finalUrl = `${REACT_APP_opencagedata}${encodelUrl}&pretty=1`;
-      console.log(finalUrl);
-      const resp = await axios.get(finalUrl);
-      const responseData = resp.data;
-      setAddress(responseData);
+      const placeUrl = `${datasearch.address[index].country} ${datasearch.address[index].state} ${datasearch.address[index].city} ${datasearch.address[index].address1} ${datasearch.address[index].address2}`;
 
-      if (responseData.results.length === 0) {
-        setIsAddress(false);
-      }
-      console.log(responseData);
+      const data = await streetProvider.search({ query: placeUrl });
 
-      console.log(isAddress);
+      setAddress([data[0].y, data[0].x]);
+
+      // if (responseData.results.length === 0) {
+      //   setIsAddress(false);
+      // }
+      // console.log(responseData);
+
+      // setPosAr([data[0].y, data[0].x]);
+      // setKey(Date.now());
+      // console.log(isAddress);
       setAddressLoading(false);
     } catch (error) {
       console.log(error);
       setIsAddress(false);
-      console.log(isAddress);
+
+      if (isAddress) {
+        let warning = true;
+        handleUserAddressDelete(item._id, warning);
+      }
+      // console.log(isAddress);
       setAddressLoading(false);
     }
   };
   return (
-    <GridItem w='100%'>
-      <Skeleton my={2} minH='100px' borderRadius='16px' isLoaded={!addressLoading}>
+    <GridItem zIndex={index} w='100%' data-aos='fade-up'>
+      <Skeleton minH='100px' borderRadius='16px' isLoaded={!addressLoading}>
         <Box
           _hover={{
             cursor: 'pointer',
             transition: 'all 0.3s',
             bg: isAddress ? 'primary.light' : 'error.hover',
-            borderColor: 'primary.light'
+            borderColor: onitemselected ? 'primary.default' : 'primary.light'
           }}
           _active={{
             cursor: 'pointer',
@@ -91,12 +107,15 @@ export default function AdressCard({ item, index }) {
             bg: isAddress ? 'primary.light' : 'error.default',
             borderColor: 'primary.default'
           }}
+          borderColor={onitemselected ? 'primary.default' : 'BlackAlpha 200'}
           borderRadius='16px'
-          mb='12px'
           p='0px'
           transition='all 0.3s'
           borderWidth='1px'
           bg={isAddress ? 'neutral.white' : 'error.default'}
+          onClick={() => {
+            selectCard(item._id);
+          }}
         >
           {/* Content */}
 
@@ -108,12 +127,8 @@ export default function AdressCard({ item, index }) {
                     <Image
                       width='100%'
                       src={
-                        address &&
-                        address.results[0] &&
-                        address.results[0].bounds &&
-                        address.results[0].bounds.northeast &&
-                        address.results[0].bounds.northeast.lng
-                          ? `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${address.results[0].bounds.northeast.lng},${address.results[0].bounds.northeast.lat},13/250x250@2x${REACT_APP_MAPBOX_TOKEN}`
+                        address
+                          ? `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${address[1]},${address[0]},13/250x250@2x${REACT_APP_MAPBOX_TOKEN}`
                           : addressError
                       }
                       title='Monochrome'
@@ -134,7 +149,7 @@ export default function AdressCard({ item, index }) {
                   </Heading>
                 )}
                 <Heading color={isAddress ? 'initial' : 'neutral.white'} fontSize='2xs' fontWeight='bold'>
-                  {item.city}
+                  {item.city || ''}
                 </Heading>
                 <Text color={isAddress ? 'initial' : 'neutral.white'} fontSize='3xs' fontWeight='semibold'>
                   {item.state} State, {item.country}
@@ -145,40 +160,51 @@ export default function AdressCard({ item, index }) {
               </Box>
             </Flex>
             <Box>
-              <Menu>
-                <MenuButton
-                  mt={4}
-                  me={3}
-                  _hover={{
-                    color: 'neutral.black',
-                    borderColor: 'neutral.lightest'
-                  }}
-                  fontSize='2xs'
-                  color='neutral.gray'
-                  fontWeight='bold'
-                >
-                  <ThreeDots />
-                </MenuButton>
-
-                <MenuList>
-                  <MenuItem fontWeight='medium'>Edit</MenuItem>
-                  <MenuDivider />
-                  <MenuItem
-                    m={0}
-                    background='neutral.white'
-                    variant='solid'
-                    color='error.default'
+              {!disabledOptions && (
+                <Menu>
+                  <MenuButton
+                    mt={4}
+                    me={3}
                     _hover={{
-                      background: 'error.default',
-                      color: 'neutral.white'
+                      color: 'neutral.black',
+                      borderColor: 'neutral.lightest'
                     }}
-                    fontWeight='medium'
+                    fontSize='2xs'
+                    color='neutral.gray'
+                    fontWeight='bold'
                   >
-                    {' '}
-                    Remove
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+                    <ThreeDots />
+                  </MenuButton>
+
+                  <MenuList>
+                    <MenuItem
+                      onClick={() => {
+                        setIsEditTrue(true);
+                        setTargetIndex(item._id);
+                      }}
+                      fontWeight='medium'
+                    >
+                      Edit
+                    </MenuItem>
+                    <MenuDivider />
+                    <MenuItem
+                      onClick={() => handleUserAddressDelete(item._id)}
+                      m={0}
+                      background='neutral.white'
+                      variant='solid'
+                      color='error.default'
+                      _hover={{
+                        background: 'error.default',
+                        color: 'neutral.white'
+                      }}
+                      fontWeight='medium'
+                    >
+                      {' '}
+                      Remove
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              )}
             </Box>
           </Flex>
         </Box>

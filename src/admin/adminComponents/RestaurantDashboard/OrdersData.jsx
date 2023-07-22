@@ -1,12 +1,104 @@
 import { Box, Flex, Grid, GridItem, Heading, Text } from '@chakra-ui/layout';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Notification from '../../../assets/svg/Notification';
 import OrdersRecived from '../../../assets/svg/OrdersRecived';
 import OrdersDelivered from '../../../assets/svg/OrdersDelivered';
 import Revenue from '../../../assets/svg/Revenue';
+import axios from 'axios';
+import { API_URL } from '../../../services/apiServices';
+import jwtDecode from 'jwt-decode';
 
-export default function OrdersData({ setCurrentArr, ordersRecived, ordersDelivered, orderRevenue }) {
-  let arr = [9273, 7691, 437291];
+export default function OrdersData({ setCurrentType, ordersRecived, ordersDelivered, orderRevenue }) {
+  const [orders, setOrders] = useState(0);
+  const [receivedOrders, setReceivedOrder] = useState(0);
+  const [revenue, setRevenue] = useState(0);
+  const [restaurantId, setRestaurantId] = useState();
+  const [selectedType, setSelectedType] = useState('ordersRecived');
+
+  const fetchRestaurantData = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+
+      const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      setRestaurantId(adminResponse.data.restaurant);
+    } catch (error) {
+      console.error('Error fetching restaurant data:', error);
+    }
+  };
+
+  const fetchOrders = async () => {
+    let orderCount = 0;
+    let orderReceivedCount = 0;
+    let revenueCount = 0;
+
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const response = await axios.get(`${API_URL}/orders`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      if (response.status === 200) {
+        response.data.forEach((order) => {
+          const orderDate = new Date(order.creationDate);
+          const orderDateStr = orderDate.toISOString().split('T')[0];
+
+          if (
+            order.ordersdata.restaurants.includes(restaurantId) &&
+            order.userdata.status === 'Placed' &&
+            orderDateStr === todayStr
+          ) {
+            orderCount++;
+          }
+
+          if (
+            order.ordersdata.restaurants.includes(restaurantId) &&
+            order.userdata.status === 'Completed' &&
+            orderDateStr === todayStr
+          ) {
+            orderReceivedCount++;
+          }
+
+          if (orderDateStr === todayStr && order.userdata.status === 'Completed') {
+            order.ordersdata.products.forEach((product) => {
+              if (product.restaurantId === restaurantId) {
+                revenueCount += product.priceItem;
+              }
+            });
+          }
+        });
+
+        setOrders(orderCount);
+        setReceivedOrder(orderReceivedCount);
+        setRevenue(revenueCount);
+      } else {
+        console.error('Error fetching orders:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, [orders, ordersRecived, revenue, restaurantId]);
+
+  useEffect(() => {
+    fetchRestaurantData();
+  }, []);
+  ///////
+
   return (
     <Grid templateColumns={{ base: '1fr ', md: '1fr 1fr 1fr ' }} gap={{ base: 2, md: 6 }}>
       <GridItem w='100%'>
@@ -24,7 +116,7 @@ export default function OrdersData({ setCurrentArr, ordersRecived, ordersDeliver
           transition='all 0.3s'
           borderWidth='1px'
           bg='neutral.white'
-          onClick={() => setCurrentArr(ordersRecived)}
+          onClick={() => setCurrentType('ordersRecived')}
         >
           <Flex alignItems='center'>
             <Box me={4} p={3} borderRadius={12}>
@@ -44,8 +136,9 @@ export default function OrdersData({ setCurrentArr, ordersRecived, ordersDeliver
             </Box>
             <Box>
               <Heading fontSize='2xs' fontWeight='bold'>
-                {arr[0].toLocaleString()}
+                {orders}
               </Heading>
+
               <Text fontSize='3xs' color='neutral.grayDark'>
                 Orders received
               </Text>
@@ -55,7 +148,7 @@ export default function OrdersData({ setCurrentArr, ordersRecived, ordersDeliver
       </GridItem>
       <GridItem w='100%'>
         <Box
-          onClick={() => setCurrentArr(ordersDelivered)}
+          onClick={() => setCurrentType('ordersDelivered')}
           _hover={{ cursor: 'pointer', transition: 'all 0.3s', bg: 'tertiary.light', borderColor: 'tertiary.light' }}
           _active={{
             cursor: 'pointer',
@@ -88,7 +181,7 @@ export default function OrdersData({ setCurrentArr, ordersRecived, ordersDeliver
             </Box>
             <Box>
               <Heading fontSize='2xs' fontWeight='bold'>
-                {arr[1].toLocaleString()}
+                {receivedOrders}
               </Heading>
               <Text fontSize='3xs' color='neutral.grayDark'>
                 Orders delivered
@@ -99,7 +192,7 @@ export default function OrdersData({ setCurrentArr, ordersRecived, ordersDeliver
       </GridItem>
       <GridItem w='100%'>
         <Box
-          onClick={() => setCurrentArr(orderRevenue)}
+          onClick={() => setCurrentType('orderRevenue')}
           _hover={{ cursor: 'pointer', transition: 'all 0.3s', bg: 'primary.light', borderColor: 'primary.light' }}
           _active={{
             cursor: 'pointer',
@@ -132,7 +225,7 @@ export default function OrdersData({ setCurrentArr, ordersRecived, ordersDeliver
             </Box>
             <Box>
               <Heading fontSize='2xs' fontWeight='bold'>
-                $ {arr[2].toLocaleString()}
+                ${revenue}
               </Heading>
               <Text fontSize='3xs' color='neutral.grayDark'>
                 Revenue today

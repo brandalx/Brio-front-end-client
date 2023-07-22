@@ -4,7 +4,11 @@ import burgertest from '../../assets/images/burgertest.png';
 import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
+import Pickers from '../userComponents/HomePage/Pickers';
 export default function Restaurants() {
+  const [sortedArr, setSortedArr] = useState([]);
+  const [keepArr, setKeepArr] = useState([]);
+
   // todo: add tag into product into backend model and validation
 
   const [arr, setAr] = useState([]);
@@ -14,8 +18,15 @@ export default function Restaurants() {
 
     try {
       const data = await handleApiGet(url);
-      setAr(data);
-      console.log(data);
+      let tempArrRest = [];
+      data.map((item, index) => {
+        if (item.products && item.products.length > 0) {
+          tempArrRest.push(item);
+        }
+      });
+      setAr(tempArrRest);
+      setKeepArr(tempArrRest);
+      // console.log(data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -26,6 +37,20 @@ export default function Restaurants() {
     handleApi();
   }, []);
 
+  useEffect(() => {
+    sortByTags1(sortedArr);
+  }, [sortedArr]);
+  const sortByTags1 = (_info) => {
+    if (_info.length === 0) {
+      setAr(keepArr);
+    } else {
+      const emojis = _info.map((item) => item.emoji); // extract emojis from _info
+      let filteredArr = keepArr.filter(
+        (item, index) => item.tags.some((tag) => emojis.includes(tag.badgeEmoji)) // check if badgeEmoji is in the emojis array
+      );
+      setAr(filteredArr);
+    }
+  };
   return (
     <>
       <Container maxW='1110px'>
@@ -33,20 +58,13 @@ export default function Restaurants() {
           <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>
             All restaurants
           </Text>
-          <Box py={15}>
-            <Skeleton borderRadius='16px' isLoaded={!loading}>
-              <Grid templateColumns={{ base: 'repeat(3, 1fr)', md: 'repeat(6, 1fr)' }} gap={4}>
-                <CategoryPicker emoji='pizza' label='Pizza' />
-
-                <CategoryPicker emoji='hamburger' label='Burger' />
-                <CategoryPicker emoji='cut-of-meat' label='   Sushi' />
-                <CategoryPicker emoji='sushi' label='Sushi' />
-                <CategoryPicker emoji='broccoli' label='Vegan' />
-                <CategoryPicker emoji='cupcake' label='  Desserts' />
-              </Grid>
+          <Box py='10px'>
+            <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
+              <Pickers setSortedArr={setSortedArr} sortedArr={sortedArr} />
             </Skeleton>
           </Box>
-          <Box py={15} display='flex'>
+          {/* todo: add filters */}
+          {/* <Box py={15} display='flex'>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Grid templateColumns={{ base: 'repeat(4, 1fr)', sm: 'repeat(4 1fr)', md: 'repeat(6, 1fr)' }} gap={3}>
                 <GridItem h='auto'>
@@ -147,8 +165,8 @@ export default function Restaurants() {
                 </GridItem>
               </Grid>
             </Skeleton>
-          </Box>
-          <Box py={15}>
+          </Box> */}
+          <Box py='5px'>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Text py={4} color='neutral.grayDark' fontSize='3xs'>
                 Found {arr.length} restaurants
@@ -159,17 +177,19 @@ export default function Restaurants() {
               <Box>
                 <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
                   {arr.map((item) => {
-                    return (
-                      <RestaurantCard
-                        key={item._id}
-                        _id={item._id}
-                        img={item.image}
-                        title={item.title}
-                        time={item.time}
-                        price={item.minprice}
-                        badgeData={item.tags}
-                      />
-                    );
+                    if (item.products && item.products.length > 0) {
+                      return (
+                        <RestaurantCard
+                          key={item._id}
+                          _id={item._id}
+                          img={item.image}
+                          title={item.title}
+                          time={item.time || '10-30'}
+                          price={item.minprice || 10}
+                          badgeData={item.tags}
+                        />
+                      );
+                    }
                   })}
                 </Grid>
               </Box>

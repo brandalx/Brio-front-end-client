@@ -1,22 +1,44 @@
-import { Box, Text, Icon, Button, Flex, Container, GridItem, Grid, Skeleton } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  Icon,
+  Button,
+  Flex,
+  Container,
+  GridItem,
+  Grid,
+  Skeleton,
+  useToast,
+  FormLabel
+} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
 import PaymentCard from '../userComponents/AccountSettingsPage/PaymentCard';
-
+import cash from '../../assets/images/cash.png';
 import visa from '../../assets/images/visa.png';
 import mastercard from '../../assets/images/mastercard.png';
 import PaymentSummary from '../userComponents/Checkout/PaymentSummary';
 import NewPaymentMethod from '../userComponents/Checkout/NewPaymentMethod';
-import { API_URL, handleApiGet } from '../../services/apiServices';
+import { API_URL, handleApiGet, handleApiMethod } from '../../services/apiServices';
+import DefaultPaymentMethod from '../userComponents/AccountSettingsPage/DefaultPaymentMethod';
 export default function Checkout() {
+  const location = useLocation();
+
   const [switcher, setSwitcher] = useState(true);
 
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
+  const [finalCheckoutBody, setFinalCheckoutBody] = useState(location.state);
+
   const [cardsArr, setCardsArr] = useState([]);
+  const [choosenCard, setChoosenCard] = useState([]);
+  const [onitemselected, setOnitemselected] = useState(false);
+  const [defaultmethod, setDefaultMethod] = useState(false);
+  const [preSummary, setPreSummary] = useState([]);
+  const disabledOptions = true;
   const handleApi = async () => {
-    const url = API_URL + '/users/6464085ed67f7b944b642799';
+    const url = API_URL + '/users/info/user';
     try {
       const data = await handleApiGet(url);
       setAr(data);
@@ -26,11 +48,12 @@ export default function Checkout() {
         cardholder: card.cardholder,
         expirationDate: card.expirationDate,
         paymentMethod: card.paymentMethod,
-        securityCode: card.securityCode
+        securityCode: card.securityCode,
+        _id: card._id
       }));
       setCardsArr(cards);
       setLoading(false);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -43,7 +66,76 @@ export default function Checkout() {
 
   useEffect(() => {
     handleApi();
+    // console.log(location.state);
+    handleApiPresummary();
   }, []);
+
+  useEffect(() => {
+    // console.log(finalCheckoutBody);
+  }, [finalCheckoutBody]);
+
+  const selectCard = (cardId) => {
+    setChoosenCard(cardId);
+    // console.log(cardId);
+    setOnitemselected(false);
+
+    if (cardId === 'cash') {
+      setOnitemselected(false);
+      setDefaultMethod(true);
+      setFinalCheckoutBody((prevState) => ({
+        ...prevState,
+        checkoutBodyData: {
+          ...prevState.checkoutBodyData,
+          userdata: {
+            ...prevState.checkoutBodyData.userdata,
+            selectedPaymentMethod: cardId
+          }
+        }
+      }));
+    } else {
+      cardsArr.map((item) => {
+        if (item._id === cardId) {
+          setOnitemselected(true);
+          setDefaultMethod(false);
+          setFinalCheckoutBody((prevState) => ({
+            ...prevState,
+            checkoutBodyData: {
+              ...prevState.checkoutBodyData,
+              userdata: {
+                ...prevState.checkoutBodyData.userdata,
+                selectedPaymentMethod: cardId
+              }
+            }
+          }));
+          // setPickupLocation(false);
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (
+      !finalCheckoutBody ||
+      !finalCheckoutBody.checkoutBodyData ||
+      !finalCheckoutBody.checkoutBodyData.userdata ||
+      !finalCheckoutBody.checkoutBodyData.userdata.selectedAddress
+    ) {
+      navigate('/');
+    }
+  }, [finalCheckoutBody]);
+  const navigate = useNavigate();
+  const handleApiPresummary = async () => {
+    const url = API_URL + '/users/cart/presummary';
+    try {
+      const data = await handleApiGet(url);
+      setPreSummary(data);
+
+      // console.log(data);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -59,7 +151,7 @@ export default function Checkout() {
           </Button>
           <Box my={5}>
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '4fr 1fr' }} gap={2}>
-              <GridItem w='100%'>
+              <GridItem w='100%' data-aos='fade-up'>
                 <Box>
                   <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
                     <Box ms={2} mb={4}>
@@ -68,16 +160,27 @@ export default function Checkout() {
                       </Text>
                     </Box>
 
-                    <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr  1fr ' }} gap={2}>
+                    <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr  1fr ' }} gap={4}>
                       {!loading &&
                         cardsArr.map((item, index) => {
-                          return <PaymentCard loading={loading} key={index} item={item} />;
+                          return (
+                            <PaymentCard
+                              onitemselected={choosenCard === item._id}
+                              selectCard={selectCard}
+                              disabledOptions={disabledOptions}
+                              loading={loading}
+                              key={index}
+                              item={item}
+                            />
+                          );
                         })}
-
+                      <DefaultPaymentMethod defaultmethod={defaultmethod} selectCard={selectCard} cash={cash} />
                       <GridItem w='100%'>
                         <Skeleton borderRadius='16px' isLoaded={!loading}>
                           <Box
-                            h={{ base: 'initial', lg: '130px' }}
+                            h='100%'
+                            data-aos='fade-up'
+                            // h={{ base: 'initial', lg: '130px' }}
                             onClick={() => setSwitcher(false)}
                             _hover={{
                               cursor: 'pointer',
@@ -92,7 +195,6 @@ export default function Checkout() {
                               borderColor: 'primary.default'
                             }}
                             borderRadius='16px'
-                            mb='12px'
                             p='25px'
                             transition='all 0.3s'
                             borderWidth='1px'
@@ -134,6 +236,18 @@ export default function Checkout() {
                           </Box>
                         </Skeleton>
                       </GridItem>
+                      <Link to='/user/account/payment'>
+                        <Text
+                          pt={2}
+                          textAlign='center'
+                          textDecoration='underline'
+                          fontWeight='semibold'
+                          fontSize='3xs'
+                          color='neutral.gray'
+                        >
+                          Manage all your payment methods here
+                        </Text>
+                      </Link>
                       {loading && (
                         <GridItem w='100%'>
                           <Skeleton h='110px' borderRadius='16px' isLoaded={!loading}></Skeleton>
@@ -147,15 +261,29 @@ export default function Checkout() {
                     </Grid>
                     <Skeleton borderRadius='16px' isLoaded={!loading}>
                       <Box>
-                        <NewPaymentMethod switcher={switcher} updateCreditCard={updateCreditCard} />
+                        <NewPaymentMethod
+                          handleApi={handleApi}
+                          switcher={switcher}
+                          updateCreditCard={updateCreditCard}
+                        />
                       </Box>
                     </Skeleton>
                   </Box>
                 </Box>
               </GridItem>
-              <GridItem w='100%'>
-                <PaymentSummary item={arr} loading={loading} />
-              </GridItem>
+              {!loading && (
+                <GridItem
+                  w='100%'
+                  isDisabled={finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? false : true}
+                >
+                  <PaymentSummary
+                    finalCheckoutBody={finalCheckoutBody}
+                    setFinalCheckoutBody={setFinalCheckoutBody}
+                    item={preSummary}
+                    loading={loading}
+                  />
+                </GridItem>
+              )}
             </Grid>
           </Box>
         </Container>

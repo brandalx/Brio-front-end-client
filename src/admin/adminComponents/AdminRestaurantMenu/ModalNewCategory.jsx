@@ -13,43 +13,128 @@ import {
   ModalOverlay,
   Text,
   useMediaQuery,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from '@chakra-ui/react';
 import AddPlus from '../../../assets/svg/AddPlus';
 import { API_URL, handleApiPost, handleApiGet } from '../../../services/apiServices';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 export default function ModalNewCategory({ fetchCategories, setCategories }) {
   const [isLilMob] = useMediaQuery('(max-width: 350px)');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [categoryName, setCategoryName] = useState('');
+  const [restaurantId, setRestaurantId] = useState(null);
+  const toast = useToast();
+
+  const fetchAdmin = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+
+      const response = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      setRestaurantId(response.data.restaurant);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    }
+  };
 
   const createNewCategory = async (name, items) => {
     const amount = 0;
-    return await handleApiPost(API_URL + '/admin/categories', {
-      categoryName: name,
-      items,
-      amount
-    });
+    const token = localStorage.getItem('x-api-key');
+    return await handleApiPost(
+      API_URL + '/admin/categories',
+      {
+        restaurantId,
+        categoryName: name,
+        items,
+        amount
+      },
+      { 'x-api-key': token }
+    );
+  };
+
+  const fetchCategoriesForRestaurant = async () => {
+    const token = localStorage.getItem('x-api-key');
+    try {
+      const response = await axios.get(`${API_URL}/admin/categories`, {
+        params: {
+          restaurantRef: restaurantId
+        },
+        headers: {
+          'x-api-key': token
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const checkCategoryName = async (name) => {
+    const categories = await fetchCategoriesForRestaurant();
+    const existingCategory = categories.find((category) => category.name === name);
+    return existingCategory != null;
   };
 
   const handlePublishCategory = async () => {
-    // Assuming you have an array of new items ID
     const newItemsId = [];
+
+    if (!restaurantId || !Array.isArray(newItemsId)) {
+      console.error('The restaurant ID is not set or the items is not an array');
+      return;
+    }
+
+    // await the checkCategoryName function
+    if (await checkCategoryName(categoryName)) {
+      toast({
+        title: 'Category already exists.',
+        description: 'A category with this name already exists. Please choose a different name.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+      return;
+    }
 
     try {
       const newCategory = await createNewCategory(categoryName, newItemsId);
-      // Add the new category to the list of categories
-      setCategories((prevCategories) => [
-        ...prevCategories,
-        { ...newCategory, amount: 0 } // Add the amount field to the new category
-      ]);
-      // If successful, close the modal
+      setCategories((prevCategories) => [...prevCategories, { ...newCategory, amount: 0 }]);
       onClose();
+
+      toast({
+        title: 'Category successfully created.',
+        description: 'The category was created successfully.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      });
     } catch (error) {
-      console.error('An error occurred while publishing the category:', error);
+      console.error('Probably this category already exists:', error);
+
+      toast({
+        title: 'Error creating category.',
+        description: 'Probably this category already exists.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
     }
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchAdmin();
+      fetchCategoriesForRestaurant();
+    }
+  }, [isOpen]);
 
   return (
     <>

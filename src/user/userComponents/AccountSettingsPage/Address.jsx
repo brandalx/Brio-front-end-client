@@ -15,96 +15,36 @@ import {
 import AdressCard from './AdressCard';
 import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
+import AddressReducers from '../reducers/addressReducers';
 
 export default function Adress() {
-  const [loading, setLoading] = useState(true);
-  const [arr, setArr] = useState([]);
-  const [addressArr, setAddressArr] = useState([]);
-
-  const handleApi = async () => {
-    const url = API_URL + '/users/6464085ed67f7b944b642799';
-    try {
-      const data = await handleApiGet(url);
-      setArr(data);
-      console.log(data);
-
-      const address = data.address.map((item) => ({
-        country: item.country,
-        state: item.state,
-        city: item.city,
-        address1: item.address1,
-        address2: item.address2
-      }));
-
-      setAddressArr(address);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
-
   const {
+    isEditTrue,
+    setIsEditTrue,
+    loading,
+    arr,
+    setArr,
+    addressArr,
+    setAddressArr,
+    targetIndex,
+    setTargetIndex,
     handleSubmit,
     register,
-    formState: { errors, isSubmitting }
-  } = useForm();
-
-  const onSubForm = (_bodyData) => {
-    console.log(_bodyData);
-    handleUserAddressPost(_bodyData);
-  };
-  const toast = useToast();
-  const handleUserAddressPost = async (_bodyData) => {
-    try {
-      // const url = API_URL + "/videos/"+params["id"];
-      const url = API_URL + '/users/6464085ed67f7b944b642799/postuseraddress';
-      const data = await handleApiMethod(url, 'POST', _bodyData);
-      if (data.msg === true) {
-        toast({
-          title: 'New Address added.',
-          description: "We've added your new address.",
-          status: 'success',
-          duration: 9000,
-          isClosable: true
-        });
-
-        updateAddress(_bodyData);
-      }
-    } catch (error) {
-      console.log(error);
-
-      if (error.response.data.err === 'Address already exists') {
-        toast({
-          title: 'Duplicated address',
-          description: `Error when adding new address - such address already exist.`,
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
-      } else {
-        toast({
-          title: 'Error when adding new address',
-          description: 'Error when adding new address',
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
-      }
-    }
-  };
-
-  const updateAddress = (newAddressData) => {
-    setAddressArr((prevCardsArr) => [...prevCardsArr, newAddressData]);
-  };
-
-  useEffect(() => {
-    handleApi();
-  }, []);
+    errors,
+    isSubmitting,
+    setValue,
+    onSubForm,
+    onSubForm2,
+    handleUserAddressPost,
+    handleUserAddressUpdate,
+    handleApi,
+    clearValues,
+    handleUserAddressDelete
+  } = AddressReducers();
 
   return (
     <>
-      <Box>
+      <Box data-aos='fade-up'>
         <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
           Address
         </Text>
@@ -114,11 +54,25 @@ export default function Adress() {
           </Text>
           <Skeleton minH='100px' borderRadius='16px' isLoaded={!loading}>
             <Box pt={5}>
-              <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={6}>
+              <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1fr 1fr ' }} gap={4}>
                 {!loading &&
                   addressArr.map((item, index) => {
-                    return <AdressCard key={index} item={item} index={index} />;
+                    return (
+                      <AdressCard
+                        setTargetIndex={setTargetIndex}
+                        setIsEditTrue={setIsEditTrue}
+                        handleUserAddressDelete={handleUserAddressDelete}
+                        key={index}
+                        item={item}
+                        index={addressArr.length - 1 - index}
+                      />
+                    );
                   })}
+                {addressArr.length === 0 && (
+                  <Text fontSize='2xs' fontWeight='bold' color='neutral.gray' py=''>
+                    No addresses added yet
+                  </Text>
+                )}
               </Grid>
             </Box>
           </Skeleton>
@@ -137,7 +91,7 @@ export default function Adress() {
                     <Input
                       id='country'
                       {...register('country', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -147,7 +101,7 @@ export default function Adress() {
                       fontSize='2xs'
                       placeholder='Enter country'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.country && errors.country.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -160,7 +114,7 @@ export default function Adress() {
 
                     <Input
                       {...register('state', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -170,8 +124,8 @@ export default function Adress() {
                       fontSize='2xs'
                       placeholder='Enter state'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
-                      {errors.firstname && errors.state.message}
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
+                      {errors.state && errors.state.message}
                     </FormErrorMessage>
                   </FormControl>
                 </GridItem>
@@ -188,7 +142,7 @@ export default function Adress() {
 
                     <Input
                       {...register('city', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -198,7 +152,7 @@ export default function Adress() {
                       fontSize='2xs'
                       placeholder='Enter city'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.city && errors.city.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -215,7 +169,7 @@ export default function Adress() {
 
                     <Input
                       {...register('address1', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -225,7 +179,7 @@ export default function Adress() {
                       fontSize='2xs'
                       placeholder='Enter address'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.address1 && errors.address1.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -243,7 +197,7 @@ export default function Adress() {
 
                     <Input
                       {...register('address2', {
-                        required: true,
+                        required: { value: false, message: 'Fill the field' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -253,7 +207,7 @@ export default function Adress() {
                       fontSize='2xs'
                       placeholder='Enter address (optional)'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.address2 && errors.address2.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -262,27 +216,77 @@ export default function Adress() {
             </Box>
 
             <Box pt={5} display='flex' justifyContent='flex-end'>
-              <Button
-                type='submit'
-                isLoading={isSubmitting}
-                background='neutral.white'
-                fontSize='2xs'
-                fontWeight='bold'
-                variant='solid'
-                color='primary.default'
-                borderWidth='1px'
-                borderColor='primary.default'
-                _hover={{
-                  background: 'primary.default',
-                  color: 'neutral.white',
-                  borderWidth: '1px',
-                  borderColor: 'primary.default'
-                }}
-                py={5}
-                me='20px'
-              >
-                Add new address
-              </Button>
+              {isEditTrue && (
+                <Button
+                  w={{ base: '100%', md: 'initial' }}
+                  background='neutral.white'
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='error.default'
+                  borderWidth='1px'
+                  borderColor='error.default'
+                  _hover={{
+                    background: 'error.default',
+                    color: 'neutral.white',
+                    borderWidth: '1px',
+                    borderColor: 'error.default'
+                  }}
+                  py={5}
+                  me='20px'
+                  onClick={() => {
+                    setIsEditTrue(false);
+                    clearValues();
+                  }}
+                >
+                  Cancel edit
+                </Button>
+              )}
+              {!isEditTrue ? (
+                <Button
+                  type='submit'
+                  isLoading={isSubmitting}
+                  background='neutral.white'
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='primary.default'
+                  borderWidth='1px'
+                  borderColor='primary.default'
+                  _hover={{
+                    background: 'primary.default',
+                    color: 'neutral.white',
+                    borderWidth: '1px',
+                    borderColor: 'primary.default'
+                  }}
+                  py={5}
+                  me='20px'
+                >
+                  Add new address
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleSubmit(onSubForm2)} // Pass the function reference directly to onClick
+                  isLoading={isSubmitting}
+                  background='neutral.white'
+                  fontSize='2xs'
+                  fontWeight='bold'
+                  variant='solid'
+                  color='primary.default'
+                  borderWidth='1px'
+                  borderColor='primary.default'
+                  _hover={{
+                    background: 'primary.default',
+                    color: 'neutral.white',
+                    borderWidth: '1px',
+                    borderColor: 'primary.default'
+                  }}
+                  py={5}
+                  me='20px'
+                >
+                  Submit
+                </Button>
+              )}
             </Box>
           </form>
         </Box>
