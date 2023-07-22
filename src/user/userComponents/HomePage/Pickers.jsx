@@ -8,7 +8,7 @@ export default function Pickers({ sortedArr, setSortedArr }) {
   }, []);
   return (
     <Box>
-      <Box py={30}>
+      <Box py='10px'>
         <Grid templateColumns={{ base: 'repeat(3, 1fr)', md: 'repeat(6, 1fr)' }} gap={4}>
           <CategoryPicker sortedArr={sortedArr} setSortedArr={setSortedArr} emoji='pizza' label='Pizza' />
 

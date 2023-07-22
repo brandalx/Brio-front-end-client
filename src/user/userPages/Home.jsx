@@ -14,7 +14,11 @@ import { Link } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { geolocationContext } from '../../context/globalContext';
 import Pickers from '../userComponents/HomePage/Pickers';
-
+import SearchInput from '../userComponents/Search/SearchInput';
+import Arrow from '../../assets/svg/Arrow';
+function getRandomIndex(length) {
+  return Math.floor(Math.random() * length);
+}
 export default function Home() {
   // todo: add tag into product into backend model and validation
 
@@ -29,18 +33,73 @@ export default function Home() {
   const [hovered, setHovered] = useState(false);
   const [sortedArr, setSortedArr] = useState([]);
   const [sortedArr2, setSortedArr2] = useState([]);
-
+  const [promotions, setPromotions] = useState([]);
+  const [activePromotions, setActivePromotions] = useState([]);
+  const [dates, setDates] = useState();
   const { city, setCity, isTrue, setIsTrue } = useContext(geolocationContext);
+  let lastPromotions = [];
+  const handlePromotions = async () => {
+    try {
+      const url = API_URL + '/admin/promotions';
+      const data = await handleApiGet(url);
+      console.log(data);
+      setPromotions(data);
+
+      let tempArr = [];
+      // let tempArr2 = [];
+      let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      let dayName = days[new Date().getDay()]; // get the day of the week
+      //for both start and end dates
+      // data.forEach((item) => {
+      //   let startDate = new Date(item.startDate); // parse startDate into a Date object
+      //   let endDate = new Date(item.endDate); // parse endDate into a Date object
+      //   if (item.discountDays.includes(dayName) && new Date() >= startDate && new Date() < endDate) {
+      //     tempArr.push(item);
+      //   }
+      // });
+
+      //for only end date
+      data.forEach((item) => {
+        let startDate = new Date(item.startDate); // parse startDate into a Date object
+        let endDate = new Date(item.endDate); // parse endDate into a Date object
+        if (item.discountDays.includes(dayName) && new Date() < endDate) {
+          tempArr.push(item);
+        }
+      });
+
+      // let rnd1, rnd2;
+      // do {
+      //   rnd1 = Math.floor(Math.random() * tempArr.length);
+      //   rnd2 = Math.floor(Math.random() * tempArr.length);
+      // } while (rnd2 === rnd1 || lastPromotions.includes(rnd1) || lastPromotions.includes(rnd2));
+
+      // tempArr2.push(data[rnd1]);
+      // tempArr2.push(data[rnd2]);
+
+      console.log(tempArr);
+      setActivePromotions(tempArr);
+
+      // lastPromotions = [rnd1, rnd2]; // remember the last promotions
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleApi = async () => {
     const url = API_URL + '/restaurants';
 
     try {
       const data = await handleApiGet(url);
+      let tempArrRest = [];
+      data.map((item, index) => {
+        if (item.products && item.products.length > 0) {
+          tempArrRest.push(item);
+        }
+      });
+      setAr(tempArrRest);
 
-      setAr(data);
-      setAr2(data);
-      setKeepArr(data);
+      setKeepArr(tempArrRest);
+
       handleApiUser();
       console.log(data);
     } catch (error) {
@@ -60,8 +119,35 @@ export default function Home() {
       console.log(error);
     }
   };
+  const handleSortedByLocation = (_data) => {
+    if (typeof city !== 'string' || city.length === 0) {
+      console.error('Invalid city value:', city);
+      return;
+    }
+
+    let prefinalArr = [];
+    const cityRegex = new RegExp(city, 'i');
+
+    _data.map((item, index) => {
+      console.log(item.location);
+      console.log(cityRegex);
+      if (cityRegex.test(item.location)) {
+        prefinalArr.push(item);
+      }
+    });
+
+    let tempArrRest = [];
+    prefinalArr.map((item, index) => {
+      if (item.products && item.products.length > 0) {
+        tempArrRest.push(item);
+      }
+    });
+
+    setAr2(tempArrRest);
+  };
 
   useEffect(() => {
+    handlePromotions();
     handleApi();
   }, []);
 
@@ -125,6 +211,12 @@ export default function Home() {
       setAr(filteredArr);
     }
   };
+
+  useEffect(() => {
+    if (localStorage[TOKEN_KEY] && sessionStorage['isTrue'] && sessionStorage['location'] && sortedArr) {
+      handleSortedByLocation(arr);
+    }
+  }, [city, setCity, sortedArr]);
   return (
     <>
       <Preloader loading={loading} />
@@ -218,17 +310,39 @@ export default function Home() {
             </Box>
 
             <Box borderRadius='16px' h={`${heightchange}px`} w='100%'>
+              <Box className='vibrate-1' display={{ base: 'none', lg: 'block' }} position='relative'>
+                <Box position='absolute'>
+                  <Text
+                    style={{ transform: 'translateX(480px) translateY(-10px)' }}
+                    mt={2}
+                    ms={5}
+                    textAlign={{ base: 'center', md: 'start' }}
+                    fontSize={{ base: '2xs', md: '2xs' }}
+                    lineHeight={{ base: '15px', md: '20px' }}
+                    color='white'
+                    fontWeight='black'
+                  >
+                    Touchable!
+                  </Text>
+
+                  <Box style={{ transform: 'translateX(500px) translateY(-80px) scale(0.4)' }}>
+                    <Arrow />
+                  </Box>
+                </Box>
+              </Box>
               <Spline scene='https://draft.spline.design/wzcQPaZUf8Lx1H2y/scene.splinecode' onLoad={onload} />
             </Box>
           </Flex>
         </Box>
       </Container>
-
+      <Box pt={15} pb='50px'>
+        <SearchInput />
+      </Box>
       <Container maxW='1110px' py={15}>
         <Skeleton borderRadius='16px' height={loading ? '250px' : '0px'} isLoaded={loading} my={loading ? 2 : 0} />
         <Box>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
-            <Skeleton borderRadius='16px' isLoaded={!loading}>
+            {/* <Skeleton borderRadius='16px' isLoaded={!loading}>
               <GridItem
                 style={{ transition: 'all 0.3s' }}
                 cursor='pointer'
@@ -240,54 +354,88 @@ export default function Home() {
                 _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
                 borderRadius={20}
               >
-                <Flex alignItems='center'>
-                  <Box w='50%'>
-                    <Image src={caketest} alt='Promotion 1' />
-                  </Box>
-                  <Box w='50%'>
-                    <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
-                      All deserts
-                    </Text>
-                    <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
-                      20% OFF
-                    </Text>
-                    <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
-                      Deserty
-                    </Text>
-                  </Box>
-                </Flex>
+                {activePromotions.length > 0 && (
+                  <Link to={`/restaurant/${activePromotions[index].restaurantRef}`}>
+                    <Flex alignItems='center'>
+                      <Box w='50%'>
+                        <Image src={caketest} alt='Promotion 1' />
+                      </Box>
+                      <Box w='50%'>
+                        <Text fontSize='xs' color='neutral.black' fontWeight='medium'>
+                          {activePromotions[0].discountDetails}
+                        </Text>
+                        <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
+                          {activePromotions[0].discountPercent}% OFF
+                        </Text>
+                        <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
+                          at {activePromotions[0].restaurantName}
+                        </Text>
+                      </Box>
+                    </Flex>
+                  </Link>
+                )}
               </GridItem>
-            </Skeleton>
-            <Skeleton borderRadius='16px' isLoaded={!loading}>
-              <GridItem
-                style={{ transition: 'all 0.3s' }}
-                cursor='pointer'
-                borderRadius={20}
-                w='100%'
-                h='auto'
-                borderColor='white'
-                borderWidth='1px'
-                bg='secondary.light'
-                _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
-              >
-                <Flex alignItems='center'>
-                  <Box w='50%'>
-                    <Image src={burgertest} alt='Promotion 1' />
-                  </Box>
-                  <Box w='50%'>
-                    <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
-                      Big Burgers
-                    </Text>
-                    <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
-                      50% OFF
-                    </Text>
-                    <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
-                      Fooddies
-                    </Text>
-                  </Box>
-                </Flex>
-              </GridItem>
-            </Skeleton>
+            </Skeleton> */}
+            {activePromotions.length > 0 &&
+              (() => {
+                let randomPromotions = [];
+                if (activePromotions.length === 1) {
+                  // If there's only one promotion, just use that.
+                  randomPromotions = [activePromotions[0]];
+                } else {
+                  // Generate two unique random indexes
+                  let index1 = getRandomIndex(activePromotions.length);
+                  let index2 = getRandomIndex(activePromotions.length);
+                  while (index1 === index2) {
+                    index2 = getRandomIndex(activePromotions.length);
+                  }
+                  // Create a new array containing the two randomly chosen items
+                  randomPromotions = [activePromotions[index1], activePromotions[index2]];
+                }
+
+                return randomPromotions.map((item, index) => {
+                  // Your original map function here...
+                  return (
+                    <Skeleton key={index} borderRadius='16px' isLoaded={!loading}>
+                      <GridItem
+                        style={{ transition: 'all 0.3s' }}
+                        cursor='pointer'
+                        borderRadius={20}
+                        w='100%'
+                        h='auto'
+                        borderColor='white'
+                        borderWidth='1px'
+                        bg={index % 2 === 0 ? 'secondary.light' : 'primary.light'}
+                        _hover={{
+                          bg: 'white',
+                          borderWidth: '1px',
+                          borderColor: 'primary.default',
+                          transition: 'all 0.3s'
+                        }}
+                      >
+                        <Link to={`/restaurant/${item.restaurantRef}`}>
+                          <Flex alignItems='center'>
+                            <Box w='50%'>
+                              <Image src={index % 2 === 0 ? burgertest : caketest} alt='Promotion 1' />
+                            </Box>
+                            <Box w='50%'>
+                              <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
+                                {item.discountDetails}
+                              </Text>
+                              <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
+                                {item.discountPercent}% OFF
+                              </Text>
+                              <Text fontSize='2xs' fontWeight='regular' color='neutral.gray'>
+                                at {item.restaurantName}
+                              </Text>
+                            </Box>
+                          </Flex>
+                        </Link>
+                      </GridItem>
+                    </Skeleton>
+                  );
+                });
+              })()}
           </Grid>
         </Box>
         <Box maxW='1110px' my='45px'>
@@ -295,8 +443,6 @@ export default function Home() {
             <Box
               style={{ transition: 'all 0.3s' }}
               cursor='pointer'
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
               borderRadius='16px'
               py={5}
               borderColor='white'
@@ -340,12 +486,8 @@ export default function Home() {
         </Box>
         {localStorage[TOKEN_KEY] && sessionStorage['isTrue'] && sessionStorage['location'] && sortedArr && (
           <>
-            <Skeleton borderRadius='16px' isLoaded={!loading} my={2}>
-              <Pickers setSortedArr={setSortedArr} sortedArr={sortedArr} />
-            </Skeleton>
-
             <Box pt='25px'>
-              <Text mb={2} fontWeight='semibold' color='neutral.black' fontSize='sm'>
+              <Text mb={2} fontWeight='extrabold' color='neutral.black' fontSize='sm'>
                 Nearby restaurants at {city}
               </Text>
               <Skeleton borderRadius='16px' isLoaded={!loading}>
@@ -353,6 +495,32 @@ export default function Home() {
                   Found {arr2.length} restaurants
                 </Text>
               </Skeleton>
+              {arr2.length === 0 && (
+                <Skeleton borderRadius='16px' isLoaded={!loading}>
+                  <Box
+                    style={{ transition: 'all 0.3s' }}
+                    cursor='pointer'
+                    borderRadius='16px'
+                    py={5}
+                    borderColor='white'
+                    borderWidth='1px'
+                    bg='primary.light'
+                    _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
+                  >
+                    <Flex justifyContent='center' alignItems={{ base: 'none', md: 'center' }}>
+                      <Text
+                        ms={5}
+                        textAlign={{ base: 'center', md: 'start' }}
+                        fontSize={{ base: 'sm', md: 'dm' }}
+                        color={hovered ? '#4e60ff' : '#4e60ff'}
+                        fontWeight='black'
+                      >
+                        Sorry we didn't found restaurants nearby at {city} : (
+                      </Text>
+                    </Flex>
+                  </Box>
+                </Skeleton>
+              )}
 
               {!loading && (
                 <Box>
@@ -361,20 +529,22 @@ export default function Home() {
                     gap={4}
                   >
                     {arr2.map((item, index) => {
-                      return (
-                        <Box key={index}>
-                          <Skeleton borderRadius='16px' isLoaded={!loading}>
-                            <RestaurantCard
-                              _id={item._id}
-                              img={item.image}
-                              title={item.title}
-                              time={item.time}
-                              price={item.minprice}
-                              badgeData={item.tags}
-                            />
-                          </Skeleton>
-                        </Box>
-                      );
+                      if (item.products.length > 0) {
+                        return (
+                          <Box key={index}>
+                            <Skeleton borderRadius='16px' isLoaded={!loading}>
+                              <RestaurantCard
+                                _id={item._id}
+                                img={item.image}
+                                title={item.title}
+                                time={item.time}
+                                price={item.minprice}
+                                badgeData={item.tags}
+                              />
+                            </Skeleton>
+                          </Box>
+                        );
+                      }
                     })}
                   </Grid>
                 </Box>
@@ -400,13 +570,14 @@ export default function Home() {
           </>
         )}
         <Box py='25px'>
-          <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>
+          <Text fontWeight='extrabold' color='neutral.black' fontSize='sm'>
             All restaurants
           </Text>
-          <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
+          <Skeleton borderRadius='16px' isLoaded={!loading} my='5px'>
             <Pickers setSortedArr={setSortedArr2} sortedArr={sortedArr2} />
           </Skeleton>
-          <Box py={15} display='flex'>
+          {/* todo: add filters */}
+          {/* <Box py={15} display='flex'>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Grid templateColumns={{ base: 'repeat(4, 1fr)', sm: 'repeat(4 1fr)', md: 'repeat(6, 1fr)' }} gap={3}>
                 <GridItem h='auto'>
@@ -513,7 +684,7 @@ export default function Home() {
                 </GridItem>
               </Grid>
             </Skeleton>
-          </Box>
+          </Box> */}
           <Box py={15}>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Text py={4} color='neutral.grayDark' fontSize='3xs'>
@@ -524,18 +695,20 @@ export default function Home() {
             {!loading && (
               <Box>
                 <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
-                  {arr.map((item) => {
-                    return (
-                      <RestaurantCard
-                        key={item._id}
-                        _id={item._id}
-                        img={item.image}
-                        title={item.title}
-                        time={item.time}
-                        price={item.minprice}
-                        badgeData={item.tags}
-                      />
-                    );
+                  {arr.map((item, index) => {
+                    if (item.products && item.products.length > 0) {
+                      return (
+                        <RestaurantCard
+                          key={index}
+                          _id={item._id}
+                          img={item.image}
+                          title={item.title}
+                          time={item.time}
+                          price={item.minprice}
+                          badgeData={item.tags}
+                        />
+                      );
+                    }
                   })}
                 </Grid>
               </Box>

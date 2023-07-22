@@ -1,12 +1,64 @@
-import { Box, Button, Grid, GridItem, Text, Image, Divider, Skeleton } from '@chakra-ui/react';
+import { Box, Button, Grid, GridItem, Text, Image, Divider, Skeleton, Badge } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import TrashBox from '../../../assets/svg/TrashBox';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import { Link } from 'react-router-dom';
-
+import noimage from '../../../assets/images/noimage.jpg';
 export default function Menu({ item }) {
   const [producAr, setProductAr] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [promotions, setPromotions] = useState([]);
+  const [activePromotions, setActivePromotions] = useState([]);
+  const [currentPromotion, setCurrentPromotion] = useState([]);
+
+  const handlePromotions = async () => {
+    try {
+      const url = API_URL + '/admin/promotions';
+      const data = await handleApiGet(url);
+      console.log(data);
+      setPromotions(data);
+
+      let tempArr = [];
+      // let tempArr2 = [];
+      let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      let dayName = days[new Date().getDay()]; // get the day of the week
+      //for both start and end dates
+      // data.forEach((item) => {
+      //   let startDate = new Date(item.startDate); // parse startDate into a Date object
+      //   let endDate = new Date(item.endDate); // parse endDate into a Date object
+      //   if (item.discountDays.includes(dayName) && new Date() >= startDate && new Date() < endDate) {
+      //     tempArr.push(item);
+      //   }
+      // });
+
+      //for only end date
+      data.forEach((item) => {
+        let startDate = new Date(item.startDate); // parse startDate into a Date object
+        let endDate = new Date(item.endDate); // parse endDate into a Date object
+        if (item.discountDays.includes(dayName) && new Date() < endDate) {
+          tempArr.push(item);
+        }
+      });
+
+      // let rnd1, rnd2;
+      // do {
+      //   rnd1 = Math.floor(Math.random() * tempArr.length);
+      //   rnd2 = Math.floor(Math.random() * tempArr.length);
+      // } while (rnd2 === rnd1 || lastPromotions.includes(rnd1) || lastPromotions.includes(rnd2));
+
+      // tempArr2.push(data[rnd1]);
+      // tempArr2.push(data[rnd2]);
+
+      console.log(tempArr);
+      setActivePromotions(tempArr);
+      let promotion = tempArr.find((promo) => promo.discountProducts.includes(item.productId));
+      setCurrentPromotion(promotion || null);
+
+      // lastPromotions = [rnd1, rnd2]; // remember the last promotions
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleApi = async () => {
     const url = API_URL + '/products/' + item.productId;
     console.log(url);
@@ -17,7 +69,7 @@ export default function Menu({ item }) {
       setProductAr(product);
 
       console.log(product);
-
+      handlePromotions();
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -28,6 +80,7 @@ export default function Menu({ item }) {
   useEffect(() => {
     handleApi();
   }, []);
+
   return (
     <>
       <Link to={`/restaurant/product/${item.productId}`}>
@@ -45,13 +98,24 @@ export default function Menu({ item }) {
                 <Box display='flex' alignItems='center'>
                   <Box me={2}>
                     {!loading && (
-                      <Image borderRadius='12px' maxH='72px' maxW='72px' src={producAr.image[0]} alt='image' />
+                      <Image
+                        borderRadius='12px'
+                        maxH='72px'
+                        maxW='72px'
+                        src={producAr.image[0] ? producAr.image[0] : noimage}
+                        alt='image'
+                      />
                     )}
                   </Box>
                   <Box>
                     <Box>
                       <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
                         {!loading && producAr.title}
+                        {currentPromotion && (
+                          <Badge ms={2} bg='primary.default' color='white' fontSize='3xs'>
+                            {currentPromotion.discountPercent}% off
+                          </Badge>
+                        )}
                       </Text>
                     </Box>
                     <Box>
@@ -83,14 +147,27 @@ export default function Menu({ item }) {
                     </Box>
                   </GridItem>
                   <GridItem w='100%' h='100%'>
-                    <Box w='100%' display='flex' justifyContent='center'>
-                      {' '}
-                      <Skeleton borderRadius='16px' isLoaded={!loading}>
-                        <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
-                          {!loading && '$ ' + producAr.price * item.amount}
-                        </Text>
-                      </Skeleton>
-                    </Box>
+                    {!loading && (
+                      <Box w='100%' display='flex' justifyContent='center'>
+                        {' '}
+                        <Skeleton borderRadius='16px' isLoaded={!loading}>
+                          {currentPromotion ? (
+                            <Box display='flex'>
+                              <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
+                                ${' '}
+                                {(producAr.price * (1 - currentPromotion.discountPercent / 100) * item.amount).toFixed(
+                                  2
+                                )}
+                              </Text>
+                            </Box>
+                          ) : (
+                            <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
+                              $ {(producAr.price * item.amount).toFixed(2)}
+                            </Text>
+                          )}
+                        </Skeleton>
+                      </Box>
+                    )}
                   </GridItem>
                 </Grid>
               </Box>

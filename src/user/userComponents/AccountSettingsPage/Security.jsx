@@ -151,7 +151,7 @@ export default function Security() {
                     <Input
                       isInvalid={errors.previouspassword}
                       {...register('previouspassword', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='password'
@@ -161,7 +161,7 @@ export default function Security() {
                       fontSize='2xs'
                       placeholder='Enter current password'
                     />{' '}
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.previouspassword && errors.previouspassword.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -175,7 +175,7 @@ export default function Security() {
                     <Input
                       isInvalid={errors.password}
                       {...register('password', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 8, message: 'Password must have at least 8 characters' }
                       })}
                       type='password'
@@ -185,7 +185,7 @@ export default function Security() {
                       fontSize='2xs'
                       placeholder='Enter new password'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.password && errors.password.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -204,7 +204,7 @@ export default function Security() {
                     <Input
                       isInvalid={errors.confirmpassword}
                       {...register('confirmpassword', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' },
                         validate: (value) => value === getValues('password') || 'The passwords do not match'
                       })}
@@ -215,7 +215,7 @@ export default function Security() {
                       fontSize='2xs'
                       placeholder='Confirm new password'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.confirmpassword && errors.confirmpassword.message}
                     </FormErrorMessage>
                   </FormControl>

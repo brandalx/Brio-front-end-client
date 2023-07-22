@@ -22,14 +22,16 @@ import {
 import 'react-image-gallery/styles/css/image-gallery.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaChevronLeft } from 'react-icons/fa';
-
+import noimage from '../../assets/images/noimage.jpg';
 import ImageGallery from 'react-image-gallery';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { API_URL, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import { cartContext } from '../../context/globalContext';
 import { useCheckToken } from '../../services/token';
+import { Badge } from '@chakra-ui/react';
 export default function Product() {
+  const [isNoImage, setIsNoImage] = useState(false);
   const { cartLen, setCartLen } = useContext(cartContext);
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const thumbnailPosition = isLargerThanMd ? 'left' : 'bottom';
@@ -43,6 +45,59 @@ export default function Product() {
   const [amount, setAmount] = useState(1);
   const navigate = useNavigate();
   const isTokenExpired = useCheckToken();
+
+  const [promotions, setPromotions] = useState([]);
+  const [activePromotions, setActivePromotions] = useState([]);
+  const [currentPromotion, setCurrentPromotion] = useState([]);
+  let lastPromotions = [];
+  const handlePromotions = async () => {
+    try {
+      const url = API_URL + '/admin/promotions';
+      const data = await handleApiGet(url);
+      console.log(data);
+      setPromotions(data);
+
+      let tempArr = [];
+      // let tempArr2 = [];
+      let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      let dayName = days[new Date().getDay()]; // get the day of the week
+      //for both start and end dates
+      // data.forEach((item) => {
+      //   let startDate = new Date(item.startDate); // parse startDate into a Date object
+      //   let endDate = new Date(item.endDate); // parse endDate into a Date object
+      //   if (item.discountDays.includes(dayName) && new Date() >= startDate && new Date() < endDate) {
+      //     tempArr.push(item);
+      //   }
+      // });
+
+      //for only end date
+      data.forEach((item) => {
+        let startDate = new Date(item.startDate); // parse startDate into a Date object
+        let endDate = new Date(item.endDate); // parse endDate into a Date object
+        if (item.discountDays.includes(dayName) && new Date() < endDate) {
+          tempArr.push(item);
+        }
+      });
+
+      // let rnd1, rnd2;
+      // do {
+      //   rnd1 = Math.floor(Math.random() * tempArr.length);
+      //   rnd2 = Math.floor(Math.random() * tempArr.length);
+      // } while (rnd2 === rnd1 || lastPromotions.includes(rnd1) || lastPromotions.includes(rnd2));
+
+      // tempArr2.push(data[rnd1]);
+      // tempArr2.push(data[rnd2]);
+
+      console.log(tempArr);
+      setActivePromotions(tempArr);
+      let promotion = tempArr.find((promo) => promo.discountProducts.includes(params['id']));
+      setCurrentPromotion(promotion || null);
+
+      // lastPromotions = [rnd1, rnd2]; // remember the last promotions
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleAProductApi = async () => {
     // const url = API_URL + '/products';
 
@@ -76,7 +131,22 @@ export default function Product() {
 
       const finalProducts = tempProductArr.filter((item) => item._id !== params['id']);
       setProductsAr(finalProducts);
-      setImageArr(images);
+      if (images.length === 0) {
+        let tempArr = [
+          {
+            original: noimage,
+            thumbnail: noimage
+          }
+        ];
+
+        console.log(tempArr);
+        setImageArr(tempArr);
+        setIsNoImage(true);
+      } else if (images.length > 0) {
+        setImageArr(images);
+        console.log(images);
+      }
+
       handleUserApi();
     } catch (error) {
       setLoading(false);
@@ -97,6 +167,7 @@ export default function Product() {
   };
 
   useEffect(() => {
+    handlePromotions();
     handleAProductApi();
     setAmount(1);
   }, [params['id']]);
@@ -193,7 +264,16 @@ export default function Product() {
                 <Stack>
                   <Skeleton borderRadius='16px' isLoaded={!loading} minH='40px'>
                     <Text mt={2} color='neutral.black' fontSize='md' fontWeight='bold'>
-                      {!loading && <>{arr.title}</>}
+                      {!loading && (
+                        <>
+                          {arr.title}{' '}
+                          {currentPromotion && (
+                            <Badge bg='primary.default' color='white' fontSize='3xs'>
+                              {currentPromotion.discountPercent}% off
+                            </Badge>
+                          )}{' '}
+                        </>
+                      )}
                     </Text>
                   </Skeleton>
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
@@ -204,9 +284,30 @@ export default function Product() {
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                     {isTokenExpired ? (
                       <Box>
-                        <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                          {!loading && <>$ {arr.price}</>}
-                        </Text>
+                        {currentPromotion ? (
+                          <Box display='flex'>
+                            <Text
+                              me={4}
+                              textDecoration='line-through 4px red'
+                              my={4}
+                              fontWeight='extrabold'
+                              color='neutral.black'
+                              fontSize='md'
+                            >
+                              {!loading && <>$ {arr.price * amount}</>}
+                            </Text>
+                            {currentPromotion && (
+                              <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                                {!loading && <>$ {arr.price * (1 - currentPromotion.discountPercent / 100) * amount}</>}
+                              </Text>
+                            )}
+                          </Box>
+                        ) : (
+                          <Text textDecoration='none' my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                            {!loading && <>$ {arr.price * amount}</>}
+                          </Text>
+                        )}
+
                         <Link to='/signup'>
                           <Button
                             w='100%'
@@ -230,9 +331,38 @@ export default function Product() {
                       </Box>
                     ) : (
                       <Flex justifyContent='space-between' alignItems='center'>
-                        <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                          {!loading && <>$ {arr.price}</>}
-                        </Text>
+                        {currentPromotion ? (
+                          <Box display='flex'>
+                            <Text
+                              me={4}
+                              textDecoration='line-through 4px red'
+                              my={4}
+                              fontWeight='extrabold'
+                              color='neutral.black'
+                              fontSize='md'
+                            >
+                              {!loading && <>$ {arr.price * amount}</>}
+                            </Text>
+                            {currentPromotion && (
+                              <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                                {!loading && <>$ {arr.price * (1 - currentPromotion.discountPercent / 100) * amount}</>}
+                              </Text>
+                            )}
+                          </Box>
+                        ) : (
+                          <>
+                            <Text
+                              textDecoration='none'
+                              my={4}
+                              fontWeight='extrabold'
+                              color='neutral.black'
+                              fontSize='md'
+                            >
+                              {!loading && <>$ {arr.price * amount}</>}
+                            </Text>
+                          </>
+                        )}
+
                         <Box display='flex' alignItems='center'>
                           <Button
                             isDisabled={amount - 1 === 0 ? true : false}
@@ -334,16 +464,19 @@ export default function Product() {
           </Grid>
           <Box py='30px'>
             <Text color='neutral.black' fontWeight='semibold' fontSize='sm'>
-              Recommended with
+              {!loading && productsArr.length > 0 && '     Recommended with'}
             </Text>
             <Box>
               <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
                 {!loading &&
                   productsArr.map((item, index) => {
+                    let promotion = activePromotions.find((promo) => promo.discountProducts.includes(item._id));
+
                     return (
                       <Box key={index}>
                         <Skeleton borderRadius='16px' isLoaded={!loading}>
                           <ProductCard
+                            promotion={promotion || null} // Pass the found promotion. If no promotion is found, it will be null
                             _id={item._id}
                             img={item.image}
                             title={item.title}

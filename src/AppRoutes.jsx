@@ -37,8 +37,10 @@ import useGeolocation from './hooks/useGeolocation';
 import { geolocationContext } from './context/globalContext';
 import About from './user/userPages/About';
 import ScrollToTopDefault from './utils/ScrollToTopDefault';
+import Search from './user/userPages/Search';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
+
 export default function AppRoutes({ isToken }) {
   const [cartLen, setCartLen] = useState(0);
   const [avatarUser, setAvatarUser] = useState(null);
@@ -84,6 +86,14 @@ export default function AppRoutes({ isToken }) {
                     </Routes>
 
                     <Main>
+
+                      <Routes>
+                        {/* ----------ALL USERS ROUTES------------ */}
+                        <Route path='/' element={<Home />} />
+                        <Route path='/login' element={<Login />} />
+                        <Route path='/recoverpassword/*' element={<Forgotpassword />} />
+                        <Route path='/signup/*' element={<SignUp />} />
+
                       {!loading && (
                         <Routes>
                           {/* ----------ALL USERS ROUTES------------ */}
@@ -92,8 +102,10 @@ export default function AppRoutes({ isToken }) {
                           <Route path='/recoverpassword' element={<Forgotpassword />} />
                           <Route path='/signup/*' element={<SignUp />} />
 
+
                           {/* <Route path='/personal' element={<PersonalDetails />} />
                 <Route path='/personal' element={<PersonalDetails />} /> */}
+
                           {isToken && (
                             <>
                               <Route path='/user/account/*' element={<AccountSettings />} />
@@ -126,6 +138,7 @@ export default function AppRoutes({ isToken }) {
                           <Route path='/*' element={<Page404 />} />
                         </Routes>
                       )}
+
                     </Main>
                     <Routes>
                       <Route path='/*' element={<Footer />} />

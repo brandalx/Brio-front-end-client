@@ -15,20 +15,56 @@ import {
   Skeleton,
   Avatar,
   FormErrorMessage,
-  useToast
+  useToast,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverBody,
+  PopoverHeader,
+  ButtonGroup
 } from '@chakra-ui/react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiDelete, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { avatarContext } from '../../../context/globalContext';
+import { Popover } from '@chakra-ui/react';
 
 export default function Account() {
   const { avatarUser, setAvatarUser } = useContext(avatarContext);
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
   const [reload, setReload] = useState(0);
+  const initRef = useRef();
+
+  const removeAvatar = async () => {
+    try {
+      const url = API_URL + '/users/user/avatar/remove';
+      let data = await handleApiDelete(url);
+      if (data.msg) {
+        toast({
+          title: 'Avatar was removed',
+          description: "We've removed your avatar.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+        handleUserData();
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast({
+        title: 'Error while removing your avatar',
+        description: `Probably you avatar does not exist.`,
+        status: 'warning',
+        duration: 9000,
+        isClosable: true
+      });
+    }
+  };
 
   const handleUserData = async () => {
     const url = API_URL + '/users/info/user';
@@ -225,9 +261,93 @@ export default function Account() {
                 py={5}
                 me='20px'
               >
-                Change
+                {!loading && arr.avatar != '' ? 'Change' : 'Upload'}
               </Button>
             </form>
+            {!loading && arr.avatar && arr.avatar != '' && (
+              <form>
+                <Box>
+                  <Popover>
+                    {({ isOpen, onClose }) => (
+                      <>
+                        <PopoverTrigger>
+                          <Button
+                            w={{ base: '100%', md: 'initial' }}
+                            background='neutral.white'
+                            fontSize='2xs'
+                            fontWeight='bold'
+                            variant='solid'
+                            color='error.default'
+                            borderWidth='1px'
+                            borderColor='error.default'
+                            _hover={{
+                              background: 'error.default',
+                              color: 'neutral.white',
+                              borderWidth: '1px',
+                              borderColor: 'error.default'
+                            }}
+                            py={5}
+                            me='20px'
+                          >
+                            Remove
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <PopoverArrow />
+                          <PopoverCloseButton />
+                          <PopoverHeader>Confirmation!</PopoverHeader>
+                          <PopoverBody>Are you sure you want to remove your avatar?</PopoverBody>
+                          <ButtonGroup size='sm'>
+                            <Button
+                              w={{ base: '50%', md: 'initial' }}
+                              background='error.default'
+                              fontWeight='bold'
+                              variant='solid'
+                              fontSize='2xs'
+                              color='neutral.white'
+                              borderWidth='1px'
+                              borderColor='neutral.white'
+                              _hover={{
+                                background: 'neutral.white',
+                                color: 'primary.default',
+                                borderWidth: '1px',
+                                borderColor: 'error.default'
+                              }}
+                              onClick={() => removeAvatar()}
+                              py={3}
+                            >
+                              Yes
+                            </Button>
+                            <Button
+                              ref={initRef}
+                              fontSize='2xs'
+                              me={2}
+                              w={{ base: '50%', md: 'initial' }}
+                              background='primary.default'
+                              fontWeight='bold'
+                              variant='solid'
+                              color='neutral.white'
+                              borderWidth='1px'
+                              borderColor='neutral.white'
+                              _hover={{
+                                background: 'neutral.white',
+                                color: 'primary.default',
+                                borderWidth: '1px',
+                                borderColor: 'primary.default'
+                              }}
+                              onClick={onClose}
+                              py={3}
+                            >
+                              Cancel
+                            </Button>
+                          </ButtonGroup>
+                        </PopoverContent>
+                      </>
+                    )}
+                  </Popover>
+                </Box>
+              </form>
+            )}
           </Flex>
         </Box>
 
@@ -243,7 +363,7 @@ export default function Account() {
                     <Input
                       id='firstname'
                       {...register('firstname', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -254,7 +374,7 @@ export default function Account() {
                       // defaultValue={!loading && arr.firstname}
                       placeholder='First name'
                     />{' '}
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.firstname && errors.firstname.message}
                     </FormErrorMessage>
                   </Skeleton>
@@ -270,7 +390,8 @@ export default function Account() {
                     <Input
                       id='lastname'
                       {...register('lastname', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
+
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -281,7 +402,7 @@ export default function Account() {
                       // defaultValue={!loading && arr.lastname}
                       placeholder='Last name'
                     />{' '}
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.lastname && errors.lastname.message}
                     </FormErrorMessage>
                   </Skeleton>
@@ -297,7 +418,7 @@ export default function Account() {
                     <Input
                       id='email'
                       {...register('email', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
 
                         pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Enter valid email' },
 
@@ -311,7 +432,7 @@ export default function Account() {
                       // defaultValue={!loading && arr.email}
                       placeholder='example@gmail.com'
                     />{' '}
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.email && errors.email.message}
                     </FormErrorMessage>
                   </Skeleton>
@@ -332,7 +453,8 @@ export default function Account() {
                     <Input
                       id='phone'
                       {...register('phone', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
+
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='phone'
@@ -343,7 +465,7 @@ export default function Account() {
                       // defaultValue={!loading && arr.phone}
                       placeholder='+123456789'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.phone && errors.phone.message}
                     </FormErrorMessage>
                   </Skeleton>

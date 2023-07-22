@@ -23,9 +23,10 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
+import noimagerest from '../../assets/images/noimagerest.jpg';
 
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import axios from 'axios';
 
@@ -37,6 +38,9 @@ import Dislike from '../../assets/svg/Dislike';
 import { useForm } from 'react-hook-form';
 import { FormControl, Input, Select } from '@chakra-ui/react';
 import { Popover } from '@chakra-ui/react';
+import { Icon } from '@chakra-ui/react';
+import { FaChevronLeft } from 'react-icons/fa';
+import PickersCategory from '../userComponents/RestaurantPage/PickersCategory';
 
 export default function Restaurant() {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -53,14 +57,23 @@ export default function Restaurant() {
   const [comments, setComments] = useState();
   const [responseFalls, setResponseFalls] = useState(true);
   const [showOops, setShowOops] = useState(false);
+  const [categories, SetCategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState([]);
+  const [picked, setIsPicked] = useState(false);
+  const [keepArr, setKeepArr] = useState([]);
   const params = useParams();
+  const [promotions, setPromotions] = useState([]);
+  const [activePromotions, setActivePromotions] = useState([]);
 
   const [usersArr, setUsersArr] = useState();
 
   const handleUserApi = async () => {
     const url2 = API_URL + '/users/info/user';
-
+    const url3 = API_URL + '/categories';
     try {
+      const data3 = await handleApiGet(url3);
+      handleCategories(data3);
+      console.log(data3);
       const data2 = await handleApiGet(url2);
       console.log(data2);
       setUserArr(data2);
@@ -69,10 +82,20 @@ export default function Restaurant() {
     }
   };
 
+  const handleCategories = (_data) => {
+    let tempArr = [];
+    _data.map((item) => {
+      if (item.restaurantRef === params['id']) {
+        tempArr.push(item);
+      }
+    });
+    SetCategories(tempArr);
+    console.log(tempArr);
+  };
+
   const handleRestaurantApi = async () => {
     const url = API_URL + '/restaurants/' + params['id'];
     try {
-      setLoading(true);
       const data = await handleApiGet(url);
 
       setAr(data);
@@ -85,17 +108,18 @@ export default function Restaurant() {
       console.log(data);
       if (data.length === 0) setResponseFalls(false);
       await handleUserApi();
-      setLoading(false);
     } catch (error) {
       setResponseFalls(false);
       setLoading(false);
       console.log(error);
     }
   };
+  const navigate = useNavigate();
+  const handleGoBack = () => {
+    navigate(-1); // Go back one step in the history
+  };
   const handleProductApi = async (data) => {
     try {
-      setLoading(true);
-
       const tempProductArr = [];
       console.log('data');
       console.log(data);
@@ -109,7 +133,7 @@ export default function Restaurant() {
       }
       console.log(tempProductArr);
       setProductAr(tempProductArr);
-      setLoading(false);
+      setKeepArr(tempProductArr);
     } catch (error) {
       setShowOops(true);
 
@@ -117,6 +141,20 @@ export default function Restaurant() {
       console.log(error);
     }
   };
+  useEffect(() => {
+    if (picked) {
+      let tempArr = [];
+      activeCategory.forEach((category) => {
+        category.products.forEach((productId) => {
+          const matchedProduct = keepArr.find((product) => product._id === productId);
+          if (matchedProduct) {
+            tempArr.push(matchedProduct);
+          }
+        });
+      });
+      setProductAr(tempArr);
+    }
+  }, [activeCategory, picked, setIsPicked]);
 
   let getUserName = (userid) => {
     try {
@@ -147,8 +185,57 @@ export default function Restaurant() {
   };
 
   useEffect(() => {
+    handlePromotions();
     handleRestaurantApi();
   }, []);
+
+  let lastPromotions = [];
+  const handlePromotions = async () => {
+    try {
+      const url = API_URL + '/admin/promotions';
+      const data = await handleApiGet(url);
+      console.log(data);
+      setPromotions(data);
+
+      let tempArr = [];
+      // let tempArr2 = [];
+      let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      let dayName = days[new Date().getDay()]; // get the day of the week
+      //for both start and end dates
+      // data.forEach((item) => {
+      //   let startDate = new Date(item.startDate); // parse startDate into a Date object
+      //   let endDate = new Date(item.endDate); // parse endDate into a Date object
+      //   if (item.discountDays.includes(dayName) && new Date() >= startDate && new Date() < endDate) {
+      //     tempArr.push(item);
+      //   }
+      // });
+
+      //for only end date
+      data.forEach((item) => {
+        let startDate = new Date(item.startDate); // parse startDate into a Date object
+        let endDate = new Date(item.endDate); // parse endDate into a Date object
+        if (item.discountDays.includes(dayName) && new Date() < endDate) {
+          tempArr.push(item);
+        }
+      });
+
+      // let rnd1, rnd2;
+      // do {
+      //   rnd1 = Math.floor(Math.random() * tempArr.length);
+      //   rnd2 = Math.floor(Math.random() * tempArr.length);
+      // } while (rnd2 === rnd1 || lastPromotions.includes(rnd1) || lastPromotions.includes(rnd2));
+
+      // tempArr2.push(data[rnd1]);
+      // tempArr2.push(data[rnd2]);
+
+      console.log(tempArr);
+      setActivePromotions(tempArr);
+
+      // lastPromotions = [rnd1, rnd2]; // remember the last promotions
+    } catch (error) {
+      console.log(error);
+    }
+  };
   let handleUsersPublicData = async (_commentsdata) => {
     try {
       if (_commentsdata.length > 0) {
@@ -172,7 +259,7 @@ export default function Restaurant() {
   }, [restaurantArr]);
 
   const handleLoadings = () => {
-    if (restaurantArr && productArr && address) {
+    if (restaurantArr && productArr && address && keepArr) {
       setLoading(false);
     }
   };
@@ -196,7 +283,6 @@ export default function Restaurant() {
       setAddress(data);
     } catch (error) {
       console.log(error);
-      setLoading(false);
     }
   };
   useEffect(() => {
@@ -361,6 +447,14 @@ export default function Restaurant() {
     <>
       <Box background='bg' py='50px' data-aos='fade-up'>
         <Container maxW='1110px'>
+          <Button my={4} _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
+            <Flex alignItems='center'>
+              <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+              <Text onClick={() => handleGoBack()} color='neutral.black' fontSize='xs'>
+                Back
+              </Text>
+            </Flex>
+          </Button>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
             <GridItem w='100%' h='100%'>
               <Flex h='100%'>
@@ -372,7 +466,7 @@ export default function Restaurant() {
                           borderWidth='15px'
                           borderColor='neutral.white'
                           borderRadius='16px'
-                          src={restaurantArr.image}
+                          src={restaurantArr.image ? restaurantArr.image : noimagerest}
                         />
                       </Skeleton>
                     </GridItem>
@@ -407,16 +501,28 @@ export default function Restaurant() {
             <GridItem w='100%' h='auto'>
               <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' my={2}>
                 <Flex alignItems='center'>
-                  <Box w='100%'>
-                    {address?.results?.length > 0 && (
-                      <iframe
-                        width='100%'
-                        src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
-                        title='Monochrome'
-                        style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '230px' }}
-                      />
-                    )}
-                  </Box>
+                  {!loading && (
+                    <Box w='100%'>
+                      {address?.results?.length > 0 &&
+                      address.results[0].bounds &&
+                      address.results[0].bounds.northeast.lng ? (
+                        <iframe
+                          width='100%'
+                          src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
+                          title='Monochrome'
+                          style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '230px' }}
+                        />
+                      ) : (
+                        <>
+                          <Box>
+                            <Text py={4} textAlign='center' fontSize='sm' fontWeight='bold' color='neutral.grayDark'>
+                              Sorry, we couldn't find location of this restaurant
+                            </Text>
+                          </Box>
+                        </>
+                      )}
+                    </Box>
+                  )}
                 </Flex>
               </Skeleton>
             </GridItem>
@@ -429,53 +535,135 @@ export default function Restaurant() {
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
               <GridItem w='100%' h='100%'>
                 <Box py='25px'>
-                  {loading && productArr.length === 0 && (
+                  {loading && keepArr.length === 0 && (
                     <Skeleton my={4} borderRadius='16px' isLoaded={!loading} minH='100px' />
                   )}
+                  {!loading && categories && (
+                    <Box my={4}>
+                      <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
+                        Categories
+                      </Text>
+                      {!loading && categories && (
+                        <Box>
+                          {categories ? (
+                            <>
+                              <Box py='10px'>
+                                <PickersCategory
+                                  categories={categories}
+                                  SetCategories={SetCategories}
+                                  setActiveCategory={setActiveCategory}
+                                  activeCategory={activeCategory}
+                                  picked={picked}
+                                  setIsPicked={setIsPicked}
+                                />
+                              </Box>
+                            </>
+                          ) : (
+                            <Text>Restaurant does not have categories</Text>
+                          )}
+                        </Box>
+                      )}
+                    </Box>
+                  )}
 
-                  {!loading && productArr.length > 0 && (
+                  {!loading && keepArr.length > 0 && (
                     <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
                       Menu
                     </Text>
                   )}
 
                   <Box>
-                    <Grid
-                      gridAutoColumns='1fr'
-                      gridAutoRows='1fr'
-                      templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
-                      gap={4}
-                    >
-                      {!loading ? (
-                        productArr.length > 0 ? (
-                          productArr.map((item, index) => (
-                            <Box key={index}>
-                              <Skeleton borderRadius='16px' isLoaded={!loading}>
-                                <ProductCard
-                                  _id={item._id}
-                                  img={item.image}
-                                  title={item.title}
-                                  description={item.description}
-                                  price={item.price}
-                                />
-                              </Skeleton>
-                            </Box>
-                          ))
+                    {picked ? (
+                      <Grid
+                        gridAutoColumns='1fr'
+                        gridAutoRows='1fr'
+                        templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
+                        gap={4}
+                      >
+                        {!loading ? (
+                          keepArr.length > 0 ? (
+                            productArr.map((item, index) => {
+                              // Find the promotion where the product id is included in its discountProducts
+                              let promotion = activePromotions.find((promo) =>
+                                promo.discountProducts.includes(item._id)
+                              );
+
+                              return (
+                                <Box key={index}>
+                                  <Skeleton borderRadius='16px' isLoaded={!loading}>
+                                    <ProductCard
+                                      promotion={promotion || null} // Pass the found promotion. If no promotion is found, it will be null
+                                      _id={item._id}
+                                      img={item.image}
+                                      title={item.title}
+                                      description={item.description}
+                                      price={item.price}
+                                    />
+                                  </Skeleton>
+                                </Box>
+                              );
+                            })
+                          ) : (
+                            <>
+                              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                            </>
+                          )
                         ) : (
                           <>
                             <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
                             <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
                             <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
                           </>
-                        )
-                      ) : (
-                        <>
-                          <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
-                          <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
-                          <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
-                        </>
-                      )}
-                    </Grid>
+                        )}
+                      </Grid>
+                    ) : (
+                      <Grid
+                        gridAutoColumns='1fr'
+                        gridAutoRows='1fr'
+                        templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
+                        gap={4}
+                      >
+                        {!loading ? (
+                          keepArr.length > 0 ? (
+                            keepArr.map((item, index) => {
+                              // Find the promotion where the product id is included in its discountProducts
+                              let promotion = activePromotions.find((promo) =>
+                                promo.discountProducts.includes(item._id)
+                              );
+
+                              return (
+                                <Box key={index}>
+                                  <Skeleton borderRadius='16px' isLoaded={!loading}>
+                                    <ProductCard
+                                      promotion={promotion || null} // Pass the found promotion. If no promotion is found, it will be null
+                                      _id={item._id}
+                                      img={item.image}
+                                      title={item.title}
+                                      description={item.description}
+                                      price={item.price}
+                                    />
+                                  </Skeleton>
+                                </Box>
+                              );
+                            })
+                          ) : (
+                            <>
+                              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                            </>
+                          )
+                        ) : (
+                          <>
+                            <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                            <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                            <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' />
+                          </>
+                        )}
+                      </Grid>
+                    )}
                   </Box>
                 </Box>
               </GridItem>
@@ -490,7 +678,7 @@ export default function Restaurant() {
                 </GridItem>
               )}
 
-              {!productArr.length <= 0 && (
+              {!keepArr.length <= 0 && (
                 <GridItem>
                   <Box py='25px'>
                     <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
@@ -512,10 +700,14 @@ export default function Restaurant() {
                           <Text color='neutral.black' fontWeight='bold' fontSize='2xs'>
                             Overall rating
                           </Text>
-                          <Box display='flex' justifyContent='space-between' alignItems='center'>
+                          <Box
+                            display={{ base: 'initial', md: 'flex' }}
+                            justifyContent='space-between'
+                            alignItems='center'
+                          >
                             <Box display='flex' alignItems='center'>
                               <Text me={2} color='primary.default' fontWeight='semibold' fontSize='sm'>
-                                {comments && comments.length > 0 && handleOverallRate(comments)}
+                                {comments && comments.length > 0 ? handleOverallRate(comments) : 0}
                               </Text>
                               <Box me={2} display='flex'>
                                 {comments &&
@@ -530,7 +722,7 @@ export default function Restaurant() {
                                   )}
                               </Box>
                               <Text color='neutral.gray' fontWeight='bold' fontSize='10px'>
-                                {comments && comments.length === 1 ? 'vote' : 'votes'}
+                                {comments && comments.length} {comments && comments.length === 1 ? 'vote' : 'votes'}
                               </Text>
                             </Box>
                             <Box>
@@ -551,6 +743,7 @@ export default function Restaurant() {
                                   }}
                                   onClick={() => setIsActive(!isActive)}
                                   py={5}
+                                  mt={{ base: '8px', md: '0px' }}
                                   me='20px'
                                 >
                                   {isActive ? 'Hide review form' : '       Leave review'}
@@ -594,7 +787,7 @@ export default function Restaurant() {
                                             fontSize='2xs'
                                             placeholder='Add your feedback about this restaurant!'
                                           />
-                                          <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                                          <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                                             {errors.comment && errors.comment.message}
                                           </FormErrorMessage>
                                         </FormControl>
@@ -607,9 +800,17 @@ export default function Restaurant() {
                                             min='1'
                                             max='5'
                                             {...register('rate', {
-                                              required: true,
-                                              min: { value: 1, message: 'minimum is 1' },
-                                              max: { value: 5, message: 'maximum is 5' }
+                                              required: 'This field is required',
+                                              validate: (value) => {
+                                                const number = Number(value);
+                                                if (isNaN(number)) {
+                                                  return 'Please enter a valid number';
+                                                } else if (number < 1) {
+                                                  return 'Minimum is 1';
+                                                } else if (number > 5) {
+                                                  return 'Maximum is 5';
+                                                }
+                                              }
                                             })}
                                             type='number'
                                             background='neutral.white'
@@ -621,7 +822,7 @@ export default function Restaurant() {
                                             fontSize='2xs'
                                             placeholder='Rate from 1 to 5'
                                           />
-                                          <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                                          <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                                             {errors.rate && errors.rate.message}
                                           </FormErrorMessage>
                                         </FormControl>

@@ -18,8 +18,14 @@ export default function Restaurants() {
 
     try {
       const data = await handleApiGet(url);
-      setAr(data);
-      setKeepArr(data);
+      let tempArrRest = [];
+      data.map((item, index) => {
+        if (item.products && item.products.length > 0) {
+          tempArrRest.push(item);
+        }
+      });
+      setAr(tempArrRest);
+      setKeepArr(tempArrRest);
       console.log(data);
       setLoading(false);
     } catch (error) {
@@ -52,12 +58,13 @@ export default function Restaurants() {
           <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>
             All restaurants
           </Text>
-          <Box py={15}>
+          <Box py='10px'>
             <Skeleton borderRadius='16px' isLoaded={!loading} my={4}>
               <Pickers setSortedArr={setSortedArr} sortedArr={sortedArr} />
             </Skeleton>
           </Box>
-          <Box py={15} display='flex'>
+          {/* todo: add filters */}
+          {/* <Box py={15} display='flex'>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Grid templateColumns={{ base: 'repeat(4, 1fr)', sm: 'repeat(4 1fr)', md: 'repeat(6, 1fr)' }} gap={3}>
                 <GridItem h='auto'>
@@ -158,8 +165,8 @@ export default function Restaurants() {
                 </GridItem>
               </Grid>
             </Skeleton>
-          </Box>
-          <Box py={15}>
+          </Box> */}
+          <Box py='5px'>
             <Skeleton borderRadius='16px' isLoaded={!loading}>
               <Text py={4} color='neutral.grayDark' fontSize='3xs'>
                 Found {arr.length} restaurants
@@ -170,17 +177,19 @@ export default function Restaurants() {
               <Box>
                 <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
                   {arr.map((item) => {
-                    return (
-                      <RestaurantCard
-                        key={item._id}
-                        _id={item._id}
-                        img={item.image}
-                        title={item.title}
-                        time={item.time}
-                        price={item.minprice}
-                        badgeData={item.tags}
-                      />
-                    );
+                    if (item.products && item.products.length > 0) {
+                      return (
+                        <RestaurantCard
+                          key={item._id}
+                          _id={item._id}
+                          img={item.image}
+                          title={item.title}
+                          time={item.time}
+                          price={item.minprice}
+                          badgeData={item.tags}
+                        />
+                      );
+                    }
                   })}
                 </Grid>
               </Box>

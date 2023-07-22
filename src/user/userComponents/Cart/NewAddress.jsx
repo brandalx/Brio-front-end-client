@@ -89,7 +89,7 @@ export default function NewAddress({ SetAddressArrSend, addressArrSend, handleUs
                 fontSize='2xs'
                 placeholder='Enter country'
               />
-              <FormErrorMessage p={0} m={0} fontSize='3xs'>
+              <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                 {errors.country && errors.country.message}
               </FormErrorMessage>
             </FormControl>
@@ -112,7 +112,7 @@ export default function NewAddress({ SetAddressArrSend, addressArrSend, handleUs
                 fontSize='2xs'
                 placeholder='Enter state'
               />
-              <FormErrorMessage p={0} m={0} fontSize='3xs'>
+              <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                 {errors.firstname && errors.state.message}
               </FormErrorMessage>
             </FormControl>
@@ -135,7 +135,7 @@ export default function NewAddress({ SetAddressArrSend, addressArrSend, handleUs
                 fontSize='2xs'
                 placeholder='Enter city'
               />
-              <FormErrorMessage p={0} m={0} fontSize='3xs'>
+              <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                 {errors.city && errors.city.message}
               </FormErrorMessage>
             </FormControl>
@@ -162,7 +162,7 @@ export default function NewAddress({ SetAddressArrSend, addressArrSend, handleUs
                 fontSize='2xs'
                 placeholder='Enter address'
               />
-              <FormErrorMessage p={0} m={0} fontSize='3xs'>
+              <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                 {errors.address1 && errors.address1.message}
               </FormErrorMessage>
             </FormControl>
@@ -185,7 +185,7 @@ export default function NewAddress({ SetAddressArrSend, addressArrSend, handleUs
                 fontSize='2xs'
                 placeholder='Enter address (optional)'
               />
-              <FormErrorMessage p={0} m={0} fontSize='3xs'>
+              <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                 {errors.address2 && errors.address2.message}
               </FormErrorMessage>
             </FormControl>

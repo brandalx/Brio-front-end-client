@@ -69,7 +69,7 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       fontSize='2xs'
                       placeholder='Title'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.title && errors.title.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -90,7 +90,7 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       fontSize='2xs'
                       placeholder='Address'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.address && errors.address.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -111,7 +111,7 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       fontSize='2xs'
                       placeholder='Location'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.location && errors.location.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -128,7 +128,7 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       fontSize='2xs'
                       placeholder='Company'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.company && errors.company.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -150,8 +150,10 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       fontSize='2xs'
                       placeholder='Email'
                     />
+
                     <FormErrorMessage p={0} m={0} fontSize='3xs'>
                       {errors.restaurantEmail && errors.restaurantEmail.message}
+
                     </FormErrorMessage>
                   </FormControl>
 
@@ -171,7 +173,7 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       fontSize='2xs'
                       placeholder='Description'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.description && errors.description.message}
                     </FormErrorMessage>
                   </FormControl>

@@ -63,8 +63,8 @@ export default function AdditionalInfo({ mainBody, setMainBody }) {
                       id='phone'
                       type='number'
                       {...register('phone', {
-                        required: true,
-                        minLength: { value: 6, message: 'Minimum length should be 6' }
+                        required: { value: true, message: 'This field is required' },
+                        minLength: { value: 9, message: 'Minimum length should be 9' }
                       })}
                       background='neutral.white'
                       _placeholder={{ color: 'neutral.gray' }}
@@ -74,13 +74,13 @@ export default function AdditionalInfo({ mainBody, setMainBody }) {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.phone && errors.phone.message}
                     </FormErrorMessage>
                   </FormControl>
 
                   <Stack spacing={10}>
-                    <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
+                    {/* <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
                       <Flex alignItems='center'>
                         <Checkbox mr='2'>
                           <Text color='neutral.black' fontSize='2xs'>
@@ -88,7 +88,7 @@ export default function AdditionalInfo({ mainBody, setMainBody }) {
                           </Text>
                         </Checkbox>
                       </Flex>
-                    </Stack>
+                    </Stack> */}
                     <Box>
                       <Button
                         type='submit'

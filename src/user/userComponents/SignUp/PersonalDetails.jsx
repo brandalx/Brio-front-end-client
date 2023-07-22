@@ -53,18 +53,21 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                     <Input
                       id='firstname'
                       {...register('firstname', {
-                        required: true,
-                        minLength: { value: 2, message: 'Minimum length should be 2' }
+                        required: { value: true, message: 'This field is required' },
+                        minLength: { value: 2, message: 'Minimum length should be 2' },
+                        pattern: {
+                          value: /^[A-Za-z]+$/,
+                          message: 'This field should only contain alphabetic characters'
+                        }
                       })}
                       required
-                      type='text'
                       background='neutral.white'
                       _placeholder={{ color: 'neutral.gray' }}
                       borderRadius='8px'
                       fontSize='2xs'
                       placeholder='John'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.firstname && errors.firstname.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -76,7 +79,11 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
 
                     <Input
                       {...register('lastname', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
+                        pattern: {
+                          value: /^[A-Za-z]+$/,
+                          message: 'This field should only contain alphabetic characters'
+                        },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       required
@@ -87,7 +94,7 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                       fontSize='2xs'
                       placeholder='Doe'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.lastname && errors.lastname.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -99,8 +106,8 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
 
                     <Input
                       {...register('email', {
-                        required: true,
-                        minLength: { value: 2, message: 'Minimum length should be 2' }
+                        required: { value: true, message: 'This field is required' },
+                        minLength: { value: 6, message: 'Minimum length should be 6' }
                       })}
                       type='email'
                       background='neutral.white'
@@ -111,7 +118,7 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.email && errors.email.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -124,7 +131,7 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                     <Input
                       id='password'
                       {...register('password', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='password'
@@ -136,7 +143,7 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.password && errors.password.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -148,7 +155,7 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                     <Input
                       id='confirmpassword'
                       {...register('confirmpassword', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='password'
@@ -160,7 +167,7 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.confirmpassword && errors.confirmpassword.message}
                     </FormErrorMessage>
                   </FormControl>

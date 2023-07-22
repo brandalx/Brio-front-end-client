@@ -91,7 +91,7 @@ export default function Adress() {
                     <Input
                       id='country'
                       {...register('country', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -101,7 +101,7 @@ export default function Adress() {
                       fontSize='2xs'
                       placeholder='Enter country'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.country && errors.country.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -114,7 +114,7 @@ export default function Adress() {
 
                     <Input
                       {...register('state', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -124,8 +124,8 @@ export default function Adress() {
                       fontSize='2xs'
                       placeholder='Enter state'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
-                      {errors.firstname && errors.state.message}
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
+                      {errors.state && errors.state.message}
                     </FormErrorMessage>
                   </FormControl>
                 </GridItem>
@@ -142,7 +142,7 @@ export default function Adress() {
 
                     <Input
                       {...register('city', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -152,7 +152,7 @@ export default function Adress() {
                       fontSize='2xs'
                       placeholder='Enter city'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.city && errors.city.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -169,7 +169,7 @@ export default function Adress() {
 
                     <Input
                       {...register('address1', {
-                        required: true,
+                        required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
@@ -179,7 +179,7 @@ export default function Adress() {
                       fontSize='2xs'
                       placeholder='Enter address'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.address1 && errors.address1.message}
                     </FormErrorMessage>
                   </FormControl>
@@ -197,7 +197,8 @@ export default function Adress() {
 
                     <Input
                       {...register('address2', {
-                        required: false
+                        required: { value: false, message: 'Fill the field' },
+                        minLength: { value: 2, message: 'Minimum length should be 2' }
                       })}
                       type='text'
                       background='neutral.white'
@@ -206,7 +207,7 @@ export default function Adress() {
                       fontSize='2xs'
                       placeholder='Enter address (optional)'
                     />
-                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.address2 && errors.address2.message}
                     </FormErrorMessage>
                   </FormControl>

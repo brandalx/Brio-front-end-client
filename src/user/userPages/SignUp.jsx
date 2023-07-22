@@ -14,6 +14,7 @@ import {
   VisuallyHidden,
   InputGroup,
   InputRightElement,
+  Image,
   Grid,
   GridItem,
   Skeleton,
@@ -34,6 +35,7 @@ import SignupStatus from '../../assets/svg/SignupStatus';
 import SellerPersonalDetails from '../userComponents/SignUp/sellerSignUp/SellerPersonalDetails';
 import RestaurantInfo from '../userComponents/SignUp/sellerSignUp/RestaurantInfo';
 import RestaurantConfirmation from '../userComponents/SignUp/sellerSignUp/RestaurantConfirmation';
+import render1 from '../../assets/images/render6.jpg';
 function RedirectHandler({ setRedirect }) {
   useEffect(() => {
     setRedirect(true);
@@ -108,19 +110,33 @@ export default function SignUp() {
   return (
     <>
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 2fr' }} gap={0}>
-        <GridItem className='css-selector1' display={{ base: 'none', md: 'inline-flex' }} h='100vh'>
+        <GridItem
+          data-aos='fade-right'
+          backgroundImage={render1}
+          backgroundRepeat='no-repeat'
+          backgroundSize='cover'
+          backgroundPosition='center'
+          // className='css-selector1'
+          display={{ base: 'none', md: 'inline-flex' }}
+          h='100vh'
+        >
           <Box mx='auto' py={6}>
-            <Flex>
-              <Box title='Homepage' display='flex' alignItems='center'>
-                <Link to='/'>
-                  {' '}
-                  <Logo color='white' />
-                </Link>
-                <VisuallyHidden>Brio</VisuallyHidden>
-              </Box>
-              <Text fontSize='sm' fontWeight='extrabold' color='neutral.white' ml='2'>
-                <Link to='/'> Brio</Link>
-              </Text>
+            <Flex h='100%' alignItems='center' flexDir='column' justifyContent='space-between'>
+              <Flex>
+                <Box title='Homepage' display='flex' alignItems='center'>
+                  <Link to='/'>
+                    {' '}
+                    <Logo color='white' />
+                  </Link>
+                  <VisuallyHidden>Brio</VisuallyHidden>
+                </Box>
+                <Text fontSize='sm' fontWeight='extrabold' color='white' ml='2'>
+                  <Link to='/'> Brio</Link>
+                </Text>
+              </Flex>
+              <Box></Box>
+
+              <Box></Box>
             </Flex>
           </Box>
         </GridItem>

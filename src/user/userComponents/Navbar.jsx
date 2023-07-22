@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import {
   chakra,
@@ -24,13 +24,14 @@ import {
   Menu,
   MenuButton,
   Skeleton,
-  useToast
+  useToast,
+  FormControl
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
 
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import Logo from '../../assets/svg/Logo';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Form, Link, useLocation, useNavigate } from 'react-router-dom';
 import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import { useCheckToken } from '../../services/token';
 import { avatarContext, cartContext, geolocationContext } from '../../context/globalContext';
@@ -49,8 +50,16 @@ export default function Navbar() {
   const mobileNav = useDisclosure();
   const location = useLocation();
   const isInCart = location.pathname.startsWith('/user/cart');
+
+  const isInRestaurants = location.pathname.startsWith('/restaurant');
+  const isInMyOrders = location.pathname.startsWith('/user/orders');
+
+  const isInDeals = location.pathname.startsWith('/deals');
+
+
   const token = localStorage.getItem(TOKEN_KEY);
   let checkerIfAdmin = false;
+
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
 
@@ -66,7 +75,16 @@ export default function Navbar() {
   const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
+  const [searchTerm, setSearchTerm] = React.useState('');
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // console.log(searchTerm);
+
+    if (searchTerm.length > 0) {
+      navigate('/search', { state: { searchinfo: searchTerm } });
+    }
+  };
   const clearUserCart = async () => {
     try {
       const url = API_URL + '/users/cart/clear';
@@ -157,17 +175,23 @@ export default function Navbar() {
               </Text>
 
               <InputGroup display={{ base: 'none', md: 'inline-flex' }} size='md' fontSize='md' mx='10px'>
-                <InputRightElement pointerEvents='none'>
-                  <AiOutlineSearch color='#828282' size={18} />
-                </InputRightElement>
-                <Input
-                  background='neutral.grayLightest'
-                  _placeholder={{ color: 'neutral.gray' }}
-                  borderRadius={100}
-                  fontSize='2xs'
-                  type='tel'
-                  placeholder='Search...'
-                />
+                <form onSubmit={handleSearch}>
+                  <InputRightElement>
+                    <Button type='submit'>
+                      <AiOutlineSearch color='#828282' size={14} />
+                    </Button>
+                  </InputRightElement>
+                  <Input
+                    defaultValue={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    background='neutral.grayLightest'
+                    _placeholder={{ color: 'neutral.gray' }}
+                    borderRadius={100}
+                    fontSize='2xs'
+                    type='text'
+                    placeholder='Search...'
+                  />
+                </form>
               </InputGroup>
             </Flex>
             <HStack display='flex' alignItems='center' spacing={1}>
@@ -177,12 +201,21 @@ export default function Navbar() {
                   fontWeight='bold'
                   fontSize='2xs'
                   _hover={{
+                    borderRadius: '16px',
+                    background: 'primary.light',
                     textDecoration: 'none',
                     color: 'primary.default'
                   }}
                 >
                   <Link fontSize='fontSizes.2xs' to='/restaurant'>
-                    Restaurants
+                    <Text
+                      fontWeight={isInRestaurants ? 'bold' : 'regular'}
+                      m={0}
+                      p={0}
+                      color={isInRestaurants ? 'primary.default' : 'neutral.black'}
+                    >
+                      Restaurants
+                    </Text>
                   </Link>
                 </Button>
                 <Link to='/deals'>
@@ -191,12 +224,16 @@ export default function Navbar() {
                     fontWeight='bold'
                     fontSize='2xs'
                     _hover={{
+                      borderRadius: '16px',
+                      background: 'primary.light',
                       textDecoration: 'none',
                       color: 'primary.default'
                     }}
                   >
                     {' '}
-                    Deals
+                    <Text m={0} p={0} color={isInDeals ? 'primary.default' : 'neutral.black'}>
+                      Deals
+                    </Text>
                   </Button>
                 </Link>
                 {localStorage[TOKEN_KEY] && (
@@ -208,13 +245,18 @@ export default function Navbar() {
                       fontWeight='bold'
                       fontSize='2xs'
                       _hover={{
+                        borderRadius: '16px',
+                        background: 'primary.light',
                         textDecoration: 'none',
                         color: 'primary.default'
                       }}
                     >
-                      <Link fontSize='fontSizes.2xs' to='/user/orders'>
-                        My orders
-                      </Link>
+                      {' '}
+                      <Text m={0} p={0} color={isInMyOrders ? 'primary.default' : 'neutral.black'}>
+                        <Link fontSize='fontSizes.2xs' to='/user/orders'>
+                          My orders
+                        </Link>
+                      </Text>
                     </Button>
                   </>
                 )}
@@ -606,31 +648,58 @@ export default function Navbar() {
                         </Link>
                       </Text>
                     </Box>
-                    <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
+                    <Button
+                      color={isInRestaurants ? 'primary.default' : 'neutral.black'}
+                      fontWeight='extrabold'
+                      fontSize='xs'
+                      variant='ghost'
+                      mb='24px'
+                    >
                       <Link to='/restaurant'>Restaurants</Link>
                     </Button>
-                    <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
+                    <Button
+                      color={isInDeals ? 'primary.default' : 'neutral.black'}
+                      fontWeight='extrabold'
+                      fontSize='xs'
+                      variant='ghost'
+                      mb='24px'
+                    >
                       <Link to='/deals'>Deals </Link>
                     </Button>
                     {localStorage[TOKEN_KEY] && (
-                      <Button fontWeight='extrabold' fontSize='xs' variant='ghost' mb='24px'>
+                      <Button
+                        color={isInMyOrders ? 'primary.default' : 'neutral.black'}
+                        fontWeight='extrabold'
+                        fontSize='xs'
+                        variant='ghost'
+                        mb='24px'
+                      >
                         <Link to='/user/orders'>My orders</Link>
                       </Button>
-                    )}
-                    <Box my='8px' display='flex' justifyItems='center'>
-                      <InputGroup size='sm' fontSize='md' w='60%' mx='auto'>
-                        <InputRightElement pointerEvents='none'>
-                          <AiOutlineSearch color='#828282' size={14} />
-                        </InputRightElement>
-                        <Input
-                          background='neutral.grayLightest'
-                          _placeholder={{ color: 'neutral.gray' }}
-                          borderRadius={100}
-                          fontSize='2xs'
-                          type='text'
-                          placeholder='Search...'
-                        />
-                      </InputGroup>
+                    )}{' '}
+                    <Box>
+                      <form onSubmit={handleSearch}>
+                        <Box my='8px' display='flex' justifyItems='center'>
+                          <InputGroup size='sm' fontSize='md' w='60%' mx='auto'>
+                            <InputRightElement>
+                              <Button type='submit'>
+                                <AiOutlineSearch color='#828282' size={14} />
+                              </Button>
+                            </InputRightElement>
+
+                            <Input
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                              background='neutral.grayLightest'
+                              _placeholder={{ color: 'neutral.gray' }}
+                              borderRadius={100}
+                              fontSize='2xs'
+                              type='text'
+                              placeholder='Search...'
+                            />
+                          </InputGroup>
+                        </Box>
+                      </form>
                     </Box>
                   </Flex>
                   <Flex w='100%' justifyContent='space-between' px='16px'>

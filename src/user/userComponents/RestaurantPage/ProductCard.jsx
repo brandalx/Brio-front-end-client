@@ -1,14 +1,18 @@
-import { Box, GridItem, Image, Text, Button, Flex, Stack, border, useToast } from '@chakra-ui/react';
+import { Box, GridItem, Image, Text, Button, Flex, Stack, border, useToast, Badge } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
+
+import noimage from '../../../assets/images/noimage.jpg';
+
 import { cartContext } from '../../../context/globalContext';
 import { useCheckToken } from '../../../services/token.js';
-export default function ProductCard({ img, title, description, price, _id }) {
+export default function ProductCard({ img, title, description, price, _id, promotion }) {
   const { cartLen, setCartLen } = useContext(cartContext);
   const toast = useToast();
   const [userar, setUserAr] = useState([]);
   const [priceCount, setPriceCount] = useState(1);
+
   const handleApi = async () => {
     const url = API_URL + '/users/info/user';
     try {
@@ -21,6 +25,7 @@ export default function ProductCard({ img, title, description, price, _id }) {
   };
   useEffect(() => {
     handleApi();
+    console.log(promotion);
   }, []);
   const handlePriceAdd = () => {
     setPriceCount(priceCount + 1);
@@ -101,12 +106,17 @@ export default function ProductCard({ img, title, description, price, _id }) {
       >
         <Link to={`/restaurant/product/${_id}`}>
           <Box>
-            <Image borderRadius='16px' w='100%' src={img} h='230px' objectFit='cover' />
+            <Image borderRadius='16px' w='100%' src={img.length > 0 ? img : noimage} h='230px' objectFit='cover' />
           </Box>
         </Link>
         <Stack>
           <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
-            {title}
+            {title}{' '}
+            {promotion && (
+              <Badge bg='primary.default' color='white' fontSize='3xs'>
+                {promotion.discountPercent}% off
+              </Badge>
+            )}
           </Text>
           <Text color='neutral.gray' fontSize='3xs'>
             {description.length > 0 && cutInfoText}

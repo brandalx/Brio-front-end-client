@@ -25,6 +25,9 @@ import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
 import { API_URL, TOKEN_KEY, handleApiMethod } from '../../services/apiServices';
+
+import render1 from '../../assets/images/render7.jpg';
+
 import jwtDecode from 'jwt-decode';
 
 export default function Login() {
@@ -118,8 +121,8 @@ export default function Login() {
                         <Input
                           id='email'
                           {...register('email', {
-                            required: true,
-                            minLength: { value: 2, message: 'Minimum length should be 2' }
+                            required: { value: true, message: 'This field is required' },
+                            minLength: { value: 6, message: 'Minimum length should be 6' }
                           })}
                           type='email'
                           background='neutral.white'
@@ -130,7 +133,7 @@ export default function Login() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                         />
-                        <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                        <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                           {errors.email && errors.email.message}
                         </FormErrorMessage>
                       </FormControl>
@@ -141,8 +144,8 @@ export default function Login() {
 
                         <Input
                           {...register('password', {
-                            required: true,
-                            minLength: { value: 2, message: 'Minimum length should be 5' }
+                            required: { value: true, message: 'This field is required' },
+                            minLength: { value: 6, message: 'Minimum length should be 6' }
                           })}
                           id='password'
                           type='password'
@@ -154,7 +157,7 @@ export default function Login() {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                         />
-                        <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                        <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                           {errors.password && errors.password.message}
                         </FormErrorMessage>
                       </FormControl>
@@ -165,13 +168,13 @@ export default function Login() {
                           align={'start'}
                           justify={'space-between'}
                         >
-                          <Flex alignItems='center'>
+                          {/* <Flex alignItems='center'>
                             <Checkbox mr='2'>
                               <Text color='neutral.black' fontSize='2xs'>
                                 Keep me logged in
                               </Text>
                             </Checkbox>
-                          </Flex>
+                          </Flex> */}
                         </Stack>
 
                         <Button
@@ -251,9 +254,14 @@ export default function Login() {
           </GridItem>
         </Container>
         <GridItem
+          data-aos='fade-left'
+          backgroundImage={render1}
+          backgroundRepeat='no-repeat'
+          backgroundSize='cover'
+          backgroundPosition='center'
           display={{ base: 'none', md: 'inline-flex' }}
           w='100%'
-          bg='linear-gradient(to right, #B2D1FF, #697BFF)'
+          // bg='linear-gradient(to right, #B2D1FF, #697BFF)'
           h='100vh'
         ></GridItem>
       </Grid>

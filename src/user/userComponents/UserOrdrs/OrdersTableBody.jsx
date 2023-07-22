@@ -58,11 +58,8 @@ export default function OrdersTableBody() {
   };
 
   const getRestaurantName = (id) => {
-    return restaurantar.map((item) => {
-      if (item._id === id) {
-        return item.title;
-      }
-    });
+    const restaurant = restaurantar.find((item) => item._id === id);
+    return restaurant ? restaurant.title : '';
   };
 
   useEffect(() => {
@@ -112,7 +109,7 @@ export default function OrdersTableBody() {
                   fontWeight='semibold'
                 >
                   {item.restaurant.length > 0 &&
-                    item.restaurant.map((item2, index2) => {
+                    Array.from(new Set(item.restaurant)).map((item2, index2) => {
                       return (
                         <Box key={index2} bg='neutral.grayLightest' borderRadius='100px' px={4} py={1} me={2}>
                           {getRestaurantName(item2)}

@@ -41,6 +41,10 @@
   animation: AnimationName 2s ease infinite;
 }
 
+.css-selector2 {
+  background: linear-gradient(91deg, #c7deff, #697bff);
+  background-size: 400% 400%;
+}
 @-webkit-keyframes AnimationName {
   0% {
     background-position: 0% 50%;
