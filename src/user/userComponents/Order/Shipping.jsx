@@ -80,14 +80,19 @@ export default function Shipping({ item, userArr, restaurantArr }) {
         <Box pt={4}>
           {address ? (
             <>
-              {!addressLoading && (
-                <iframe
-                  width='100%'
-                  src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
-                  title='Monochrome'
-                  style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '320px' }}
-                />
-              )}{' '}
+              {!addressLoading &&
+                address.results &&
+                address.results[0] &&
+                address.results[0].bounds &&
+                address.results[0].bounds.northeast &&
+                address.results[0].bounds.northeast.lat && (
+                  <iframe
+                    width='100%'
+                    src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
+                    title='Monochrome'
+                    style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '320px' }}
+                  />
+                )}{' '}
             </>
           ) : (
             <>No address specified</>
