@@ -264,7 +264,7 @@ export default function Account() {
                 {!loading && arr.avatar != '' ? 'Change' : 'Upload'}
               </Button>
             </form>
-            {!loading && arr.avatar != '' && (
+            {!loading && arr.avatar && arr.avatar != '' && (
               <form>
                 <Box>
                   <Popover>

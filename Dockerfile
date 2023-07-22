@@ -22,7 +22,7 @@ RUN yarn build
 FROM nginx:stable-alpine
 
 # Set image metadata
-LABEL org.opencontainers.image.source https://github.com/gldkru/React-todo
+LABEL org.opencontainers.image.source https://github.com/brandalx/Brio-front-end-client/
 
 # Copy the built files from the build stage
 COPY --from=build /app/dist /usr/share/nginx/html
