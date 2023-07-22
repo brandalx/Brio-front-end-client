@@ -2,9 +2,7 @@ import {
   Avatar,
   Box,
   Button,
-  Flex,
   IconButton,
-  Image,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -30,12 +28,88 @@ export default function CustomersTable() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
   const [isMobile] = useMediaQuery('(max-width: 575px)');
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = React.useState(false);
   const options = { year: 'numeric', month: 'short', day: 'numeric' };
   const [isBetween] = useMediaQuery('(min-width: 576px) and (max-width: 600px)');
   const navigate = useNavigate();
   const [restaurantId, setRestaurantId] = useState(null);
+  const [usersArr, setUsersArr] = useState([]);
+  const [userArr, setUserArr] = useState([]);
+  const [loadingCount, setLoadingCount] = useState(0); // New loading count state variable
+
+  ///////////Avatar logic
+  let handleUsersPublicData = async (_commentsdata) => {
+    try {
+      if (_commentsdata.length > 0) {
+        let allUsers = [];
+        const response = await Promise.all(
+          _commentsdata.map((item) => handleApiGet(`${API_URL}/users/info/public/user/${item._id.toString()}`))
+        );
+        allUsers = [...allUsers, ...response];
+        setUsersArr(allUsers);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUserApi = async () => {
+    const url2 = API_URL + '/users/getAllUsers';
+    try {
+      const data2 = await handleApiGet(url2);
+      if (Array.isArray(data2)) {
+        setUserArr(data2);
+        await handleUsersPublicData(data2);
+      } else {
+        console.error('Data from API is not an array:', data2);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    handleUserApi();
+  }, []);
+  let getUserName = (userid) => {
+    try {
+      if (Array.isArray(usersArr)) {
+        const user = usersArr.find((item) => item._id === userid);
+        if (user) {
+          return user.firstname + ' ' + user.lastname;
+        }
+      }
+      return '';
+    } catch (error) {
+      console.log(error);
+      return '';
+    }
+  };
+
+  let getUserAvatar = (userid) => {
+    try {
+      const user = userArr.find((item) => item._id === userid);
+      if (user) {
+        // check if user exists
+        if (user.avatar) {
+          // check if avatar exists
+          let stringAvatar = API_URL + (API_URL.endsWith('/') ? '' : '/') + user.avatar;
+          return stringAvatar;
+        } else {
+          console.log(`No avatar found for user ${userid}`);
+        }
+      } else {
+        console.log(`No user found for ID ${userid}`);
+      }
+      return '';
+    } catch (error) {
+      console.log('Error in getUserAvatar: ', error);
+      return '';
+    }
+  };
+
+  ////////////
+
   const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(3px) hue-rotate(90deg)' />;
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
   const [openModalId, setOpenModalId] = useState(null);
@@ -55,11 +129,11 @@ export default function CustomersTable() {
     setOpenModalId(null);
   };
   const fetchRestaurantData = async () => {
+    setLoadingCount((count) => count + 1); // Increment loading count
+
     try {
       const token = localStorage.getItem('x-api-key');
-
       const decodedToken = jwtDecode(token);
-
       const userId = decodedToken._id;
 
       const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
@@ -69,23 +143,20 @@ export default function CustomersTable() {
       });
 
       setRestaurantId(adminResponse.data.restaurant);
-      console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant); // добавлено логирование
-      setLoading(false);
+      // console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant);
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
+    } finally {
+      setLoadingCount((count) => count - 1);
     }
   };
 
-  // Добавим пустой массив в качестве зависимостей для вызова только при первом рендере
-  useEffect(() => {
-    fetchRestaurantData();
-  }, []);
   const fetchUsersData = async () => {
+    setLoadingCount((count) => count + 1);
+
     try {
       const token = localStorage.getItem('x-api-key');
-
       const decodedToken = jwtDecode(token);
-
       const userId = decodedToken._id;
 
       const usersResponse = await axios.get(`${API_URL}/users/getAllUsers`, {
@@ -95,47 +166,99 @@ export default function CustomersTable() {
       });
 
       const allUsers = usersResponse.data;
-      const usersWithOrdersInMyRestaurant = []; // users who made orders in my restaurant
+      const usersWithOrdersInMyRestaurant = [];
 
-      for (const user of allUsers) {
+      const usersPromises = allUsers.map(async (user) => {
         let totalSpentInMyRestaurant = 0;
         let hasOrderedInMyRestaurant = false;
 
-        for (const order of user.orders) {
-          if (order.restaurant.includes(restaurantId)) {
-            const orderResponse = await axios.get(`${API_URL}/orders/${order.orderRef}`, {
-              headers: {
-                'x-api-key': token
-              }
-            });
-
-            const orderData = orderResponse.data;
-            for (const product of orderData.ordersdata.products) {
-              if (product.restaurantId === restaurantId) {
-                totalSpentInMyRestaurant += product.priceItem * product.amount;
-                hasOrderedInMyRestaurant = true;
+        if (user.orders) {
+          const ordersPromises = user.orders.map(async (order) => {
+            if (order.restaurant.includes(restaurantId)) {
+              try {
+                const orderResponse = await axios.get(`${API_URL}/orders/${order.orderRef}`, {
+                  headers: {
+                    'x-api-key': token
+                  }
+                });
+                const orderData = orderResponse.data;
+                orderData.ordersdata.products.forEach((product) => {
+                  if (product.restaurantId === restaurantId && orderData.userdata.status === 'Completed') {
+                    totalSpentInMyRestaurant += product.priceItem;
+                    hasOrderedInMyRestaurant = true;
+                  }
+                });
+              } catch (error) {
+                if (error.response && error.response.status === 404) {
+                  console.log(`Order ${order.orderRef} not found`); // Log the not found order
+                } else {
+                  throw error;
+                }
               }
             }
-          }
+          });
+
+          await Promise.all(ordersPromises);
         }
 
-        // Only add user to the list if he made an order in my restaurant
         if (hasOrderedInMyRestaurant) {
           user.totalSpent = totalSpentInMyRestaurant;
           usersWithOrdersInMyRestaurant.push(user);
         }
-      }
+      });
+
+      await Promise.all(usersPromises);
 
       setUsers(usersWithOrdersInMyRestaurant);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching users data:', error);
+    } finally {
+      setLoadingCount((count) => count - 1);
     }
   };
 
   useEffect(() => {
     fetchUsersData();
   }, [restaurantId]);
+
+  let loading = loadingCount > 0;
+
+  useEffect(() => {
+    Promise.all([fetchRestaurantData(), fetchUsersData()]).catch((error) => {
+      // console.error('Error fetching data:', error);
+      setLoadingCount((count) => count - 1);
+    });
+  }, [restaurantId]);
+
+  if (loading) {
+    return (
+      <Tbody>
+        <Tr>
+          <Td borderRadius='8px'>
+            <Skeleton height='20px' borderRadius='8px' />
+          </Td>
+          <Td borderRadius='8px' display={isMobile ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px' />
+          </Td>
+          <Td borderRadius='8px' display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px' />
+          </Td>
+          <Td borderRadius='8px' display={isMobile ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px' />
+          </Td>
+          <Td borderRadius='8px' display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px' />
+          </Td>
+          <Td borderRadius='8px' display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px' />
+          </Td>
+          <Td borderRadius='8px' display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px' />
+          </Td>
+        </Tr>
+      </Tbody>
+    );
+  }
 
   return (
     <Tbody>
@@ -164,7 +287,7 @@ export default function CustomersTable() {
               >
                 {user.firstname} {user.lastname}
                 <Box mr='12px' w='42px' h='42px'>
-                  <Avatar w='100%' h='100%' borderRadius='full' src={''} name={user.firstname + ' ' + user.lastname} />
+                  <Avatar size='md' name={getUserName(user._id)} src={getUserAvatar(user._id)} />
                 </Box>
               </Td>
               <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
@@ -189,8 +312,9 @@ export default function CustomersTable() {
                 fontSize='2.5xs'
                 color='neutral.grayDark'
               >
-                {user.orders.length}
+                {user.orders.filter((order) => order.restaurant.includes(restaurantId)).length}
               </Td>
+
               <Td
                 pl={isMobile ? '0' : ''}
                 pr={isMobile ? '0' : ''}

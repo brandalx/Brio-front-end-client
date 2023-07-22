@@ -25,6 +25,7 @@ import Logo from '../../assets/svg/Logo';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
 import { API_URL, TOKEN_KEY, handleApiMethod } from '../../services/apiServices';
+import jwtDecode from 'jwt-decode';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -56,7 +57,12 @@ export default function Login() {
           isClosable: true
         });
         localStorage.setItem(TOKEN_KEY, data.token);
-        navigate('/');
+        const tempDecodedToken = jwtDecode(data.token);
+        if (tempDecodedToken.role === 'ADMIN') {
+          window.location.href = '/admin/restaurant/dashboard';
+        } else {
+          navigate('/');
+        }
       }
     } catch (error) {
       console.log(error);

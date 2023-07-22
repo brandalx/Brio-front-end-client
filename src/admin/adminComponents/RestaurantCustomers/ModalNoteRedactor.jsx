@@ -13,25 +13,43 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useMediaQuery
+  useMediaQuery,
+  useToast
 } from '@chakra-ui/react';
 
 export default function ModalNoteRedactor({ isOpen, onClose, user, fetchUser, userId, note }) {
   const [isLilMob] = useMediaQuery('(max-width: 350px)');
   const { control, handleSubmit } = useForm();
+  const toast = useToast();
 
   const handleNoteSubmit = async (data) => {
     console.log(data);
 
     if (user && userId) {
       try {
-        console.log(data);
-
         await handleApiPost(API_URL + '/users/' + userId + '/notes', { notes: data.notes });
         fetchUser();
         onClose();
+
+        // Show a success toast notification
+        toast({
+          title: 'Note updated',
+          description: 'The note was successfully updated.',
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
       } catch (error) {
         console.error('Error updating note:', error);
+
+        // Show an error toast notification
+        toast({
+          title: 'Error updating note',
+          description: 'An error occurred while updating the note.',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
       }
     } else {
       console.error('User or user.id is undefined');
@@ -77,8 +95,9 @@ export default function ModalNoteRedactor({ isOpen, onClose, user, fetchUser, us
               <Controller
                 control={control}
                 name='notes'
+                fontSize='s'
                 defaultValue={note}
-                render={({ field }) => <Input {...field} placeholder='Title' />}
+                render={({ field }) => <Input fontSize='s' {...field} placeholder='Title' />}
               />
             </FormControl>
           </ModalBody>

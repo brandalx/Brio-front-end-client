@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Container, Grid, Text } from '@chakra-ui/react';
 import Vector from '../../../assets/svg/Vector';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CustomerProfile from './CustomerProfile';
 import RecentOrders from './RecentOrders';
+import { TOKEN_KEY } from '../../../services/apiServices';
+import jwtDecode from 'jwt-decode';
 
 export default function UserDetails() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem(TOKEN_KEY);
+  const decodedToken = jwtDecode(token);
+
+  useEffect(() => {
+    if (decodedToken.role !== 'ADMIN') {
+      navigate('/login');
+    }
+  }, [navigate, token]);
+
   return (
     <Box>
       <Container maxW='1132px' pb='50px'>

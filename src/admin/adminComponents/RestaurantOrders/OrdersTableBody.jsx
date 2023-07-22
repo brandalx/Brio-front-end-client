@@ -36,13 +36,80 @@ export default function OrdersTableBody() {
   const [restaurantId, setRestaurantId] = useState(null);
   const [restaurantProducts, setRestaurantProducts] = useState([]);
   const [relevantOrders, setRelevantOrders] = useState([]);
-  const [usersTotalSpent, setUsersTotalSpent] = useState([]);
   const [products, setProducts] = useState([]);
+  const [userArr, setUserArr] = useState([]);
+  const [usersArr, setUsersArr] = useState([]);
+
+  let handleUsersPublicData = async (_commentsdata) => {
+    try {
+      if (_commentsdata.length > 0) {
+        let allUsers = [];
+        const response = await Promise.all(
+          _commentsdata.map((item) => handleApiGet(`${API_URL}/users/info/public/user/${item._id.toString()}`))
+        );
+        allUsers = [...allUsers, ...response];
+        setUsersArr(allUsers);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleUserApi = async () => {
+    const url2 = API_URL + '/users/getAllUsers';
+    try {
+      const data2 = await handleApiGet(url2);
+      if (Array.isArray(data2)) {
+        setUserArr(data2);
+        await handleUsersPublicData(data2);
+      } else {
+        console.error('Data from API is not an array:', data2);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  let getUserName = (userid) => {
+    try {
+      if (Array.isArray(usersArr)) {
+        const user = usersArr.find((item) => item._id === userid);
+        if (user) {
+          return user.firstname + ' ' + user.lastname;
+        }
+      }
+      return '';
+    } catch (error) {
+      console.log(error);
+      return '';
+    }
+  };
+
+  let getUserAvatar = (userid) => {
+    try {
+      const user = userArr.find((item) => item._id === userid);
+      if (user) {
+        // check if user exists
+        if (user.avatar) {
+          // check if avatar exists
+          let stringAvatar = API_URL + (API_URL.endsWith('/') ? '' : '/') + user.avatar;
+          // console.log(`Avatar URL for user ${userid}: `, stringAvatar);
+          return stringAvatar;
+        } else {
+          // console.log(`No avatar found for user ${userid}`);
+        }
+      } else {
+        console.log(`No user found for ID ${userid}`);
+      }
+      return '';
+    } catch (error) {
+      console.log('Error in getUserAvatar: ', error);
+      return '';
+    }
+  };
 
   const fetchProductData = async (productId) => {
     try {
       const productResponse = await axios.get(`${API_URL}/products/${productId}`);
-      console.log('Fetched product data: ', productResponse.data);
       return productResponse.data;
     } catch (error) {
       console.error('Error fetching product data:', error);
@@ -66,8 +133,7 @@ export default function OrdersTableBody() {
 
         setUserId(userId);
         setRestaurantId(adminResponse.data.restaurant);
-        console.log('Fetched restaurant data: ', adminResponse.data);
-
+        await handleUserApi();
         if (adminResponse.data.restaurant && Array.isArray(adminResponse.data.restaurant.products)) {
           setRestaurantProducts(adminResponse.data.restaurant.products.map((product) => product.$oid));
         }
@@ -88,8 +154,6 @@ export default function OrdersTableBody() {
         const usersPromise = handleApiGet(API_URL + '/users/getAllUsers');
 
         const [ordersResponse, usersResponse] = await Promise.all([ordersPromise, usersPromise]);
-        console.log('Fetched orders response: ', ordersResponse);
-        console.log('Fetched users response: ', usersResponse);
 
         if (Array.isArray(ordersResponse)) {
           const filteredOrders = ordersResponse
@@ -116,27 +180,23 @@ export default function OrdersTableBody() {
               const relatedProduct = products.find(
                 (p) => p._id === product.productId && product.restaurantId === restaurantId
               );
-              return total + (relatedProduct ? relatedProduct.price * product.amount : 0);
+              return total + (relatedProduct ? product.priceItem : 0);
             }, 0);
 
             // Adding the shipping and tips to the total cost of products
-            const totalAmount = (
-              productsCost +
-              order.userdata.paymentSummary.shipping +
-              order.userdata.paymentSummary.tips
-            ).toFixed(2);
-            console.log('Fetched products: ', products);
+            const totalAmount = productsCost.toFixed(2);
+            // console.log('Fetched products: ', products);
 
             // Add the totalAmount to the order object itself
             return { ...order, totalSpent: totalAmount };
           });
 
           setRelevantOrders(ordersWithTotalSpent);
-          console.log('Filtered orders with total spent: ', ordersWithTotalSpent);
+          // console.log('Filtered orders with total spent: ', ordersWithTotalSpent);
         }
 
         setOrdersOfUsers(usersResponse);
-        console.log('orders of users: ', ordersOfUsers);
+        // console.log('orders of users: ', ordersOfUsers);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -145,6 +205,44 @@ export default function OrdersTableBody() {
 
     fetchAll();
   }, [restaurantId]);
+
+  const formatDate = (date) => {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    const formattedDate = new Date(date).toLocaleDateString('en-US', options);
+    return formattedDate;
+  };
+
+  if (loading) {
+    return (
+      <Tbody>
+        {[...Array(3)].map((_, index) => (
+          <Tr key={index} borderBottom='1px solid' borderColor='#EBF1FE'>
+            <Td>
+              <Skeleton height='20px' borderRadius='8px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' borderRadius='8px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' borderRadius='8px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' borderRadius='8px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' borderRadius='8px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' borderRadius='8px' />
+            </Td>
+            <Td>
+              <Skeleton height='20px' borderRadius='8px' />
+            </Td>
+          </Tr>
+        ))}
+      </Tbody>
+    );
+  }
 
   return (
     <Tbody>
@@ -175,10 +273,11 @@ export default function OrdersTableBody() {
               fontSize='2xs'
               color='neutral.grayDark'
               fontWeight='semibold'
+              border='none'
             >
               {user.firstname} {user.lastname}
               <Box mr='12px' w='42px' h='42px'>
-                <Avatar w='100%' h='100%' borderRadius='full' src={''} name={user.firstname + ' ' + user.lastname} />
+                <Avatar size='md' name={getUserName(user._id)} src={getUserAvatar(user._id)} />
               </Box>
             </Td>
             <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
@@ -186,12 +285,10 @@ export default function OrdersTableBody() {
             </Td>
 
             <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-              {order.creationDate}
+              {formatDate(order.creationDate)}
             </Td>
             <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
-              {new Date(order.creationDate).toDateString() +
-                ' ' +
-                new Date(order.creationDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              {new Date(order.creationDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </Td>
 
             <Td
@@ -207,14 +304,14 @@ export default function OrdersTableBody() {
                 <Box as='span' me={2}>
                   <Status
                     color={
-                      order.status === 'Completed'
+                      order.userdata.status === 'Completed'
                         ? '#1ABF70'
-                        : order.status === 'In progress'
+                        : order.userdata.status === 'In progress'
                         ? '#4E60FF'
-                        : order.status === 'Canceled'
+                        : order.userdata.status === 'Cancelled'
                         ? '#FF5C60'
-                        : order.status === 'Suspended'
-                        ? '#FF5C60'
+                        : order.userdata.status === 'Placed'
+                        ? '#22E57A'
                         : 'yellow'
                     }
                   />
@@ -230,72 +327,9 @@ export default function OrdersTableBody() {
               fontSize='2.5xs'
               color='neutral.black'
               fontWeight='semibold'
+              textAlign='center'
             >
-              {order.totalSpent || 0}
-            </Td>
-
-            <Td
-              position={isMobile ? 'relative' : ''}
-              right={isMobile ? '10px' : '0'}
-              pl={0}
-              pr={0}
-              pt='10px'
-              pb='10px'
-              fontSize='2xs'
-              fontWeight='bold'
-              color='neutral.black'
-            >
-              <IconButton
-                icon={<ThreeDots />}
-                onClick={() => {
-                  if (order.status === 'Canceled') {
-                    setIsOpen(true);
-                    setSelectedOrder(order);
-                  }
-                }}
-              />
-              <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
-                <ModalOverlay
-                  width='100%'
-                  sx={{
-                    position: 'fixed',
-                    top: '0',
-                    left: '0',
-                    width: '100%',
-                    height: '100%',
-                    zIndex: '10',
-                    bg: 'rgba(0,0,0,0.6)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                />
-
-                <ModalContent
-                  position='relative'
-                  boxSizing='content-box'
-                  width={['100%', '100%', '100%', '540px']}
-                  maxW='96%'
-                  MaxH='568px'
-                >
-                  <ModalHeader>Order Details</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>{/* Display order details here */}</ModalBody>
-                  <ModalFooter>
-                    <Button colorScheme='blue' mr={3} onClick={onClose}>
-                      Close
-                    </Button>
-                    <Button
-                      variant='ghost'
-                      onClick={() => {
-                        /* re-order request logic */
-                      }}
-                    >
-                      Re-Order
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
+              ${order.totalSpent || 0}
             </Td>
           </Tr>
         );

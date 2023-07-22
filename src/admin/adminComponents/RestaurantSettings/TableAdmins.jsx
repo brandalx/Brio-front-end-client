@@ -1,4 +1,17 @@
-import { Box, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr
+} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import Status from '../../../assets/svg/Status';
 import jwtDecode from 'jwt-decode';
@@ -9,6 +22,7 @@ export default function TableAdmins() {
   const [userId, setUserId] = useState(null);
   const [restaurantId, setRestaurantId] = useState(null);
   const [admins, setAdmins] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Add isLoading state
 
   const fetchAdmin = async () => {
     try {
@@ -18,18 +32,18 @@ export default function TableAdmins() {
 
       const response = await axios.get(`${API_URL}/users/${userId}`, {
         headers: {
-          'x-api-key': token // Это где вы устанавливаете заголовок с токеном
+          'x-api-key': token
         }
       });
 
-      // Устанавливаем ID ресторана и пользователя
       setRestaurantId(response.data.restaurant);
       setUserId(userId);
-
-      console.log(response.data); // Выводим данные о пользователе и ресторане
     } catch (error) {
       console.error('Error fetching user:', error);
     }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   const fetchAdmins = async () => {
@@ -42,8 +56,9 @@ export default function TableAdmins() {
       });
 
       // Filtering only admins who have userId equal to current user's ID
-      const filteredAdmins = response.data.filter((admin) => admin._id === userId);
+      const filteredAdmins = response.data.filter((admin) => admin.restaurant === restaurantId);
       setAdmins(filteredAdmins);
+      setIsLoading(false); // Set isLoading to false after data is fetched
     } catch (error) {
       console.error('Error fetching admins:', error);
     }
@@ -53,6 +68,44 @@ export default function TableAdmins() {
     fetchAdmin();
     fetchAdmins();
   }, [userId]);
+
+  if (isLoading) {
+    // If isLoading is true, display skeleton
+    return (
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>
+              <Skeleton height='20px' borderRadius='8px' />
+            </Th>
+            <Th>
+              <Skeleton height='20px' borderRadius='8px' />
+            </Th>
+            <Th display={['none', 'none', 'none', 'table-cell']}>
+              <Skeleton borderRadius='8px' height='20px' />
+            </Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {[...Array(5)].map((_, i) => (
+            <Tr key={i}>
+              <Td>
+                <SkeletonText mt='4' noOfLines={1} spacing='4' />
+              </Td>
+              <Td>
+                <Flex alignItems='center'>
+                  <SkeletonText ml='4' width='80px' noOfLines={1} />
+                </Flex>
+              </Td>
+              <Td display={['none', 'none', 'none', 'table-cell']}>
+                <SkeletonText mt='4' noOfLines={1} spacing='4' />
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    );
+  }
 
   return (
     <TableContainer overflowX='hidden'>
@@ -65,7 +118,13 @@ export default function TableAdmins() {
             <Th color='neutral.gray' fontSize='2xs' fontWeight='bold'>
               Role
             </Th>
-            <Th color='neutral.gray' fontSize='2xs' fontWeight='bold' isNumeric>
+            <Th
+              color='neutral.gray'
+              fontSize='2xs'
+              fontWeight='bold'
+              isNumeric
+              display={['none', 'none', 'none', 'table-cell']}
+            >
               Date Created
             </Th>
           </Tr>
@@ -90,7 +149,7 @@ export default function TableAdmins() {
                     {admin.role}
                   </Flex>
                 </Td>
-                <Td fontSize='2xs' color='neutral.black' isNumeric>
+                <Td fontSize='2xs' color='neutral.black' isNumeric display={['none', 'none', 'none', 'table-cell']}>
                   {new Date(admin.date_created).toLocaleString()}
                 </Td>
               </Tr>

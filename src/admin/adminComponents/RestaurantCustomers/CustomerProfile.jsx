@@ -8,10 +8,10 @@ import ModalNoteRedactor from './ModalNoteRedactor';
 
 export default function CustomerProfile() {
   const [user, setUser] = useState(null);
-  const [note, setNote] = useState(''); // New state for the note field
+  const [note, setNote] = useState('');
   const { userId } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [role, setRole] = useState(null); // New state for the role
+  const [role, setRole] = useState(null);
 
   const fetchUser = async () => {
     try {
@@ -20,7 +20,6 @@ export default function CustomerProfile() {
       setRole(response.role);
 
       setNote(response.notes);
-      console.log(response);
     } catch (error) {
       console.error('Error fetching user:', error);
     }
@@ -72,14 +71,7 @@ export default function CustomerProfile() {
                 </Box>
               </Box>
             </Box>
-            <Box padding='16px 16px 20px 16px' borderBottom='1px' borderColor='neutral.grayLightest'>
-              <Text color='neutral.black' fontWeight='bold' fontSize='xs'>
-                Customer addresses
-              </Text>
-              <Box>
-                <Text color='neutral.black' fontWeight='normal' fontSize='sm'></Text>
-              </Box>
-            </Box>
+            <Box padding='0px 16px 20px 16px' borderBottom='1px' borderColor='neutral.grayLightest'></Box>
             <Box padding='16px 16px 20px 16px'>
               <Text color='neutral.black' fontWeight='bold' fontSize='xs'>
                 Notes
