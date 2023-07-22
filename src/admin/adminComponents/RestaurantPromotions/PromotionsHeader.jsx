@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { Box, Button, Container, Text, useDisclosure } from '@chakra-ui/react';
 import ModalCreatePromotion from './ModalCreatePromotion';
 
-export default function PromotionsHeader() {
-  const [active, setActive] = useState('active');
+export default function PromotionsHeader({ active, setActive }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -52,9 +51,9 @@ export default function PromotionsHeader() {
             p='13px'
             w='100%'
             h='100%'
-            color={active === 'active' ? 'white' : 'neutral.grayDark'}
-            backgroundColor={active === 'active' ? 'neutral.black' : 'primary.grayLightest'}
-            onClick={() => setActive('active')}
+            color={active === 'Active' ? 'white' : 'neutral.grayDark'}
+            backgroundColor={active === 'Active' ? 'neutral.black' : 'primary.grayLightest'}
+            onClick={() => setActive('Active')}
           >
             Active
           </Button>
@@ -64,9 +63,9 @@ export default function PromotionsHeader() {
             p='13px'
             w='100%'
             h='100%'
-            color={active === 'scheduled' ? 'white' : 'neutral.grayDark'}
-            backgroundColor={active === 'scheduled' ? 'neutral.black' : 'primary.grayLightest'}
-            onClick={() => setActive('scheduled')}
+            color={active === 'Scheduled' ? 'white' : 'neutral.grayDark'}
+            backgroundColor={active === 'Scheduled' ? 'neutral.black' : 'primary.grayLightest'}
+            onClick={() => setActive('Scheduled')}
           >
             Scheduled
           </Button>
@@ -77,9 +76,9 @@ export default function PromotionsHeader() {
             p='13px'
             w='100%'
             h='100%'
-            color={active === 'expired' ? 'white' : 'neutral.grayDark'}
-            backgroundColor={active === 'expired' ? 'neutral.black' : 'primary.grayLightest'}
-            onClick={() => setActive('expired')}
+            color={active === 'Expired' ? 'white' : 'neutral.grayDark'}
+            backgroundColor={active === 'Expired' ? 'neutral.black' : 'primary.grayLightest'}
+            onClick={() => setActive('Expired')}
           >
             Expired
           </Button>

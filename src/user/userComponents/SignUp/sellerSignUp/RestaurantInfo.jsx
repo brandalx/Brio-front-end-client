@@ -32,12 +32,13 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
       title: _bodyData.title,
       address: _bodyData.address,
       location: _bodyData.location,
-      email: _bodyData.email,
+      restaurantEmail: _bodyData.restaurantEmail, // обновленная строка
       description: _bodyData.description,
       company: _bodyData.company
     }));
     navigate('/signup/restaurant/info/confirmation');
   };
+
   return (
     <>
       <Flex h='100%' w='100' justifyContent='center'>
@@ -132,14 +133,14 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                     </FormErrorMessage>
                   </FormControl>
 
-                  <FormControl id='email' isInvalid={errors.email}>
+                  <FormControl id='restaurantEmail' isInvalid={errors.restaurantEmail}>
                     <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                      Email
+                      Restaurant Email
                     </FormLabel>
                     <Input
-                      id='email'
+                      id='restaurantEmail'
                       type='email'
-                      {...register('email', {
+                      {...register('restaurantEmail', {
                         required: 'Email is required',
                         pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Invalid email address' }
                       })}
@@ -149,10 +150,13 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       fontSize='2xs'
                       placeholder='Email'
                     />
-                    <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                      {errors.email && errors.email.message}
+
+                    <FormErrorMessage p={0} m={0} fontSize='3xs'>
+                      {errors.restaurantEmail && errors.restaurantEmail.message}
+
                     </FormErrorMessage>
                   </FormControl>
+
                   <FormControl id='description' isInvalid={errors.description}>
                     <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                       Description

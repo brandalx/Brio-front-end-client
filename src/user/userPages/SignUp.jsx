@@ -49,14 +49,27 @@ export default function SignUp() {
   const location = useLocation();
   const currentUrl = location.pathname;
   const [option2, SetOption2] = useState(null);
-  const [mainBody, setMainBody] = useState({
+  const [mainBodyRestaurant, setMainBodyRestaurant] = useState({
+    firstname: '',
+    lastname: '',
+    restaurantEmail: '',
+    email: '',
+    phone: '',
+    type: 'restaurant', // Добавьте эту строку
+    password: '',
+    confirmpassword: ''
+  });
+
+  const [mainBodyUser, setMainBodyUser] = useState({
     firstname: '',
     lastname: '',
     email: '',
     phone: '',
     password: '',
+    type: 'personal',
     confirmpassword: ''
   });
+
   const [shouldRedirectTo404, setShouldRedirectTo404] = useState(false);
   const navigate = useNavigate();
 
@@ -175,7 +188,6 @@ export default function SignUp() {
                     </Box>
                   </GridItem>
                 </Grid>
-
                 <Flex justifyContent='space-between' my={4}>
                   <Box>
                     <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
@@ -217,21 +229,39 @@ export default function SignUp() {
               </Box>
 
               <Routes>
-                <Route path='/' element={<SignUpMain mainBody={setMainBody} SetOption2={SetOption2} />} />
+                <Route path='/' element={<SignUpMain mainBody={() => {}} SetOption2={SetOption2} />} />
 
                 {option2 === 'restaurant' && (
                   <>
                     <Route
                       path='/restaurant'
-                      element={<SellerPersonalDetails setMainBody={setMainBody} mainBody={mainBody} type={option2} />}
+                      element={
+                        <SellerPersonalDetails
+                          setMainBody={setMainBodyRestaurant}
+                          mainBody={mainBodyRestaurant}
+                          type={option2}
+                        />
+                      }
                     />
                     <Route
                       path='/restaurant/info'
-                      element={<RestaurantInfo setMainBody={setMainBody} mainBody={mainBody} type={option2} />}
+                      element={
+                        <RestaurantInfo
+                          setMainBody={setMainBodyRestaurant}
+                          mainBody={mainBodyRestaurant}
+                          type={option2}
+                        />
+                      }
                     />
                     <Route
                       path='/restaurant/info/confirmation'
-                      element={<RestaurantConfirmation setMainBody={setMainBody} mainBody={mainBody} />}
+                      element={
+                        <RestaurantConfirmation
+                          setMainBody={setMainBodyRestaurant}
+                          mainBody={mainBodyRestaurant}
+                          type={option2}
+                        />
+                      }
                     />
                   </>
                 )}
@@ -239,15 +269,15 @@ export default function SignUp() {
                   <>
                     <Route
                       path='/personal'
-                      element={<PersonalDetails setMainBody={setMainBody} mainBody={mainBody} type={option2} />}
+                      element={<PersonalDetails setMainBody={setMainBodyUser} mainBody={mainBodyUser} type={option2} />}
                     />
                     <Route
                       path='/personal/info'
-                      element={<AdditionalInfo setMainBody={setMainBody} mainBody={mainBody} />}
+                      element={<AdditionalInfo setMainBody={setMainBodyUser} mainBody={mainBodyUser} type={option2} />}
                     />
                     <Route
                       path='/personal/info/confirmation'
-                      element={<Confirmation setMainBody={setMainBody} mainBody={mainBody} />}
+                      element={<Confirmation setMainBody={setMainBodyUser} mainBody={mainBodyUser} type={option2} />}
                     />
                   </>
                 )}

@@ -36,6 +36,7 @@ import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../service
 import { useCheckToken } from '../../services/token';
 import { avatarContext, cartContext, geolocationContext } from '../../context/globalContext';
 import GeolocationDefinder from './Navbar/GeolocationDefinder';
+import jwtDecode from 'jwt-decode';
 export default function Navbar() {
   const isTokenExpired = useCheckToken();
   const { cartLen, setCartLen } = useContext(cartContext);
@@ -49,17 +50,28 @@ export default function Navbar() {
   const mobileNav = useDisclosure();
   const location = useLocation();
   const isInCart = location.pathname.startsWith('/user/cart');
+
   const isInRestaurants = location.pathname.startsWith('/restaurant');
   const isInMyOrders = location.pathname.startsWith('/user/orders');
 
   const isInDeals = location.pathname.startsWith('/deals');
+
+
+  const token = localStorage.getItem(TOKEN_KEY);
+  let checkerIfAdmin = false;
 
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
 
   const [srcav, setSrcav] = useState();
   const randomarr = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
-
+  if (token) {
+    try {
+      checkerIfAdmin = jwtDecode(token).role === 'ADMIN';
+    } catch (error) {
+      console.error('Failed to decode token', error);
+    }
+  }
   const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
@@ -116,7 +128,6 @@ export default function Navbar() {
       setArr(data);
 
       setAvatarUser(API_URL + '/' + data.avatar);
-      console.log(data);
 
       setCartLen(data.cart.length);
       setLoading(false);
@@ -131,6 +142,7 @@ export default function Navbar() {
     handleApi();
     genavatar();
   }, []);
+
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
     sessionStorage.removeItem('location');
@@ -382,6 +394,11 @@ export default function Navbar() {
                               {/* //because it should refresh to update user logged in */}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
                             </a>
+                            {checkerIfAdmin && (
+                              <Link to='/admin/restaurant/dashboard'>
+                                <MenuItem fontWeight='medium'>Your restaurant</MenuItem>
+                              </Link>
+                            )}
 
                             <MenuDivider />
 
@@ -539,6 +556,11 @@ export default function Navbar() {
                               {' '}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
                             </a>
+                            {checkerIfAdmin && (
+                              <Link to='/admin/restaurant/dashboard'>
+                                <MenuItem fontWeight='medium'>Your restaurant</MenuItem>
+                              </Link>
+                            )}
 
                             <MenuDivider />
 

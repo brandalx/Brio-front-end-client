@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Text, Container, Grid, GridItem } from '@chakra-ui/layout';
 import {
   Filler,
@@ -14,9 +14,12 @@ import {
 import { Line } from 'react-chartjs-2';
 
 import OrdersData from '../adminComponents/RestaurantDashboard/OrdersData';
-
-import MealCard from '../adminComponents/RestaurantDashboard/MealCard';
-import { Button } from '@chakra-ui/button';
+import axios from 'axios';
+import { API_URL, TOKEN_KEY } from '../../services/apiServices';
+import jwtDecode from 'jwt-decode';
+import PopularMeals from '../adminComponents/RestaurantDashboard/PopularMeals';
+import { AspectRatio, Skeleton } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 // Register required Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -34,64 +37,61 @@ export const options = {
   }
 };
 
-// Labels for the chart
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-// Chart data (temporary fake data)
-
-const mealArray = [
-  {
-    image: 'https://cdn.pixabay.com/photo/2017/10/15/11/41/sushi-2853382_960_720.jpg',
-    title: 'Nigiri set',
-    amount: 362,
-    price: 185
-  },
-  {
-    image: 'https://cdn.pixabay.com/photo/2017/10/15/11/41/sushi-2853382_960_720.jpg',
-    title: 'Nigiri set',
-    amount: 362,
-    price: 185
-  }
-];
-
 export default function RestaurantDashboard() {
-  let orderRevenue = [
-    { item: 9876 },
-    { item: 5432 },
-    { item: 1234 },
-    { item: 5678 },
-    { item: 4321 },
-    { item: 8765 },
-    { item: 987 }
+  const navigate = useNavigate();
+  const token = localStorage.getItem(TOKEN_KEY);
+  const decodedToken = jwtDecode(token);
+
+  useEffect(() => {
+    if (decodedToken.role !== 'ADMIN') {
+      navigate('/login');
+    }
+  }, [navigate, token]);
+
+  const [receivedOrders, setReceivedOrder] = useState(0);
+  const [revenue, setRevenue] = useState(0);
+  const [restaurantId, setRestaurantId] = useState();
+  const [currentType, setCurrentType] = useState('ordersDelivered');
+
+  const [orders, setOrders] = useState({
+    month7: { orderCount: 0, orderReceivedCount: 0, revenueCount: 0 },
+    month6: { orderCount: 0, orderReceivedCount: 0, revenueCount: 0 },
+    month5: { orderCount: 0, orderReceivedCount: 0, revenueCount: 0 },
+    month4: { orderCount: 0, orderReceivedCount: 0, revenueCount: 0 },
+    month3: { orderCount: 0, orderReceivedCount: 0, revenueCount: 0 },
+    month2: { orderCount: 0, orderReceivedCount: 0, revenueCount: 0 },
+    month1: { orderCount: 0, orderReceivedCount: 0, revenueCount: 0 }
+  });
+
+  const labels = [
+    '6 Months Ago',
+    '5 Months Ago',
+    '4 Months Ago',
+    '3 Months Ago',
+    '2 Months Ago',
+    'Last Month',
+    'This Month'
   ];
 
-  let ordersDelivered = [
-    { item: 1357 },
-    { item: 2468 },
-    { item: 9753 },
-    { item: 8642 },
-    { item: 3141 },
-    { item: 5926 },
-    { item: 5358 }
-  ];
+  const getCurrentData = () => {
+    switch (currentType) {
+      case 'ordersDelivered':
+        return Object.values(orders).map((monthData) => monthData.orderCount);
+      case 'ordersRecived':
+        return Object.values(orders).map((monthData) => monthData.orderReceivedCount);
+      case 'orderRevenue':
+      default:
+        return Object.values(orders).map((monthData) => monthData.revenueCount);
+    }
+  };
 
-  let ordersRecived = [
-    { item: 2324 },
-    { item: 3232 },
-    { item: 2376 },
-    { item: 3423 },
-    { item: 8864 },
-    { item: 2323 },
-    { item: 6566 }
-  ];
-  const [currentArr, setCurrentArr] = useState(ordersDelivered);
-
+  // Chart data
   const data = {
     labels,
     datasets: [
       {
         label: 'Restaurant data',
-        data: currentArr.map((item, index) => ({ x: index, y: item.item })),
+        data: getCurrentData(),
         borderColor: '#8E99FF',
         backgroundColor: 'rgba(175, 183, 255, 0.21)',
         fill: 'origin',
@@ -99,6 +99,124 @@ export default function RestaurantDashboard() {
       }
     ]
   };
+
+  useEffect(() => {
+    const fetchRestaurantAndOrdersData = async () => {
+      try {
+        // Fetch restaurant data first
+        const token = localStorage.getItem('x-api-key');
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken._id;
+
+        const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
+          headers: {
+            'x-api-key': token
+          }
+        });
+
+        const restaurantId = adminResponse.data.restaurant;
+        setTimeout(() => {
+          setRestaurantId(restaurantId);
+        }, 500);
+
+        // Then fetch orders
+        const orderResponse = await axios.get(`${API_URL}/orders`, {
+          headers: {
+            'x-api-key': token
+          }
+        });
+
+        if (orderResponse.status === 200) {
+          const newOrders = { ...orders };
+
+          orderResponse.data.forEach((order) => {
+            const orderDate = new Date(order.creationDate);
+            let orderMonth = `month${(new Date().getMonth() - orderDate.getMonth() + 1) % 7}`;
+
+            if (order.ordersdata.restaurants.includes(restaurantId) && order.userdata.status === 'Placed') {
+              newOrders[orderMonth].orderReceivedCount++;
+            }
+            if (order.ordersdata.restaurants.includes(restaurantId) && order.userdata.status === 'In progress') {
+              newOrders[orderMonth].orderReceivedCount++;
+            }
+            if (order.ordersdata.restaurants.includes(restaurantId) && order.userdata.status === 'Completed') {
+              newOrders[orderMonth].orderCount++;
+            }
+
+            if (order.userdata.status === 'Completed') {
+              order.ordersdata.products.forEach((product) => {
+                if (product.restaurantId === restaurantId) {
+                  newOrders[orderMonth].revenueCount += product.priceItem;
+                }
+              });
+            }
+          });
+
+          setOrders(newOrders);
+        } else {
+          console.error('Error fetching orders:', orderResponse.status);
+        }
+      } catch (error) {
+        console.error('Error fetching restaurant and order data:', error);
+      }
+    };
+
+    fetchRestaurantAndOrdersData();
+  }, []);
+
+  if (!restaurantId) {
+    return (
+      <Box py={5}>
+        <Container maxW='1110px'>
+          <Skeleton height='30px' width='150px' my='8px' borderRadius='16px' />
+
+          <Grid
+            templateColumns={{
+              base: 'repeat(1, 1fr)',
+              sm: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+              lg: 'repeat(3, 1fr)',
+              xl: 'repeat(3, 1fr)'
+            }}
+            gap={4}
+          >
+            <GridItem>
+              <Skeleton height='67px' borderRadius='16px' />
+            </GridItem>
+            <GridItem>
+              <Skeleton height='67px' borderRadius='16px' />
+            </GridItem>
+            <GridItem>
+              <Skeleton height='67px' borderRadius='16px' />
+            </GridItem>
+          </Grid>
+          <Grid
+            mb='4'
+            mt='4'
+            templateColumns={{
+              base: 'repeat(1, 1fr)',
+              sm: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+              lg: '2fr 1fr',
+              xl: '2fr 1fr'
+            }}
+            gap={4}
+          >
+            <GridItem w='100%'>
+              <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
+                <Skeleton height='20px' mb='4' />
+                <Skeleton height='350px' borderRadius='16px' />
+              </Box>
+            </GridItem>
+            <GridItem>
+              <Skeleton height='300px' borderRadius='16px' />
+            </GridItem>
+          </Grid>
+        </Container>
+      </Box>
+    );
+  }
+
   return (
     <>
       <Box py={5}>
@@ -108,67 +226,36 @@ export default function RestaurantDashboard() {
           </Text>
           <Box>
             <OrdersData
-              setCurrentArr={setCurrentArr}
-              orderRevenue={orderRevenue}
-              ordersDelivered={ordersDelivered}
-              ordersRecived={ordersRecived}
+              setCurrentType={setCurrentType}
+              orderRevenue={getCurrentData()}
+              ordersDelivered={getCurrentData()}
+              ordersRecived={getCurrentData()}
             />
           </Box>
-
           <Box>
-            <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '2fr 1fr ' }} gap={4}>
+            <Grid
+              templateColumns={{
+                base: 'repeat(1, 1fr)',
+                sm: 'repeat(1, 1fr)',
+                md: 'repeat(2, 1fr)',
+                lg: '2fr 1fr',
+                xl: '2fr 1fr'
+              }}
+              gap={4}
+            >
               <GridItem w='100%'>
                 <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
                   <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                    {JSON.stringify(currentArr) === JSON.stringify(orderRevenue) && <>Order revenue</>}
-                    {JSON.stringify(currentArr) === JSON.stringify(ordersDelivered) && <>Orders delivered</>}
-                    {JSON.stringify(currentArr) === JSON.stringify(ordersRecived) && <>Orders received</>}
+                    {currentType === 'orderRevenue' && <>Order revenue</>}
+                    {currentType === 'ordersDelivered' && <>Orders delivered</>}
+                    {currentType === 'ordersRecived' && <>Orders received</>}
                   </Text>
-                  <Line options={options} data={data} />
+                  <AspectRatio ratio={16 / 9}>
+                    <Line options={options} data={data} />
+                  </AspectRatio>
                 </Box>
               </GridItem>
-              <GridItem w='100%'>
-                <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px'>
-                  <Text fontSize='xs' fontWeight='bold' color='neutral.black'>
-                    Popular meals
-                  </Text>
-                  <Box mt={4}>
-                    {mealArray.map((item, index) => {
-                      return (
-                        <MealCard
-                          key={index}
-                          image={item.image}
-                          title={item.title}
-                          amount={item.amount}
-                          price={item.price}
-                          desc={item.desc}
-                        />
-                      );
-                    })}
-                  </Box>
-                  <Button
-                    mx='auto'
-                    mt={4}
-                    w='100%'
-                    background='neutral.white'
-                    fontSize='2xs'
-                    fontWeight='bold'
-                    variant='solid'
-                    color='neutral.gray'
-                    borderWidth='1px'
-                    borderColor='neutral.gray'
-                    _hover={{
-                      background: 'primary.default',
-                      color: 'neutral.white',
-                      borderWidth: '1px',
-                      borderColor: 'primary.default'
-                    }}
-                    py={5}
-                  >
-                    Show all meals
-                  </Button>
-                </Box>
-              </GridItem>
+              <PopularMeals restaurantId={restaurantId} />
             </Grid>
           </Box>
         </Container>

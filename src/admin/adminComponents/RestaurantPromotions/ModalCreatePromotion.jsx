@@ -17,6 +17,11 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import React, { useEffect, useState } from 'react';
 import { API_URL } from '../../../services/apiServices';
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
+import Select from 'react-select';
+import { components } from 'react-select';
+import { useToast } from '@chakra-ui/react';
 
 export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfPromotion }) {
   const { control, handleSubmit, reset } = useForm();
@@ -24,7 +29,61 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
   const [product, setProduct] = useState('');
   const [image, setImage] = useState(null);
   const [days, setDays] = useState([]);
+  const [productsOfRestaurant, setProductsOfRestaurant] = useState([]);
   const arrDaysOfTheWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  const [restaurantId, setRestaurantId] = useState('');
+  const [restaurantName, setRestaurantName] = useState('');
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const toast = useToast();
+
+  const fetchProductData = async (productId) => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const response = await axios.get(`${API_URL}/products/${productId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching product data:', error);
+    }
+  };
+
+  const fetchRestaurantData = async () => {
+    try {
+      const token = localStorage.getItem('x-api-key');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+
+      const adminResponse = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      const restaurantResponse = await axios.get(`${API_URL}/restaurants/${adminResponse.data.restaurant}`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+
+      setRestaurantId(adminResponse.data.restaurant);
+      setRestaurantName(restaurantResponse.data.title);
+
+      const productIds = restaurantResponse.data.products;
+      const productPromises = productIds.map((productId) => fetchProductData(productId));
+      const products = await Promise.all(productPromises);
+
+      setProductsOfRestaurant(products);
+    } catch (error) {
+      console.error('Error fetching restaurant data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRestaurantData();
+  }, []);
 
   const dayMapper = {
     SUN: 'Sunday',
@@ -40,12 +99,7 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
     if (!days.includes(dayMapper[day])) {
       setDays((prevDays) => [...prevDays, dayMapper[day]]);
     }
-    console.log(days);
   };
-
-  useEffect(() => {
-    console.log(days);
-  }, [days]);
 
   const formatDate = (date) => {
     let month = '' + (date.getMonth() + 1),
@@ -54,49 +108,71 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
 
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
-    console.log(year + ' ' + month + ' ' + day);
     return [year, month, day].join('-');
   };
 
-  const createPromotion = async (discountDetails, startDate, endDate, restaurantName, image, discountDays) => {
+  const createPromotion = async (discountDetails, startDate, endDate, image, discountPercent, discountProducts) => {
+    const token = localStorage.getItem('x-api-key');
+    const newPromotionStartDate = new Date(startDate).getTime();
+    for (let productId of discountProducts) {
+      const promotions = await axios.get(`${API_URL}/admin/promotions`, {
+        headers: {
+          'x-api-key': token
+        }
+      });
+      for (let promotion of promotions.data) {
+        const promotionStartDate = new Date(promotion.startDate).getTime();
+        const promotionEndDate = new Date(promotion.endDate).getTime();
+        const newPromotionEndDate = new Date(endDate).getTime();
+        if (
+          promotion.discountProducts.includes(productId) &&
+          promotionEndDate >= newPromotionStartDate &&
+          promotionStartDate <= newPromotionEndDate
+        ) {
+          throw new Error(`Product ${productId} is already participating in another active or scheduled promotion`);
+        }
+      }
+    }
+
     const payload = {
-      discountDetails: discountDetails,
-      startDate: startDate,
-      endDate: endDate,
-      restaurantName: restaurantName,
-      image: image,
-      discountDays: discountDays
+      discountDetails,
+      startDate,
+      endDate,
+      restaurantRef: restaurantId,
+      image,
+      discountPercent,
+      discountProducts,
+      discountDays: days,
+      restaurantName
     };
 
     try {
-      const response = await fetch(API_URL + '/admin/promotions', {
-        method: 'POST',
+      const token = localStorage.getItem('x-api-key');
+      const response = await axios.post(`${API_URL}/admin/promotions`, payload, {
         headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
+          'x-api-key': token
+        }
       });
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Failed to create promotion');
       }
 
-      const data = await response.json();
-      return data;
+      return response.data;
     } catch (error) {
       throw new Error('An error occurred while creating the promotion: ' + error.message);
     }
   };
 
   const handlePublishPromotion = async (data) => {
-    const { discountDetails, startDate, endDate, restaurantName, image, discountDays } = data;
+    console.log('Submitting Data:', data);
+    const { discountDetails, startDate, endDate, image, discountPercent, discountProducts } = data;
 
-    // Convert dates to Date objects
+    const productIds = discountProducts ? discountProducts.map((product) => product.id) : [];
+
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
-    console.log(startDateObj + ' ' + endDateObj);
 
-    // Проверка корректности дат
     if (startDateObj > endDateObj) {
       console.error('End date cannot be before start date.');
       return;
@@ -104,33 +180,78 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
     try {
       const newPromotion = await createPromotion(
         discountDetails,
-        formatDate(startDateObj), // Convert to YYYY-MM-DD string before sending
-        formatDate(endDateObj), // Convert to YYYY-MM-DD string before sending
-        restaurantName,
+        formatDate(startDateObj),
+        formatDate(endDateObj),
         image,
-        discountDays
+        discountPercent,
+        productIds
       );
 
-      // Add the new product to the list of products
-      setProduct((prevPromotion) => [
-        ...prevPromotion,
-        { ...newPromotion } // Add the amount field to the new product
-      ]);
-      // If successful, close the modal
+      setProduct((prevPromotion) => [...prevPromotion, { ...newPromotion }]);
       onClose();
+
+      // Toast for successful promotion creation
+      toast({
+        title: 'Promotion Created',
+        description: 'The promotion has been successfully created.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true
+      });
     } catch (error) {
       console.error('An error occurred while publishing the category:', error);
+
+      // Toast for failed promotion creation
+      toast({
+        title: 'Promotion Creation Failed',
+        description: `An error occurred while creating the promotion: ${error.message}`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
     }
   };
 
   const onSubmit = (data) => {
-    handlePublishPromotion({ ...data, discountDays: days });
-    console.log(data);
-    console.log(data.endDate);
-    console.log(data.startDate);
+    console.log('Form Data That i Got and wanna see:', data);
+
+    handlePublishPromotion({
+      ...data,
+      discountDetails: data.discountDetails,
+      startDate: data.startDate,
+      endDate: data.endDate,
+      image: data.image,
+      discountPercent: data.discountPercent,
+      discountProducts: data.discountProducts,
+      restaurantName: restaurantName,
+      restaurantRef: restaurantId,
+      discountDays: days
+    });
     reset();
     setDays([]);
   };
+
+  const options = productsOfRestaurant.map((product) => ({
+    id: product._id,
+    title: product.title,
+    price: product.price,
+    image: product.image,
+    data: product
+  }));
+
+  const CustomOption = ({ data, ...props }) => (
+    <components.Option {...props}>
+      <Image
+        borderRadius='8px'
+        src={(data.image && data.image[0]) || ''}
+        alt={data.title}
+        width='150px'
+        height='125px'
+      />
+      <Box>{data.title}</Box>
+      <Box>${data.price}</Box>
+    </components.Option>
+  );
 
   const handleImageChange = (event) => {
     setImage(URL.createObjectURL(event.target.files[0]));
@@ -189,8 +310,8 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
                   height='100%'
                   borderRadius='20px'
                   src={
-                    image ||
-                    'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+                    product.image ||
+                    'https://images.pexels.com/photos/2122294/pexels-photo-2122294.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
                   }
                   objectFit='cover'
                   objectPosition='center'
@@ -242,7 +363,7 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
             <Box display='flex' flexDirection='column' gap={3}>
               <InputGroup mt='20px' display='flex' flexDirection='column'>
                 <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>
-                  Name
+                  Discount details
                 </Text>
                 <Controller
                   control={control}
@@ -252,6 +373,59 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
                     <Input {...field} color='neutral.gray' fontSize='2xs' type='text' placeholder='Enter meal name' />
                   )}
                 />
+              </InputGroup>
+              <InputGroup mt='20px' display='flex' flexDirection='column'>
+                <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>
+                  Discount percent
+                </Text>
+                <Controller
+                  control={control}
+                  name='discountPercent'
+                  defaultValue=''
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      color='neutral.gray'
+                      fontSize='2xs'
+                      type='text'
+                      placeholder='Enter discount percent'
+                    />
+                  )}
+                />
+              </InputGroup>
+              <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>
+                Select products
+              </Text>
+              <Controller
+                control={control}
+                name='discountProducts'
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    options={options}
+                    isMulti
+                    getOptionValue={(option) => option.id} // ensure correct option value is used
+                    getOptionLabel={(option) => option.title} // ensure correct label is used
+                    components={{
+                      Option: CustomOption
+                    }}
+                    onChange={(selectedOptions) => {
+                      // Update 'discountProducts' field
+                      field.onChange(selectedOptions || []);
+                      setSelectedProducts(selectedOptions || []); // Also update selectedProducts state
+                    }}
+                  />
+                )}
+              />
+              <InputGroup mt='20px' display='flex' flexDirection='column'>
+                <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>
+                  Discount products
+                </Text>
+                <Box>
+                  {selectedProducts.map((product) => (
+                    <Text key={product.id}>{product.title}</Text>
+                  ))}
+                </Box>
               </InputGroup>
               <InputGroup mt='20px' display='flex' flexDirection='column'>
                 <Text fontSize='3xs' fontWeight='semibold' color='neutral.black'>
@@ -292,10 +466,10 @@ export default function ModalCreatePromotion({ isOpen, onOpen, onClose, stateOfP
               </InputGroup>
 
               <Box>
-                {arrDaysOfTheWeek.map((day, i) => {
+                {arrDaysOfTheWeek.map((day) => {
                   return (
                     <Button
-                      key={i}
+                      key={day} // unique key prop added here
                       border='1px'
                       color='neutral.gray'
                       marginRight='12px'
