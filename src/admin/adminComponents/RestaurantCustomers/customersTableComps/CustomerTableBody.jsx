@@ -118,23 +118,23 @@ export default function CustomerTableBody() {
     return (
       <Tbody>
         <Tr>
-          <Td>
+          <Td borderRadius='8px'>
+            <Skeleton height='20px' borderRadius='8px'/>
+          </Td>
+          <Td borderRadius='8px' display={isMobile ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px'/>
+          </Td>
+          <Td borderRadius='8px' display={isTablet ? 'none' : ''}>
             <Skeleton height='20px' />
           </Td>
-          <Td display={isMobile ? 'none' : ''}>
-            <Skeleton height='20px' />
+          <Td borderRadius='8px' display={isMobile ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px'/>
           </Td>
-          <Td display={isTablet ? 'none' : ''}>
-            <Skeleton height='20px' />
+          <Td borderRadius='8px' display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px'/>
           </Td>
-          <Td display={isMobile ? 'none' : ''}>
-            <Skeleton height='20px' />
-          </Td>
-          <Td display={isTablet ? 'none' : ''}>
-            <Skeleton height='20px' />
-          </Td>
-          <Td display={isTablet ? 'none' : ''}>
-            <Skeleton height='20px' />
+          <Td borderRadius='8px' display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px'/>
           </Td>
         </Tr>
       </Tbody>

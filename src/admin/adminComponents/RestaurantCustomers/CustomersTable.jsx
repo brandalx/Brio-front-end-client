@@ -234,26 +234,26 @@ export default function CustomersTable() {
     return (
       <Tbody>
         <Tr>
-          <Td>
-            <Skeleton height='20px' />
+          <Td borderRadius='8px'>
+            <Skeleton height='20px' borderRadius='8px' />
           </Td>
-          <Td display={isMobile ? 'none' : ''}>
-            <Skeleton height='20px' />
+          <Td borderRadius='8px' display={isMobile ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px'/>
           </Td>
-          <Td display={isTablet ? 'none' : ''}>
-            <Skeleton height='20px' />
+          <Td borderRadius='8px' display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px'/>
           </Td>
-          <Td display={isMobile ? 'none' : ''}>
-            <Skeleton height='20px' />
+          <Td borderRadius='8px' display={isMobile ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px'/>
           </Td>
-          <Td display={isTablet ? 'none' : ''}>
-            <Skeleton height='20px' />
+          <Td borderRadius='8px' display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px'/>
           </Td>
-          <Td display={isTablet ? 'none' : ''}>
-            <Skeleton height='20px' />
+          <Td borderRadius='8px' display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px'/>
           </Td>
-          <Td display={isTablet ? 'none' : ''}>
-            <Skeleton height='20px' />
+          <Td borderRadius='8px' display={isTablet ? 'none' : ''}>
+            <Skeleton height='20px' borderRadius='8px'/>
           </Td>
         </Tr>
       </Tbody>
