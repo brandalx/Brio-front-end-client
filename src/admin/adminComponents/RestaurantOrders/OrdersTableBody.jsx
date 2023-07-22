@@ -238,9 +238,6 @@ export default function OrdersTableBody() {
             <Td>
               <Skeleton height='20px' />
             </Td>
-            <Td>
-              <Skeleton height='20px' />
-            </Td>
           </Tr>
         ))}
       </Tbody>
@@ -329,72 +326,10 @@ export default function OrdersTableBody() {
               fontSize='2.5xs'
               color='neutral.black'
               fontWeight='semibold'
+              display='flex'
+              justifyContent='space-around'
             >
-              {order.totalSpent || 0}
-            </Td>
-
-            <Td
-              position={isMobile ? 'relative' : ''}
-              right={isMobile ? '10px' : '0'}
-              pl={0}
-              pr={0}
-              pt='10px'
-              pb='10px'
-              fontSize='2xs'
-              fontWeight='bold'
-              color='neutral.black'
-            >
-              <IconButton
-                icon={<ThreeDots />}
-                onClick={() => {
-                  if (order.status === 'Canceled') {
-                    setIsOpen(true);
-                    setSelectedOrder(order);
-                  }
-                }}
-              />
-              <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} zIndex='9999999'>
-                <ModalOverlay
-                  width='100%'
-                  sx={{
-                    position: 'fixed',
-                    top: '0',
-                    left: '0',
-                    width: '100%',
-                    height: '100%',
-                    zIndex: '10',
-                    bg: 'rgba(0,0,0,0.6)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                />
-
-                <ModalContent
-                  position='relative'
-                  boxSizing='content-box'
-                  width={['100%', '100%', '100%', '540px']}
-                  maxW='96%'
-                  MaxH='568px'
-                >
-                  <ModalHeader>Order Details</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>{/* Display order details here */}</ModalBody>
-                  <ModalFooter>
-                    <Button colorScheme='blue' mr={3} onClick={onClose}>
-                      Close
-                    </Button>
-                    <Button
-                      variant='ghost'
-                      onClick={() => {
-                        /* re-order request logic */
-                      }}
-                    >
-                      Re-Order
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
+              ${order.totalSpent || 0}
             </Td>
           </Tr>
         );

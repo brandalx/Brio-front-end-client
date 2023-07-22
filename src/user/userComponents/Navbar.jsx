@@ -49,13 +49,20 @@ export default function Navbar() {
   const mobileNav = useDisclosure();
   const location = useLocation();
   const isInCart = location.pathname.startsWith('/user/cart');
-  const checkerIfAdmin = jwtDecode(localStorage.getItem(TOKEN_KEY)).role === 'ADMIN';
+  const token = localStorage.getItem(TOKEN_KEY);
+  let checkerIfAdmin = false;
   const [loading, setLoading] = useState(true);
   const [arr, setArr] = useState([]);
 
   const [srcav, setSrcav] = useState();
   const randomarr = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
-
+  if (token) {
+    try {
+      checkerIfAdmin = jwtDecode(token).role === 'ADMIN';
+    } catch (error) {
+      console.error('Failed to decode token', error);
+    }
+  }
   const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
@@ -103,7 +110,6 @@ export default function Navbar() {
       setArr(data);
 
       setAvatarUser(API_URL + '/' + data.avatar);
-      console.log(data);
 
       setCartLen(data.cart.length);
       setLoading(false);

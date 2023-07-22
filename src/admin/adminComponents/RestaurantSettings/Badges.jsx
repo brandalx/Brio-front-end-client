@@ -24,7 +24,7 @@ export default function Badges() {
       });
 
       setRestaurantId(adminResponse.data.restaurant);
-      console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant);
+      // console.log('Restaurant Id has been fetched: ', adminResponse.data.restaurant);
     } catch (error) {
       console.error('Error fetching restaurant data:', error);
     }

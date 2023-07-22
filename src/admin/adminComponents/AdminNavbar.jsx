@@ -12,25 +12,42 @@ import {
   IconButton,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
   Text,
   useColorModeValue,
   useDisclosure,
+  useToast,
   VisuallyHidden,
   VStack
 } from '@chakra-ui/react';
 
 import Logo from '../../assets/svg/Logo';
-import { Link, Link as RouterLink } from 'react-router-dom';
+import { Link, Link as RouterLink, useNavigate } from 'react-router-dom';
 import Notification from '../../assets/svg/Notification';
 import { AiOutlineMenu } from 'react-icons/ai';
 import '../../css/global.css';
+import { TOKEN_KEY } from '../../services/apiServices';
 
 export default function AdminNavbar() {
   const bg = useColorModeValue('white', 'gray.800');
   const mobileNav = useDisclosure();
+  const navigate = useNavigate();
+  const toast = useToast();
+  const onLogOut = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem('location');
 
+    navigate('/login');
+    toast({
+      title: 'Loggin out.',
+      description: 'Successfuly logged out!',
+      status: 'success',
+      duration: 9000,
+      isClosable: true
+    });
+  };
   return (
     <>
       <Container overflow-x='hidden' zIndex='9999999' maxW='none' borderBottom='1px solid #EDEEF2' p={0} width='100%'>
@@ -197,6 +214,23 @@ export default function AdminNavbar() {
                         <MenuItem as={RouterLink} to='/' fontWeight='medium'>
                           Client side menu
                         </MenuItem>
+                        <MenuDivider />
+
+                        <MenuItem
+                          onClick={onLogOut}
+                          m={0}
+                          h='100%'
+                          background='neutral.white'
+                          variant='solid'
+                          color='error.default'
+                          _hover={{
+                            background: 'error.default',
+                            color: 'neutral.white'
+                          }}
+                          fontWeight='medium'
+                        >
+                          Log Out
+                        </MenuItem>
                       </MenuList>
                     </Menu>
                   </Flex>
@@ -254,6 +288,23 @@ export default function AdminNavbar() {
                         </MenuItem>
                         <MenuItem as={RouterLink} to='/' fontWeight='medium'>
                           Client side menu
+                        </MenuItem>
+                        <MenuDivider />
+
+                        <MenuItem
+                          onClick={onLogOut}
+                          m={0}
+                          h='100%'
+                          background='neutral.white'
+                          variant='solid'
+                          color='error.default'
+                          _hover={{
+                            background: 'error.default',
+                            color: 'neutral.white'
+                          }}
+                          fontWeight='medium'
+                        >
+                          Log Out
                         </MenuItem>
                       </MenuList>
                     </Menu>

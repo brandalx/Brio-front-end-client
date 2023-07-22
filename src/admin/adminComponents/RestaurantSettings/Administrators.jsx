@@ -116,7 +116,7 @@ export default function Administrators() {
     } catch (error) {
       toast({
         title: 'Error adding admin',
-        description: error.message,
+        description: 'An error occurred while adding the admin. Please try again later.',
         status: 'error',
         duration: 9000,
         isClosable: true
@@ -152,7 +152,14 @@ export default function Administrators() {
         });
       }
     } catch (error) {
-      console.error('Error verifying password:', error);
+      // console.error('Error verifying password:', error);
+      toast({
+        title: 'Error adding admin',
+        description: 'Error verifying password.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
     }
   };
 

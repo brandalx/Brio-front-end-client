@@ -87,7 +87,7 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
                 control={control}
                 name='title'
                 defaultValue={item ? item.title : ''}
-                render={({ field }) => <Input {...field} placeholder='Title' />}
+                render={({ field }) => <Input fontSize='s' {...field} placeholder='Title' />}
               />
 
               <FormLabel mt='15px'>Description</FormLabel>
@@ -95,7 +95,7 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
                 control={control}
                 name='description'
                 defaultValue={item && item.description ? item.description : ''}
-                render={({ field }) => <Input {...field} placeholder='Description' />}
+                render={({ field }) => <Input fontSize='s' {...field} placeholder='Description' />}
               />
 
               <FormLabel mt='15px'>Ingredients</FormLabel>
@@ -103,21 +103,21 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
                 control={control}
                 name='ingredients'
                 defaultValue={item.ingredients || ''}
-                render={({ field }) => <Input {...field} placeholder='Ingredients' />}
+                render={({ field }) => <Input fontSize='s' {...field} placeholder='Ingredients' />}
               />
               <FormLabel mt='15px'>Price</FormLabel>
               <Controller
                 control={control}
                 name='price'
                 defaultValue={item.price || ''}
-                render={({ field }) => <Input {...field} placeholder='Price' type='number' />}
+                render={({ field }) => <Input {...field} fontSize='s' placeholder='Price' type='number' />}
               />
               <FormLabel mt='15px'>Nutritional value</FormLabel>
               <Controller
                 control={control}
                 name='nutritionalValue'
                 defaultValue={item.nutritionals || ''}
-                render={({ field }) => <Input {...field} placeholder='Nutritional value' />}
+                render={({ field }) => <Input fontSize='s' {...field} placeholder='Nutritional value' />}
               />
             </FormControl>
           </ModalBody>

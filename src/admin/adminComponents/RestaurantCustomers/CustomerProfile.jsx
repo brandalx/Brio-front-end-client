@@ -71,14 +71,7 @@ export default function CustomerProfile() {
                 </Box>
               </Box>
             </Box>
-            <Box padding='16px 16px 20px 16px' borderBottom='1px' borderColor='neutral.grayLightest'>
-              <Text color='neutral.black' fontWeight='bold' fontSize='xs'>
-                Customer addresses
-              </Text>
-              <Box>
-                <Text color='neutral.black' fontWeight='normal' fontSize='sm'></Text>
-              </Box>
-            </Box>
+            <Box padding='0px 16px 20px 16px' borderBottom='1px' borderColor='neutral.grayLightest'></Box>
             <Box padding='16px 16px 20px 16px'>
               <Text color='neutral.black' fontWeight='bold' fontSize='xs'>
                 Notes

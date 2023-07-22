@@ -95,8 +95,9 @@ export default function ModalNoteRedactor({ isOpen, onClose, user, fetchUser, us
               <Controller
                 control={control}
                 name='notes'
+                fontSize='s'
                 defaultValue={note}
-                render={({ field }) => <Input {...field} placeholder='Title' />}
+                render={({ field }) => <Input fontSize='s' {...field} placeholder='Title' />}
               />
             </FormControl>
           </ModalBody>

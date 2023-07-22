@@ -54,7 +54,7 @@ export default function RestaurantConfirmation({ mainBody }) {
         });
         navigate('/login');
       }
-      console.log('Creation result:', response);
+      // console.log('Creation result:', response);
     } catch (error) {
       toast({
         title: 'Error when creating new account',
