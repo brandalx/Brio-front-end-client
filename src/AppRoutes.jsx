@@ -86,7 +86,6 @@ export default function AppRoutes({ isToken }) {
                     </Routes>
 
                     <Main>
-
                       <Routes>
                         {/* ----------ALL USERS ROUTES------------ */}
                         <Route path='/' element={<Home />} />
@@ -94,51 +93,46 @@ export default function AppRoutes({ isToken }) {
                         <Route path='/recoverpassword/*' element={<Forgotpassword />} />
                         <Route path='/signup/*' element={<SignUp />} />
 
-                      {!loading && (
-                        <Routes>
-                          {/* ----------ALL USERS ROUTES------------ */}
-                          <Route path='/' element={<Home />} />
-                          <Route path='/login' element={<Login />} />
-                          <Route path='/recoverpassword' element={<Forgotpassword />} />
-                          <Route path='/signup/*' element={<SignUp />} />
+                        {/* ----------ALL USERS ROUTES------------ */}
+                        <Route path='/' element={<Home />} />
+                        <Route path='/login' element={<Login />} />
+                        <Route path='/recoverpassword' element={<Forgotpassword />} />
+                        <Route path='/signup/*' element={<SignUp />} />
 
-
-                          {/* <Route path='/personal' element={<PersonalDetails />} />
+                        {/* <Route path='/personal' element={<PersonalDetails />} />
                 <Route path='/personal' element={<PersonalDetails />} /> */}
 
-                          {isToken && (
-                            <>
-                              <Route path='/user/account/*' element={<AccountSettings />} />
-                              <Route path='/user/cart/*' element={<Cart />} />
-                              <Route path='/user/checkout/' element={<Checkout />} />
-                              <Route path='/user/orders' element={<UserOrders />} />
-                              <Route path='/user/order/:id' element={<Order />} />
-                            </>
-                          )}
-                          <Route path='/deals' element={<Deals />} />
-                          <Route path='/about/' element={<About />} />
-                          <Route path='/restaurant/' element={<Restaurants />} />
-                          <Route path='/restaurant/:id' element={<Restaurant />} />
-                          <Route path='/restaurant/product/:id' element={<Product />} />
-                          {/* ----------ALL ADMIN ROUTES------------ */}
-                          {isToken && decodedToken.role === 'ADMIN' ? (
-                            <>
-                              <Route path='/admin/restaurant/dashboard' element={<RestaurantDashboard />} />
-                              <Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />
-                              <Route path='/admin/restaurant/menu' element={<RestaurantMenu />} />
-                              <Route path='/admin/restaurant/settings/*' element={<RestaurantSettings />} />
-                              <Route path='/admin/restaurant/promotions' element={<RestaurantPromotions />} />
-                              <Route path='/admin/restaurant/customers' element={<RestaurantCustomers />} />
-                              <Route path='/admin/restaurant/customers/:userId' element={<UserDetails />} />
-                            </>
-                          ) : (
-                            <Route path='/*' element={<Page404 />} />
-                          )}
-
+                        {isToken && (
+                          <>
+                            <Route path='/user/account/*' element={<AccountSettings />} />
+                            <Route path='/user/cart/*' element={<Cart />} />
+                            <Route path='/user/checkout/' element={<Checkout />} />
+                            <Route path='/user/orders' element={<UserOrders />} />
+                            <Route path='/user/order/:id' element={<Order />} />
+                          </>
+                        )}
+                        <Route path='/deals' element={<Deals />} />
+                        <Route path='/about/' element={<About />} />
+                        <Route path='/restaurant/' element={<Restaurants />} />
+                        <Route path='/restaurant/:id' element={<Restaurant />} />
+                        <Route path='/restaurant/product/:id' element={<Product />} />
+                        {/* ----------ALL ADMIN ROUTES------------ */}
+                        {isToken && decodedToken.role === 'ADMIN' ? (
+                          <>
+                            <Route path='/admin/restaurant/dashboard' element={<RestaurantDashboard />} />
+                            <Route path='/admin/restaurant/orders' element={<RestaurantOrders />} />
+                            <Route path='/admin/restaurant/menu' element={<RestaurantMenu />} />
+                            <Route path='/admin/restaurant/settings/*' element={<RestaurantSettings />} />
+                            <Route path='/admin/restaurant/promotions' element={<RestaurantPromotions />} />
+                            <Route path='/admin/restaurant/customers' element={<RestaurantCustomers />} />
+                            <Route path='/admin/restaurant/customers/:userId' element={<UserDetails />} />
+                          </>
+                        ) : (
                           <Route path='/*' element={<Page404 />} />
-                        </Routes>
-                      )}
+                        )}
 
+                        <Route path='/*' element={<Page404 />} />
+                      </Routes>
                     </Main>
                     <Routes>
                       <Route path='/*' element={<Footer />} />
