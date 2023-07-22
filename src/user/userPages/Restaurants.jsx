@@ -26,7 +26,7 @@ export default function Restaurants() {
       });
       setAr(tempArrRest);
       setKeepArr(tempArrRest);
-      console.log(data);
+      // console.log(data);
       setLoading(false);
     } catch (error) {
       setLoading(false);

@@ -15,7 +15,7 @@ export default function Menu({ item }) {
     try {
       const url = API_URL + '/admin/promotions';
       const data = await handleApiGet(url);
-      console.log(data);
+      // console.log(data);
       setPromotions(data);
 
       let tempArr = [];
@@ -49,7 +49,7 @@ export default function Menu({ item }) {
       // tempArr2.push(data[rnd1]);
       // tempArr2.push(data[rnd2]);
 
-      console.log(tempArr);
+      // console.log(tempArr);
       setActivePromotions(tempArr);
       let promotion = tempArr.find((promo) => promo.discountProducts.includes(item.productId));
       setCurrentPromotion(promotion || null);
@@ -61,14 +61,14 @@ export default function Menu({ item }) {
   };
   const handleApi = async () => {
     const url = API_URL + '/products/' + item.productId;
-    console.log(url);
+    // console.log(url);
     try {
       // const data = await handleApiGet(userurl);
       const product = await handleApiGet(url);
 
       setProductAr(product);
 
-      console.log(product);
+      // console.log(product);
       handlePromotions();
       setLoading(false);
     } catch (error) {

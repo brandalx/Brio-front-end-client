@@ -9,7 +9,7 @@ export default function RestaurantConfirmation({ mainBody }) {
   const toast = useToast();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(mainBody);
+    // console.log(mainBody);
   }, []);
   const handleGoBack = () => {
     navigate(-1); // Go back one step in the history

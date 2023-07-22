@@ -54,7 +54,7 @@ export default function Product() {
     try {
       const url = API_URL + '/admin/promotions';
       const data = await handleApiGet(url);
-      console.log(data);
+      // console.log(data);
       setPromotions(data);
 
       let tempArr = [];
@@ -88,7 +88,7 @@ export default function Product() {
       // tempArr2.push(data[rnd1]);
       // tempArr2.push(data[rnd2]);
 
-      console.log(tempArr);
+      // console.log(tempArr);
       setActivePromotions(tempArr);
       let promotion = tempArr.find((promo) => promo.discountProducts.includes(params['id']));
       setCurrentPromotion(promotion || null);
@@ -110,7 +110,7 @@ export default function Product() {
 
       const productdata = await handleApiGet(urlprod);
       setAr(productdata);
-      console.log(productdata);
+      // console.log(productdata);
 
       const images = productdata.image.map((item) => ({
         original: item,
@@ -139,12 +139,12 @@ export default function Product() {
           }
         ];
 
-        console.log(tempArr);
+        // console.log(tempArr);
         setImageArr(tempArr);
         setIsNoImage(true);
       } else if (images.length > 0) {
         setImageArr(images);
-        console.log(images);
+        // console.log(images);
       }
 
       handleUserApi();
@@ -187,13 +187,13 @@ export default function Product() {
   };
   const toast = useToast();
   let postToCart = async (_data) => {
-    console.log(_data);
+    // console.log(_data);
     try {
       let cartObject = {
         productId: _data,
         productAmount: amount
       };
-      console.log(cartObject);
+      // console.log(cartObject);
       const url = API_URL + `/users/${user._id}/posttocart`;
       const data = await handleApiMethod(url, 'POST', cartObject);
 

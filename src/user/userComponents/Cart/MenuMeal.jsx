@@ -36,7 +36,7 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
     try {
       const url = API_URL + '/admin/promotions';
       const data = await handleApiGet(url);
-      console.log(data);
+      // console.log(data);
       setPromotions(data);
 
       let tempArr = [];
@@ -70,7 +70,7 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
       // tempArr2.push(data[rnd1]);
       // tempArr2.push(data[rnd2]);
 
-      console.log(tempArr);
+      // console.log(tempArr);
       setActivePromotions(tempArr);
       let promotion = tempArr.find((promo) => promo.discountProducts.includes(item._id));
       setCurrentPromotion(promotion || null);
@@ -92,7 +92,7 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
   };
   useEffect(() => {
     handlePromotions();
-    console.log(amount);
+    // console.log(amount);
   }, []);
   const cutInfoText = cutInfo(info);
   const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px) hue-rotate(90deg)' />;
@@ -107,10 +107,10 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
       itemToDelete: _bodyData
     };
 
-    console.log(_bodyDataFinal);
+    // console.log(_bodyDataFinal);
     try {
       const data = await handleApiMethod(urltodelete, 'DELETE', _bodyDataFinal);
-      console.log(data);
+      // console.log(data);
       if (data.msg === true) {
         toast({
           title: 'Meal was removed.',

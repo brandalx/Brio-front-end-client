@@ -15,7 +15,7 @@ const AddressReducers = () => {
     try {
       const data = await handleApiGet(url);
       setArr(data);
-      console.log(data);
+      // console.log(data);
 
       const address = data.address.map((item) => ({
         country: item.country,
@@ -42,12 +42,12 @@ const AddressReducers = () => {
   } = useForm();
 
   const onSubForm = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     handleUserAddressPost(_bodyData);
   };
 
   const onSubForm2 = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     handleUserAddressUpdate(_bodyData);
   };
   const handleUserAddressUpdate = async (_bodyData) => {
@@ -61,7 +61,7 @@ const AddressReducers = () => {
         _id: targetIndex
       };
 
-      console.log(_bodyDataFinal);
+      // console.log(_bodyDataFinal);
 
       const url = API_URL + '/users/address/edit';
       const data = await handleApiMethod(url, 'PUT', _bodyDataFinal);
@@ -172,7 +172,7 @@ const AddressReducers = () => {
         addressToDelete: _bodyData
       };
 
-      console.log(_bodyDataFinal);
+      // console.log(_bodyDataFinal);
 
       const url = API_URL + '/users/address/delete';
       const data = await handleApiMethod(url, 'DELETE', _bodyDataFinal);

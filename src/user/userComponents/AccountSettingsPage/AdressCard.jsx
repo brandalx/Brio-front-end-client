@@ -48,7 +48,7 @@ export default function AdressCard({
     try {
       const data = await handleApiGet(url);
       setUserData(data);
-      console.log(data);
+      // console.log(data);
       handleMapApi(data);
 
       setLoading(false);
@@ -77,7 +77,7 @@ export default function AdressCard({
 
       // setPosAr([data[0].y, data[0].x]);
       // setKey(Date.now());
-      console.log(isAddress);
+      // console.log(isAddress);
       setAddressLoading(false);
     } catch (error) {
       console.log(error);
@@ -87,7 +87,7 @@ export default function AdressCard({
         let warning = true;
         handleUserAddressDelete(item._id, warning);
       }
-      console.log(isAddress);
+      // console.log(isAddress);
       setAddressLoading(false);
     }
   };

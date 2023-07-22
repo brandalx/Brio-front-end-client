@@ -58,7 +58,7 @@ export default function Cart() {
           }
         }
       }));
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -74,7 +74,7 @@ export default function Cart() {
       setAddressArr(data.address);
 
       handleApiMeals(data);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -90,7 +90,7 @@ export default function Cart() {
     try {
       const url = API_URL + `/users/${id}/cart`;
       const cartData = await handleApiGet(url);
-      console.log(cartData.cart);
+      // console.log(cartData.cart);
       setCartAr(cartData.cart);
 
       const restaurantIds = await Promise.all(cartData.cart.map((item) => getRestaurantId(item.productId)));
@@ -126,7 +126,7 @@ export default function Cart() {
           }
         };
       });
-      console.log(product);
+      // console.log(product);
       if (product.length === 0) {
         setLoading(false);
         setBlankCart(true);
@@ -142,9 +142,9 @@ export default function Cart() {
   const handleApiRestaurant = async (restuarantId) => {
     try {
       const url = API_URL + '/restaurants/' + restuarantId;
-      console.log(url);
+      // console.log(url);
       const restaurantData = await handleApiGet(url);
-      console.log(restaurantData);
+      // console.log(restaurantData);
       setRestaurant(restaurantData);
       setLoading(false);
     } catch (error) {

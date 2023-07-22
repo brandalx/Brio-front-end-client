@@ -53,7 +53,7 @@ export default function Checkout() {
       }));
       setCardsArr(cards);
       setLoading(false);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -66,17 +66,17 @@ export default function Checkout() {
 
   useEffect(() => {
     handleApi();
-    console.log(location.state);
+    // console.log(location.state);
     handleApiPresummary();
   }, []);
 
   useEffect(() => {
-    console.log(finalCheckoutBody);
+    // console.log(finalCheckoutBody);
   }, [finalCheckoutBody]);
 
   const selectCard = (cardId) => {
     setChoosenCard(cardId);
-    console.log(cardId);
+    // console.log(cardId);
     setOnitemselected(false);
 
     if (cardId === 'cash') {
@@ -130,7 +130,7 @@ export default function Checkout() {
       const data = await handleApiGet(url);
       setPreSummary(data);
 
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       setLoading(false);
       console.log(error);

@@ -28,7 +28,7 @@ export default function Security() {
     try {
       const data = await handleApiGet(url);
       setArr(data);
-      console.log(data);
+      // console.log(data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -48,7 +48,7 @@ export default function Security() {
   } = useForm();
 
   const onSubForm = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     handlePostUser(_bodyData);
   };
 
@@ -57,7 +57,7 @@ export default function Security() {
     try {
       const url = API_URL + '/users/security';
       const data = await handleApiMethod(url, 'PUT', _bodyData);
-      console.log(data);
+      // console.log(data);
       if (data.modifiedCount) {
         toast({
           title: 'User data successfully updated.',

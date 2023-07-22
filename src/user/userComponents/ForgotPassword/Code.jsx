@@ -31,7 +31,7 @@ export default function Code({ handleUserSendRecoverCode, codeData, setCodeData 
   } = useForm();
 
   const onSubForm = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     handleUserSendRecoverCode(_bodyData);
   };
 

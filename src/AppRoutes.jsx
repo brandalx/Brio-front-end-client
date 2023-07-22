@@ -57,7 +57,7 @@ export default function AppRoutes({ isToken }) {
         setDecodedToken(tempDecodedToken);
         setLoading(false);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
         setError(true);
         setLoading(false);
       }

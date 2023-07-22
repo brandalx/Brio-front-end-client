@@ -29,7 +29,7 @@ export default function RecoverPassword({ handleUserSendRecoverChange, recoverDa
   } = useForm();
 
   const onSubForm = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     let finalBody = {
       token: recoverData,
       password: _bodyData.password,

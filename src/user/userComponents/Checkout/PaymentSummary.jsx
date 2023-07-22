@@ -30,7 +30,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
   const navigate = useNavigate();
   const toast = useToast();
   const handleOrderPost = async (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     try {
       let preTipValue = Number(tipValue);
       _bodyData.checkoutBodyData.userdata.paymentSummary.tips = preTipValue;

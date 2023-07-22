@@ -71,7 +71,7 @@ export default function Account() {
     try {
       const data = await handleApiGet(url);
       setAr(data);
-      console.log(data);
+      // console.log(data);
       setAvatarUser(API_URL + '/' + data.avatar + '?t=' + reload);
 
       setLoading(false);
@@ -89,7 +89,7 @@ export default function Account() {
   } = useForm();
 
   const onSubForm = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     handleUserDataPut(_bodyData);
   };
   const toast = useToast();
@@ -171,7 +171,7 @@ export default function Account() {
   };
 
   const handleUploadAvatar = async () => {
-    console.log(uploadRef.current.files);
+    // console.log(uploadRef.current.files);
     if (uploadRef.current.files[0]) {
       try {
         const fdata = new FormData();
@@ -187,7 +187,7 @@ export default function Account() {
             'x-api-key': localStorage[TOKEN_KEY]
           }
         });
-        console.log(resp.data);
+        // console.log(resp.data);
         if (resp.data.excludedPath) {
           toast({
             title: 'Profile image updated.',

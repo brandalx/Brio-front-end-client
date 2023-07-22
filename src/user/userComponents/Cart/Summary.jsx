@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export default function Summary({ loading, item, blankCart, setBlankCart, checkoutBody }) {
   const [blankSummary, setBlankSummary] = useState(false);
   useEffect(() => {
-    console.log(item);
+    // console.log(item);
     if (!item[0]) {
       setBlankSummary(true);
     }

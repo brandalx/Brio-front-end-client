@@ -64,8 +64,8 @@ export default function Order() {
 
   const handleDefineAddress = (orderitem, useritem, restaurantitem) => {
     let finaladdress = orderitem.userdata.selectedAddress;
-    console.log(finaladdress);
-    console.log('ok');
+    // console.log(finaladdress);
+    // console.log('ok');
 
     let finaladdressobj = useritem.address.find((address) => address._id === finaladdress);
     if (finaladdressobj) {
@@ -152,21 +152,21 @@ export default function Order() {
       // const data = await handleApiGet(userurl);
       const user = await handleApiGet(userurl);
       const order = await handleApiGet(orderurl);
-      console.log(order);
+      // console.log(order);
       const restauranturl = API_URL + '/restaurants/';
 
-      console.log(restauranturl);
+      // console.log(restauranturl);
       const restaurant = await handleApiGet(restauranturl);
       const orders2 = await handleApiGet(orders2url);
-      console.log(orders2);
+      // console.log(orders2);
       setOrdersArr2(orders2);
       setUserArr(user);
       setOrdersArr(order);
       setRestaurantArr(restaurant);
 
-      console.log(user);
-      console.log(order);
-      console.log(restaurant);
+      // console.log(user);
+      // console.log(order);
+      // console.log(restaurant);
       handleDefineAddress(order, user, restaurant);
       setLoading(false);
     } catch (error) {
@@ -232,7 +232,7 @@ export default function Order() {
 
   useEffect(() => {
     const currentOrder = findOrder(params['id']);
-    console.log(currentOrder);
+    // console.log(currentOrder);
     if (userArr._id) {
       if (currentOrder === 'Cancelled' || currentOrder === 'Completed') {
         setPlaced(true);

@@ -40,7 +40,7 @@ export default function Login() {
     formState: { errors, isSubmitting }
   } = useForm();
   const onSubForm = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     handleLogin(_bodyData);
   };
   const isValid = () => email.length > 5 && password.length > 5;

@@ -21,7 +21,7 @@ export default function Delivery({ item, setCheckoutBody, setPickupLocation }) {
   //fix bug with click on item selected
   const selectCard = (cardId) => {
     setAddressId(cardId);
-    console.log(cardId);
+    // console.log(cardId);
     setOnitemselected(false);
 
     combinedAddresses.map((item) => {

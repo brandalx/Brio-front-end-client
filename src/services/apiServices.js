@@ -40,8 +40,8 @@ export const handleApiPost = async (_url, data) => {
         'x-api-key': localStorage[TOKEN_KEY]
       }
     });
-    console.log(resp.data);
-    console.log(data);
+    // console.log(resp.data);
+    // console.log(data);
     return resp.data;
   } catch (err) {
     throw err;

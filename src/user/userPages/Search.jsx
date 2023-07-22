@@ -34,7 +34,7 @@ export default function Search() {
   const [isFirst, setIsFirst] = useState(0);
 
   useEffect(() => {
-    console.log(searchString);
+    // console.log(searchString);
     if (location.state && location.state.searchinfo) {
       handleApiSearch(searchString);
     }
@@ -50,7 +50,7 @@ export default function Search() {
       const data = await handleApiGet(url);
       setArr(data);
 
-      console.log(data);
+      // console.log(data);
       const timeout = setTimeout(() => {
         setLoading(false);
       }, 1000);

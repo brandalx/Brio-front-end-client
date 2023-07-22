@@ -34,7 +34,7 @@ export default function NewPaymentMethod({
     formState: { errors, isSubmitting }
   } = useForm();
   const onSubForm = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     handleUserCardPost(_bodyData);
   };
 
@@ -49,7 +49,7 @@ export default function NewPaymentMethod({
       }
 
       if (!validation.isValid) {
-        console.log('Credit card is invalid!');
+        // console.log('Credit card is invalid!');
         toast({
           title: 'Credit card is not valid',
           description: 'Error when adding new payment method',
@@ -58,7 +58,7 @@ export default function NewPaymentMethod({
           isClosable: true
         });
       } else {
-        console.log('All fields are valid!');
+        // console.log('All fields are valid!');
 
         const url = API_URL + '/users/postusercard';
         const data = await handleApiMethod(url, 'POST', _bodyData);

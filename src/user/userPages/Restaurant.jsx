@@ -73,9 +73,9 @@ export default function Restaurant() {
     try {
       const data3 = await handleApiGet(url3);
       handleCategories(data3);
-      console.log(data3);
+      // console.log(data3);
       const data2 = await handleApiGet(url2);
-      console.log(data2);
+      // console.log(data2);
       setUserArr(data2);
     } catch (error) {
       console.log(error);
@@ -90,7 +90,7 @@ export default function Restaurant() {
       }
     });
     SetCategories(tempArr);
-    console.log(tempArr);
+    // console.log(tempArr);
   };
 
   const handleRestaurantApi = async () => {
@@ -105,7 +105,7 @@ export default function Restaurant() {
 
       await handleUsersPublicData(commentsarray);
       await handleProductApi(data);
-      console.log(data);
+      // console.log(data);
       if (data.length === 0) setResponseFalls(false);
       await handleUserApi();
     } catch (error) {
@@ -121,8 +121,8 @@ export default function Restaurant() {
   const handleProductApi = async (data) => {
     try {
       const tempProductArr = [];
-      console.log('data');
-      console.log(data);
+      // console.log('data');
+      // console.log(data);
       for (const item of data.products) {
         const url = API_URL + '/products/' + item;
         const datanew = await handleApiGet(url);
@@ -131,7 +131,7 @@ export default function Restaurant() {
       if (tempProductArr.length === 0) {
         setShowOops(true);
       }
-      console.log(tempProductArr);
+      // console.log(tempProductArr);
       setProductAr(tempProductArr);
       setKeepArr(tempProductArr);
     } catch (error) {
@@ -174,7 +174,7 @@ export default function Restaurant() {
       const user = usersArr.find((item) => item._id === userid);
       if (user) {
         let stringAvatar = API_URL + '/' + user.avatar;
-        console.log(stringAvatar);
+        // console.log(stringAvatar);
         return stringAvatar;
       }
       return '';
@@ -194,7 +194,7 @@ export default function Restaurant() {
     try {
       const url = API_URL + '/admin/promotions';
       const data = await handleApiGet(url);
-      console.log(data);
+      // console.log(data);
       setPromotions(data);
 
       let tempArr = [];
@@ -228,7 +228,7 @@ export default function Restaurant() {
       // tempArr2.push(data[rnd1]);
       // tempArr2.push(data[rnd2]);
 
-      console.log(tempArr);
+      // console.log(tempArr);
       setActivePromotions(tempArr);
 
       // lastPromotions = [rnd1, rnd2]; // remember the last promotions
@@ -245,7 +245,7 @@ export default function Restaurant() {
         );
         allUsers = [...allUsers, ...response];
         setUsersArr(allUsers);
-        console.log(allUsers);
+        // console.log(allUsers);
       }
     } catch (error) {
       console.log(error);
@@ -296,7 +296,7 @@ export default function Restaurant() {
     formState: { errors, isSubmitting }
   } = useForm();
   const onSubForm = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     handleCommentPost(_bodyData);
   };
   const toast = useToast();
@@ -374,7 +374,7 @@ export default function Restaurant() {
         commentId: _body,
         restaurantId: params['id']
       };
-      console.log(finalBody);
+      // console.log(finalBody);
       const data = await handleApiMethod(url, 'POST', finalBody);
 
       const url2 = API_URL + '/restaurants/' + params['id'];
@@ -384,7 +384,7 @@ export default function Restaurant() {
       let commentsarray = data2.reviews;
       commentsarray.reverse();
       setComments(commentsarray);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -398,7 +398,7 @@ export default function Restaurant() {
         commentId: _body,
         restaurantId: params['id']
       };
-      console.log(finalBody);
+      // console.log(finalBody);
       const data = await handleApiMethod(url, 'POST', finalBody);
 
       const url2 = API_URL + '/restaurants/' + params['id'];
@@ -410,7 +410,7 @@ export default function Restaurant() {
       commentsarray.reverse();
       setComments(commentsarray);
 
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }

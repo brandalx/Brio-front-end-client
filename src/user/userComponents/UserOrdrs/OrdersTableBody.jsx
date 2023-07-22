@@ -45,10 +45,10 @@ export default function OrdersTableBody() {
       const dataorders = await handleApiGet(urlorder);
       setOrders(dataorders);
       setRestaurantar(datarestaurants);
-      console.log(data);
-      console.log(datarestaurants);
+      // console.log(data);
+      // console.log(datarestaurants);
 
-      console.log(dataorders);
+      // console.log(dataorders);
 
       setLoading(false);
     } catch (error) {

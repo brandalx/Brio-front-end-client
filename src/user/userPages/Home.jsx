@@ -42,7 +42,7 @@ export default function Home() {
     try {
       const url = API_URL + '/admin/promotions';
       const data = await handleApiGet(url);
-      console.log(data);
+      // console.log(data);
       setPromotions(data);
 
       let tempArr = [];
@@ -76,7 +76,7 @@ export default function Home() {
       // tempArr2.push(data[rnd1]);
       // tempArr2.push(data[rnd2]);
 
-      console.log(tempArr);
+      // console.log(tempArr);
       setActivePromotions(tempArr);
 
       // lastPromotions = [rnd1, rnd2]; // remember the last promotions
@@ -101,7 +101,7 @@ export default function Home() {
       setKeepArr(tempArrRest);
 
       handleApiUser();
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -129,8 +129,8 @@ export default function Home() {
     const cityRegex = new RegExp(city, 'i');
 
     _data.map((item, index) => {
-      console.log(item.location);
-      console.log(cityRegex);
+      // console.log(item.location);
+      // console.log(cityRegex);
       if (cityRegex.test(item.location)) {
         prefinalArr.push(item);
       }
@@ -171,12 +171,12 @@ export default function Home() {
   };
 
   const handleMouseEnter = () => {
-    console.log('Mouse entered');
+    // console.log('Mouse entered');
     setHovered(true);
   };
 
   const handleMouseLeave = () => {
-    console.log('Mouse left');
+    // console.log('Mouse left');
     setHovered(false);
   };
 

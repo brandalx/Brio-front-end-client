@@ -27,12 +27,12 @@ const CategoryPicker = ({ sortedArr, setSortedArr, emoji, label, size = '40' }) 
       if (sortedArr && sortedArr.length > 0) {
         let newarr = [...sortedArr, { emoji: emoji, label: label }];
         setSortedArr(newarr);
-        console.log('sortedArr', newarr);
+        // console.log('sortedArr', newarr);
       } else {
         let newarr = [];
         newarr.push({ emoji: emoji, label: label });
         setSortedArr(newarr);
-        console.log('sortedArr', newarr);
+        // console.log('sortedArr', newarr);
       }
     }
     if (!isPressed) {
@@ -42,7 +42,7 @@ const CategoryPicker = ({ sortedArr, setSortedArr, emoji, label, size = '40' }) 
           (item) => item.emoji !== itemToRemove.emoji || item.label !== itemToRemove.label
         );
         setSortedArr(filteredArray);
-        console.log('sortedArr', filteredArray);
+        // console.log('sortedArr', filteredArray);
       }
     }
   }, [isPressed]);

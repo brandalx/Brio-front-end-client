@@ -28,7 +28,7 @@ import { API_URL, handleApiMethod } from '../../../services/apiServices';
 export default function Confirmation({ mainBody }) {
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(mainBody);
+    // console.log(mainBody);
   }, []);
   const handleGoBack = () => {
     navigate(-1); // Go back one step in the history

@@ -25,7 +25,7 @@ export default function NewAddress({ SetAddressArrSend, addressArrSend, handleUs
     try {
       const data = await handleApiGet(url);
       setArr(data);
-      console.log(data);
+      // console.log(data);
 
       const address = data.address.map((item) => ({
         country: item.country,
@@ -50,7 +50,7 @@ export default function NewAddress({ SetAddressArrSend, addressArrSend, handleUs
   } = useForm();
 
   const onSubForm = async (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     await handleUserAddressPost(_bodyData);
     updateAddress(_bodyData);
   };

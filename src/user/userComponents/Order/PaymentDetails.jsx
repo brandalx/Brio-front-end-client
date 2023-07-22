@@ -22,8 +22,8 @@ export default function PaymentDetails({ item, orders, userArr }) {
       definePaymentMwthod();
     }
   }, []);
-  console.log(orders);
-  console.log(item);
+  // console.log(orders);
+  // console.log(item);
   return (
     <>
       {item && item.userdata && item.userdata.paymentSummary && (

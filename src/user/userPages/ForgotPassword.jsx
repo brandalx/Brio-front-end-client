@@ -47,7 +47,7 @@ export default function ForgotPassword() {
     });
   }, []);
   const handleUserSendRecoverRequest = async (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     try {
       const url = API_URL + '/users/recoverrequest';
       const data = await handleApiMethod(url, 'POST', _bodyData);
@@ -56,7 +56,7 @@ export default function ForgotPassword() {
           token: data.token,
           code: null
         });
-        console.log(data.token);
+        // console.log(data.token);
 
         navigate('code');
       }
@@ -72,7 +72,7 @@ export default function ForgotPassword() {
     }
   };
   const handleUserSendRecoverCode = async (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     try {
       const url = API_URL + '/users/recoverrequestcheck';
       let finalBody = {
@@ -86,7 +86,7 @@ export default function ForgotPassword() {
           code: codeData
         });
 
-        console.log(data.token, codeData);
+        // console.log(data.token, codeData);
         navigate('recover');
       }
     } catch (error) {
@@ -168,10 +168,10 @@ export default function ForgotPassword() {
 
   useEffect(() => {
     if (isSubmitting) {
-      console.log('isSubmitting');
+      // console.log('isSubmitting');
     }
     if (!isSubmitting) {
-      console.log('isNOTSubmitting');
+      // console.log('isNOTSubmitting');
     }
   }, [isSubmitting]);
   const onSubForm = (_bodyData) => {

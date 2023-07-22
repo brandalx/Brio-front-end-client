@@ -13,7 +13,7 @@ export default function SignUpMain({ SetOption2, mainBody }) {
       ...prevState,
       type: option
     }));
-    console.log(option);
+    // console.log(option);
   }, [option]);
 
   const path = option === 'restaurant' ? '/signup/restaurant' : '/signup/personal';

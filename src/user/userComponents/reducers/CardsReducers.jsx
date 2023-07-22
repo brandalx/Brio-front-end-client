@@ -16,7 +16,7 @@ const CardsReducers = () => {
     try {
       const data = await handleApiGet(url);
       setArr(data);
-      console.log(data);
+      // console.log(data);
 
       const cards = data.creditdata.map((card) => ({
         cardNumber: card.cardNumber,
@@ -44,12 +44,12 @@ const CardsReducers = () => {
   } = useForm();
 
   const onSubForm = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     handleUserAddressPost(_bodyData);
   };
 
   const onSubForm2 = (_bodyData) => {
-    console.log(_bodyData);
+    // console.log(_bodyData);
     handleUserAddressUpdate(_bodyData);
   };
   const handleUserAddressUpdate = async (_bodyData) => {
@@ -63,7 +63,7 @@ const CardsReducers = () => {
         _id: targetIndex
       };
 
-      console.log(_bodyDataFinal);
+      // console.log(_bodyDataFinal);
 
       const url = API_URL + '/users/card/edit';
       const data = await handleApiMethod(url, 'PUT', _bodyDataFinal);
@@ -175,7 +175,7 @@ const CardsReducers = () => {
         cardToDelete: _bodyData
       };
 
-      console.log(_bodyDataFinal);
+      // console.log(_bodyDataFinal);
 
       const url = API_URL + '/users/card/delete';
       const data = await handleApiMethod(url, 'DELETE', _bodyDataFinal);

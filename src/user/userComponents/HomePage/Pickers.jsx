@@ -4,7 +4,7 @@ import CategoryPicker from './CategoryPicker';
 
 export default function Pickers({ sortedArr, setSortedArr }) {
   useEffect(() => {
-    console.log(sortedArr);
+    // console.log(sortedArr);
   }, []);
   return (
     <Box>

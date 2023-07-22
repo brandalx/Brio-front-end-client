@@ -18,14 +18,14 @@ export default function ProductCard({ img, title, description, price, _id, promo
     try {
       const data = await handleApiGet(url);
       setUserAr(data);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     handleApi();
-    console.log(promotion);
+    // console.log(promotion);
   }, []);
   const handlePriceAdd = () => {
     setPriceCount(priceCount + 1);
@@ -68,7 +68,7 @@ export default function ProductCard({ img, title, description, price, _id, promo
         const url2 = API_URL + '/users/info/user';
         const data2 = await handleApiGet(url2);
         setUserAr(data2);
-        console.log(data2);
+        // console.log(data2);
 
         let isContains = data2.cart.some((item) => {
           return item._id === _id;
