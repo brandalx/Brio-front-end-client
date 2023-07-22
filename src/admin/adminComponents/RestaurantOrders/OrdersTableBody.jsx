@@ -218,25 +218,25 @@ export default function OrdersTableBody() {
         {[...Array(3)].map((_, index) => (
           <Tr key={index} borderBottom='1px solid' borderColor='#EBF1FE'>
             <Td>
-              <Skeleton height='20px' borderRadius='8px'/>
+              <Skeleton height='20px' borderRadius='8px' />
             </Td>
             <Td>
-              <Skeleton height='20px' borderRadius='8px'/>
+              <Skeleton height='20px' borderRadius='8px' />
             </Td>
             <Td>
-              <Skeleton height='20px' borderRadius='8px'/>
+              <Skeleton height='20px' borderRadius='8px' />
             </Td>
             <Td>
-              <Skeleton height='20px' borderRadius='8px'/>
+              <Skeleton height='20px' borderRadius='8px' />
             </Td>
             <Td>
-              <Skeleton height='20px' borderRadius='8px'/>
+              <Skeleton height='20px' borderRadius='8px' />
             </Td>
             <Td>
-              <Skeleton height='20px' borderRadius='8px'/>
+              <Skeleton height='20px' borderRadius='8px' />
             </Td>
             <Td>
-              <Skeleton height='20px' borderRadius='8px'/>
+              <Skeleton height='20px' borderRadius='8px' />
             </Td>
           </Tr>
         ))}
