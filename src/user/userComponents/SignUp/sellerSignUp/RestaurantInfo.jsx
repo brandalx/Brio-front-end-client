@@ -153,7 +153,6 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
 
                     <FormErrorMessage p={0} m={0} fontSize='3xs'>
                       {errors.restaurantEmail && errors.restaurantEmail.message}
-
                     </FormErrorMessage>
                   </FormControl>
 
@@ -180,13 +179,13 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
 
                   <Stack spacing={10}>
                     <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
-                      <Flex alignItems='center'>
+                      {/* <Flex alignItems='center'>
                         <Checkbox mr='2'>
                           <Text color='neutral.black' fontSize='2xs'>
                             Turn on 2 factor authentication
                           </Text>
                         </Checkbox>
-                      </Flex>
+                      </Flex> */}
                     </Stack>
                     <Box>
                       <Button
