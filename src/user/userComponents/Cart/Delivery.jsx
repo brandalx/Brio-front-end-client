@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import AdressCard from '../AccountSettingsPage/AdressCard';
 import NewPaymentMethod from '../Checkout/NewPaymentMethod';
 import NewAddress from './NewAddress';
-import AddressReducers from '../reducers/addressReducers';
+import AddressReducers from '../../../user/userComponents/reducers/AddressReducers';
 import { Link } from 'react-router-dom';
 
 export default function Delivery({ item, setCheckoutBody, setPickupLocation }) {
