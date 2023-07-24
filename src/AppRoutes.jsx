@@ -112,6 +112,7 @@ export default function AppRoutes({ isToken }) {
                           </>
                         )}
                         <Route path='/deals' element={<Deals />} />
+                        <Route path='/search' element={<Search />} />
                         <Route path='/about/' element={<About />} />
                         <Route path='/restaurant/' element={<Restaurants />} />
                         <Route path='/restaurant/:id' element={<Restaurant />} />

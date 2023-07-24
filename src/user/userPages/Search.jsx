@@ -233,6 +233,7 @@ export default function Search() {
         )}
         <Box mb='150px'>
           <Grid
+            alignItems='stretch'
             gridAutoColumns='1fr'
             gridAutoRows='1fr'
             templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)', md: 'repeat(4, 1fr)' }}
@@ -243,6 +244,7 @@ export default function Search() {
               restaurantData.map((item, index) => (
                 <Box key={index}>
                   <Box
+                    h='100%'
                     transition='all 0.3s'
                     cursor='pointer'
                     bg='neutral.white'
@@ -255,7 +257,7 @@ export default function Search() {
                       <Link to={'/restaurant/' + item.restaurantRef}>{item.restaurantName}</Link>
                     </Text>
 
-                    <Skeleton borderRadius='16px' isLoaded={!loading}>
+                    <Skeleton h='100%' borderRadius='16px' isLoaded={!loading}>
                       <ProductCard
                         _id={item._id}
                         img={item.image}
