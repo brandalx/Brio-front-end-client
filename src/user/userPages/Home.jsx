@@ -419,7 +419,7 @@ export default function Home() {
                               <Image src={index % 2 === 0 ? burgertest : caketest} alt='Promotion 1' />
                             </Box>
                             <Box w='50%'>
-                              <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
+                              <Text fontSize='xs' color='neutral.black' fontWeight='medium'>
                                 {item.discountDetails}
                               </Text>
                               <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>

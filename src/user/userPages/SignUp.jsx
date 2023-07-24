@@ -36,6 +36,7 @@ import SellerPersonalDetails from '../userComponents/SignUp/sellerSignUp/SellerP
 import RestaurantInfo from '../userComponents/SignUp/sellerSignUp/RestaurantInfo';
 import RestaurantConfirmation from '../userComponents/SignUp/sellerSignUp/RestaurantConfirmation';
 import render1 from '../../assets/images/render6.jpg';
+import Preloader from '../../components/Loaders/preloader';
 function RedirectHandler({ setRedirect }) {
   useEffect(() => {
     setRedirect(true);
@@ -59,6 +60,17 @@ export default function SignUp() {
     password: '',
     confirmpassword: ''
   });
+
+  const [isImageLoaded, setImageLoaded] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  useEffect(() => {
+    const img = new window.Image();
+    img.src = render1;
+    img.onload = () => {
+      setImageLoaded(true);
+      setLoading(false);
+    };
+  }, []);
 
   const [mainBodyUser, setMainBodyUser] = useState({
     firstname: '',
@@ -109,216 +121,224 @@ export default function SignUp() {
 
   return (
     <>
-      <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 2fr' }} gap={0}>
-        <GridItem
-          data-aos='fade-right'
-          backgroundImage={render1}
-          backgroundRepeat='no-repeat'
-          backgroundSize='cover'
-          backgroundPosition='center'
-          // className='css-selector1'
-          display={{ base: 'none', md: 'inline-flex' }}
-          h='100vh'
-        >
-          <Box mx='auto' py={6}>
-            <Flex h='100%' alignItems='center' flexDir='column' justifyContent='space-between'>
-              <Flex>
-                <Box title='Homepage' display='flex' alignItems='center'>
-                  <Link to='/'>
-                    {' '}
-                    <Logo color='white' />
-                  </Link>
-                  <VisuallyHidden>Brio</VisuallyHidden>
-                </Box>
-                <Text fontSize='sm' fontWeight='extrabold' color='white' ml='2'>
-                  <Link to='/'> Brio</Link>
-                </Text>
-              </Flex>
-              <Box></Box>
-
-              <Box></Box>
-            </Flex>
-          </Box>
-        </GridItem>
-        <GridItem w='100%' h='100vh' data-aos='fade-up'>
-          <Flex h='100%' justifyContent={{ base: 'center', md: 'flex-start' }}>
-            <Flex
-              ms={{ base: '0px', md: '100px', lg: '250px' }}
-              flexDir='column'
-              justifyContent='space-between'
-              h='100%'
-              maxWidth='350px'
-            >
-              <Box minWidth={{ base: '300px', md: '400px', lg: '400px' }} py={6}>
-                <Grid mt={5} templateColumns='0.2fr 1fr 0.2fr 1fr 0.2fr 1fr 0.2fr' gap={2}>
-                  <GridItem w='fit-content'>
-                    <Box>
-                      <SignupStatus color={isStatus >= 1 ? '#4e60ff' : undefined} />
-                    </Box>
-                  </GridItem>
-
-                  <GridItem w='100%'>
-                    <Box h='100%' display='flex' alignItems='center'>
-                      <Divider borderWidth='1px' borderColor={isStatus > 1 ? '#1ABF70' : undefined} />
-                    </Box>
-                  </GridItem>
-                  <GridItem w='100%'>
-                    <Box>
-                      <SignupStatus color={isStatus > 1 ? '#4e60ff' : undefined} />
-                    </Box>
-                  </GridItem>
-                  <GridItem w='100%'>
-                    <Box h='100%' display='flex' alignItems='center'>
-                      <Divider borderWidth='1px' borderColor={isStatus > 2 ? '#1ABF70' : undefined} />
-                    </Box>
-                  </GridItem>
-                  <GridItem w='100%'>
-                    <Box>
-                      <SignupStatus color={isStatus > 2 ? '#4e60ff' : undefined} />
-                    </Box>
-                  </GridItem>
-                  <GridItem w='100%'>
-                    <Box h='100%' display='flex' alignItems='center'>
-                      <Divider borderWidth='1px' borderColor={isStatus > 3 ? '#1ABF70' : undefined} />
-                    </Box>
-                  </GridItem>
-                  <GridItem w='100%'>
-                    <Box>
-                      <SignupStatus color={isStatus >= 4 ? '#4e60ff' : undefined} />
-                    </Box>
-                  </GridItem>
-                </Grid>
-                <Flex justifyContent='space-between' my={4}>
-                  <Box>
-                    <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
-                      <Box mt={4} textAlign='center'>
-                        <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
-                          Account <br /> type
-                        </Text>
-                      </Box>
-                    </Skeleton>
+      {isLoading ? (
+        <Preloader loading={isLoading} />
+      ) : (
+        <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 2fr' }} gap={0}>
+          <GridItem
+            data-aos='fade-right'
+            backgroundImage={isImageLoaded ? `url(${render1})` : ''}
+            backgroundRepeat='no-repeat'
+            backgroundSize='cover'
+            backgroundPosition='center'
+            // className='css-selector1'
+            display={{ base: 'none', md: 'inline-flex' }}
+            h='100vh'
+          >
+            <Box mx='auto' py={6}>
+              <Flex h='100%' alignItems='center' flexDir='column' justifyContent='space-between'>
+                <Flex>
+                  <Box title='Homepage' display='flex' alignItems='center'>
+                    <Link to='/'>
+                      {' '}
+                      <Logo color='white' />
+                    </Link>
+                    <VisuallyHidden>Brio</VisuallyHidden>
                   </Box>
-                  <Box>
-                    <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
-                      <Box mt={4} textAlign='center'>
-                        <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
-                          Personal <br /> details
-                        </Text>
-                      </Box>
-                    </Skeleton>
-                  </Box>
-                  <Box>
-                    <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
-                      <Box mt={4} textAlign='center'>
-                        <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
-                          Additional <br /> info
-                        </Text>
-                      </Box>
-                    </Skeleton>
-                  </Box>
-                  <Box>
-                    <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
-                      <Box mt={4}>
-                        <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
-                          Confirmation
-                        </Text>
-                      </Box>
-                    </Skeleton>
-                  </Box>
+                  <Text fontSize='sm' fontWeight='extrabold' color='white' ml='2'>
+                    <Link to='/'> Brio</Link>
+                  </Text>
                 </Flex>
-              </Box>
+                <Box></Box>
 
-              <Routes>
-                <Route path='/' element={<SignUpMain mainBody={() => {}} SetOption2={SetOption2} />} />
+                <Box></Box>
+              </Flex>
+            </Box>
+          </GridItem>
+          <GridItem w='100%' h='100vh' data-aos='fade-up'>
+            <Flex h='100%' justifyContent={{ base: 'center', md: 'flex-start' }}>
+              <Flex
+                ms={{ base: '0px', md: '100px', lg: '250px' }}
+                flexDir='column'
+                justifyContent='space-between'
+                h='100%'
+                maxWidth='350px'
+              >
+                <Box minWidth={{ base: '300px', md: '400px', lg: '400px' }} py={6}>
+                  <Grid mt={5} templateColumns='0.2fr 1fr 0.2fr 1fr 0.2fr 1fr 0.2fr' gap={2}>
+                    <GridItem w='fit-content'>
+                      <Box>
+                        <SignupStatus color={isStatus >= 1 ? '#4e60ff' : undefined} />
+                      </Box>
+                    </GridItem>
 
-                {option2 === 'restaurant' && (
-                  <>
-                    <Route
-                      path='/restaurant'
-                      element={
-                        <SellerPersonalDetails
-                          setMainBody={setMainBodyRestaurant}
-                          mainBody={mainBodyRestaurant}
-                          type={option2}
-                        />
-                      }
-                    />
-                    <Route
-                      path='/restaurant/info'
-                      element={
-                        <RestaurantInfo
-                          setMainBody={setMainBodyRestaurant}
-                          mainBody={mainBodyRestaurant}
-                          type={option2}
-                        />
-                      }
-                    />
-                    <Route
-                      path='/restaurant/info/confirmation'
-                      element={
-                        <RestaurantConfirmation
-                          setMainBody={setMainBodyRestaurant}
-                          mainBody={mainBodyRestaurant}
-                          type={option2}
-                        />
-                      }
-                    />
-                  </>
-                )}
-                {option2 === 'personal' && (
-                  <>
-                    <Route
-                      path='/personal'
-                      element={<PersonalDetails setMainBody={setMainBodyUser} mainBody={mainBodyUser} type={option2} />}
-                    />
-                    <Route
-                      path='/personal/info'
-                      element={<AdditionalInfo setMainBody={setMainBodyUser} mainBody={mainBodyUser} type={option2} />}
-                    />
-                    <Route
-                      path='/personal/info/confirmation'
-                      element={<Confirmation setMainBody={setMainBodyUser} mainBody={mainBodyUser} type={option2} />}
-                    />
-                  </>
-                )}
+                    <GridItem w='100%'>
+                      <Box h='100%' display='flex' alignItems='center'>
+                        <Divider borderWidth='1px' borderColor={isStatus > 1 ? '#1ABF70' : undefined} />
+                      </Box>
+                    </GridItem>
+                    <GridItem w='100%'>
+                      <Box>
+                        <SignupStatus color={isStatus > 1 ? '#4e60ff' : undefined} />
+                      </Box>
+                    </GridItem>
+                    <GridItem w='100%'>
+                      <Box h='100%' display='flex' alignItems='center'>
+                        <Divider borderWidth='1px' borderColor={isStatus > 2 ? '#1ABF70' : undefined} />
+                      </Box>
+                    </GridItem>
+                    <GridItem w='100%'>
+                      <Box>
+                        <SignupStatus color={isStatus > 2 ? '#4e60ff' : undefined} />
+                      </Box>
+                    </GridItem>
+                    <GridItem w='100%'>
+                      <Box h='100%' display='flex' alignItems='center'>
+                        <Divider borderWidth='1px' borderColor={isStatus > 3 ? '#1ABF70' : undefined} />
+                      </Box>
+                    </GridItem>
+                    <GridItem w='100%'>
+                      <Box>
+                        <SignupStatus color={isStatus >= 4 ? '#4e60ff' : undefined} />
+                      </Box>
+                    </GridItem>
+                  </Grid>
+                  <Flex justifyContent='space-between' my={4}>
+                    <Box>
+                      <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
+                        <Box mt={4} textAlign='center'>
+                          <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                            Account <br /> type
+                          </Text>
+                        </Box>
+                      </Skeleton>
+                    </Box>
+                    <Box>
+                      <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
+                        <Box mt={4} textAlign='center'>
+                          <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                            Personal <br /> details
+                          </Text>
+                        </Box>
+                      </Skeleton>
+                    </Box>
+                    <Box>
+                      <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
+                        <Box mt={4} textAlign='center'>
+                          <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                            Additional <br /> info
+                          </Text>
+                        </Box>
+                      </Skeleton>
+                    </Box>
+                    <Box>
+                      <Skeleton h='20px' borderRadius='16px' isLoaded={true}>
+                        <Box mt={4}>
+                          <Text fontSize='2xs' color='neutral.black' fontWeight='bold'>
+                            Confirmation
+                          </Text>
+                        </Box>
+                      </Skeleton>
+                    </Box>
+                  </Flex>
+                </Box>
 
-                <Route path='/*' element={<RedirectHandler setRedirect={setShouldRedirectTo404} />} />
-              </Routes>
+                <Routes>
+                  <Route path='/' element={<SignUpMain mainBody={() => {}} SetOption2={SetOption2} />} />
 
-              <Box textAlign='center' py={6}>
-                <Text w='100%'>
-                  Already have an account?
-                  <Link to='/login' w='100%'>
-                    {' '}
-                    <Text
-                      fontSize='2xs'
-                      fontWeight='bold'
-                      as='span'
-                      color='primary.default'
-                      _hover={{ textDecor: 'underline' }}
+                  {option2 === 'restaurant' && (
+                    <>
+                      <Route
+                        path='/restaurant'
+                        element={
+                          <SellerPersonalDetails
+                            setMainBody={setMainBodyRestaurant}
+                            mainBody={mainBodyRestaurant}
+                            type={option2}
+                          />
+                        }
+                      />
+                      <Route
+                        path='/restaurant/info'
+                        element={
+                          <RestaurantInfo
+                            setMainBody={setMainBodyRestaurant}
+                            mainBody={mainBodyRestaurant}
+                            type={option2}
+                          />
+                        }
+                      />
+                      <Route
+                        path='/restaurant/info/confirmation'
+                        element={
+                          <RestaurantConfirmation
+                            setMainBody={setMainBodyRestaurant}
+                            mainBody={mainBodyRestaurant}
+                            type={option2}
+                          />
+                        }
+                      />
+                    </>
+                  )}
+                  {option2 === 'personal' && (
+                    <>
+                      <Route
+                        path='/personal'
+                        element={
+                          <PersonalDetails setMainBody={setMainBodyUser} mainBody={mainBodyUser} type={option2} />
+                        }
+                      />
+                      <Route
+                        path='/personal/info'
+                        element={
+                          <AdditionalInfo setMainBody={setMainBodyUser} mainBody={mainBodyUser} type={option2} />
+                        }
+                      />
+                      <Route
+                        path='/personal/info/confirmation'
+                        element={<Confirmation setMainBody={setMainBodyUser} mainBody={mainBodyUser} type={option2} />}
+                      />
+                    </>
+                  )}
+
+                  <Route path='/*' element={<RedirectHandler setRedirect={setShouldRedirectTo404} />} />
+                </Routes>
+
+                <Box textAlign='center' py={6}>
+                  <Text w='100%'>
+                    Already have an account?
+                    <Link to='/login' w='100%'>
+                      {' '}
+                      <Text
+                        fontSize='2xs'
+                        fontWeight='bold'
+                        as='span'
+                        color='primary.default'
+                        _hover={{ textDecor: 'underline' }}
+                      >
+                        Sign in
+                      </Text>{' '}
+                    </Link>
+                  </Text>
+                  <Link to='/'>
+                    <FormLabel
+                      cursor='pointer'
+                      textDecor='underline'
+                      textAlign='center'
+                      fontWeight='semibold'
+                      fontSize='3xs'
+                      color='neutral.grayDark'
+                      mb={0}
                     >
-                      Sign in
-                    </Text>{' '}
+                      Back to home
+                    </FormLabel>
                   </Link>
-                </Text>
-                <Link to='/'>
-                  <FormLabel
-                    cursor='pointer'
-                    textDecor='underline'
-                    textAlign='center'
-                    fontWeight='semibold'
-                    fontSize='3xs'
-                    color='neutral.grayDark'
-                    mb={0}
-                  >
-                    Back to home
-                  </FormLabel>
-                </Link>
-              </Box>
+                </Box>
+              </Flex>
             </Flex>
-          </Flex>
-        </GridItem>
-      </Grid>
+          </GridItem>
+        </Grid>
+      )}
     </>
   );
 }
