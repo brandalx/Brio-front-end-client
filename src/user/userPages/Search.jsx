@@ -231,12 +231,12 @@ export default function Search() {
             </Grid>
           </Box>
         )}
-        <Box mb='150px'>
+        <Box mb='150px' my='20px'>
           <Grid
             alignItems='stretch'
             gridAutoColumns='1fr'
             gridAutoRows='1fr'
-            templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }}
+            templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
             gap={6}
           >
             {!loading &&
@@ -244,7 +244,6 @@ export default function Search() {
               restaurantData.map((item, index) => (
                 <Box key={index}>
                   <Box
-                    h='100%'
                     transition='all 0.3s'
                     cursor='pointer'
                     bg='neutral.white'
