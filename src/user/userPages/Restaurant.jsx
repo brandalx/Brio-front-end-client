@@ -64,6 +64,15 @@ export default function Restaurant() {
   const params = useParams();
   const [promotions, setPromotions] = useState([]);
   const [activePromotions, setActivePromotions] = useState([]);
+  const [layout, setLayout] = useState('repeat(2, 1fr)');
+  const handleChangeLayout = () => {
+    console.log(layout);
+    if (layout === 'repeat(2, 1fr)') {
+      setLayout('repeat(1, 1fr)');
+    } else {
+      setLayout('repeat(2, 1fr)');
+    }
+  };
 
   const [usersArr, setUsersArr] = useState();
 
@@ -455,6 +464,7 @@ export default function Restaurant() {
               </Text>
             </Flex>
           </Button>
+
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
             <GridItem w='100%' h='100%'>
               <Flex h='100%'>
@@ -544,6 +554,7 @@ export default function Restaurant() {
                       <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
                         Categories
                       </Text>
+
                       {!loading && categories && (
                         <Box>
                           {categories ? (
@@ -568,9 +579,39 @@ export default function Restaurant() {
                   )}
 
                   {!loading && keepArr.length > 0 && (
-                    <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
-                      Menu
-                    </Text>
+                    <>
+                      <Box py={2} display='flex' alignItems='center' justifyContent='space-between'>
+                        <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
+                          Menu
+                        </Text>
+
+                        <Box display={{ base: 'none', sm: 'block' }}>
+                          <Button
+                            rightIcon={
+                              layout === 'repeat(2, 1fr)' ? <Text fontSize='md'>=</Text> : <Text fontSize='md'>-</Text>
+                            }
+                            background='primary.default'
+                            fontWeight='bold'
+                            variant='solid'
+                            color='neutral.white'
+                            borderWidth='1px'
+                            borderColor='neutral.white'
+                            _hover={{
+                              background: 'neutral.white',
+                              color: 'primary.default',
+                              borderWidth: '1px',
+                              borderColor: 'primary.default'
+                            }}
+                            py={5}
+                            onClick={() => {
+                              handleChangeLayout();
+                            }}
+                          >
+                            Change layout
+                          </Button>
+                        </Box>
+                      </Box>
+                    </>
                   )}
 
                   <Box>
@@ -621,9 +662,10 @@ export default function Restaurant() {
                       </Grid>
                     ) : (
                       <Grid
+                        transition='all 0.3s'
                         gridAutoColumns='1fr'
                         gridAutoRows='1fr'
-                        templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
+                        templateColumns={{ base: 'repeat(1, 1fr)', sm: layout }}
                         gap={4}
                       >
                         {!loading ? (
@@ -635,7 +677,7 @@ export default function Restaurant() {
                               );
 
                               return (
-                                <Box key={index}>
+                                <Box transition='all 03.s' data-aos='fade-up' key={index}>
                                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                                     <ProductCard
                                       promotion={promotion || null} // Pass the found promotion. If no promotion is found, it will be null
