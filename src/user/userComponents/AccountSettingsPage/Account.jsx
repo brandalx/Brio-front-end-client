@@ -107,6 +107,7 @@ export default function Account() {
           isClosable: true
         });
         handleUserData();
+        clearValues();
       }
     } catch (error) {
       console.log(error);
@@ -430,7 +431,7 @@ export default function Account() {
                       borderRadius='8px'
                       fontSize='2xs'
                       // defaultValue={!loading && arr.email}
-                      placeholder='example@gmail.com'
+                      placeholder={arr._id && arr.email}
                     />{' '}
                     <FormErrorMessage p={0} mt={2} fontSize='3xs'>
                       {errors.email && errors.email.message}

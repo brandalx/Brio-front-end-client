@@ -64,7 +64,7 @@ export default function AdditionalInfo({ mainBody, setMainBody }) {
                       type='number'
                       {...register('phone', {
                         required: { value: true, message: 'This field is required' },
-                        minLength: { value: 9, message: 'Minimum length should be 9' }
+                        minLength: { value: 10, message: 'Minimum length should be 10' }
                       })}
                       background='neutral.white'
                       _placeholder={{ color: 'neutral.gray' }}
