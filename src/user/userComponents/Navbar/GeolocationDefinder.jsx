@@ -23,11 +23,11 @@ import { useDisclosure } from '@chakra-ui/react';
 
 export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom' }) {
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const { city, setCity, update, setUpdate, isTrue, setIsTrue } = useContext(geolocationContext);
+  const { city, setCity, update, setUpdate, isTrue, setIsTrue, setTimes, times } = useContext(geolocationContext);
   const [loading2, setLoading2] = useState(true);
 
   useEffect(() => {
-    if (!loading && !sessionStorage['location'] && !sessionStorage['isTrue']) {
+    if (!loading && !sessionStorage['location'] && !sessionStorage['isTrue'] && times < 3) {
       onToggle();
     }
   }, [loading]);

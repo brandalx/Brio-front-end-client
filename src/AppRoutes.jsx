@@ -44,7 +44,7 @@ import axios from 'axios';
 export default function AppRoutes({ isToken }) {
   const [cartLen, setCartLen] = useState(0);
   const [avatarUser, setAvatarUser] = useState(null);
-  const { city, setCity, update, setUpdate, isTrue, setIsTrue } = useGeolocation();
+  const { city, setCity, update, setUpdate, isTrue, setIsTrue, setTimes, times } = useGeolocation();
   const [decodedToken, setDecodedToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -69,7 +69,7 @@ export default function AppRoutes({ isToken }) {
   return (
     <>
       <globalContext.Provider value={{ isToken }}>
-        <geolocationContext.Provider value={{ city, setCity, update, setUpdate, isTrue, setIsTrue }}>
+        <geolocationContext.Provider value={{ city, setCity, update, setUpdate, isTrue, setIsTrue, setTimes, times }}>
           <cartContext.Provider value={{ cartLen, setCartLen }}>
             <avatarContext.Provider value={{ avatarUser, setAvatarUser }}>
               {/* TODO: pass global values in value obj */}
