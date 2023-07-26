@@ -97,6 +97,8 @@ export default function ProductCard({ img, title, description, price, _id, promo
       <Box
         w='100%'
         p={2}
+        transition='all 0.3s'
+        _hover={{ bg: 'primary.light', border: 'primary.default', transition: 'all 0.3s' }}
         bg='neutral.white'
         border='1px'
         borderColor='neutral.grayLightest'
