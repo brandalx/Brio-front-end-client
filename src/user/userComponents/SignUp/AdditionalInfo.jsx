@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 
 export default function AdditionalInfo({ mainBody, setMainBody }) {
   const [phone, setPhone] = useState('');
-  const isValid = () => phone.length > 6;
+  const isValid = () => phone.length > 9;
   const navigate = useNavigate();
 
   const handleGoBack = () => {
