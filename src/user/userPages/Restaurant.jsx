@@ -588,17 +588,18 @@ export default function Restaurant() {
                         <Box display={{ base: 'none', sm: 'block' }}>
                           <Button
                             rightIcon={
-                              layout === 'repeat(2, 1fr)' ? <Text fontSize='md'>=</Text> : <Text fontSize='md'>-</Text>
+                              layout === 'repeat(2, 1fr)' ? <Text fontSize='md'>-</Text> : <Text fontSize='md'>=</Text>
                             }
-                            background='primary.default'
+                            borderColor='primary.default'
+                            border='1px'
+                            background='neutral.white'
                             fontWeight='bold'
                             variant='solid'
-                            color='neutral.white'
+                            color='primary.default'
                             borderWidth='1px'
-                            borderColor='neutral.white'
                             _hover={{
-                              background: 'neutral.white',
-                              color: 'primary.default',
+                              background: 'primary.default',
+                              color: 'white',
                               borderWidth: '1px',
                               borderColor: 'primary.default'
                             }}
