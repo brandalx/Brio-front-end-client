@@ -40,6 +40,7 @@ import ScrollToTopDefault from './utils/ScrollToTopDefault';
 import Search from './user/userPages/Search';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
+import Blogs from './user/userPages/Blogs';
 import Blog from './user/userPages/Blog';
 
 export default function AppRoutes({ isToken }) {
@@ -113,7 +114,9 @@ export default function AppRoutes({ isToken }) {
                           </>
                         )}
                         <Route path='/deals' element={<Deals />} />
-                        <Route path='/blog' element={<Blog />} />
+                        <Route path='/blog' element={<Blogs />} />
+                        <Route path='/blog/:id' element={<Blog />} />
+
                         <Route path='/about/' element={<About />} />
                         <Route path='/restaurant/' element={<Restaurants />} />
                         <Route path='/restaurant/:id' element={<Restaurant />} />
