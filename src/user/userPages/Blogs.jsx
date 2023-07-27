@@ -74,7 +74,9 @@ export default function Blogs() {
           <BlogCardMain data={blogsArrTemp[0]} />
         </Box>
         <Box>
-          <Text>Default</Text>
+          <Text fontWeight='extrabold' color='neutral.black' fontSize='sm' ms={6}>
+            Other posts
+          </Text>
           <Grid
             transition='all 0.3s'
             gridAutoColumns='1fr'
@@ -85,7 +87,7 @@ export default function Blogs() {
             {blogsArrTemp.map((item, index) => {
               return (
                 <GridItem key={index}>
-                  <BlogCard index={index} key={index} data={item} />;
+                  <BlogCard index={index} key={index} data={item} />
                 </GridItem>
               );
             })}
