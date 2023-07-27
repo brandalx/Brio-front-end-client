@@ -52,10 +52,10 @@ export default function Navbar() {
   const isInCart = location.pathname.startsWith('/user/cart');
 
   const isInRestaurants = location.pathname.startsWith('/restaurant');
+  const isInBlog = location.pathname.startsWith('/blog');
   const isInMyOrders = location.pathname.startsWith('/user/orders');
 
   const isInDeals = location.pathname.startsWith('/deals');
-
 
   const token = localStorage.getItem(TOKEN_KEY);
   let checkerIfAdmin = false;
@@ -233,6 +233,24 @@ export default function Navbar() {
                     {' '}
                     <Text m={0} p={0} color={isInDeals ? 'primary.default' : 'neutral.black'}>
                       Deals
+                    </Text>
+                  </Button>
+                </Link>
+                <Link to='/blog'>
+                  <Button
+                    color='neutral.black'
+                    fontWeight='bold'
+                    fontSize='2xs'
+                    _hover={{
+                      borderRadius: '16px',
+                      background: 'primary.light',
+                      textDecoration: 'none',
+                      color: 'primary.default'
+                    }}
+                  >
+                    {' '}
+                    <Text m={0} p={0} color={isInBlog ? 'primary.default' : 'neutral.black'}>
+                      Blog
                     </Text>
                   </Button>
                 </Link>
@@ -665,6 +683,15 @@ export default function Navbar() {
                       mb='24px'
                     >
                       <Link to='/deals'>Deals </Link>
+                    </Button>
+                    <Button
+                      color={isInBlog ? 'primary.default' : 'neutral.black'}
+                      fontWeight='extrabold'
+                      fontSize='xs'
+                      variant='ghost'
+                      mb='24px'
+                    >
+                      <Link to='/blog'>Blog </Link>
                     </Button>
                     {localStorage[TOKEN_KEY] && (
                       <Button

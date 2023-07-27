@@ -40,6 +40,7 @@ import ScrollToTopDefault from './utils/ScrollToTopDefault';
 import Search from './user/userPages/Search';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
+import Blog from './user/userPages/Blog';
 
 export default function AppRoutes({ isToken }) {
   const [cartLen, setCartLen] = useState(0);
@@ -112,6 +113,7 @@ export default function AppRoutes({ isToken }) {
                           </>
                         )}
                         <Route path='/deals' element={<Deals />} />
+                        <Route path='/blog' element={<Blog />} />
                         <Route path='/about/' element={<About />} />
                         <Route path='/restaurant/' element={<Restaurants />} />
                         <Route path='/restaurant/:id' element={<Restaurant />} />
