@@ -232,9 +232,9 @@ export default function Account() {
           </Skeleton>
           <Flex alignItems='center'>
             <Skeleton borderRadius='16px' isLoaded={!loading} me={4}>
-              <Box borderWidth='2px' borderColor='primary.default' me='20px' borderRadius='12px'>
+              <Box borderRadius='100px' borderWidth='2px' borderColor='primary.default' me='20px'>
                 <Avatar
-                  borderRadius='10px'
+                  borderRadius='100px'
                   boxSize='80px'
                   objectFit='cover'
                   src={avatarUser || ''}

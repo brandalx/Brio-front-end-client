@@ -367,14 +367,14 @@ export default function Navbar() {
                           borderColor='neutral.white'
                           transition='all 0.3s'
                           _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
-                          borderRadius='2xl'
+                          borderRadius='100px'
                           display='flex'
                           alignItems='center'
                         >
                           <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                             <Avatar
                               py='2px'
-                              borderRadius='xl'
+                              borderRadius='100px'
                               size='md'
                               name={'Anonimus'}
                               src={'/assets/avatars/' + srcav}
@@ -389,14 +389,13 @@ export default function Navbar() {
                             borderColor='neutral.white'
                             transition='all 0.3s'
                             _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
-                            borderRadius='2xl'
+                            borderRadius='120px'
                             display='flex'
                             alignItems='center'
                           >
                             <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                               <Avatar
-                                py='2px'
-                                borderRadius='3xl'
+                                borderRadius='100px'
                                 size='md'
                                 name={!loading && arr.firstname + ' ' + arr.lastname}
                                 src={!loading && avatarUser}
@@ -541,14 +540,14 @@ export default function Navbar() {
                           borderColor='neutral.white'
                           transition='all 0.3s'
                           _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
-                          borderRadius='2xl'
+                          borderRadius='100px'
                           display='flex'
                           alignItems='center'
                         >
                           <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                             <Avatar
                               py='2px'
-                              borderRadius='3xl'
+                              borderRadius='100px'
                               size='md'
                               name={'Anonimus'}
                               src={'/assets/avatars/' + srcav}
@@ -561,8 +560,7 @@ export default function Navbar() {
                         <>
                           <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                             <Avatar
-                              py='2px'
-                              borderRadius='xl'
+                              borderRadius='100px'
                               size='md'
                               name={!loading && arr.firstname + ' ' + arr.lastname}
                               src={(!loading && avatarUser) || null}
