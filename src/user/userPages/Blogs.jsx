@@ -1,5 +1,7 @@
-import { Box, Text, Flex } from '@chakra-ui/react';
+import { Box, Text, Flex, Container, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
+import BlogCardMain from '../userComponents/Blog/BlogCardMain';
+import BlogCard from '../userComponents/Blog/BlogCard';
 
 export default function Blogs() {
   const blogsArrTemp = [
@@ -41,7 +43,8 @@ export default function Blogs() {
       desc: 'Learn about and savor rare and exotic fruits from different parts of the world.',
       tags: ['food', 'fruits', 'exotic'],
       userRef: '64bd10d1eadc7c7f6b71d273',
-      coverImg: 'https://images.pexels.com/photos/2352801/pexels-photo-2352801.jpeg?auto=compress&cs=tinysrgb&w=800'
+      coverImg:
+        'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
     },
     {
       _id: 6,
@@ -61,11 +64,34 @@ export default function Blogs() {
     }
   ];
   return (
-    <Box>
-      <Text>Blogs</Text>
+    <Container maxW='1110px'>
+      <Box py='25px'>
+        <Text ms={6} fontWeight='extrabold' color='neutral.black' fontSize='sm'>
+          Blogs
+        </Text>
 
-      <Box>main content</Box>
-      <Box>default content</Box>
-    </Box>
+        <Box>
+          <BlogCardMain data={blogsArrTemp[0]} />
+        </Box>
+        <Box>
+          <Text>Default</Text>
+          <Grid
+            transition='all 0.3s'
+            gridAutoColumns='1fr'
+            gridAutoRows='1fr'
+            templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}
+            gap={2}
+          >
+            {blogsArrTemp.map((item, index) => {
+              return (
+                <GridItem key={index}>
+                  <BlogCard index={index} key={index} data={item} />;
+                </GridItem>
+              );
+            })}
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
   );
 }
