@@ -608,7 +608,7 @@ export default function Restaurant() {
                               handleChangeLayout();
                             }}
                           >
-                            Change layout
+                            Change layout to {layout === 'repeat(2, 1fr)' ? 'list' : 'tiles'}
                           </Button>
                         </Box>
                       </Box>
