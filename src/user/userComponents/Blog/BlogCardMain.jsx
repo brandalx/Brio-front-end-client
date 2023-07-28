@@ -2,7 +2,7 @@ import { Box, Container, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-export default function BlogCardMain({ data }) {
+export default function BlogCardMain({ data, getUserName }) {
   const params = useParams();
   return (
     <Link to={'/blog/' + data._id}>
@@ -57,6 +57,18 @@ export default function BlogCardMain({ data }) {
               fontWeight='bold'
             >
               {data._id && data.desc}
+            </Text>
+            <Text
+              backgroundColor='none'
+              mt={3}
+              ms={5}
+              data-aos='fade-up'
+              textAlign='center'
+              fontSize='xs'
+              color='white'
+              fontWeight='bold'
+            >
+              By {getUserName(data._id)}
             </Text>
           </Flex>
         </Box>
