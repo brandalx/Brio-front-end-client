@@ -1,7 +1,7 @@
 import { Box, Text, Flex, Container, Grid, GridItem } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import BlogCardMain from '../userComponents/Blog/BlogCardMain';
-import BlogCard from '../userComponents/Blog/BlogCard';
+import BlogCardMain from '../userComponents/Blogs/BlogCardMain';
+import BlogCard from '../userComponents/Blogs/BlogCard';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 
 export default function Blogs() {
@@ -130,7 +130,7 @@ export default function Blogs() {
 
         {userArr.length > 0 && (
           <Box>
-            <BlogCardMain getUserName={getUserName} data={blogsArrTemp[0]} />
+            <BlogCardMain getUserAvatar={getUserAvatar} getUserName={getUserName} data={blogsArrTemp[0]} />
           </Box>
         )}
         <Box>
@@ -145,11 +145,19 @@ export default function Blogs() {
             gap={2}
           >
             {blogsArrTemp.map((item, index) => {
-              return (
-                <GridItem key={index}>
-                  <BlogCard getUserName={getUserName} index={index} key={index} data={item} />
-                </GridItem>
-              );
+              if (index != 0) {
+                return (
+                  <GridItem key={index}>
+                    <BlogCard
+                      getUserAvatar={getUserAvatar}
+                      getUserName={getUserName}
+                      index={index}
+                      key={index}
+                      data={item}
+                    />
+                  </GridItem>
+                );
+              }
             })}
           </Grid>
         </Box>

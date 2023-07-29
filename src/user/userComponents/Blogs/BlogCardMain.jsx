@@ -1,8 +1,9 @@
 import { Box, Container, Flex, Text } from '@chakra-ui/react';
+import { Avatar } from '@chakra-ui/react';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-export default function BlogCardMain({ data, getUserName }) {
+export default function BlogCardMain({ data, getUserName, getUserAvatar }) {
   const params = useParams();
   return (
     <Link to={'/blog/' + data._id}>
@@ -77,18 +78,21 @@ export default function BlogCardMain({ data, getUserName }) {
             >
               {data._id && data.desc}
             </Text>
-            <Text
-              backgroundColor='none'
-              mt={3}
-              ms={5}
-              data-aos='fade-up'
-              textAlign='center'
-              fontSize='xs'
-              color='white'
-              fontWeight='bold'
-            >
-              By {getUserName(data.userRef)}
-            </Text>
+
+            <Box mt={2} mx='auto' display='flex' alignItems='center'>
+              <Avatar size='sm' name={getUserName(data.userRef)} src={getUserAvatar(data.userRef)} />
+              <Text
+                backgroundColor='none'
+                ms={2}
+                data-aos='fade-up'
+                textAlign='center'
+                fontSize='xs'
+                color='white'
+                fontWeight='bold'
+              >
+                By {getUserName(data.userRef)}
+              </Text>
+            </Box>
           </Flex>
         </Box>
       </Container>
