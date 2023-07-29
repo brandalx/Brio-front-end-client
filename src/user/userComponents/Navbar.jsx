@@ -299,12 +299,13 @@ export default function Navbar() {
                           position='relative'
                         >
                           <Box
+                            px={1}
                             position='absolute'
                             top='-2px'
                             right='-4px'
                             bg='primary.default'
                             h='20px'
-                            w='20px'
+                            minW='20px'
                             borderRadius='8px'
                             display='flex'
                             alignItems='center'
@@ -474,12 +475,13 @@ export default function Navbar() {
                           position='relative'
                         >
                           <Box
+                            px={1}
                             position='absolute'
                             top='-2px'
                             right='-4px'
                             bg='primary.default'
-                            h='18px'
-                            w='18px'
+                            h='20px'
+                            minW='20px'
                             borderRadius='8px'
                             display='flex'
                             alignItems='center'
@@ -488,10 +490,10 @@ export default function Navbar() {
                             fontWeight='semibold'
                             color='white'
                             textAlign='center'
+                            minWidth='20px'
                           >
                             {!loading && cartLen}
                           </Box>
-
                           <Menu>
                             <MenuButton
                               as={Button}
