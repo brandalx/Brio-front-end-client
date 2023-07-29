@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 import { useParams } from 'react-router-dom';
 import { Box, Container, Flex, Text, Avatar } from '@chakra-ui/react';
+import BlogEditor from '../userComponents/Blog/BlogEditor';
 
 export default function Blog() {
   const [arr, setArr] = useState([]);
@@ -160,6 +161,10 @@ export default function Blog() {
           </Flex>
         </Container>
       )}
+
+      <Box>
+        <BlogEditor />
+      </Box>
     </Box>
   );
 }
