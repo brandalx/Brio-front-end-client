@@ -527,7 +527,7 @@ export default function Restaurant() {
                           }}
                           lng={address.results[0].bounds.northeast.lng}
                           lat={address.results[0].bounds.northeast.lat}
-                          zoom={8}
+                          zoom={16}
                         />
                       ) : (
                         <>

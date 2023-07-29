@@ -91,7 +91,7 @@ export default function Shipping({ item, userArr, restaurantArr }) {
                     styleInsert={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '320px' }}
                     lng={address.results[0].bounds.northeast.lng}
                     lat={address.results[0].bounds.northeast.lat}
-                    zoom={8}
+                    zoom={16}
                   />
                 )}{' '}
             </>
