@@ -22,6 +22,10 @@ body {
   overflow: hidden;
 }
 
+.map-container {
+  width: 100%;
+}
+
 .blogpostimage1 {
   background-image: linear-gradient(
     180deg,

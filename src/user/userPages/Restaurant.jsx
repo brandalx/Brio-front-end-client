@@ -41,6 +41,7 @@ import { Popover } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
 import PickersCategory from '../userComponents/RestaurantPage/PickersCategory';
+import MapComponent from '../userComponents/Order/MapComponent';
 
 export default function Restaurant() {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -517,11 +518,16 @@ export default function Restaurant() {
                       {address?.results?.length > 0 &&
                       address.results[0].bounds &&
                       address.results[0].bounds.northeast.lng ? (
-                        <iframe
-                          width='100%'
-                          src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
-                          title='Monochrome'
-                          style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '230px' }}
+                        <MapComponent
+                          styleInsert={{
+                            borderRadius: '16px',
+                            borderWidth: '5px',
+                            borderColor: 'white',
+                            minHeight: '230px'
+                          }}
+                          lng={address.results[0].bounds.northeast.lng}
+                          lat={address.results[0].bounds.northeast.lat}
+                          zoom={8}
                         />
                       ) : (
                         <>
