@@ -3,9 +3,13 @@ import { API_URL, handleApiGet } from '../../services/apiServices';
 import { useParams } from 'react-router-dom';
 import { Box, Container, Flex, Text, Avatar } from '@chakra-ui/react';
 import BlogEditor from '../userComponents/Blog/BlogEditor';
+import BlogReader from '../userComponents/Blog/BlogReader';
+import { Editor, EditorState, convertFromRaw } from 'draft-js';
 
 export default function Blog() {
   const [arr, setArr] = useState([]);
+  const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
+
   const [loading, setLoading] = useState(true);
   let [userArr, setUsersArr] = useState([]);
   const params = useParams();
@@ -19,6 +23,12 @@ export default function Blog() {
       await handleUsersPublicData(data);
 
       setArr(data);
+      const rawContentFromDB = data.content;
+      rawContentFromDB.entityMap = rawContentFromDB.entityMap || {};
+      if (rawContentFromDB) {
+        const contentState = convertFromRaw(rawContentFromDB);
+        setEditorState(EditorState.createWithContent(contentState));
+      }
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -164,6 +174,10 @@ export default function Blog() {
 
       <Box>
         <BlogEditor />
+      </Box>
+
+      <Box>
+        <Editor editorState={editorState} readOnly={true} />
       </Box>
     </Box>
   );
