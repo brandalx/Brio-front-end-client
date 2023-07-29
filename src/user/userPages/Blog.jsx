@@ -12,6 +12,8 @@ export default function Blog() {
 
   const [loading, setLoading] = useState(true);
   let [userArr, setUsersArr] = useState([]);
+  const [customStyleMap, setCustomStyleMap] = useState({});
+
   const params = useParams();
   const handleBlogApi = async () => {
     try {
@@ -25,6 +27,10 @@ export default function Blog() {
       setArr(data);
       const rawContentFromDB = data.content;
       rawContentFromDB.entityMap = rawContentFromDB.entityMap || {};
+      const customStyleMap = generateCustomStyleMap(rawContentFromDB);
+
+      setCustomStyleMap(customStyleMap);
+
       if (rawContentFromDB) {
         const contentState = convertFromRaw(rawContentFromDB);
         setEditorState(EditorState.createWithContent(contentState));
@@ -54,6 +60,27 @@ export default function Blog() {
       return '';
     }
   };
+
+  function generateCustomStyleMap(data) {
+    const customStyleMap = {};
+
+    data.blocks.forEach((block) => {
+      block.inlineStyleRanges.forEach((range) => {
+        const styleType = range.style.split('-')[0];
+        const styleValue = range.style.split('-')[1];
+
+        if (!customStyleMap[range.style]) {
+          if (styleType === 'fontsize') {
+            customStyleMap[range.style] = { fontSize: `${styleValue}px` };
+          } else if (styleType === 'fontfamily') {
+            customStyleMap[range.style] = { fontFamily: styleValue };
+          }
+        }
+      });
+    });
+
+    return customStyleMap;
+  }
 
   let getUserAvatar = (userid) => {
     try {
@@ -177,8 +204,8 @@ export default function Blog() {
         </Box>
       </Container>
 
-      <Box lineHeight='0.5'>
-        <Editor editorState={editorState} readOnly={true} />
+      <Box py={2} lineHeight='0.5'>
+        <Editor editorState={editorState} customStyleMap={customStyleMap} readOnly={true} />
       </Box>
     </Box>
   );
