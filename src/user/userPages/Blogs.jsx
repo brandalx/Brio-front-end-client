@@ -66,12 +66,12 @@ export default function Blogs() {
     }
   ];
 
-  let handleUsersPublicData = async (_commentsdata) => {
+  let handleUsersPublicData = async (_data) => {
     try {
-      if (blogsArrTemp.length > 0) {
+      if (_data.length > 0) {
         let allUsers = [];
         const response = await Promise.all(
-          blogsArrTemp.map((item) => handleApiGet(`${API_URL}/users/info/public/user/${item.userRef.toString()}`))
+          _data.map((item) => handleApiGet(`${API_URL}/users/info/public/user/${item.userRef.toString()}`))
         );
         allUsers = [...allUsers, ...response];
         setUsersArr(allUsers);
@@ -119,7 +119,7 @@ export default function Blogs() {
   };
 
   useEffect(() => {
-    handleUsersPublicData();
+    handleUsersPublicData(blogsArrTemp);
   }, []);
   return (
     <Container maxW='1110px'>
@@ -147,7 +147,7 @@ export default function Blogs() {
             {blogsArrTemp.map((item, index) => {
               return (
                 <GridItem key={index}>
-                  <BlogCard index={index} key={index} data={item} />
+                  <BlogCard getUserName={getUserName} index={index} key={index} data={item} />
                 </GridItem>
               );
             })}

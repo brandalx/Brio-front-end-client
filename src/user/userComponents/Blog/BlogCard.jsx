@@ -1,10 +1,10 @@
 import { Box, Container, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-export default function BlogCard({ data, index }) {
+export default function BlogCard({ data, index, getUserName }) {
   return (
     <Link to={'/blog/' + data._id}>
-      <Container maxW='1110px'>
+      <Container data-aos={index % 2 === 0 ? 'fade-right' : 'fade-left'} maxW='1110px'>
         <Box>
           <Box
             borderRadius='16px'
@@ -13,7 +13,6 @@ export default function BlogCard({ data, index }) {
             backgroundRepeat='no-repeat'
             backgroundSize='cover'
             backgroundPosition='center'
-            data-aos={index % 2 === 0 ? 'fade-right' : 'fade-left'}
             maxW='1245px'
             h='250px'
             position='relative'
@@ -46,15 +45,24 @@ export default function BlogCard({ data, index }) {
             </Flex>
           </Box>
           <Box>
-            <Text
-              backgroundColor='none'
-              mt={3}
-              ms={5}
-              data-aos='fade-up'
-              fontSize='xs'
-              color='neutral.gray'
-              fontWeight='medium'
-            >
+            <Text backgroundColor='none' mt={3} fontSize='xs' color='grayDark' fontWeight='bold'>
+              By {data._id && getUserName(data.userRef)}
+            </Text>
+          </Box>
+          <Box>
+            <Text backgroundColor='none' fontSize='xs' color='neutral.gray' fontWeight='bold'>
+              {data.tags.map((item, index) => {
+                return (
+                  <Box as='span' key={index}>
+                    {' '}
+                    #{item}
+                  </Box>
+                );
+              })}
+            </Text>
+          </Box>
+          <Box>
+            <Text mt={2} backgroundColor='none' fontSize='xs' color='neutral.gray' fontWeight='medium'>
               {data._id && data.desc}
             </Text>
           </Box>

@@ -45,6 +45,25 @@ export default function BlogCardMain({ data, getUserName }) {
             >
               {data._id && data.title}
             </Text>
+            <Text
+              backgroundColor='none'
+              mt={3}
+              ms={5}
+              data-aos='fade-up'
+              textAlign='center'
+              fontSize='xs'
+              color='neutral.gray'
+              fontWeight='bold'
+            >
+              {data.tags.map((item, index) => {
+                return (
+                  <Box as='span' key={index}>
+                    {' '}
+                    #{item}
+                  </Box>
+                );
+              })}
+            </Text>
 
             <Text
               backgroundColor='none'
@@ -68,7 +87,7 @@ export default function BlogCardMain({ data, getUserName }) {
               color='white'
               fontWeight='bold'
             >
-              By {getUserName(data._id)}
+              By {getUserName(data.userRef)}
             </Text>
           </Flex>
         </Box>
