@@ -16,6 +16,7 @@ import { geolocationContext } from '../../context/globalContext';
 import Pickers from '../userComponents/HomePage/Pickers';
 import SearchInput from '../userComponents/Search/SearchInput';
 import Arrow from '../../assets/svg/Arrow';
+import Aos from 'aos';
 function getRandomIndex(length) {
   return Math.floor(Math.random() * length);
 }
@@ -200,6 +201,12 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    if (!loading) {
+      Aos.refreshHard();
+    }
+  }, [loading]);
+
   const sortByTags1 = (_info) => {
     if (_info.length === 0) {
       setAr(keepArr);
@@ -227,14 +234,13 @@ export default function Home() {
         </Box>
       )} */}
       <Container maxW='1110px' py={30}>
-        <Box borderRadius='16px' py={5} bg='primary.default'>
+        <Box data-aos='fade-up' borderRadius='16px' py={5} bg='primary.default'>
           <Flex flexDir={{ base: 'column', md: 'row' }} alignItems={{ base: 'none', md: 'center' }}>
             <Box>
               <Text
                 backgroundColor='none'
                 mt={5}
                 ms={5}
-                data-aos='fade-up'
                 textAlign={{ base: 'center', md: 'start' }}
                 fontSize={{ base: 'xl', md: '2xl' }}
                 lineHeight={{ base: '20px', md: '45px' }}
@@ -335,12 +341,12 @@ export default function Home() {
           </Flex>
         </Box>
       </Container>
-      <Box pt={15} pb='50px'>
+      <Box data-aos='fade-up' pt={15} pb='50px'>
         <SearchInput />
       </Box>
       <Container maxW='1110px' py={15}>
         <Skeleton borderRadius='16px' height={loading ? '250px' : '0px'} isLoaded={loading} my={loading ? 2 : 0} />
-        <Box>
+        <Box data-aos='fade-up'>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
             {/* <Skeleton borderRadius='16px' isLoaded={!loading}>
               <GridItem
@@ -438,7 +444,7 @@ export default function Home() {
               })()}
           </Grid>
         </Box>
-        <Box maxW='1110px' my='45px'>
+        <Box data-aos='fade-up' maxW='1110px' my='45px'>
           <Link to='/deals'>
             <Box
               style={{ transition: 'all 0.3s' }}
@@ -486,7 +492,7 @@ export default function Home() {
         </Box>
         {localStorage[TOKEN_KEY] && sessionStorage['isTrue'] && sessionStorage['location'] && sortedArr && (
           <>
-            <Box pt='25px'>
+            <Box data-aos='fade-up' pt='25px'>
               <Text mb={2} fontWeight='extrabold' color='neutral.black' fontSize='sm'>
                 Nearby restaurants at {city}
               </Text>
@@ -569,7 +575,7 @@ export default function Home() {
             </Box>
           </>
         )}
-        <Box py='25px'>
+        <Box data-aos='fade-up' py='25px'>
           <Text fontWeight='extrabold' color='neutral.black' fontSize='sm'>
             All restaurants
           </Text>
