@@ -95,81 +95,69 @@ export default function Blog() {
             maxW='1245px'
             h='700px'
             position='relative'
-            _before={{
-              borderRadius: '16px',
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
-              backgroundImage:
-                'linear-gradient(180deg,rgba(0,0,0,0) 7%,rgba(0,0,0,0.08) 12%,rgba(0,0,0,0.16) 17%,rgba(0,0,0,0.22) 21%,rgba(0,0,0,0.32) 26%,rgba(0,0,0,0.42) 32%,rgba(0,0,0,0.52) 38%,rgba(0,0,0,0.62) 47%,rgba(0,0,0,0.72) 57%,rgba(0,0,0,0.82) 65%)'
-            }}
-          >
-            <Flex direction='column' justifyContent='flex-end' h='100%' p={4}>
+          ></Box>
+          <Flex direction='column' justifyContent='flex-end' h='100%' p={4}>
+            <Text
+              backgroundColor='none'
+              mt={5}
+              ms={5}
+              data-aos='fade-up'
+              textAlign='center'
+              fontSize={{ base: 'xl', md: '2xl' }}
+              lineHeight={{ base: '40px', md: '50px' }}
+              color='neutral.black'
+              fontWeight='black'
+            >
+              {arr._id && arr.title}
+            </Text>
+            <Text
+              backgroundColor='none'
+              mt={3}
+              ms={5}
+              data-aos='fade-up'
+              textAlign='center'
+              fontSize='xs'
+              color='neutral.grayLight'
+              fontWeight='bold'
+            >
+              {arr.tags.map((item, index) => {
+                return (
+                  <Box as='span' key={index}>
+                    {' '}
+                    #{item}
+                  </Box>
+                );
+              })}
+            </Text>
+
+            <Text
+              backgroundColor='none'
+              mt={3}
+              ms={5}
+              data-aos='fade-up'
+              textAlign='center'
+              fontSize='xs'
+              color='neutral.gray'
+              fontWeight='bold'
+            >
+              {arr._id && arr.desc}
+            </Text>
+
+            <Box mt={2} mx='auto' display='flex' alignItems='center'>
+              <Avatar data-aos='fade-up' size='sm' name={getUserName(arr.userRef)} src={getUserAvatar(arr.userRef)} />
               <Text
                 backgroundColor='none'
-                mt={5}
-                ms={5}
-                data-aos='fade-up'
-                textAlign='center'
-                fontSize={{ base: 'xl', md: '2xl' }}
-                lineHeight={{ base: '40px', md: '50px' }}
-                color='white'
-                fontWeight='black'
-              >
-                {arr._id && arr.title}
-              </Text>
-              <Text
-                backgroundColor='none'
-                mt={3}
-                ms={5}
+                ms={2}
                 data-aos='fade-up'
                 textAlign='center'
                 fontSize='xs'
                 color='neutral.gray'
                 fontWeight='bold'
               >
-                {arr.tags.map((item, index) => {
-                  return (
-                    <Box as='span' key={index}>
-                      {' '}
-                      #{item}
-                    </Box>
-                  );
-                })}
+                By {getUserName(arr.userRef)}
               </Text>
-
-              <Text
-                backgroundColor='none'
-                mt={3}
-                ms={5}
-                data-aos='fade-up'
-                textAlign='center'
-                fontSize='xs'
-                color='white'
-                fontWeight='bold'
-              >
-                {arr._id && arr.desc}
-              </Text>
-
-              <Box mt={2} mx='auto' display='flex' alignItems='center'>
-                <Avatar size='sm' name={getUserName(arr.userRef)} src={getUserAvatar(arr.userRef)} />
-                <Text
-                  backgroundColor='none'
-                  ms={2}
-                  data-aos='fade-up'
-                  textAlign='center'
-                  fontSize='xs'
-                  color='white'
-                  fontWeight='bold'
-                >
-                  By {getUserName(arr.userRef)}
-                </Text>
-              </Box>
-            </Flex>
-          </Box>
+            </Box>
+          </Flex>
         </Container>
       )}
     </Box>
