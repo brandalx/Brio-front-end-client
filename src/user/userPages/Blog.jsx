@@ -5,15 +5,20 @@ import { Box } from '@chakra-ui/react';
 
 export default function Blog() {
   const [arr, setArr] = useState([]);
-  const [loading, setLoading] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const params = useParams();
   const handleBlogApi = async () => {
-    const url = API_URL + '/blogs/blog/single/' + params['id'];
     try {
+      console.log(params['id']);
+      const url = API_URL + '/blogs/' + params['id'];
+      console.log(url);
+
       const data = await handleApiGet(url);
 
-      setArr(data);
+      setArr([data]);
+      console.log(arr);
+      setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -25,7 +30,10 @@ export default function Blog() {
   }, []);
   return (
     <Box>
-      <Box>blog info</Box>
+      {!loading &&
+        arr.map((item, index) => {
+          return <Box key={index}>{item.title}d</Box>;
+        })}
     </Box>
   );
 }
