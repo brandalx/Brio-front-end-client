@@ -1021,13 +1021,16 @@ export default function Restaurant() {
                                               </PopoverContent>
                                             </Popover>
                                           ) : (
-                                            <Button
-                                              p={2}
-                                              _hover={{ transform: 'scale(1.2) rotate(-5deg)' }}
+                                            <Box
+                                              bg='white'
+                                              borderRadius='16px'
+                                              _hover={{ bg: 'primary.light' }}
                                               onClick={() => postLike(item._id)}
                                             >
-                                              {defineUserLike(item)}
-                                            </Button>
+                                              <Button _hover={{ transform: 'scale(1.2) rotate(-5deg)' }}>
+                                                {defineUserLike(item)}
+                                              </Button>
+                                            </Box>
                                           )}
 
                                           <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
@@ -1093,13 +1096,16 @@ export default function Restaurant() {
                                               </PopoverContent>
                                             </Popover>
                                           ) : (
-                                            <Button
-                                              _hover={{ transform: 'scale(1.2) rotate(5deg)' }}
-                                              p={2}
+                                            <Box
+                                              bg='white'
+                                              borderRadius='16px'
+                                              _hover={{ bg: 'primary.light' }}
                                               onClick={() => postDislike(item._id)}
                                             >
-                                              {defineUserDisLike(item)}
-                                            </Button>
+                                              <Button _hover={{ transform: 'scale(1.2) rotate(-5deg)' }}>
+                                                {defineUserDisLike(item)}
+                                              </Button>
+                                            </Box>
                                           )}
 
                                           <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
