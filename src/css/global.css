@@ -42,6 +42,10 @@ body {
   );
 }
 
+.editor-class .public-DraftEditor-content {
+  line-height: 0.5; /* Set your desired line-height here */
+}
+
 .t-gra {
   background: linear-gradient(351deg, #31b3ec 23%, #524add 87%, #524add 102%);
   -webkit-background-clip: text;

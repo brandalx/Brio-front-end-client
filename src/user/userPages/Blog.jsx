@@ -171,12 +171,13 @@ export default function Blog() {
           </Flex>
         </Container>
       )}
+      <Container maxW='1110px'>
+        <Box lineHeight='0.5'>
+          <BlogEditor />
+        </Box>
+      </Container>
 
-      <Box>
-        <BlogEditor />
-      </Box>
-
-      <Box>
+      <Box lineHeight='0.5'>
         <Editor editorState={editorState} readOnly={true} />
       </Box>
     </Box>

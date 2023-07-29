@@ -15,16 +15,41 @@ export default function BlogEditor() {
   };
 
   return (
-    <Box py='300px' height='100px'>
+    <Box p={4} mb={10} border='1px' borderColor='neutral.gray' borderRadius='16px'>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Editor
+          editorStyle={{
+            border: '1px solid gray',
+            borderRadius: '16px',
+            paddingLeft: '10px',
+            paddingRight: '10px',
+            paddingTop: '5px',
+            paddingBottom: '15px'
+          }}
           defaultContentState={contentState}
           onContentStateChange={setContentState}
           wrapperClassName='wrapper-class'
           editorClassName='editor-class'
           toolbarClassName='toolbar-class'
+          toolbar={{
+            options: [
+              'inline',
+              'blockType',
+              'fontSize',
+              'fontFamily',
+              'list',
+              'textAlign',
+              'colorPicker',
+              'link',
+              'embedded',
+              'emoji'
+            ],
+            inline: {
+              options: ['bold', 'italic', 'underline', 'strikethrough']
+            }
+          }}
         />
-        <Button color='white' bg='primary.default' borderRadius='16px' type='submit'>
+        <Button my={2} color='white' bg='primary.default' borderRadius='16px' type='submit'>
           Submit
         </Button>
       </form>
