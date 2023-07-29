@@ -174,25 +174,27 @@ export default function Navbar() {
                 </Link>
               </Text>
 
-              <InputGroup display={{ base: 'none', md: 'inline-flex' }} size='md' fontSize='md' mx='10px'>
-                <form onSubmit={handleSearch}>
-                  <InputRightElement>
-                    <Button type='submit'>
-                      <AiOutlineSearch color='#828282' size={14} />
-                    </Button>
-                  </InputRightElement>
-                  <Input
-                    defaultValue={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    background='neutral.grayLightest'
-                    _placeholder={{ color: 'neutral.gray' }}
-                    borderRadius={100}
-                    fontSize='2xs'
-                    type='text'
-                    placeholder='Search...'
-                  />
-                </form>
-              </InputGroup>
+              <Box mx='10px' display={{ base: 'none', lg: 'block' }}>
+                <InputGroup display={{ base: 'none', md: 'inline-flex' }} size='md' fontSize='md'>
+                  <form onSubmit={handleSearch}>
+                    <InputRightElement>
+                      <Button type='submit'>
+                        <AiOutlineSearch color='#828282' size={14} />
+                      </Button>
+                    </InputRightElement>
+                    <Input
+                      defaultValue={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      background='neutral.grayLightest'
+                      _placeholder={{ color: 'neutral.gray' }}
+                      borderRadius={100}
+                      fontSize='2xs'
+                      type='text'
+                      placeholder='Search...'
+                    />
+                  </form>
+                </InputGroup>
+              </Box>
             </Flex>
             <HStack display='flex' alignItems='center' spacing={1}>
               <HStack spacing={2} mr={1} display={{ base: 'none', md: 'inline-flex' }}>
@@ -250,7 +252,7 @@ export default function Navbar() {
                   >
                     {' '}
                     <Text m={0} p={0} color={isInBlog ? 'primary.default' : 'neutral.black'}>
-                      Blog
+                      Blogs
                     </Text>
                   </Button>
                 </Link>
@@ -691,7 +693,7 @@ export default function Navbar() {
                       variant='ghost'
                       mb='24px'
                     >
-                      <Link to='/blog'>Blog </Link>
+                      <Link to='/blog'>Blogs </Link>
                     </Button>
                     {localStorage[TOKEN_KEY] && (
                       <Button
