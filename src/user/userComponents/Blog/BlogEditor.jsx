@@ -33,18 +33,7 @@ export default function BlogEditor() {
           editorClassName='editor-class grayPlaceholder'
           toolbarClassName='toolbar-class'
           toolbar={{
-            options: [
-              'inline',
-              'blockType',
-              'fontSize',
-              'fontFamily',
-              'list',
-              'textAlign',
-              'colorPicker',
-              'link',
-              'embedded',
-              'emoji'
-            ],
+            options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'emoji'],
             inline: {
               options: ['bold', 'italic', 'underline', 'strikethrough']
             }

@@ -3,7 +3,6 @@ import { API_URL, handleApiGet } from '../../services/apiServices';
 import { useParams } from 'react-router-dom';
 import { Box, Container, Flex, Text, Avatar } from '@chakra-ui/react';
 import BlogEditor from '../userComponents/Blog/BlogEditor';
-import BlogReader from '../userComponents/Blog/BlogReader';
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
 
 export default function Blog() {
@@ -182,10 +181,9 @@ export default function Blog() {
             </Text>
 
             <Box mt={2} mx='auto' display='flex' alignItems='center'>
-              <Avatar data-aos='fade-up' size='sm' name={getUserName(arr.userRef)} src={getUserAvatar(arr.userRef)} />
               <Text
                 backgroundColor='none'
-                ms={2}
+                me={2}
                 data-aos='fade-up'
                 textAlign='center'
                 fontSize='xs'
@@ -194,6 +192,7 @@ export default function Blog() {
               >
                 By {getUserName(arr.userRef)}
               </Text>
+              <Avatar data-aos='fade-up' size='sm' name={getUserName(arr.userRef)} src={getUserAvatar(arr.userRef)} />
             </Box>
           </Flex>
         </Container>
@@ -203,10 +202,11 @@ export default function Blog() {
           <BlogEditor />
         </Box>
       </Container>
-
-      <Box py={2} lineHeight='0.5'>
-        <Editor editorState={editorState} customStyleMap={customStyleMap} readOnly={true} />
-      </Box>
+      <Container maxW='1110px'>
+        <Box py={2} lineHeight='0.5'>
+          <Editor editorState={editorState} customStyleMap={customStyleMap} readOnly={true} />
+        </Box>
+      </Container>
     </Box>
   );
 }
