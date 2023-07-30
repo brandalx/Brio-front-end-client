@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { ContentState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -13,12 +13,15 @@ import {
   InputRightElement,
   Text,
   Input,
-  Stack
+  Stack,
+  useToast
 } from '@chakra-ui/react';
 
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { API_URL, TOKEN_KEY } from '../../../services/apiServices';
+import axios from 'axios';
 export default function BlogEditor() {
   // const _contentState = ContentState.createFromText('Blog editor of brio!');
   // const raw = convertToRaw(_contentState); // RawDraftContentState JSON
@@ -31,8 +34,6 @@ export default function BlogEditor() {
   const [mainBody, setMainBody] = useState();
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
   const [show, setShow] = useState(false);
   const handleClickShow = () => setShow(!show);
@@ -40,26 +41,70 @@ export default function BlogEditor() {
   const [show2, setShow2] = useState(false);
   const handleClickShow2 = () => setShow2(!show2);
   const navigate = useNavigate();
-  const isValid = () =>
-    email.length > 5 && password.length > 5 && confirmPassword.length > 5 && password === confirmPassword;
-
+  const isValid = () => email.length > 5;
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting }
   } = useForm();
-  const onSubForm = (_bodyData) => {
+  const onSubForm = (e, _bodyData) => {
     // console.log(_bodyData);
-    setMainBody((prevState) => ({
-      ...prevState,
-      firstname: _bodyData.firstname,
-      lastname: _bodyData.lastname,
-      email: _bodyData.email,
-      password: _bodyData.password,
-      confirmpassword: _bodyData.confirmpassword
+    setMainBody(() => ({
+      title: _bodyData.title,
+      desc: _bodyData.desc,
+      tags: _bodyData.tags,
+      userRef: _bodyData.userRef,
+      content: contentState
     }));
-    navigate('/signup/personal/info');
+
+    handleUploadCover();
   };
+
+  const uploadRef = useRef();
+
+  const toast = useToast();
+  const handleUploadCover = async () => {
+    console.log(uploadRef.current.files);
+    if (uploadRef.current.files[0]) {
+      try {
+        const fdata = new FormData();
+
+        fdata.append('myFile', uploadRef.current.files[0]);
+        const url = API_URL + '/users/user/avatar';
+        setMainBody((prevState) => ({
+          ...(prevState.cover = fdata)
+        }));
+        const resp = await axios({
+          method: 'POST',
+          url: url,
+          data: fdata,
+          headers: {
+            'x-api-key': localStorage[TOKEN_KEY]
+          }
+        });
+        // console.log(resp.data);
+        if (resp.data.excludedPath) {
+          toast({
+            title: 'Cover uploaded',
+            description: 'Post cover uploaded successfuly!',
+            status: 'success',
+            duration: 9000,
+            isClosable: true
+          });
+        }
+      } catch (err) {
+        console.log(err);
+        toast({
+          title: 'Error when uploading your cover image',
+          description: 'Error when uploading cover image. Try upload different file',
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    }
+  };
+
   return (
     <Box p={4} mb={10} border='1px' borderColor='neutral.gray' borderRadius='16px'>
       <form onSubmit={handleSubmit(onSubForm)}>
@@ -164,153 +209,28 @@ export default function BlogEditor() {
                       </FormErrorMessage>
                     </FormControl>
 
-                    <FormControl id='password' isInvalid={errors.password}>
-                      <FormLabel color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                        Password
-                      </FormLabel>
-
-                      <InputGroup>
-                        <Input
-                          id='password'
-                          {...register('password', {
-                            required: { value: true, message: 'This field is required' },
-                            minLength: { value: 2, message: 'Minimum length should be 2' }
-                          })}
-                          type={show ? 'text' : 'password'}
-                          background='neutral.white'
-                          _placeholder={{ color: 'neutral.gray' }}
-                          borderRadius='8px'
-                          fontSize='2xs'
-                          placeholder='min. 8 characters'
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                        />
-
-                        {password.length > 0 && (
-                          <InputRightElement me={2}>
-                            <Button h='1.75rem' size='2xs' onClick={handleClickShow}>
-                              {show ? (
-                                <span>
-                                  <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    className='icon icon-tabler icon-tabler-eye'
-                                    width={18}
-                                    height={18}
-                                    viewBox='0 0 24 24'
-                                    strokeWidth={2}
-                                    stroke='#4E60FF'
-                                    fill='none'
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                  >
-                                    <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-                                    <path d='M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0' />
-                                    <path d='M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6' />
-                                  </svg>
-                                </span>
-                              ) : (
-                                <span>
-                                  <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    className='icon icon-tabler icon-tabler-eye-off'
-                                    width={18}
-                                    height={18}
-                                    viewBox='0 0 24 24'
-                                    strokeWidth={2}
-                                    stroke='#C7C8D2'
-                                    fill='none'
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                  >
-                                    <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-                                    <path d='M10.585 10.587a2 2 0 0 0 2.829 2.828' />
-                                    <path d='M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87' />
-                                    <path d='M3 3l18 18' />
-                                  </svg>
-                                </span>
-                              )}
-                            </Button>
-                          </InputRightElement>
-                        )}
-                      </InputGroup>
-
-                      <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                        {errors.password && errors.password.message}
-                      </FormErrorMessage>
-                    </FormControl>
-                    <FormControl id='confirmpassword' isInvalid={errors.confirmpassword}>
-                      <FormLabel color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                        Confirm Password
-                      </FormLabel>
-
-                      <InputGroup>
-                        <Input
-                          type={show2 ? 'text' : 'password'}
-                          id='confirmpassword'
-                          {...register('confirmpassword', {
-                            required: { value: true, message: 'This field is required' },
-                            minLength: { value: 2, message: 'Minimum length should be 2' }
-                          })}
-                          background='neutral.white'
-                          _placeholder={{ color: 'neutral.gray' }}
-                          borderRadius='8px'
-                          fontSize='2xs'
-                          placeholder='min. 8 characters'
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                        />
-
-                        {confirmPassword.length > 0 && (
-                          <InputRightElement me={2}>
-                            <Button h='1.75rem' size='2xs' onClick={handleClickShow2}>
-                              {show2 ? (
-                                <span>
-                                  <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    className='icon icon-tabler icon-tabler-eye'
-                                    width={18}
-                                    height={18}
-                                    viewBox='0 0 24 24'
-                                    strokeWidth={2}
-                                    stroke='#4E60FF'
-                                    fill='none'
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                  >
-                                    <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-                                    <path d='M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0' />
-                                    <path d='M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6' />
-                                  </svg>
-                                </span>
-                              ) : (
-                                <span>
-                                  <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    className='icon icon-tabler icon-tabler-eye-off'
-                                    width={18}
-                                    height={18}
-                                    viewBox='0 0 24 24'
-                                    strokeWidth={2}
-                                    stroke='#C7C8D2'
-                                    fill='none'
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                  >
-                                    <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-                                    <path d='M10.585 10.587a2 2 0 0 0 2.829 2.828' />
-                                    <path d='M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87' />
-                                    <path d='M3 3l18 18' />
-                                  </svg>
-                                </span>
-                              )}
-                            </Button>
-                          </InputRightElement>
-                        )}
-                      </InputGroup>
-
-                      <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                        {errors.confirmpassword && errors.confirmpassword.message}
-                      </FormErrorMessage>
+                    <FormControl>
+                      <Input ref={uploadRef} type='file' onClick={handleUploadCover} />
+                      {/* <Button
+                        onClick={handleClick}
+                        background='neutral.white'
+                        fontSize='2xs'
+                        fontWeight='bold'
+                        variant='solid'
+                        color='primary.default'
+                        borderWidth='1px'
+                        borderColor='primary.default'
+                        _hover={{
+                          background: 'primary.default',
+                          color: 'neutral.white',
+                          borderWidth: '1px',
+                          borderColor: 'primary.default'
+                        }}
+                        py={5}
+                        me='20px'
+                      >
+                        {!loading && arr.avatar != '' ? 'Change' : 'Upload'}
+                      </Button> */}
                     </FormControl>
                     <Stack spacing={10}></Stack>
                   </Stack>
