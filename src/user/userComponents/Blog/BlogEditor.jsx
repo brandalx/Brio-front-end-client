@@ -25,7 +25,10 @@ export default function BlogEditor() {
             paddingLeft: '10px',
             paddingRight: '10px',
             paddingTop: '5px',
-            paddingBottom: '15px'
+            paddingBottom: '15px',
+            height: '300px',
+
+            overflow: 'scroll'
           }}
           defaultContentState={contentState}
           onContentStateChange={setContentState}
