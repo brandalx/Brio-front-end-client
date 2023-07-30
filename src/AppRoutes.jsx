@@ -42,6 +42,7 @@ import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import Blogs from './user/userPages/Blogs';
 import Blog from './user/userPages/Blog';
+import NewBlogPost from './user/userPages/NewBlogPost';
 
 export default function AppRoutes({ isToken }) {
   const [cartLen, setCartLen] = useState(0);
@@ -116,6 +117,7 @@ export default function AppRoutes({ isToken }) {
                         <Route path='/deals' element={<Deals />} />
                         <Route path='/blog' element={<Blogs />} />
                         <Route path='/blog/:id' element={<Blog />} />
+                        <Route path='/blog/create/new' element={<NewBlogPost />} />
 
                         <Route path='/about/' element={<About />} />
                         <Route path='/restaurant/' element={<Restaurants />} />
