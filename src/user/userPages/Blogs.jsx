@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import BlogCardMain from '../userComponents/Blogs/BlogCardMain';
 import BlogCard from '../userComponents/Blogs/BlogCard';
 import { API_URL, handleApiGet } from '../../services/apiServices';
+import { Link } from 'react-router-dom';
+import { Button } from '@chakra-ui/react';
 
 export default function Blogs() {
   let [userArr, setUsersArr] = useState([]);
   let [blogsArr, setBlogsArr] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [hovered, setHovered] = useState(false);
   const handleBlogsApi = async () => {
     const url = API_URL + '/blogs';
     const data = await handleApiGet(url);
@@ -72,13 +74,74 @@ export default function Blogs() {
       return '';
     }
   };
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
 
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
   return (
     <Container maxW='1110px'>
       <Box py='25px'>
-        <Text ms={6} fontWeight='extrabold' color='neutral.black' fontSize='sm'>
+        <Text ms={6} fontWeight='black' color='neutral.black' fontSize='xl'>
           Blogs
         </Text>
+
+        {loading && (
+          <>
+            <Skeleton borderRadius='16px' isLoaded={!loading} minH='100px' my={2}></Skeleton>
+          </>
+        )}
+
+        {!loading && (
+          <Box mt={4} px={3}>
+            <Link to='/blog/create/new'>
+              <Box
+                style={{ transition: 'all 0.3s' }}
+                cursor='pointer'
+                borderRadius='16px'
+                py={5}
+                borderColor='white'
+                borderWidth='1px'
+                bg='primary.light'
+                _hover={{ bg: 'white', borderWidth: '1px', borderColor: 'primary.default', transition: 'all 0.3s' }}
+              >
+                <Flex justifyContent='space-between' alignItems={{ base: 'none', md: 'center' }}>
+                  <Text
+                    ms={5}
+                    textAlign={{ base: 'center', md: 'start' }}
+                    fontSize={{ base: 'sm', md: 'dm' }}
+                    color={hovered ? '#4e60ff' : '#4e60ff'}
+                    fontWeight='black'
+                  >
+                    Write your own blog
+                  </Text>
+                  <Box me={5}>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      className='icon icon-tabler icon-tabler-arrow-big-right-filled'
+                      width='24'
+                      height='24'
+                      viewBox='0 0 24 24'
+                      strokeWidth='2'
+                      fill='none'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                    >
+                      <path stroke='none' d='M0 0h24v24H0z' fill='none'></path>
+                      <path
+                        d='M12.089 3.634a2 2 0 0 0 -1.089 1.78l-.001 2.586h-6.999a2 2 0 0 0 -2 2v4l.005 .15a2 2 0 0 0 1.995 1.85l6.999 -.001l.001 2.587a2 2 0 0 0 3.414 1.414l6.586 -6.586a2 2 0 0 0 0 -2.828l-6.586 -6.586a2 2 0 0 0 -2.18 -.434l-.145 .068z'
+                        strokeWidth='0'
+                        fill={hovered ? '#4e60ff' : '#4e60ff'}
+                      ></path>
+                    </svg>
+                  </Box>
+                </Flex>
+              </Box>
+            </Link>
+          </Box>
+        )}
 
         {!loading && userArr.length > 0 && (
           <Box>
@@ -92,9 +155,17 @@ export default function Blogs() {
           </>
         )}
         <Box>
-          <Text fontWeight='extrabold' color='neutral.black' fontSize='sm' ms={6}>
-            Other posts
-          </Text>
+          {loading && (
+            <>
+              <Skeleton borderRadius='16px' isLoaded={!loading} minH='80px' my={2}></Skeleton>
+            </>
+          )}
+          {!loading && (
+            <Text fontWeight='extrabold' color='neutral.black' fontSize='sm' ms={6}>
+              Other blogs
+            </Text>
+          )}
+
           <Grid
             transition='all 0.3s'
             gridAutoColumns='1fr'
