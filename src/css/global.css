@@ -65,6 +65,9 @@ html {
     -webkit-text-size-adjust: 100%; /* Prevents font scaling when user zooms in */
   }
 }
+.grayPlaceholder::placeholder {
+  color: gray;
+}
 
 /* animations */
 .vibrate-1 {

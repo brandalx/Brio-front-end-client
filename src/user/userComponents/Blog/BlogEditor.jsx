@@ -5,9 +5,9 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { Box, Button } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 export default function BlogEditor() {
-  const _contentState = ContentState.createFromText('Blog editor of brio!');
-  const raw = convertToRaw(_contentState); // RawDraftContentState JSON
-  const [contentState, setContentState] = useState(raw); // ContentState JSON
+  // const _contentState = ContentState.createFromText('Blog editor of brio!');
+  // const raw = convertToRaw(_contentState); // RawDraftContentState JSON
+  const [contentState, setContentState] = useState(''); // ContentState JSON
   const { handleSubmit } = useForm();
 
   const onSubmit = () => {
@@ -18,6 +18,7 @@ export default function BlogEditor() {
     <Box p={4} mb={10} border='1px' borderColor='neutral.gray' borderRadius='16px'>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Editor
+          placeholder='Start typing and create amazing content in Brio!'
           editorStyle={{
             border: '1px solid gray',
             borderRadius: '16px',
@@ -29,7 +30,7 @@ export default function BlogEditor() {
           defaultContentState={contentState}
           onContentStateChange={setContentState}
           wrapperClassName='wrapper-class'
-          editorClassName='editor-class'
+          editorClassName='editor-class grayPlaceholder'
           toolbarClassName='toolbar-class'
           toolbar={{
             options: [

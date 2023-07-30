@@ -53,7 +53,7 @@ export default function BlogCard({ data, index, getUserName, getUserAvatar }) {
             </Box>
           </Box>
           <Box>
-            <Text mt={2} backgroundColor='none' fontSize='xs' color='neutral.gray' fontWeight='bold'>
+            <Text mt={2} backgroundColor='none' fontSize='2xs' color='neutral.gray' fontWeight='bold'>
               {data.tags.map((item, index) => {
                 return (
                   <Box as='span' key={index}>
