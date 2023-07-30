@@ -17,6 +17,12 @@ export default function BlogEditor() {
   return (
     <Box p={4} mb={10} border='1px' borderColor='neutral.gray' borderRadius='16px'>
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* //todo:  coverImg input required
+        //todo:  title input required
+        //todo:  desc input required
+        //todo:  tags input required
+        //todo:  tags input required */}
+
         <Editor
           placeholder='Start typing and create amazing content in Brio!'
           editorStyle={{
