@@ -11,8 +11,9 @@ export default function NewBlogPost() {
             Begin create!
           </Text>
         </Box>
+
         <Box py='80px'>
-          <Box minH='300px' lineHeight='0.5'>
+          <Box minH='300px'>
             <BlogEditor />
           </Box>
         </Box>
