@@ -2,7 +2,7 @@ import { Box, Text, Flex, Container, Grid, GridItem, Skeleton } from '@chakra-ui
 import React, { useEffect, useState } from 'react';
 import BlogCardMain from '../userComponents/Blogs/BlogCardMain';
 import BlogCard from '../userComponents/Blogs/BlogCard';
-import { API_URL, handleApiGet } from '../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import { Link } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 
@@ -118,7 +118,7 @@ export default function Blogs() {
           </>
         )}
 
-        {!loading && (
+        {!loading && localStorage[TOKEN_KEY] && (
           <Box mt={4} px={3}>
             <Link to='/blog/create/new'>
               <Box
