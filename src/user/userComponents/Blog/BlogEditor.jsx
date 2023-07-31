@@ -248,7 +248,7 @@ export default function BlogEditor() {
           </Flex>
         </Box>
 
-        <Box lineHeight='0.5'>
+        <Box>
           <Editor
             placeholder='Start typing and create amazing content in Brio!'
             editorStyle={{
@@ -268,7 +268,7 @@ export default function BlogEditor() {
             editorClassName='editor-class grayPlaceholder'
             toolbarClassName='toolbar-class'
             toolbar={{
-              options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'emoji'],
+              options: ['inline', 'blockType', 'fontSize', 'list', 'emoji'],
               inline: {
                 options: ['bold', 'italic', 'underline', 'strikethrough']
               }

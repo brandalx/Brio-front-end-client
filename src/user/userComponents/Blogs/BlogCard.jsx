@@ -3,9 +3,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 export default function BlogCard({ data, index, getUserName, getUserAvatar, getBlogImage }) {
   return (
-    <Link to={'/blog/' + data._id}>
-      <Container py={2} data-aos={index % 2 === 0 ? 'fade-right' : 'fade-left'} maxW='1110px'>
-        <Box ps={2}>
+    <Box w='100%' my={2} data-aos={index % 2 === 0 ? 'fade-right' : 'fade-left'}>
+      <Link to={'/blog/' + data._id}>
+        <Box w='100%' ps={2}>
           <Box
             borderRadius='16px'
             py={5}
@@ -15,7 +15,6 @@ export default function BlogCard({ data, index, getUserName, getUserAvatar, getB
             backgroundRepeat='no-repeat'
             backgroundSize='cover'
             backgroundPosition='center'
-            maxW='1245px'
             h='250px'
             position='relative'
             _before={{
@@ -37,7 +36,7 @@ export default function BlogCard({ data, index, getUserName, getUserAvatar, getB
                 ms={5}
                 data-aos='fade-up'
                 textAlign='center'
-                fontSize={{ base: 'xl', md: '2xl' }}
+                fontSize={'xl'}
                 lineHeight={{ base: '40px', md: '50px' }}
                 color='white'
                 fontWeight='black'
@@ -72,7 +71,7 @@ export default function BlogCard({ data, index, getUserName, getUserAvatar, getB
             </Text>
           </Box>
         </Box>
-      </Container>
-    </Link>
+      </Link>
+    </Box>
   );
 }

@@ -195,15 +195,9 @@ export default function Blogs() {
             </Text>
           )}
 
-          <Grid
-            transition='all 0.3s'
-            gridAutoColumns='1fr'
-            gridAutoRows='1fr'
-            templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }}
-            gap={2}
-          >
-            {!loading &&
-              blogsArr.map((item, index) => {
+          {!loading && (
+            <Grid transition='all 0.3s' templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
+              {blogsArr.map((item, index) => {
                 if (index != 0) {
                   return (
                     <GridItem key={index}>
@@ -219,8 +213,12 @@ export default function Blogs() {
                   );
                 }
               })}
-            {loading && (
-              <>
+            </Grid>
+          )}
+
+          {loading && (
+            <>
+              <Grid transition='all 0.3s' templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }} gap={2}>
                 <GridItem>
                   <Skeleton borderRadius='16px' isLoaded={!loading} minH='300px' my={2}></Skeleton>
                 </GridItem>
@@ -233,9 +231,9 @@ export default function Blogs() {
                 <GridItem>
                   <Skeleton borderRadius='16px' isLoaded={!loading} minH='300px' my={2}></Skeleton>
                 </GridItem>
-              </>
-            )}
-          </Grid>
+              </Grid>
+            </>
+          )}
         </Box>
       </Box>
     </Container>

@@ -78,7 +78,7 @@ export default function Blog() {
           if (styleType === 'fontsize') {
             customStyleMap[range.style] = { fontSize: `${styleValue}px` };
           } else if (styleType === 'fontfamily') {
-            customStyleMap[range.style] = { fontFamily: styleValue };
+            customStyleMap[range.style] = { fontFamily: 'Nunito' };
           }
         }
       });
@@ -263,8 +263,8 @@ export default function Blog() {
           )}
 
           <Container maxW='1110px'>
-            <Box py={2} lineHeight='0.5'>
-              <Editor editorState={editorState} customStyleMap={customStyleMap} readOnly={true} />
+            <Box py={2} lineHeight='1'>
+              <Editor fontFamily='Nunito' editorState={editorState} customStyleMap={customStyleMap} readOnly={true} />
             </Box>
           </Container>
         </Box>
