@@ -12,7 +12,9 @@ export default function BlogCardMain({ data, getUserName, getUserAvatar, getBlog
           cursor='pointer'
           py={5}
           borderRadius='16px'
-          backgroundImage={`url(${data._id && data.cover.startsWith('images/') ? getBlogImage(data._id) : data.cover})`}
+          backgroundImage={`url(${
+            data && data._id && data.cover.startsWith('images/') ? getBlogImage(data._id) : data.cover
+          })`}
           backgroundRepeat='no-repeat'
           backgroundSize='cover'
           backgroundPosition='center'
