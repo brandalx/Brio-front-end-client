@@ -27,40 +27,31 @@ export default function BlogEditor() {
   // const raw = convertToRaw(_contentState); // RawDraftContentState JSON
   const [contentState, setContentState] = useState(''); // ContentState JSON
 
-  const onSubmit = () => {
-    console.log(JSON.stringify(contentState, null, 2));
-  };
-
   const [mainBody, setMainBody] = useState();
 
-  const [email, setEmail] = useState('');
-
-  const [show, setShow] = useState(false);
-  const handleClickShow = () => setShow(!show);
-
-  const [show2, setShow2] = useState(false);
-  const handleClickShow2 = () => setShow2(!show2);
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
 
   const [textUpload, setTextUpload] = useState('Select file to upload');
-  const isValid = () => email.length > 5;
+  // const isValid = () => mainBody && mainBody.content && mainBody.cover;
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting }
   } = useForm();
-  const onSubForm = (e, _bodyData) => {
-    // console.log(_bodyData);
-    setMainBody(() => ({
+  const onSubForm = (_bodyData) => {
+    console.log(_bodyData);
+
+    let PreMainBody;
+    PreMainBody = {
       title: _bodyData.title,
       desc: _bodyData.desc,
-      tags: _bodyData.tags,
+      tags: _bodyData.tags.split(/[\s,]+/),
       userRef: _bodyData.userRef,
       content: contentState
-    }));
+    };
 
-    handleUploadCover();
+    handleUploadCover(PreMainBody);
   };
 
   const uploadRef = useRef();
@@ -77,7 +68,7 @@ export default function BlogEditor() {
   }, [file]);
 
   const toast = useToast();
-  const handleUploadCover = async () => {
+  const handleUploadCover = async (PreMainBody) => {
     console.log(uploadRef.current.files);
     if (uploadRef.current.files[0]) {
       try {
@@ -85,9 +76,11 @@ export default function BlogEditor() {
 
         fdata.append('myFile', uploadRef.current.files[0]);
         const url = API_URL + '/users/user/avatar';
-        setMainBody((prevState) => ({
-          ...(prevState.cover = fdata)
-        }));
+        PreMainBody.cover = fdata;
+
+        console.log(PreMainBody);
+        setMainBody(PreMainBody);
+
         const resp = await axios({
           method: 'POST',
           url: url,
@@ -121,7 +114,7 @@ export default function BlogEditor() {
 
   return (
     <Box p={4} mb={10} border='1px' borderColor='neutral.gray' borderRadius='16px'>
-      <form onSubmit={handleSubmit(onSubForm)}>
+      <form onSubmit={handleSubmit((data) => onSubForm(data))}>
         {/* //todo:  coverImg input required
         //todo:  title input required
         //todo:  desc input required
@@ -136,54 +129,49 @@ export default function BlogEditor() {
               <Box>
                 <Box>
                   <Text fontSize='xl' fontWeight='bold' color='neutral.black'>
-                    Personal details
+                    Post details
                   </Text>
                   <Text fontSize='2xs' color='neutral.grayDark'>
-                    Enter your data that you will use for entering.
+                    Provide needed information for your post, like so:
                   </Text>
                 </Box>
 
                 <Box mt='20px'>
                   <Stack spacing={4}>
-                    <FormControl id='firstname' isInvalid={errors.firstname}>
+                    <FormControl id='title' isInvalid={errors.title}>
                       <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                        First name
+                        Post title
                       </FormLabel>
 
                       <Input
-                        id='firstname'
-                        {...register('firstname', {
+                        id='title'
+                        {...register('title', {
                           required: { value: true, message: 'This field is required' },
-                          minLength: { value: 2, message: 'Minimum length should be 2' },
-                          pattern: {
-                            value: /^[A-Za-z]+$/,
-                            message: 'This field should only contain alphabetic characters'
-                          }
+                          minLength: { value: 6, message: 'Minimum length should be 6' },
+                          maxLength: { value: 40, message: 'Minimum length should be 40' }
                         })}
                         required
                         background='neutral.white'
                         _placeholder={{ color: 'neutral.gray' }}
                         borderRadius='8px'
                         fontSize='2xs'
-                        placeholder='John'
+                        placeholder='Amazing food in Amsterdam'
                       />
                       <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                        {errors.firstname && errors.firstname.message}
+                        {errors.title && errors.title.message}
                       </FormErrorMessage>
                     </FormControl>
-                    <FormControl id='lastname' isInvalid={errors.lastname}>
+                    <FormControl id='desc' isInvalid={errors.desc}>
                       <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                        Last name
+                        Post description
                       </FormLabel>
 
                       <Input
-                        {...register('lastname', {
+                        {...register('desc', {
                           required: { value: true, message: 'This field is required' },
-                          pattern: {
-                            value: /^[A-Za-z]+$/,
-                            message: 'This field should only contain alphabetic characters'
-                          },
-                          minLength: { value: 2, message: 'Minimum length should be 2' }
+
+                          minLength: { value: 15, message: 'Minimum length should be 15' },
+                          maxLength: { value: 150, message: 'Minimum length should be 150' }
                         })}
                         required
                         type='text'
@@ -191,33 +179,32 @@ export default function BlogEditor() {
                         _placeholder={{ color: 'neutral.gray' }}
                         borderRadius='8px'
                         fontSize='2xs'
-                        placeholder='Doe'
+                        placeholder='Some amazing description of your post'
                       />
                       <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                        {errors.lastname && errors.lastname.message}
+                        {errors.desc && errors.desc.message}
                       </FormErrorMessage>
                     </FormControl>
-                    <FormControl id='email' isInvalid={errors.email}>
+                    <FormControl id='tags' isInvalid={errors.tags}>
                       <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                        Email
+                        Post hashtags
                       </FormLabel>
 
                       <Input
-                        {...register('email', {
+                        {...register('tags', {
                           required: { value: true, message: 'This field is required' },
-                          minLength: { value: 6, message: 'Minimum length should be 6' }
+                          validate: (value) => value.split(/[\s,]+/).length > 1 || 'Enter at least one tag'
                         })}
-                        type='email'
+                        required
+                        type='text'
                         background='neutral.white'
                         _placeholder={{ color: 'neutral.gray' }}
                         borderRadius='8px'
                         fontSize='2xs'
-                        placeholder='name@example.com'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder='Add tags to reach out same people!'
                       />
                       <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                        {errors.email && errors.email.message}
+                        {errors.tags && errors.tags.message}
                       </FormErrorMessage>
                     </FormControl>
                     <FormControl>
@@ -285,6 +272,10 @@ export default function BlogEditor() {
         <Button my={2} color='white' bg='primary.default' borderRadius='16px' type='submit'>
           Submit
         </Button>
+        {/* 
+        <Button isDisabled={!isValid()} my={2} color='white' bg='primary.default' borderRadius='16px' type='submit'>
+          Submit
+        </Button> */}
       </form>
     </Box>
   );
