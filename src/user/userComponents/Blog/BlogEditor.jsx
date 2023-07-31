@@ -75,8 +75,13 @@ export default function BlogEditor() {
         const fdata = new FormData();
 
         fdata.append('myFile', uploadRef.current.files[0]);
-        const url = API_URL + '/users/user/avatar';
-        PreMainBody.cover = fdata;
+        fdata.append('title', PreMainBody.title);
+        fdata.append('desc', PreMainBody.desc);
+        fdata.append('tags', JSON.stringify(PreMainBody.tags));
+        fdata.append('userRef', PreMainBody.userRef);
+        fdata.append('content', JSON.stringify(PreMainBody.content));
+
+        const url = API_URL + '/blogs/post/new';
 
         console.log(PreMainBody);
         setMainBody(PreMainBody);
@@ -92,8 +97,8 @@ export default function BlogEditor() {
         // console.log(resp.data);
         if (resp.data.excludedPath) {
           toast({
-            title: 'Cover uploaded',
-            description: 'Post cover uploaded successfuly!',
+            title: 'Post created',
+            description: 'Post created successfully!',
             status: 'success',
             duration: 9000,
             isClosable: true
@@ -102,8 +107,8 @@ export default function BlogEditor() {
       } catch (err) {
         console.log(err);
         toast({
-          title: 'Error when uploading your cover image',
-          description: 'Error when uploading cover image. Try upload different file',
+          title: 'Error when creating your post',
+          description: 'Error when creating your post. Try again',
           status: 'error',
           duration: 9000,
           isClosable: true
