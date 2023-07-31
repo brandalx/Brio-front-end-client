@@ -28,6 +28,7 @@ export default function Blog() {
         setShowOops(true);
       } else {
         setArr(data);
+        console.log(data);
         const rawContentFromDB = data.content;
         rawContentFromDB.entityMap = rawContentFromDB.entityMap || {};
         const customStyleMap = generateCustomStyleMap(rawContentFromDB);
@@ -121,6 +122,30 @@ export default function Blog() {
     }
   };
 
+  let getBlogImage = (blogid) => {
+    // console.log(arr);
+    // console.log(blogid);
+    try {
+      const blog = arr._id;
+      if (blog) {
+        // check if blog exists
+        if (arr.cover) {
+          // check if cover exists
+          let stringCover = API_URL + (API_URL.endsWith('/') ? '' : '/') + arr.cover;
+          return stringCover;
+        } else {
+          console.log(`No cover found for blog ${blogid}`);
+        }
+      } else {
+        console.log(`No cover found for ID ${blogid}`);
+      }
+      return '';
+    } catch (error) {
+      console.log('Error in getCoverImage: ', error);
+      return '';
+    }
+  };
+
   return (
     <Box>
       {loading && (
@@ -156,7 +181,9 @@ export default function Blog() {
                 cursor='pointer'
                 py={5}
                 borderRadius='16px'
-                backgroundImage={`url(${arr._id && arr.coverImg})`}
+                backgroundImage={`url(${
+                  arr._id && arr.cover.startsWith('images/') ? getBlogImage(arr._id) : arr.cover
+                })`}
                 backgroundRepeat='no-repeat'
                 backgroundSize='cover'
                 backgroundPosition='center'

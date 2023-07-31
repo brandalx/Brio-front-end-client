@@ -3,7 +3,7 @@ import { Avatar } from '@chakra-ui/react';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-export default function BlogCardMain({ data, getUserName, getUserAvatar }) {
+export default function BlogCardMain({ data, getUserName, getUserAvatar, getBlogImage }) {
   const params = useParams();
   return (
     <Link to={'/blog/' + data._id}>
@@ -12,7 +12,7 @@ export default function BlogCardMain({ data, getUserName, getUserAvatar }) {
           cursor='pointer'
           py={5}
           borderRadius='16px'
-          backgroundImage={`url(${data._id && data.coverImg})`}
+          backgroundImage={`url(${data._id && data.cover.startsWith('images/') ? getBlogImage(data._id) : data.cover})`}
           backgroundRepeat='no-repeat'
           backgroundSize='cover'
           backgroundPosition='center'

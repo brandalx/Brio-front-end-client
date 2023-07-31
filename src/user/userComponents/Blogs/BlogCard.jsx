@@ -1,7 +1,7 @@
 import { Avatar, Box, Container, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-export default function BlogCard({ data, index, getUserName, getUserAvatar }) {
+export default function BlogCard({ data, index, getUserName, getUserAvatar, getBlogImage }) {
   return (
     <Link to={'/blog/' + data._id}>
       <Container py={2} data-aos={index % 2 === 0 ? 'fade-right' : 'fade-left'} maxW='1110px'>
@@ -9,7 +9,9 @@ export default function BlogCard({ data, index, getUserName, getUserAvatar }) {
           <Box
             borderRadius='16px'
             py={5}
-            backgroundImage={`url(${data._id && data.coverImg})`}
+            backgroundImage={`url(${
+              data._id && data.cover.startsWith('images/') ? getBlogImage(data._id) : data.cover
+            })`}
             backgroundRepeat='no-repeat'
             backgroundSize='cover'
             backgroundPosition='center'

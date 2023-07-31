@@ -81,6 +81,30 @@ export default function Blogs() {
   const handleMouseLeave = () => {
     setHovered(false);
   };
+
+  let getBlogImage = (blogid) => {
+    console.log(blogsArr);
+    console.log(blogid);
+    try {
+      const blog = blogsArr.find((item) => item._id === blogid);
+      if (blog) {
+        // check if blog exists
+        if (blog.cover) {
+          // check if cover exists
+          let stringCover = API_URL + (API_URL.endsWith('/') ? '' : '/') + blog.cover;
+          return stringCover;
+        } else {
+          console.log(`No cover found for blog ${blogid}`);
+        }
+      } else {
+        console.log(`No cover found for ID ${blogid}`);
+      }
+      return '';
+    } catch (error) {
+      console.log('Error in getCoverImage: ', error);
+      return '';
+    }
+  };
   return (
     <Container maxW='1110px'>
       <Box py='25px'>
@@ -145,7 +169,12 @@ export default function Blogs() {
 
         {!loading && userArr.length > 0 && (
           <Box>
-            <BlogCardMain getUserAvatar={getUserAvatar} getUserName={getUserName} data={blogsArr[0]} />
+            <BlogCardMain
+              getBlogImage={getBlogImage}
+              getUserAvatar={getUserAvatar}
+              getUserName={getUserName}
+              data={blogsArr[0]}
+            />
           </Box>
         )}
 
@@ -179,6 +208,7 @@ export default function Blogs() {
                   return (
                     <GridItem key={index}>
                       <BlogCard
+                        getBlogImage={getBlogImage}
                         getUserAvatar={getUserAvatar}
                         getUserName={getUserName}
                         index={index}
