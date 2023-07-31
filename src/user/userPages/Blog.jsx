@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { API_URL, handleApiGet } from '../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import { Link, useParams } from 'react-router-dom';
 import { Box, Container, Flex, Text, Avatar, GridItem, Skeleton } from '@chakra-ui/react';
 import BlogEditor from '../userComponents/Blog/BlogEditor';
@@ -14,8 +14,15 @@ export default function Blog() {
   const [loading, setLoading] = useState(true);
   let [userArr, setUsersArr] = useState([]);
   const [customStyleMap, setCustomStyleMap] = useState({});
-
+  const [hovered, setHovered] = useState(false);
   const params = useParams();
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
   const handleBlogApi = async () => {
     try {
       console.log(params['id']);
@@ -177,6 +184,59 @@ export default function Blog() {
         <Box>
           {!loading && (
             <Container maxW='1110px' py={30}>
+              {!loading && localStorage[TOKEN_KEY] && (
+                <Box my={5} px={3}>
+                  <Link to='/blog/create/new'>
+                    <Box
+                      style={{ transition: 'all 0.3s' }}
+                      cursor='pointer'
+                      borderRadius='16px'
+                      py={5}
+                      borderColor='white'
+                      borderWidth='1px'
+                      bg='primary.light'
+                      _hover={{
+                        bg: 'white',
+                        borderWidth: '1px',
+                        borderColor: 'primary.default',
+                        transition: 'all 0.3s'
+                      }}
+                    >
+                      <Flex justifyContent='space-between' alignItems={{ base: 'none', md: 'center' }}>
+                        <Text
+                          ms={5}
+                          textAlign={{ base: 'center', md: 'start' }}
+                          fontSize={{ base: 'sm', md: 'dm' }}
+                          color={hovered ? '#4e60ff' : '#4e60ff'}
+                          fontWeight='black'
+                        >
+                          Write your own blog
+                        </Text>
+                        <Box me={5}>
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            className='icon icon-tabler icon-tabler-arrow-big-right-filled'
+                            width='24'
+                            height='24'
+                            viewBox='0 0 24 24'
+                            strokeWidth='2'
+                            fill='none'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                          >
+                            <path stroke='none' d='M0 0h24v24H0z' fill='none'></path>
+                            <path
+                              d='M12.089 3.634a2 2 0 0 0 -1.089 1.78l-.001 2.586h-6.999a2 2 0 0 0 -2 2v4l.005 .15a2 2 0 0 0 1.995 1.85l6.999 -.001l.001 2.587a2 2 0 0 0 3.414 1.414l6.586 -6.586a2 2 0 0 0 0 -2.828l-6.586 -6.586a2 2 0 0 0 -2.18 -.434l-.145 .068z'
+                              strokeWidth='0'
+                              fill={hovered ? '#4e60ff' : '#4e60ff'}
+                            ></path>
+                          </svg>
+                        </Box>
+                      </Flex>
+                    </Box>
+                  </Link>
+                </Box>
+              )}
               <Box
                 cursor='pointer'
                 py={5}
