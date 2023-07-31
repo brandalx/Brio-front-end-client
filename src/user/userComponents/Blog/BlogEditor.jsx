@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ContentState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -41,6 +41,9 @@ export default function BlogEditor() {
   const [show2, setShow2] = useState(false);
   const handleClickShow2 = () => setShow2(!show2);
   const navigate = useNavigate();
+  const [file, setFile] = useState(null);
+
+  const [textUpload, setTextUpload] = useState('Select file to upload');
   const isValid = () => email.length > 5;
   const {
     handleSubmit,
@@ -61,6 +64,17 @@ export default function BlogEditor() {
   };
 
   const uploadRef = useRef();
+  useEffect(() => {
+    if (uploadRef.current && uploadRef.current.files[0]) {
+      setTextUpload(uploadRef.current.files[0].name);
+    }
+  }, [uploadRef.current]);
+
+  useEffect(() => {
+    if (file) {
+      setTextUpload(file.name);
+    }
+  }, [file]);
 
   const toast = useToast();
   const handleUploadCover = async () => {
@@ -157,7 +171,6 @@ export default function BlogEditor() {
                         {errors.firstname && errors.firstname.message}
                       </FormErrorMessage>
                     </FormControl>
-
                     <FormControl id='lastname' isInvalid={errors.lastname}>
                       <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                         Last name
@@ -184,7 +197,6 @@ export default function BlogEditor() {
                         {errors.lastname && errors.lastname.message}
                       </FormErrorMessage>
                     </FormControl>
-
                     <FormControl id='email' isInvalid={errors.email}>
                       <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                         Email
@@ -208,11 +220,10 @@ export default function BlogEditor() {
                         {errors.email && errors.email.message}
                       </FormErrorMessage>
                     </FormControl>
-
                     <FormControl>
-                      <Input ref={uploadRef} type='file' onClick={handleUploadCover} />
-                      {/* <Button
-                        onClick={handleClick}
+                      <Input onChange={(e) => setFile(e.target.files[0])} hidden required ref={uploadRef} type='file' />
+                      <Button
+                        onClick={() => uploadRef.current.click()}
                         background='neutral.white'
                         fontSize='2xs'
                         fontWeight='bold'
@@ -229,9 +240,11 @@ export default function BlogEditor() {
                         py={5}
                         me='20px'
                       >
-                        {!loading && arr.avatar != '' ? 'Change' : 'Upload'}
-                      </Button> */}
+                        {textUpload}
+                      </Button>
                     </FormControl>
+                    Now when you click the button, it will open the file upload dialog, and when you select a file, it
+                    will trigger the handleUploadCover function.
                     <Stack spacing={10}></Stack>
                   </Stack>
                 </Box>

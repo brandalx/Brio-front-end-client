@@ -80,10 +80,9 @@ export default function BlogCardMain({ data, getUserName, getUserAvatar }) {
             </Text>
 
             <Box mt={2} mx='auto' display='flex' alignItems='center'>
-              <Avatar size='sm' name={getUserName(data.userRef)} src={getUserAvatar(data.userRef)} />
               <Text
                 backgroundColor='none'
-                ms={2}
+                me={2}
                 data-aos='fade-up'
                 textAlign='center'
                 fontSize='xs'
@@ -92,6 +91,7 @@ export default function BlogCardMain({ data, getUserName, getUserAvatar }) {
               >
                 By {getUserName(data.userRef)}
               </Text>
+              <Avatar size='sm' name={getUserName(data.userRef)} src={getUserAvatar(data.userRef)} />
             </Box>
           </Flex>
         </Box>

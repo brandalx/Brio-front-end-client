@@ -46,10 +46,10 @@ export default function BlogCard({ data, index, getUserName, getUserAvatar }) {
           </Box>
           <Box>
             <Box mt={2} mx='auto' display='flex' alignItems='center'>
-              <Avatar size='sm' name={getUserName(data.userRef)} src={getUserAvatar(data.userRef)} />
-              <Text backgroundColor='none' ms={2} fontSize='xs' color='grayDark' fontWeight='bold'>
+              <Text backgroundColor='none' me={2} fontSize='xs' color='grayDark' fontWeight='bold'>
                 By {getUserName(data.userRef)}
               </Text>
+              <Avatar size='sm' name={getUserName(data.userRef)} src={getUserAvatar(data.userRef)} />
             </Box>
           </Box>
           <Box>
