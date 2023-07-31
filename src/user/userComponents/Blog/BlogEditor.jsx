@@ -132,7 +132,7 @@ export default function BlogEditor() {
                     Post details
                   </Text>
                   <Text fontSize='2xs' color='neutral.grayDark'>
-                    Provide needed information for your post, like so:
+                    Provide needed information
                   </Text>
                 </Box>
 
