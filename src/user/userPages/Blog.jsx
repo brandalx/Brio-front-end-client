@@ -33,9 +33,10 @@ export default function Blog() {
       console.log(url);
 
       const data = await handleApiGet(url);
+
       await handleUsersPublicData(data);
 
-      if (!data._id) {
+      if (!data || !data._id) {
         setShowOops(true);
       } else {
         console.log(data);
@@ -44,6 +45,7 @@ export default function Blog() {
       setLoading(false);
     } catch (error) {
       setLoading(false);
+      setShowOops(true);
       console.log(error);
     }
   };
@@ -151,9 +153,15 @@ export default function Blog() {
     quill.setContents(delta);
     return quill.root.innerHTML;
   };
+  const formatTime = (timepass) => {
+    const isoString = timepass;
+    const date = new Date(isoString);
+    const usTime = date.toLocaleTimeString('en-US');
+    return usTime;
+  };
 
   return (
-    <Box>
+    <Box mb='150px'>
       {loading && (
         <>
           <Container maxW='1110px' data-aos='fade-up'>
@@ -317,19 +325,46 @@ export default function Blog() {
                     src={getUserAvatar(arr.userRef)}
                   />
                 </Box>
+                <Text
+                  backgroundColor='none'
+                  me={2}
+                  data-aos='fade-up'
+                  textAlign='center'
+                  fontSize='xs'
+                  color='neutral.gray'
+                  fontWeight='normal'
+                >
+                  {arr.creationDate ? formatTime(arr.creationDate) : ''}
+                </Text>
               </Flex>
             </Container>
           )}
 
-          <Container maxW='1110px'>
-            <ReactQuill
-              readOnly={true}
-              theme='snow'
-              value={convertDeltaToHtml(arr.content)}
-              modules={QuillModules}
-              formats={QuillFormats}
-            />
-          </Container>
+          {arr._id && arr.content ? (
+            <Container maxW='1110px'>
+              <ReactQuill
+                style={{ border: 'none' }}
+                readOnly={true}
+                theme='snow'
+                value={convertDeltaToHtml(arr.content)}
+                modules={QuillModules}
+                formats={QuillFormats}
+              />
+            </Container>
+          ) : (
+            <Box>
+              <Text
+                backgroundColor='none'
+                me={2}
+                textAlign='center'
+                fontSize='xs'
+                color='primary.default'
+                fontWeight='bold'
+              >
+                Sorry, there is no content :(
+              </Text>
+            </Box>
+          )}
         </Box>
       )}
 
