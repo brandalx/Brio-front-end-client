@@ -14,9 +14,13 @@ import {
   Text,
   Input,
   Stack,
-  useToast
+  useToast,
+  Container
 } from '@chakra-ui/react';
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.bubble.css';
+import { useQuill } from 'react-quilljs';
+import 'quill/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -28,6 +32,24 @@ export default function BlogEditor() {
   const [contentState, setContentState] = useState(''); // ContentState JSON
 
   const [mainBody, setMainBody] = useState();
+  const { quill, quillRef } = useQuill({
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline', 'strike'],
+
+        [{ header: 1 }, { header: 2 }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+
+        [{ size: ['small', false, 'large', 'huge'] }],
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ color: [] }, { background: [] }],
+
+        [{ align: [] }],
+        ['image', 'link'] // only image and link options, no video option
+      ]
+    },
+    theme: 'snow'
+  });
 
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
@@ -35,6 +57,7 @@ export default function BlogEditor() {
   const [textUpload, setTextUpload] = useState('Select file to upload');
   // const isValid = () => mainBody && mainBody.content && mainBody.cover;
   const {
+    control,
     handleSubmit,
     register,
     formState: { errors, isSubmitting }
@@ -43,13 +66,17 @@ export default function BlogEditor() {
     console.log(_bodyData);
 
     let PreMainBody;
-    PreMainBody = {
-      title: _bodyData.title,
-      desc: _bodyData.desc,
-      tags: _bodyData.tags.split(/[\s,]+/),
-      userRef: _bodyData.userRef,
-      content: contentState
-    };
+    if (quill) {
+      PreMainBody = {
+        title: _bodyData.title,
+        desc: _bodyData.desc,
+        tags: _bodyData.tags.split(/[\s,]+/),
+        userRef: _bodyData.userRef,
+        content: quill.getContents()
+      };
+    } else {
+      return; // If Quill is not loaded, exit the function.
+    }
 
     handleUploadCover(PreMainBody);
   };
@@ -103,7 +130,7 @@ export default function BlogEditor() {
             duration: 9000,
             isClosable: true
           });
-          navigate('/blog/' + resp.data.idToSend);
+          navigate('/blog/');
         }
       } catch (err) {
         console.log(err);
@@ -121,12 +148,6 @@ export default function BlogEditor() {
   return (
     <Box p={4} mb={10} border='1px' borderColor='neutral.gray' borderRadius='16px'>
       <form onSubmit={handleSubmit((data) => onSubForm(data))}>
-        {/* //todo:  coverImg input required
-        //todo:  title input required
-        //todo:  desc input required
-        //todo:  tags input required
-        //todo:  tags input required */}
-
         <Box>
           <Flex h='100%' w='100' justifyContent='center' data-aos='fade-left'>
             <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
@@ -249,31 +270,25 @@ export default function BlogEditor() {
         </Box>
 
         <Box>
-          <Editor
-            placeholder='Start typing and create amazing content in Brio!'
-            editorStyle={{
-              border: '1px solid gray',
-              borderRadius: '16px',
-              paddingLeft: '10px',
-              paddingRight: '10px',
-              paddingTop: '5px',
-              paddingBottom: '15px',
-              height: '300px',
+          {' '}
+          <Container maxW='1110px'>
+            <Box
+              style={{
+                width: '100%',
+                minHeight: 300,
+                border: '1px solid gray',
+                borderRadius: '16px',
+                paddingLeft: '10px',
+                paddingRight: '10px',
+                paddingTop: '5px',
+                paddingBottom: '15px'
 
-              overflow: 'scroll'
-            }}
-            defaultContentState={contentState}
-            onContentStateChange={setContentState}
-            wrapperClassName='wrapper-class'
-            editorClassName='editor-class grayPlaceholder'
-            toolbarClassName='toolbar-class'
-            toolbar={{
-              options: ['inline', 'blockType', 'fontSize', 'list', 'emoji'],
-              inline: {
-                options: ['bold', 'italic', 'underline', 'strikethrough']
-              }
-            }}
-          />
+                // overflow: 'scroll'
+              }}
+            >
+              <div style={{ border: 'none' }} ref={quillRef} />
+            </Box>
+          </Container>
         </Box>
         <Button my={2} color='white' bg='primary.default' borderRadius='16px' type='submit'>
           Submit

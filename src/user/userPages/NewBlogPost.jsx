@@ -1,6 +1,8 @@
-import { Box, Container, Text } from '@chakra-ui/react';
-import React from 'react';
+import { Box, Button, Container, Text } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import BlogEditor from '../userComponents/Blog/BlogEditor';
+
+import { useForm, Controller } from 'react-hook-form';
 
 export default function NewBlogPost() {
   return (

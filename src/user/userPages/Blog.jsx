@@ -3,19 +3,22 @@ import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import { Link, useParams } from 'react-router-dom';
 import { Box, Container, Flex, Text, Avatar, GridItem, Skeleton } from '@chakra-ui/react';
 import BlogEditor from '../userComponents/Blog/BlogEditor';
-import { Editor, EditorState, convertFromRaw } from 'draft-js';
 import { Button } from '@chakra-ui/react';
 import Logo from '../../assets/svg/Logo';
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+import 'quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill';
 
 export default function Blog() {
   const [arr, setArr] = useState([]);
-  const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
+  const [editorState, setEditorState] = useState();
   const [showOops, setShowOops] = useState(false);
   const [loading, setLoading] = useState(true);
   let [userArr, setUsersArr] = useState([]);
   const [customStyleMap, setCustomStyleMap] = useState({});
   const [hovered, setHovered] = useState(false);
   const params = useParams();
+
   const handleMouseEnter = () => {
     setHovered(true);
   };
@@ -31,21 +34,12 @@ export default function Blog() {
 
       const data = await handleApiGet(url);
       await handleUsersPublicData(data);
+
       if (!data._id) {
         setShowOops(true);
       } else {
-        setArr(data);
         console.log(data);
-        const rawContentFromDB = data.content;
-        rawContentFromDB.entityMap = rawContentFromDB.entityMap || {};
-        const customStyleMap = generateCustomStyleMap(rawContentFromDB);
-
-        setCustomStyleMap(customStyleMap);
-
-        if (rawContentFromDB) {
-          const contentState = convertFromRaw(rawContentFromDB);
-          setEditorState(EditorState.createWithContent(contentState));
-        }
+        setArr(data);
       }
       setLoading(false);
     } catch (error) {
@@ -72,27 +66,6 @@ export default function Blog() {
       return '';
     }
   };
-
-  function generateCustomStyleMap(data) {
-    const customStyleMap = {};
-
-    data.blocks.forEach((block) => {
-      block.inlineStyleRanges.forEach((range) => {
-        const styleType = range.style.split('-')[0];
-        const styleValue = range.style.split('-')[1];
-
-        if (!customStyleMap[range.style]) {
-          if (styleType === 'fontsize') {
-            customStyleMap[range.style] = { fontSize: `${styleValue}px` };
-          } else if (styleType === 'fontfamily') {
-            customStyleMap[range.style] = { fontFamily: 'Nunito' };
-          }
-        }
-      });
-    });
-
-    return customStyleMap;
-  }
 
   let getUserAvatar = (userid) => {
     try {
@@ -151,6 +124,32 @@ export default function Blog() {
       console.log('Error in getCoverImage: ', error);
       return '';
     }
+  };
+
+  const QuillModules = {
+    toolbar: false
+  };
+
+  const QuillFormats = [
+    'header',
+    'font',
+    'size',
+    'bold',
+    'italic',
+    'underline',
+    'list',
+    'bullet',
+    'indent',
+    'link',
+    'image',
+    'color',
+    'align'
+  ];
+
+  const convertDeltaToHtml = (delta) => {
+    const quill = new ReactQuill.Quill(document.createElement('div'));
+    quill.setContents(delta);
+    return quill.root.innerHTML;
   };
 
   return (
@@ -323,9 +322,13 @@ export default function Blog() {
           )}
 
           <Container maxW='1110px'>
-            <Box py={2} lineHeight='1'>
-              <Editor fontFamily='Nunito' editorState={editorState} customStyleMap={customStyleMap} readOnly={true} />
-            </Box>
+            <ReactQuill
+              readOnly={true}
+              theme='snow'
+              value={convertDeltaToHtml(arr.content)}
+              modules={QuillModules}
+              formats={QuillFormats}
+            />
           </Container>
         </Box>
       )}
