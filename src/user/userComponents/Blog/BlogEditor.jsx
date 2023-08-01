@@ -146,127 +146,135 @@ export default function BlogEditor() {
   return (
     <Box p={4} mb={10} border='1px' borderColor='neutral.gray' borderRadius='16px'>
       <form onSubmit={handleSubmit((data) => onSubForm(data))}>
-        <Box>
-          <Flex h='100%' w='100' justifyContent='center' data-aos='fade-left'>
-            <Flex flexDir='column' justifyContent='space-between' h='100%' maxWidth='350px'>
-              <Box></Box>
+        <Container maxW='1110px'>
+          <Box>
+            <Flex h='100%' w='100%' justifyContent='center' data-aos='fade-left'>
+              <Flex w='100%' textAlign='center' flexDir='column' justifyContent='space-between' h='100%'>
+                <Box></Box>
 
-              <Box>
                 <Box>
-                  <Text fontSize='xl' fontWeight='bold' color='neutral.black'>
-                    Post details
-                  </Text>
-                  <Text fontSize='2xs' color='neutral.grayDark'>
-                    Provide needed information
-                  </Text>
+                  <Box>
+                    <Text fontSize='xl' fontWeight='bold' color='neutral.black'>
+                      Post details
+                    </Text>
+                    <Text fontSize='2xs' color='neutral.grayDark'>
+                      Provide needed information
+                    </Text>
+                  </Box>
+
+                  <Box mt='20px'>
+                    <Stack spacing={4}>
+                      <FormControl id='title' isInvalid={errors.title}>
+                        <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                          Post title
+                        </FormLabel>
+
+                        <Input
+                          id='title'
+                          {...register('title', {
+                            required: { value: true, message: 'This field is required' },
+                            minLength: { value: 6, message: 'Minimum length should be 6' },
+                            maxLength: { value: 40, message: 'Minimum length should be 40' }
+                          })}
+                          required
+                          background='neutral.white'
+                          _placeholder={{ color: 'neutral.gray' }}
+                          borderRadius='8px'
+                          fontSize='2xs'
+                          placeholder='Amazing food in Amsterdam'
+                        />
+                        <FormErrorMessage p={0} mt={2} fontSize='3xs'>
+                          {errors.title && errors.title.message}
+                        </FormErrorMessage>
+                      </FormControl>
+                      <FormControl id='desc' isInvalid={errors.desc}>
+                        <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                          Post description
+                        </FormLabel>
+
+                        <Input
+                          {...register('desc', {
+                            required: { value: true, message: 'This field is required' },
+
+                            minLength: { value: 15, message: 'Minimum length should be 15' },
+                            maxLength: { value: 150, message: 'Minimum length should be 150' }
+                          })}
+                          required
+                          type='text'
+                          background='neutral.white'
+                          _placeholder={{ color: 'neutral.gray' }}
+                          borderRadius='8px'
+                          fontSize='2xs'
+                          placeholder='Some amazing description of your post'
+                        />
+                        <FormErrorMessage p={0} mt={2} fontSize='3xs'>
+                          {errors.desc && errors.desc.message}
+                        </FormErrorMessage>
+                      </FormControl>
+                      <FormControl id='tags' isInvalid={errors.tags}>
+                        <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
+                          Post hashtags
+                        </FormLabel>
+
+                        <Input
+                          {...register('tags', {
+                            required: { value: true, message: 'This field is required' },
+                            validate: (value) => value.split(/[\s,]+/).length > 1 || 'Enter at least one tag'
+                          })}
+                          required
+                          type='text'
+                          background='neutral.white'
+                          _placeholder={{ color: 'neutral.gray' }}
+                          borderRadius='8px'
+                          fontSize='2xs'
+                          placeholder='Add tags to reach out same people!'
+                        />
+                        <FormErrorMessage p={0} mt={2} fontSize='3xs'>
+                          {errors.tags && errors.tags.message}
+                        </FormErrorMessage>
+                      </FormControl>
+                      <FormControl>
+                        <Input
+                          onChange={(e) => setFile(e.target.files[0])}
+                          hidden
+                          required
+                          ref={uploadRef}
+                          type='file'
+                        />
+                        <Button
+                          onClick={() => uploadRef.current.click()}
+                          w='100%'
+                          background='neutral.white'
+                          fontSize='2xs'
+                          fontWeight='bold'
+                          variant='solid'
+                          color='primary.default'
+                          borderWidth='1px'
+                          borderColor='primary.default'
+                          _hover={{
+                            background: 'primary.default',
+                            color: 'neutral.white',
+                            borderWidth: '1px',
+                            borderColor: 'primary.default'
+                          }}
+                          py={5}
+                          me='20px'
+                        >
+                          {textUpload}
+                        </Button>
+                      </FormControl>
+                      Now when you click the button, it will open the file upload dialog, and when you select a file, it
+                      will trigger the handleUploadCover function.
+                      <Stack spacing={10}></Stack>
+                    </Stack>
+                  </Box>
                 </Box>
 
-                <Box mt='20px'>
-                  <Stack spacing={4}>
-                    <FormControl id='title' isInvalid={errors.title}>
-                      <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                        Post title
-                      </FormLabel>
-
-                      <Input
-                        id='title'
-                        {...register('title', {
-                          required: { value: true, message: 'This field is required' },
-                          minLength: { value: 6, message: 'Minimum length should be 6' },
-                          maxLength: { value: 40, message: 'Minimum length should be 40' }
-                        })}
-                        required
-                        background='neutral.white'
-                        _placeholder={{ color: 'neutral.gray' }}
-                        borderRadius='8px'
-                        fontSize='2xs'
-                        placeholder='Amazing food in Amsterdam'
-                      />
-                      <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                        {errors.title && errors.title.message}
-                      </FormErrorMessage>
-                    </FormControl>
-                    <FormControl id='desc' isInvalid={errors.desc}>
-                      <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                        Post description
-                      </FormLabel>
-
-                      <Input
-                        {...register('desc', {
-                          required: { value: true, message: 'This field is required' },
-
-                          minLength: { value: 15, message: 'Minimum length should be 15' },
-                          maxLength: { value: 150, message: 'Minimum length should be 150' }
-                        })}
-                        required
-                        type='text'
-                        background='neutral.white'
-                        _placeholder={{ color: 'neutral.gray' }}
-                        borderRadius='8px'
-                        fontSize='2xs'
-                        placeholder='Some amazing description of your post'
-                      />
-                      <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                        {errors.desc && errors.desc.message}
-                      </FormErrorMessage>
-                    </FormControl>
-                    <FormControl id='tags' isInvalid={errors.tags}>
-                      <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
-                        Post hashtags
-                      </FormLabel>
-
-                      <Input
-                        {...register('tags', {
-                          required: { value: true, message: 'This field is required' },
-                          validate: (value) => value.split(/[\s,]+/).length > 1 || 'Enter at least one tag'
-                        })}
-                        required
-                        type='text'
-                        background='neutral.white'
-                        _placeholder={{ color: 'neutral.gray' }}
-                        borderRadius='8px'
-                        fontSize='2xs'
-                        placeholder='Add tags to reach out same people!'
-                      />
-                      <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                        {errors.tags && errors.tags.message}
-                      </FormErrorMessage>
-                    </FormControl>
-                    <FormControl>
-                      <Input onChange={(e) => setFile(e.target.files[0])} hidden required ref={uploadRef} type='file' />
-                      <Button
-                        onClick={() => uploadRef.current.click()}
-                        background='neutral.white'
-                        fontSize='2xs'
-                        fontWeight='bold'
-                        variant='solid'
-                        color='primary.default'
-                        borderWidth='1px'
-                        borderColor='primary.default'
-                        _hover={{
-                          background: 'primary.default',
-                          color: 'neutral.white',
-                          borderWidth: '1px',
-                          borderColor: 'primary.default'
-                        }}
-                        py={5}
-                        me='20px'
-                      >
-                        {textUpload}
-                      </Button>
-                    </FormControl>
-                    Now when you click the button, it will open the file upload dialog, and when you select a file, it
-                    will trigger the handleUploadCover function.
-                    <Stack spacing={10}></Stack>
-                  </Stack>
-                </Box>
-              </Box>
-
-              <Box></Box>
+                <Box></Box>
+              </Flex>
             </Flex>
-          </Flex>
-        </Box>
-
+          </Box>
+        </Container>
         <Box>
           {' '}
           <Container maxW='1110px'>
@@ -288,29 +296,30 @@ export default function BlogEditor() {
             </Box>
           </Container>
         </Box>
-
-        <Button
-          type='submit'
-          mt={2}
-          ms={4}
-          background='primary.default'
-          fontSize='2xs'
-          fontWeight='bold'
-          variant='solid'
-          color='neutral.white'
-          borderWidth='1px'
-          borderColor='primary.default'
-          _hover={{
-            background: 'neutral.white',
-            color: 'primary.default',
-            borderWidth: '1px',
-            borderColor: 'primary.default'
-          }}
-          py={5}
-          me='20px'
-        >
-          Submit
-        </Button>
+        <Container maxW='1110px'>
+          <Button
+            w='100%'
+            type='submit'
+            mt={2}
+            background='primary.default'
+            fontSize='2xs'
+            fontWeight='bold'
+            variant='solid'
+            color='neutral.white'
+            borderWidth='1px'
+            borderColor='primary.default'
+            _hover={{
+              background: 'neutral.white',
+              color: 'primary.default',
+              borderWidth: '1px',
+              borderColor: 'primary.default'
+            }}
+            py={5}
+            me='20px'
+          >
+            Submit
+          </Button>
+        </Container>
       </form>
     </Box>
   );
