@@ -27,9 +27,7 @@ import { Link } from 'react-router-dom';
 import { API_URL, TOKEN_KEY } from '../../../services/apiServices';
 import axios from 'axios';
 export default function BlogEditor() {
-  // const _contentState = ContentState.createFromText('Blog editor of brio!');
-  // const raw = convertToRaw(_contentState); // RawDraftContentState JSON
-  const [contentState, setContentState] = useState(''); // ContentState JSON
+  const [contentState, setContentState] = useState(''); //
 
   const [mainBody, setMainBody] = useState();
   const { quill, quillRef } = useQuill({
@@ -45,7 +43,7 @@ export default function BlogEditor() {
         [{ color: [] }, { background: [] }],
 
         [{ align: [] }],
-        ['image', 'link'] // only image and link options, no video option
+        ['image', 'link']
       ]
     },
     theme: 'snow'
@@ -55,7 +53,7 @@ export default function BlogEditor() {
   const [file, setFile] = useState(null);
 
   const [textUpload, setTextUpload] = useState('Select file to upload');
-  // const isValid = () => mainBody && mainBody.content && mainBody.cover;
+
   const {
     control,
     handleSubmit,
@@ -75,7 +73,7 @@ export default function BlogEditor() {
         content: quill.getContents()
       };
     } else {
-      return; // If Quill is not loaded, exit the function.
+      return;
     }
 
     handleUploadCover(PreMainBody);
@@ -286,17 +284,33 @@ export default function BlogEditor() {
                 // overflow: 'scroll'
               }}
             >
-              <div style={{ border: 'none' }} ref={quillRef} />
+              <div style={{ border: 'none', height: '100%' }} ref={quillRef} />
             </Box>
           </Container>
         </Box>
-        <Button my={2} color='white' bg='primary.default' borderRadius='16px' type='submit'>
+
+        <Button
+          type='submit'
+          mt={2}
+          ms={4}
+          background='primary.default'
+          fontSize='2xs'
+          fontWeight='bold'
+          variant='solid'
+          color='neutral.white'
+          borderWidth='1px'
+          borderColor='primary.default'
+          _hover={{
+            background: 'neutral.white',
+            color: 'primary.default',
+            borderWidth: '1px',
+            borderColor: 'primary.default'
+          }}
+          py={5}
+          me='20px'
+        >
           Submit
         </Button>
-        {/* 
-        <Button isDisabled={!isValid()} my={2} color='white' bg='primary.default' borderRadius='16px' type='submit'>
-          Submit
-        </Button> */}
       </form>
     </Box>
   );
