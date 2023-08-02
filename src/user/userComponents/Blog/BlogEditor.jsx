@@ -128,7 +128,7 @@ export default function BlogEditor() {
             duration: 9000,
             isClosable: true
           });
-          navigate('/blog/');
+          navigate('/blog/' + resp.data.idToSend);
         }
       } catch (err) {
         console.log(err);
