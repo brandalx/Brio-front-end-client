@@ -51,11 +51,11 @@ const ThemeProvider = ({ children }) => {
   };
 
   const darkColors = {
-    white: '#000000',
+    white: '#151515',
     black: '#FFFFFF',
-    bg: '#08080B',
+    bg: '#151515',
     primary: {
-      default: '#7431FA',
+      default: '#4E60FF',
       lightest: '#F8F9FF',
       light: '#F3F4FF',
       30: '#CACFFF',

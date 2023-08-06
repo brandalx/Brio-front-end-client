@@ -226,7 +226,7 @@ export default function Account() {
             <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark' mb={0}>
               Welcome back,
             </FormLabel>
-            <Text fontSize='md' fontWeight='black' color='neutral.darkGray'>
+            <Text fontSize='md' fontWeight='black' color='neutral.grayDark'>
               {!loading && `${arr.firstname} ${arr.lastname}`}
             </Text>
           </Skeleton>
