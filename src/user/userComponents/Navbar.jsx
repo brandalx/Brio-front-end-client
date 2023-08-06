@@ -25,7 +25,8 @@ import {
   MenuButton,
   Skeleton,
   useToast,
-  FormControl
+  FormControl,
+  useColorMode
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
 
@@ -34,7 +35,7 @@ import Logo from '../../assets/svg/Logo';
 import { Form, Link, useLocation, useNavigate } from 'react-router-dom';
 import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import { useCheckToken } from '../../services/token';
-import { avatarContext, cartContext, geolocationContext } from '../../context/globalContext';
+import { avatarContext, cartContext, geolocationContext, useColorModeContext } from '../../context/globalContext';
 import GeolocationDefinder from './Navbar/GeolocationDefinder';
 import jwtDecode from 'jwt-decode';
 export default function Navbar() {
@@ -155,6 +156,8 @@ export default function Navbar() {
       isClosable: true
     });
   };
+  const { colorMode, setColorMode } = useColorModeContext();
+
   return (
     <>
       <Container maxW='1110px'>
@@ -198,6 +201,15 @@ export default function Navbar() {
             </Flex>
             <HStack display='flex' alignItems='center' spacing={1}>
               <HStack spacing={2} mr={1} display={{ base: 'none', md: 'inline-flex' }}>
+                <Button
+                  onClick={() => {
+                    const newColorMode = colorMode === 'light' ? 'dark' : 'light';
+                    localStorage.setItem('colormode', newColorMode);
+                    setColorMode(newColorMode);
+                  }}
+                >
+                  Toggle
+                </Button>
                 <Button
                   color='neutral.black'
                   fontWeight='bold'

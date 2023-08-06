@@ -1,14 +1,12 @@
 import React from 'react';
 import Navbar from './Navbar';
-import theme from '../../utils/theme';
+
+import { Box } from '@chakra-ui/react';
 
 export default function Header() {
   return (
-    <header
-      className='page-header'
-      style={{ background: theme.colors.neutral.bg, height: 'auto', zIndex: '9999', paddingBottom: '10px' }}
-    >
+    <Box bg='nuetral.bg' className='page-header' style={{ height: 'auto', zIndex: '9999', paddingBottom: '10px' }}>
       <Navbar />
-    </header>
+    </Box>
   );
 }

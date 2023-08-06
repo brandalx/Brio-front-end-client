@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import '../../../css/global.css';
 import AddPlus from '../../../assets/svg/AddPlus';
-import theme from '../../../utils/theme';
+
 import ModalRestaurantMenu from './ModalRestaurantMenu';
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import ModalNewCategory from './ModalNewCategory';
@@ -189,7 +189,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
   };
   return (
     <GridItem width='100%' overflow='hidden' colSpan={4}>
-      <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
+      <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
         Category menu
       </Text>
       {loading ? (
@@ -214,14 +214,12 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
                 border='2px'
                 borderRadius='16px'
                 cursor='pointer'
-                bg={selectedItem === element._id ? theme.colors.primary.light : 'white'}
-                borderColor={
-                  selectedItem === element._id ? theme.colors.primary.default : theme.colors.neutral.grayLightest
-                }
+                bg={selectedItem === element._id ? 'primary.light' : 'white'}
+                borderColor={selectedItem === element._id ? 'primary.default' : 'neutral.grayLightest'}
                 _hover={{
-                  borderColor: theme.colors.primary.default,
+                  borderColor: 'primary.default',
                   transition: '450ms',
-                  bg: theme.colors.primary.light
+                  bg: 'primary.light'
                 }}
                 onClick={() => handleCategoryClick(element)}
                 maxH='72px'

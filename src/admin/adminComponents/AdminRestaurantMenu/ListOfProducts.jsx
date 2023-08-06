@@ -11,7 +11,7 @@ import {
   useMediaQuery,
   useToast
 } from '@chakra-ui/react';
-import theme from '../../../utils/theme';
+
 import { API_URL, handleApiGet } from '../../../services/apiServices';
 import { handleApiDelete } from '../../../services/apiServices';
 import ModalTextRedactor from './ModalTextRedactor';
@@ -182,7 +182,7 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
 
   return (
     <GridItem colSpan={8}>
-      <Text mb='16px' fontSize='sm' fontWeight={theme.fontWeights.semibold} color='neutral.black'>
+      <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
         {selectedCategory === null ? '' : selectedCategory}
       </Text>
       {products

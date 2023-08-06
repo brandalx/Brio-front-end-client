@@ -1,4 +1,3 @@
-import theme from '../../utils/theme';
 import React from 'react';
 import { Box, Container, Link, SimpleGrid, Stack, Text, useColorModeValue, Heading } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
@@ -7,7 +6,7 @@ import Logo from '../../assets/svg/Logo';
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className='page-header' style={{ background: theme.colors.neutral.black }}>
+    <footer className='page-header'>
       <Box>
         <Container as={Stack} maxW={'6xl'} py={10}>
           <SimpleGrid templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 1fr 2fr' }} spacing={8}>

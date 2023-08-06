@@ -486,12 +486,15 @@ export default function Restaurant() {
                     {' '}
                     <Flex flexDirection='column' justifyContent='center' h='100%'>
                       <Skeleton my={2} borderRadius='16px' isLoaded={!loading}>
-                        <Text fontSize='xl' fontWeight='extrabold'>
+                        <Text color='neutral.black' fontSize='xl' fontWeight='extrabold'>
                           {restaurantArr.title}
                         </Text>
                       </Skeleton>
                       <Skeleton my={2} borderRadius='16px' isLoaded={!loading}>
-                        <Text fontSize='2xs'> {restaurantArr.description}</Text>
+                        <Text color='neutral.gray' fontSize='2xs'>
+                          {' '}
+                          {restaurantArr.description}
+                        </Text>
                       </Skeleton>
                       <Skeleton borderRadius='16px' isLoaded={!loading} my={2}>
                         <Box display='flex'>
