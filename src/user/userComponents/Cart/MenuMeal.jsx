@@ -226,7 +226,11 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
                 </Box>
                 <Box>
                   <Box>
-                    <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
+                    <Text
+                      fontWeight='bold'
+                      color={localStorage.getItem('colorMode') === 'dark' ? 'neutral.black' : 'neutral.black'}
+                      fontSize='2xs'
+                    >
                       {item.title}{' '}
                       {currentPromotion && (
                         <Badge bg='primary.default' color='white' fontSize='3xs'>
@@ -354,7 +358,11 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
                     </Box>
                     <Box>
                       <Box>
-                        <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
+                        <Text
+                          fontWeight='bold'
+                          color={localStorage.getItem('colorMode') === 'dark' ? 'neutral.black' : 'neutral.black'}
+                          fontSize='2xs'
+                        >
                           {item.title}
                         </Text>
                       </Box>

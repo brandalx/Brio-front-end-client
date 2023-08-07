@@ -129,6 +129,9 @@ export default function Login() {
                             minLength: { value: 6, message: 'Minimum length should be 6' }
                           })}
                           type='email'
+                          color={() =>
+                            localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
+                          }
                           background='neutral.white'
                           _placeholder={{ color: 'neutral.gray' }}
                           borderRadius='8px'
@@ -147,6 +150,9 @@ export default function Login() {
                         </FormLabel>
                         <InputGroup>
                           <Input
+                            color={() =>
+                              localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
+                            }
                             type={show ? 'text' : 'password'}
                             {...register('password', {
                               required: { value: true, message: 'This field is required' },
@@ -236,7 +242,9 @@ export default function Login() {
                           background='primary.default'
                           fontWeight='bold'
                           variant='solid'
-                          color='neutral.white'
+                          color={() =>
+                            localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
+                          }
                           borderWidth='1px'
                           borderColor='neutral.white'
                           _hover={{

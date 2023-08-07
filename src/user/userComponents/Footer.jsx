@@ -7,7 +7,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
     <footer className='page-header'>
-      <Box>
+      <Box bg={() => (localStorage.getItem('colormode') === 'light' ? 'neutral.black' : '#363654')}>
         <Container as={Stack} maxW={'6xl'} py={10}>
           <SimpleGrid templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 1fr 2fr' }} spacing={8}>
             <Stack spacing={6}>
@@ -29,10 +29,10 @@ export default function Footer() {
               </Stack>
             </Stack>
             <Stack align={'flex-start'} color='neutral.grayLight'>
-              <Heading fontSize='2xs' color='neutral.white'>
+              <Heading fontSize='2xs' color='whiteAlpha.900'>
                 Responses
               </Heading>
-              <Link fontSize='2xs' href={'#'}>
+              <Link color='whiteAlpha.900' fontSize='2xs' href={'#'}>
                 How it works
               </Link>
               <Link fontSize='2xs' href={'#'}>
@@ -46,7 +46,7 @@ export default function Footer() {
               </Link>
             </Stack>
             <Stack align={'flex-start'} color='neutral.grayLight'>
-              <Heading fontSize='2xs' color='neutral.white'>
+              <Heading fontSize='2xs' color='whiteAlpha.900'>
                 Company
               </Heading>
               <Link fontSize='2xs' href={'#'}>
@@ -64,7 +64,7 @@ export default function Footer() {
               </Link>
             </Stack>
             <Stack align={'flex-start'} color='neutral.grayLight'>
-              <Heading color='neutral.white' fontSize='2xs'>
+              <Heading color='whiteAlpha.900' fontSize='2xs'>
                 Support
               </Heading>
 

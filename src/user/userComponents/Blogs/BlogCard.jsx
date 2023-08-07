@@ -38,7 +38,7 @@ export default function BlogCard({ data, index, getUserName, getUserAvatar, getB
                 textAlign='center'
                 fontSize={'xl'}
                 lineHeight={{ base: '40px', md: '50px' }}
-                color='white'
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.white')}
                 fontWeight='black'
               >
                 {data._id && data.title}

@@ -225,7 +225,7 @@ export default function Home() {
     }
   }, [city, setCity, sortedArr]);
   return (
-    <>
+    <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
       <Preloader loading={loading} />
 
       {/* {loading && (
@@ -244,7 +244,7 @@ export default function Home() {
                 textAlign={{ base: 'center', md: 'start' }}
                 fontSize={{ base: 'xl', md: '2xl' }}
                 lineHeight={{ base: '20px', md: '45px' }}
-                color='white'
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'white')}
                 fontWeight='black'
               >
                 Brio
@@ -256,7 +256,7 @@ export default function Home() {
                 textAlign={{ base: 'center', md: 'start' }}
                 fontSize={{ base: 'sm', md: 'dm' }}
                 lineHeight={{ base: '15px', md: '20px' }}
-                color='white'
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'white')}
                 fontWeight='black'
               >
                 Bringing food really on-time
@@ -271,7 +271,7 @@ export default function Home() {
                       variant='solid'
                       color='primary.default'
                       borderWidth='1px'
-                      background='neutral.white'
+                      background={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'white')}
                       borderColor='primary.default'
                       _hover={{
                         background: 'primary.light',
@@ -739,6 +739,6 @@ export default function Home() {
           </Box>
         </Box>
       </Container>
-    </>
+    </Box>
   );
 }

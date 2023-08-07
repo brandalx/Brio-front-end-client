@@ -286,7 +286,7 @@ export default function SignUp() {
               </Routes>
 
               <Box textAlign='center' py={6}>
-                <Text w='100%'>
+                <Text color='neutral.black' w='100%'>
                   Already have an account?
                   <Link to='/login' w='100%'>
                     {' '}

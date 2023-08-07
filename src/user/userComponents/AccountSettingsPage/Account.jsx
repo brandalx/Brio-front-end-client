@@ -226,7 +226,11 @@ export default function Account() {
             <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark' mb={0}>
               Welcome back,
             </FormLabel>
-            <Text fontSize='md' fontWeight='black' color='neutral.grayDark'>
+            <Text
+              fontSize='md'
+              fontWeight='black'
+              color={localStorage.getItem('colormode') === 'dark' ? 'black' : 'neutral.grayDark'}
+            >
               {!loading && `${arr.firstname} ${arr.lastname}`}
             </Text>
           </Skeleton>
@@ -362,6 +366,7 @@ export default function Account() {
                   </FormLabel>
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='firstname'
                       {...register('firstname', {
                         required: { value: true, message: 'This field is required' },
@@ -389,6 +394,7 @@ export default function Account() {
                   </FormLabel>
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='lastname'
                       {...register('lastname', {
                         required: { value: true, message: 'This field is required' },
@@ -417,6 +423,7 @@ export default function Account() {
                   </FormLabel>
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='email'
                       {...register('email', {
                         required: { value: true, message: 'This field is required' },
@@ -452,6 +459,7 @@ export default function Account() {
                   </FormLabel>
                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='phone'
                       {...register('phone', {
                         required: { value: true, message: 'This field is required' },

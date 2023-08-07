@@ -43,7 +43,7 @@ export default function BlogCardMain({ data, getUserName, getUserAvatar, getBlog
               textAlign='center'
               fontSize={{ base: 'xl', md: '2xl' }}
               lineHeight={{ base: '40px', md: '50px' }}
-              color='white'
+              color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.white')}
               fontWeight='black'
             >
               {data._id && data.title}
@@ -55,7 +55,7 @@ export default function BlogCardMain({ data, getUserName, getUserAvatar, getBlog
               data-aos='fade-up'
               textAlign='center'
               fontSize='xs'
-              color='neutral.gray'
+              color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.gray' : 'neutral.gray')}
               fontWeight='bold'
             >
               {data.tags.map((item, index) => {
@@ -75,7 +75,7 @@ export default function BlogCardMain({ data, getUserName, getUserAvatar, getBlog
               data-aos='fade-up'
               textAlign='center'
               fontSize='xs'
-              color='white'
+              color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.white')}
               fontWeight='bold'
             >
               {data._id && data.desc}
@@ -88,7 +88,7 @@ export default function BlogCardMain({ data, getUserName, getUserAvatar, getBlog
                 data-aos='fade-up'
                 textAlign='center'
                 fontSize='xs'
-                color='white'
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.white')}
                 fontWeight='bold'
               >
                 By {getUserName(data.userRef)}

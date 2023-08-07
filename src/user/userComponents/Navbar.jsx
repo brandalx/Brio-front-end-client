@@ -159,7 +159,7 @@ export default function Navbar() {
   const { colorMode, setColorMode } = useColorModeContext();
 
   return (
-    <>
+    <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
       <Container maxW='1110px'>
         <chakra.header w='full' px={{ base: 2, sm: 4 }} py={4}>
           <Flex alignItems='center' justifyContent='space-between' mx='auto'>
@@ -202,6 +202,7 @@ export default function Navbar() {
             <HStack display='flex' alignItems='center' spacing={1}>
               <HStack spacing={2} mr={1} display={{ base: 'none', md: 'inline-flex' }}>
                 <Button
+                  color='primary.default'
                   onClick={() => {
                     const newColorMode = colorMode === 'light' ? 'dark' : 'light';
                     localStorage.setItem('colormode', newColorMode);
@@ -347,7 +348,14 @@ export default function Navbar() {
                             <MenuList>
                               <a href='/user/cart'>
                                 {/* //because it should refresh to update user logged in */}
-                                <MenuItem fontWeight='medium'>My cart</MenuItem>
+                                <MenuItem
+                                  color={
+                                    localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.black'
+                                  }
+                                  fontWeight='medium'
+                                >
+                                  My cart
+                                </MenuItem>
                               </a>
 
                               {!loading && cartLen > 0 && (
@@ -753,6 +761,6 @@ export default function Navbar() {
           </Flex>
         </chakra.header>
       </Container>
-    </>
+    </Box>
   );
 }

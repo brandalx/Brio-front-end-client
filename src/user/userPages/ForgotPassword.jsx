@@ -213,7 +213,14 @@ export default function ForgotPassword() {
                         <Box pb={10} w='100%' display='flex' justifyItems='flex-startx'>
                           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
                             <Flex alignItems='center'>
-                              <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+                              <Icon
+                                color={() =>
+                                  localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
+                                }
+                                as={FaChevronLeft}
+                                mr={1}
+                                boxSize={4}
+                              />
                               <Text color='neutral.black' fontSize='xs'>
                                 <Link to='/login'> Back to login</Link>
                               </Text>
@@ -245,6 +252,9 @@ export default function ForgotPassword() {
                                   type='email'
                                   background='neutral.white'
                                   _placeholder={{ color: 'neutral.gray' }}
+                                  color={() =>
+                                    localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
+                                  }
                                   borderRadius='8px'
                                   fontSize='2xs'
                                   placeholder='name@example.com'
@@ -297,7 +307,9 @@ export default function ForgotPassword() {
                   />
                 </Routes>
                 <Box textAlign='center' py={6}>
-                  <Text>
+                  <Text
+                    color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+                  >
                     Do you have any questions?
                     <Link to='/#'>
                       {' '}

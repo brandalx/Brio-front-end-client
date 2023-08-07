@@ -111,6 +111,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
                   $
                 </InputLeftElement>
                 <Input
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                   ref={tipref}
                   onChange={handleTipChange}
                   type='number'

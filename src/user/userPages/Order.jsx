@@ -268,7 +268,12 @@ export default function Order() {
       <Container maxW='1110px'>
         <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
           <Flex alignItems='center'>
-            <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+            <Icon
+              color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+              as={FaChevronLeft}
+              mr={1}
+              boxSize={4}
+            />
             <Text color='neutral.black' fontSize='xs'>
               <Link to='/user/orders'> My orders</Link>
             </Text>

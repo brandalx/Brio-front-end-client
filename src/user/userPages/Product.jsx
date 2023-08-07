@@ -230,7 +230,12 @@ export default function Product() {
         <Container maxW='1110px' py={10}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
             <Flex alignItems='center'>
-              <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+              <Icon
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+                as={FaChevronLeft}
+                mr={1}
+                boxSize={4}
+              />
               <Text onClick={() => handleGoBack()} color='neutral.black' fontSize='xs'>
                 Back
               </Text>

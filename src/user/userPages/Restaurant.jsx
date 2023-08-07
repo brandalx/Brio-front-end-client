@@ -455,101 +455,108 @@ export default function Restaurant() {
   };
   return (
     <>
-      <Box background='bg' py='50px' data-aos='fade-up'>
-        <Container maxW='1110px'>
-          <Button my={4} _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
-            <Flex alignItems='center'>
-              <Icon as={FaChevronLeft} mr={1} boxSize={4} />
-              <Text onClick={() => handleGoBack()} color='neutral.black' fontSize='xs'>
-                Back
-              </Text>
-            </Flex>
-          </Button>
-
-          <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
-            <GridItem w='100%' h='100%'>
-              <Flex h='100%'>
-                <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '0.5fr 1fr' }} gap={4}>
-                  <Flex alignItems='center'>
-                    <GridItem w='100%'>
-                      <Skeleton borderRadius='16px' isLoaded={!loading}>
-                        <Image
-                          borderWidth='15px'
-                          borderColor='neutral.white'
-                          borderRadius='16px'
-                          src={restaurantArr.image ? restaurantArr.image : noimagerest}
-                        />
-                      </Skeleton>
-                    </GridItem>
-                  </Flex>
-                  <GridItem w='100%'>
-                    {' '}
-                    <Flex flexDirection='column' justifyContent='center' h='100%'>
-                      <Skeleton my={2} borderRadius='16px' isLoaded={!loading}>
-                        <Text color='neutral.black' fontSize='xl' fontWeight='extrabold'>
-                          {restaurantArr.title}
-                        </Text>
-                      </Skeleton>
-                      <Skeleton my={2} borderRadius='16px' isLoaded={!loading}>
-                        <Text color='neutral.gray' fontSize='2xs'>
-                          {' '}
-                          {restaurantArr.description}
-                        </Text>
-                      </Skeleton>
-                      <Skeleton borderRadius='16px' isLoaded={!loading} my={2}>
-                        <Box display='flex'>
-                          <Box display='flex' alignItems='center' me={2}>
-                            {' '}
-                            <AiOutlineClockCircle color='#828282' />
-                          </Box>
-                          <Text color='neutral.gray' fontSize='3xs'>
-                            {(!loading && restaurantArr.time) || '10-30'} min • ${' '}
-                            {(!loading && restaurantArr.minprice) || 10} min sum
-                          </Text>
-                        </Box>
-                      </Skeleton>
-                    </Flex>
-                  </GridItem>
-                </Grid>
+      <Box data-aos='fade-up'>
+        <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'bg')} py='50px'>
+          <Container maxW='1110px'>
+            <Button my={4} _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
+              <Flex alignItems='center'>
+                <Icon
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+                  as={FaChevronLeft}
+                  mr={1}
+                  boxSize={4}
+                />
+                <Text onClick={() => handleGoBack()} color='neutral.black' fontSize='xs'>
+                  Back
+                </Text>
               </Flex>
-            </GridItem>
-            <GridItem w='100%' h='auto'>
-              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' my={2}>
-                <Flex alignItems='center'>
-                  {!loading && (
-                    <Box w='100%'>
-                      {address?.results?.length > 0 &&
-                      address.results[0].bounds &&
-                      address.results[0].bounds.northeast.lng ? (
-                        <MapComponent
-                          styleInsert={{
-                            borderRadius: '16px',
-                            borderWidth: '5px',
-                            borderColor: 'white',
-                            minHeight: '230px'
-                          }}
-                          lng={address.results[0].bounds.northeast.lng}
-                          lat={address.results[0].bounds.northeast.lat}
-                          zoom={16}
-                        />
-                      ) : (
-                        <>
-                          <Box>
-                            <Text py={4} textAlign='center' fontSize='sm' fontWeight='bold' color='neutral.grayDark'>
-                              Sorry, we couldn't find location of this restaurant
+            </Button>
+
+            <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
+              <GridItem w='100%' h='100%'>
+                <Flex h='100%'>
+                  <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '0.5fr 1fr' }} gap={4}>
+                    <Flex alignItems='center'>
+                      <GridItem w='100%'>
+                        <Skeleton borderRadius='16px' isLoaded={!loading}>
+                          <Image
+                            borderWidth='15px'
+                            borderColor='neutral.white'
+                            borderRadius='16px'
+                            src={restaurantArr.image ? restaurantArr.image : noimagerest}
+                          />
+                        </Skeleton>
+                      </GridItem>
+                    </Flex>
+                    <GridItem w='100%'>
+                      {' '}
+                      <Flex flexDirection='column' justifyContent='center' h='100%'>
+                        <Skeleton my={2} borderRadius='16px' isLoaded={!loading}>
+                          <Text color='neutral.black' fontSize='xl' fontWeight='extrabold'>
+                            {restaurantArr.title}
+                          </Text>
+                        </Skeleton>
+                        <Skeleton my={2} borderRadius='16px' isLoaded={!loading}>
+                          <Text color='neutral.gray' fontSize='2xs'>
+                            {' '}
+                            {restaurantArr.description}
+                          </Text>
+                        </Skeleton>
+                        <Skeleton borderRadius='16px' isLoaded={!loading} my={2}>
+                          <Box display='flex'>
+                            <Box display='flex' alignItems='center' me={2}>
+                              {' '}
+                              <AiOutlineClockCircle color='#828282' />
+                            </Box>
+                            <Text color='neutral.gray' fontSize='3xs'>
+                              {(!loading && restaurantArr.time) || '10-30'} min • ${' '}
+                              {(!loading && restaurantArr.minprice) || 10} min sum
                             </Text>
                           </Box>
-                        </>
-                      )}
-                    </Box>
-                  )}
+                        </Skeleton>
+                      </Flex>
+                    </GridItem>
+                  </Grid>
                 </Flex>
-              </Skeleton>
-            </GridItem>
-          </Grid>
-        </Container>
+              </GridItem>
+              <GridItem w='100%' h='auto'>
+                <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' my={2}>
+                  <Flex alignItems='center'>
+                    {!loading && (
+                      <Box w='100%'>
+                        {address?.results?.length > 0 &&
+                        address.results[0].bounds &&
+                        address.results[0].bounds.northeast.lng ? (
+                          <MapComponent
+                            styleInsert={{
+                              borderRadius: '16px',
+                              borderWidth: '5px',
+                              borderColor: 'white',
+                              minHeight: '230px'
+                            }}
+                            lng={address.results[0].bounds.northeast.lng}
+                            lat={address.results[0].bounds.northeast.lat}
+                            zoom={16}
+                          />
+                        ) : (
+                          <>
+                            <Box>
+                              <Text py={4} textAlign='center' fontSize='sm' fontWeight='bold' color='neutral.grayDark'>
+                                Sorry, we couldn't find location of this restaurant
+                              </Text>
+                            </Box>
+                          </>
+                        )}
+                      </Box>
+                    )}
+                  </Flex>
+                </Skeleton>
+              </GridItem>
+            </Grid>
+          </Container>
+        </Box>
       </Box>
-      <Box>
+      <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
         <Container maxW='1110px' data-aos='fade-up'>
           {!showOops && (
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
@@ -826,6 +833,11 @@ export default function Restaurant() {
                                           </FormLabel>
 
                                           <Textarea
+                                            color={() =>
+                                              localStorage.getItem('colormode') === 'dark'
+                                                ? 'neutral.black'
+                                                : 'neutral.black'
+                                            }
                                             {...register('comment', {
                                               required: false,
                                               minLength: { value: 4, message: 'Minimum length should be 4' }
@@ -850,6 +862,11 @@ export default function Restaurant() {
                                           </FormLabel>
 
                                           <Input
+                                            color={() =>
+                                              localStorage.getItem('colormode') === 'dark'
+                                                ? 'neutral.black'
+                                                : 'neutral.black'
+                                            }
                                             min='1'
                                             max='5'
                                             {...register('rate', {
@@ -1031,7 +1048,7 @@ export default function Restaurant() {
                                             </Popover>
                                           ) : (
                                             <Box
-                                              bg='white'
+                                              bg='neutral.white'
                                               borderRadius='16px'
                                               _hover={{ bg: 'primary.light' }}
                                               onClick={() => postLike(item._id)}
@@ -1106,7 +1123,7 @@ export default function Restaurant() {
                                             </Popover>
                                           ) : (
                                             <Box
-                                              bg='white'
+                                              bg='neutral.white'
                                               borderRadius='16px'
                                               _hover={{ bg: 'primary.light' }}
                                               onClick={() => postDislike(item._id)}
