@@ -226,7 +226,7 @@ export default function Home() {
   }, [city, setCity, sortedArr]);
   return (
     <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
-      <Preloader loading={loading} />
+      <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={loading} />
 
       {/* {loading && (
         <Box h='350px' my={4}>

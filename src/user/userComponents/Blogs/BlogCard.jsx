@@ -47,7 +47,13 @@ export default function BlogCard({ data, index, getUserName, getUserAvatar, getB
           </Box>
           <Box>
             <Box mt={2} mx='auto' display='flex' alignItems='center'>
-              <Text backgroundColor='none' me={2} fontSize='xs' color='grayDark' fontWeight='bold'>
+              <Text
+                backgroundColor='none'
+                me={2}
+                fontSize='xs'
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.white')}
+                fontWeight='bold'
+              >
                 By {getUserName(data.userRef)}
               </Text>
               <Avatar size='sm' name={getUserName(data.userRef)} src={getUserAvatar(data.userRef)} />

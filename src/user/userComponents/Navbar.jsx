@@ -29,7 +29,8 @@ import {
   useColorMode
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
-
+import Sun from '../../assets/svg/Sun';
+import Moon from '../../assets/svg/Moon';
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import Logo from '../../assets/svg/Logo';
 import { Form, Link, useLocation, useNavigate } from 'react-router-dom';
@@ -202,6 +203,11 @@ export default function Navbar() {
             <HStack display='flex' alignItems='center' spacing={1}>
               <HStack spacing={2} mr={1} display={{ base: 'none', md: 'inline-flex' }}>
                 <Button
+                  bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
+                  variant={'link'}
+                  size='xs'
+                  py='8px'
+                  px='8px'
                   color='primary.default'
                   onClick={() => {
                     const newColorMode = colorMode === 'light' ? 'dark' : 'light';
@@ -209,7 +215,15 @@ export default function Navbar() {
                     setColorMode(newColorMode);
                   }}
                 >
-                  Toggle
+                  {localStorage.getItem('colormode') === 'dark' ? (
+                    <Box>
+                      <Moon />
+                    </Box>
+                  ) : (
+                    <Box>
+                      <Sun />
+                    </Box>
+                  )}
                 </Button>
                 <Button
                   color='neutral.black'
@@ -305,7 +319,7 @@ export default function Navbar() {
                           borderColor={isInCart ? 'primary.default' : 'neutral.white'}
                           borderWidth='1px'
                           ml='4px'
-                          bg='primary.lightest'
+                          bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
                           _hover={{ bg: 'primary.light' }}
                           color='black'
                           px={'8px'}
@@ -327,7 +341,7 @@ export default function Navbar() {
                             justifyContent='center'
                             fontSize='xs'
                             fontWeight='semibold'
-                            color='white'
+                            color='whiteAlpha.900'
                             textAlign='center'
                             minWidth='20px'
                           >
@@ -495,7 +509,7 @@ export default function Navbar() {
                           borderColor={isInCart ? 'primary.default' : 'neutral.white'}
                           borderWidth='1px'
                           ml='4px'
-                          bg='primary.lightest'
+                          bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
                           color='black'
                           px={'2px'}
                           py={'2px'}
@@ -516,7 +530,7 @@ export default function Navbar() {
                             justifyContent='center'
                             fontSize='xs'
                             fontWeight='semibold'
-                            color='white'
+                            color='whiteAlpha.900'
                             textAlign='center'
                             minWidth='20px'
                           >
@@ -655,13 +669,13 @@ export default function Navbar() {
                     display={{ base: 'flex', md: 'none' }}
                     aria-label='Open menu'
                     fontSize='20px'
-                    color='neutral.gray'
+                    bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
                     _dark={{ color: 'inherit' }}
                     variant='ghost'
+                    color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'grayLight')}
                     h='40px'
                     w='40px'
                     borderRadius='12px'
-                    bg='neutral.grayLightest'
                     icon={<AiOutlineMenu />}
                     onClick={mobileNav.onOpen}
                   />
@@ -740,6 +754,37 @@ export default function Navbar() {
                         <Link to='/user/orders'>My orders</Link>
                       </Button>
                     )}{' '}
+                    <Button
+                      textDecoration='none'
+                      mb={4}
+                      bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
+                      variant={'link'}
+                      size='xs'
+                      py='8px'
+                      px='8px'
+                      color='primary.default'
+                      onClick={() => {
+                        const newColorMode = colorMode === 'light' ? 'dark' : 'light';
+                        localStorage.setItem('colormode', newColorMode);
+                        setColorMode(newColorMode);
+                      }}
+                    >
+                      {localStorage.getItem('colormode') === 'dark' ? (
+                        <Box display='flex' alignItems='center'>
+                          <Moon />{' '}
+                          <Box textDecoration='none' ms={2} as='span'>
+                            {' Light mode '}
+                          </Box>
+                        </Box>
+                      ) : (
+                        <Box display='flex' alignItems='center'>
+                          <Sun />{' '}
+                          <Box textDecoration='none' ms={2} as='span'>
+                            {' Dark mode '}
+                          </Box>
+                        </Box>
+                      )}
+                    </Button>
                     <Box>
                       <form onSubmit={handleSearch}>
                         <Box my='8px' display='flex' justifyItems='center'>
