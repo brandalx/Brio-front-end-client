@@ -297,7 +297,7 @@ export default function Home() {
                       variant='solid'
                       color='primary.default'
                       borderWidth='1px'
-                      background='neutral.white'
+                      background={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'white')}
                       borderColor='primary.default'
                       _hover={{
                         background: 'primary.light',

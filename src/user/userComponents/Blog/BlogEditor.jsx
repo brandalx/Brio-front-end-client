@@ -170,6 +170,9 @@ export default function BlogEditor() {
                         </FormLabel>
 
                         <Input
+                          color={() =>
+                            localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
+                          }
                           id='title'
                           {...register('title', {
                             required: { value: true, message: 'This field is required' },
@@ -193,6 +196,9 @@ export default function BlogEditor() {
                         </FormLabel>
 
                         <Input
+                          color={() =>
+                            localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
+                          }
                           {...register('desc', {
                             required: { value: true, message: 'This field is required' },
 
@@ -217,6 +223,9 @@ export default function BlogEditor() {
                         </FormLabel>
 
                         <Input
+                          color={() =>
+                            localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
+                          }
                           {...register('tags', {
                             required: { value: true, message: 'This field is required' },
                             validate: (value) => value.split(/[\s,]+/).length > 1 || 'Enter at least one tag'
@@ -263,8 +272,7 @@ export default function BlogEditor() {
                           {textUpload}
                         </Button>
                       </FormControl>
-                      Now when you click the button, it will open the file upload dialog, and when you select a file, it
-                      will trigger the handleUploadCover function.
+
                       <Stack spacing={10}></Stack>
                     </Stack>
                   </Box>
@@ -279,6 +287,7 @@ export default function BlogEditor() {
           {' '}
           <Container maxW='1110px'>
             <Box
+              bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.white')}
               style={{
                 width: '100%',
                 minHeight: 300,
@@ -292,7 +301,13 @@ export default function BlogEditor() {
                 // overflow: 'scroll'
               }}
             >
-              <div style={{ border: 'none', height: '100%' }} ref={quillRef} />
+              <Box
+                style={{
+                  border: 'none',
+                  minHeight: '300px'
+                }}
+                ref={quillRef}
+              />
             </Box>
           </Container>
         </Box>

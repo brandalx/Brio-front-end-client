@@ -242,9 +242,7 @@ export default function Login() {
                           background='primary.default'
                           fontWeight='bold'
                           variant='solid'
-                          color={() =>
-                            localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
-                          }
+                          color='white'
                           borderWidth='1px'
                           borderColor='neutral.white'
                           _hover={{
@@ -280,7 +278,7 @@ export default function Login() {
                 </Box>
 
                 <Box textAlign='center' py={6}>
-                  <Text>
+                  <Text color='neutral.black'>
                     Don’t have an account?{' '}
                     <Link to='/signup'>
                       {' '}

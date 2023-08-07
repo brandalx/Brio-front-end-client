@@ -100,7 +100,11 @@ export default function DealsBlocks() {
                           Active
                         </Text>
                       </Box>
-                      <Text fontWeight='bold' fontSize='2xs'>
+                      <Text
+                        color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.grayDark'}
+                        fontWeight='bold'
+                        fontSize='2xs'
+                      >
                         {promotion.discountDetails}
                       </Text>
                     </Box>

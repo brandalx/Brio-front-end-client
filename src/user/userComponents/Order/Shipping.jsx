@@ -74,7 +74,11 @@ export default function Shipping({ item, userArr, restaurantArr }) {
       <Text fontWeight='semibold' fontSize={{ base: '14px', md: '3xs' }} color='neutral.gray'>
         {isSelf ? 'Pickup' : 'Delivery'} address
       </Text>
-      <Box fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold'>
+      <Box
+        fontSize={{ base: '14px', md: 'xs' }}
+        fontWeight='bold'
+        color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.grayDark'}
+      >
         {addressStringToPrint}
       </Box>
       <Skeleton minHeight='320px' my={4} borderRadius='16px' isLoaded={!addressLoading}>
@@ -100,7 +104,7 @@ export default function Shipping({ item, userArr, restaurantArr }) {
           )}
 
           <Box mt={4}>
-            <Text fontWeight='bold' fontSize='2xs' color='neutral.black'>
+            <Text fontWeight='bold' fontSize='2xs'>
               {/* prettier-igonre */}
 
               {item ? (

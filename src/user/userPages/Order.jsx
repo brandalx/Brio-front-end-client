@@ -263,7 +263,7 @@ export default function Order() {
   }
 
   return (
-    <Box>
+    <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
       {/* some of the data here is still be static and will changed in the future */}
       <Container maxW='1110px'>
         <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
@@ -353,7 +353,12 @@ export default function Order() {
                           {isSelf ? '(Pickup at)' : '(Delivery to)'}
                         </Text>
 
-                        <Text display={{ base: 'none', md: 'block' }} me={2} fontWeight='bold'>
+                        <Text
+                          color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.grayDark'}
+                          display={{ base: 'none', md: 'block' }}
+                          me={2}
+                          fontWeight='bold'
+                        >
                           {addressStringToPrint && addressStringToPrint}
                         </Text>
                         <Text display={{ base: 'block', md: 'none' }} fontSize='10px' me={2} fontWeight='bold'>
@@ -547,7 +552,7 @@ export default function Order() {
               </Text>
             </ModalHeader>
             <ModalBody>
-              <Text>
+              <Text color={localStorage.getItem('colormode') === 'dark' ? 'black' : 'neutral.grayDark'}>
                 This action cannot be undone. We will cancel your order and return your money. For further information,
                 cancelation fees and more visit our{' '}
                 <Box textDecoration='underline' color='primary.default' as='span'>

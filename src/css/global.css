@@ -126,3 +126,6 @@ html {
     transform: translate(0);
   }
 }
+.ql-editor {
+  min-height: 300px;
+}

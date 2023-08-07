@@ -14,7 +14,7 @@ export default function NewBlogPost() {
   };
 
   return (
-    <Box py='60px'>
+    <Box py='60px' bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
       <Container maxW='1110px' pt={15}>
         <Box my={4}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
@@ -39,7 +39,7 @@ export default function NewBlogPost() {
               ms={5}
               fontSize={{ base: 'xl', md: '2xl' }}
               lineHeight={{ base: '20px', md: '45px' }}
-              color='white'
+              color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'white')}
               fontWeight='black'
             >
               New Blog Post
@@ -50,7 +50,7 @@ export default function NewBlogPost() {
               ms={5}
               fontSize={{ base: 'sm', md: 'dm' }}
               lineHeight={{ base: '25px', md: '20px' }}
-              color='white'
+              color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'white')}
               fontWeight='black'
             >
               Begin creating and sharing your thoughts and experiences in Brio today!

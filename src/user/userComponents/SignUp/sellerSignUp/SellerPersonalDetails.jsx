@@ -59,6 +59,7 @@ export default function SellerPersonalDetails({ type, setMainBody, mainBody }) {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='firstname'
                       {...register('firstname', {
                         required: true,
@@ -83,6 +84,7 @@ export default function SellerPersonalDetails({ type, setMainBody, mainBody }) {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       {...register('lastname', {
                         required: true,
                         minLength: { value: 2, message: 'Minimum length should be 2' }
@@ -105,6 +107,7 @@ export default function SellerPersonalDetails({ type, setMainBody, mainBody }) {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='phone'
                       {...register('phone', {
                         required: true,
@@ -129,6 +132,7 @@ export default function SellerPersonalDetails({ type, setMainBody, mainBody }) {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       {...register('email', {
                         required: true,
                         minLength: { value: 2, message: 'Minimum length should be 2' }
@@ -153,6 +157,7 @@ export default function SellerPersonalDetails({ type, setMainBody, mainBody }) {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='password'
                       {...register('password', {
                         required: true,
@@ -177,6 +182,7 @@ export default function SellerPersonalDetails({ type, setMainBody, mainBody }) {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='confirmpassword'
                       {...register('confirmpassword', {
                         required: true,

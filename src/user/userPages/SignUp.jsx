@@ -130,7 +130,7 @@ export default function SignUp() {
                   </Link>
                   <VisuallyHidden>Brio</VisuallyHidden>
                 </Box>
-                <Text fontSize='sm' fontWeight='extrabold' color='white' ml='2'>
+                <Text fontSize='sm' fontWeight='extrabold' color='whiteAlpha.900' ml='2'>
                   <Link to='/'> Brio</Link>
                 </Text>
               </Flex>

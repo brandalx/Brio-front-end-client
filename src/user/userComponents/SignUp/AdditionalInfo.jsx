@@ -60,6 +60,7 @@ export default function AdditionalInfo({ mainBody, setMainBody }) {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='phone'
                       type='number'
                       {...register('phone', {

@@ -412,13 +412,13 @@ export default function Navbar() {
                             borderColor='neutral.white'
                             transition='all 0.3s'
                             _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
-                            borderRadius='120px'
+                            borderRadius='14px'
                             display='flex'
                             alignItems='center'
                           >
                             <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                               <Avatar
-                                borderRadius='100px'
+                                borderRadius='12px'
                                 size='md'
                                 name={!loading && arr.firstname + ' ' + arr.lastname}
                                 src={!loading && avatarUser}
@@ -482,7 +482,13 @@ export default function Navbar() {
                   {localStorage[TOKEN_KEY] && (
                     <>
                       <Box>
-                        <GeolocationDefinder setLoading={setLoading} loading={loading} isInCart={isInCart} />
+                        <GeolocationDefinder
+                          pxx={'2px'}
+                          pyy={'2px'}
+                          setLoading={setLoading}
+                          loading={loading}
+                          isInCart={isInCart}
+                        />
                       </Box>
                       <Skeleton borderRadius='16px' isLoaded={!loading}>
                         <Box
@@ -491,9 +497,9 @@ export default function Navbar() {
                           ml='4px'
                           bg='primary.lightest'
                           color='black'
-                          px={'8px'}
-                          py={'8px'}
-                          borderRadius='16px'
+                          px={'2px'}
+                          py={'2px'}
+                          borderRadius='12px'
                           position='relative'
                         >
                           <Box
@@ -530,7 +536,14 @@ export default function Navbar() {
                             <MenuList>
                               <a href='/user/cart'>
                                 {/* //because it should refresh to update user logged in */}
-                                <MenuItem fontWeight='medium'>My cart</MenuItem>
+                                <MenuItem
+                                  color={
+                                    localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.black'
+                                  }
+                                  fontWeight='medium'
+                                >
+                                  My cart
+                                </MenuItem>
                               </a>
 
                               {!loading && cartLen > 0 && (
@@ -582,10 +595,11 @@ export default function Navbar() {
 
                       {localStorage[TOKEN_KEY] ? (
                         <>
-                          <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                          <MenuButton as={Button} variant={'link'} cursor={'pointer'} minW={0}>
                             <Avatar
-                              borderRadius='100px'
+                              borderRadius='12px'
                               size='md'
+                              style={{ transform: 'scale(0.9)' }}
                               name={!loading && arr.firstname + ' ' + arr.lastname}
                               src={(!loading && avatarUser) || null}
                             />{' '}
@@ -644,9 +658,9 @@ export default function Navbar() {
                     color='neutral.gray'
                     _dark={{ color: 'inherit' }}
                     variant='ghost'
-                    h='48px'
-                    w='48px'
-                    borderRadius='16px'
+                    h='40px'
+                    w='40px'
+                    borderRadius='12px'
                     bg='neutral.grayLightest'
                     icon={<AiOutlineMenu />}
                     onClick={mobileNav.onOpen}
@@ -753,7 +767,11 @@ export default function Navbar() {
                   </Flex>
                   <Flex w='100%' justifyContent='space-between' px='16px'>
                     <Flex justifyContent='flex-end'></Flex>
-                    <CloseButton aria-label='Close menu' onClick={mobileNav.onClose} />
+                    <CloseButton
+                      color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}
+                      aria-label='Close menu'
+                      onClick={mobileNav.onClose}
+                    />
                   </Flex>
                 </VStack>
               </Box>

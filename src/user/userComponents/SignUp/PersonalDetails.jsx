@@ -69,6 +69,7 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='firstname'
                       {...register('firstname', {
                         required: { value: true, message: 'This field is required' },
@@ -96,6 +97,7 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       {...register('lastname', {
                         required: { value: true, message: 'This field is required' },
                         pattern: {
@@ -123,6 +125,7 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       {...register('email', {
                         required: { value: true, message: 'This field is required' },
                         minLength: { value: 6, message: 'Minimum length should be 6' }
@@ -148,6 +151,7 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
 
                     <InputGroup>
                       <Input
+                        color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                         id='password'
                         {...register('password', {
                           required: { value: true, message: 'This field is required' },
@@ -222,6 +226,7 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
 
                     <InputGroup>
                       <Input
+                        color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                         type={show2 ? 'text' : 'password'}
                         id='confirmpassword'
                         {...register('confirmpassword', {

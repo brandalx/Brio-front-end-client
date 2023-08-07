@@ -225,7 +225,7 @@ export default function Product() {
   };
 
   return (
-    <>
+    <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
       <Box data-aos='fade-up'>
         <Container maxW='1110px' py={10}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
@@ -514,6 +514,6 @@ export default function Product() {
           </Box>
         </Container>
       </Box>
-    </>
+    </Box>
   );
 }

@@ -53,7 +53,7 @@ export default function RecoverPassword({ handleUserSendRecoverChange, recoverDa
           <Box pb={10} w='100%' display='flex' justifyItems='flex-startx'>
             <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
               <Flex alignItems='center'>
-                <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+                <Icon color='neutral.black' as={FaChevronLeft} mr={1} boxSize={4} />
                 <Text color='neutral.black' fontSize='xs'>
                   <Link to='/recoverpassword'> Back</Link>
                 </Text>
@@ -75,6 +75,7 @@ export default function RecoverPassword({ handleUserSendRecoverChange, recoverDa
 
             <InputGroup>
               <Input
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                 type={show ? 'text' : 'password'}
                 id='password'
                 {...register('password', {
@@ -149,6 +150,7 @@ export default function RecoverPassword({ handleUserSendRecoverChange, recoverDa
 
             <InputGroup>
               <Input
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                 id='confirmpassword'
                 {...register('confirmpassword', {
                   required: { value: true, message: 'This field is required' },

@@ -21,11 +21,11 @@ export default function Footer() {
                 © {new Date().getFullYear()} Brio - Bringing food really on-time
               </Text>
               <Stack direction={'row'} spacing={6} color='neutral.white'>
-                <FaTwitter />
+                <FaTwitter color='white' />
 
-                <FaYoutube />
+                <FaYoutube color='white' />
 
-                <FaInstagram />
+                <FaInstagram color='white' />
               </Stack>
             </Stack>
             <Stack align={'flex-start'} color='neutral.grayLight'>

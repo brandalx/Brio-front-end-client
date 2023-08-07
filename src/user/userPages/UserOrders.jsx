@@ -27,9 +27,9 @@ export default function UserOrders() {
   };
   useEffect(() => {
     handleApi();
-  }, [arr]);
+  }, []);
   return (
-    <>
+    <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
       <Container maxW='1110px' my={10}>
         <Box>
           <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
@@ -95,6 +95,6 @@ export default function UserOrders() {
           )}
         </Box>
       </Container>
-    </>
+    </Box>
   );
 }
