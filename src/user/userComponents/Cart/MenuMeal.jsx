@@ -251,6 +251,7 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
           <GridItem w='100%'>
             <Box
               h='100%'
+              w='100%'
               display='flex'
               alignItems='center'
               alignContent='center'
@@ -291,18 +292,19 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
                     </Button>
                   </Box>
                 </GridItem>
-                <GridItem w='100%' h='100%'>
+                {/* prettier-ignore */}
+                <GridItem w='100%' h='100%' px={5}>
                   <Box w='100%' display='flex' justifyContent='center'>
                     {' '}
                     {currentPromotion ? (
                       <Box display='flex'>
                         <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
-                          $ {(item.price * (1 - currentPromotion.discountPercent / 100) * amountMeals).toFixed(2)}
+                          ${(item.price * (1 - currentPromotion.discountPercent / 100) * amountMeals).toFixed(2)}
                         </Text>
                       </Box>
                     ) : (
                       <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
-                        $ {(item.price * amountMeals).toFixed(2)}
+                        ${(item.price * amountMeals).toFixed(2)}
                       </Text>
                     )}
                   </Box>
