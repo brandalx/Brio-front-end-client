@@ -10,8 +10,10 @@ export default function RestaurantCard({ img, title, time, price, badgeData, _id
     <>
       {title && (
         <Link to={_id ? `/restaurant/${_id}` : '#'}>
-          <GridItem w='100%' bg='neutral.white' data-aos='fade-up'>
+
+          <GridItem h='100%' w='100%' bg='neutral.white' data-aos='fade-up'>
             <Box
+            h='100%'
               transition='all 0.3s'
               _hover={{
                 bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.light'),
@@ -23,6 +25,7 @@ export default function RestaurantCard({ img, title, time, price, badgeData, _id
               borderColor='neutral.grayLightest'
               borderRadius='lg'
             >
+
               <Image src={img ? img : noimagerest} roundedTop='lg' h='230px' objectFit='cover' w='100%' />
 
               <Box p='6'>

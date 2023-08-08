@@ -443,7 +443,7 @@ export default function Home() {
                               <Image src={index % 2 === 0 ? burgertest : caketest} alt='Promotion 1' />
                             </Box>
                             <Box w='50%'>
-                              <Text fontSize='sm' color='neutral.black' fontWeight='medium'>
+                              <Text fontSize='xs' color='neutral.black' fontWeight='medium'>
                                 {item.discountDetails}
                               </Text>
                               <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>
@@ -550,6 +550,7 @@ export default function Home() {
                 <Box>
                   <Grid
                     templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+                    alignItems='stretch'
                     gap={4}
                   >
                     {arr2.map((item, index) => {
@@ -718,7 +719,11 @@ export default function Home() {
 
             {!loading && (
               <Box>
-                <Grid templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={4}>
+                <Grid
+                  alignItems='stretch'
+                  templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+                  gap={4}
+                >
                   {arr.map((item, index) => {
                     if (item.products && item.products.length > 0) {
                       return (

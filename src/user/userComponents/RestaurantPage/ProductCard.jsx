@@ -93,8 +93,9 @@ export default function ProductCard({ img, title, description, price, _id, promo
   const isTokenExpired = useCheckToken();
 
   return (
-    <GridItem w='100%' maxH={!isTokenExpired ? '420px' : '450px'} bg='neutral.white'>
+    <GridItem h='100%' w='100%' maxH={!isTokenExpired ? '430px' : '450px'} bg='neutral.white'>
       <Box
+        h='100%'
         w='100%'
         p={2}
         transition='all 0.3s'
@@ -107,15 +108,14 @@ export default function ProductCard({ img, title, description, price, _id, promo
         border='1px'
         borderColor='neutral.grayLightest'
         borderRadius='16px'
-        h='100%'
         data-aos='fade-up'
       >
-        <Link to={`/restaurant/product/${_id}`}>
+        <Link h='100%' to={`/restaurant/product/${_id}`}>
           <Box>
             <Image borderRadius='16px' w='100%' src={img.length > 0 ? img : noimage} h='230px' objectFit='cover' />
           </Box>
         </Link>
-        <Stack>
+        <Stack h='100%'>
           <Text mt={2} color='neutral.black' fontSize='xs' fontWeight='bold'>
             {title}{' '}
             {promotion && (
