@@ -299,17 +299,21 @@ export default function Product() {
                               color='neutral.black'
                               fontSize='md'
                             >
-                              {!loading && <>$ {arr.price * amount}</>}
+                              {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
                             </Text>
                             {currentPromotion && (
                               <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                                {!loading && <>$ {arr.price * (1 - currentPromotion.discountPercent / 100) * amount}</>}
+                                {!loading && (
+                                  <>
+                                    $ {(arr.price * (1 - currentPromotion.discountPercent / 100) * amount).toFixed(2)}
+                                  </>
+                                )}
                               </Text>
                             )}
                           </Box>
                         ) : (
                           <Text textDecoration='none' my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                            {!loading && <>$ {arr.price * amount}</>}
+                            {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
                           </Text>
                         )}
 
@@ -346,11 +350,15 @@ export default function Product() {
                               color='neutral.black'
                               fontSize='md'
                             >
-                              {!loading && <>$ {arr.price * amount}</>}
+                              {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
                             </Text>
                             {currentPromotion && (
                               <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                                {!loading && <>$ {arr.price * (1 - currentPromotion.discountPercent / 100) * amount}</>}
+                                {!loading && (
+                                  <>
+                                    $ {(arr.price * (1 - currentPromotion.discountPercent / 100) * amount).toFixed(2)}
+                                  </>
+                                )}
                               </Text>
                             )}
                           </Box>
@@ -363,7 +371,7 @@ export default function Product() {
                               color='neutral.black'
                               fontSize='md'
                             >
-                              {!loading && <>$ {arr.price * amount}</>}
+                              {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
                             </Text>
                           </>
                         )}

@@ -636,7 +636,7 @@ export default function Restaurant() {
                       <Grid
                         gridAutoColumns='1fr'
                         gridAutoRows='1fr'
-                        templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
+                        templateColumns={{ base: 'repeat(1, 1fr)', sm: layout }}
                         gap={4}
                       >
                         {!loading ? (

@@ -361,7 +361,13 @@ export default function Order() {
                         >
                           {addressStringToPrint && addressStringToPrint}
                         </Text>
-                        <Text display={{ base: 'block', md: 'none' }} fontSize='10px' me={2} fontWeight='bold'>
+                        <Text
+                          color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.grayDark'}
+                          display={{ base: 'block', md: 'none' }}
+                          fontSize='10px'
+                          me={2}
+                          fontWeight='bold'
+                        >
                           {addressStringToPrint && addressStringToPrint}
                         </Text>
                         <Box>
