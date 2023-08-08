@@ -6,7 +6,7 @@ import Logo from '../../assets/svg/Logo';
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className='page-header'>
+    <footer className='page-footer'>
       <Box bg={() => (localStorage.getItem('colormode') === 'light' ? 'neutral.black' : '#363654')}>
         <Container as={Stack} maxW={'6xl'} py={10}>
           <SimpleGrid templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 1fr 2fr' }} spacing={8}>

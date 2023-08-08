@@ -97,7 +97,7 @@ export default function Order() {
       setAddressString(finalstr);
     }
   };
-  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px) hue-rotate(90deg)' />;
+  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px)' />;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
   const toast = useToast();
@@ -541,8 +541,8 @@ export default function Order() {
         </Grid>
       </Container>
 
-      <Box>
-        <Modal size='xl' isCentered isOpen={isOpen} onClose={onClose}>
+      <Box zIndex={99999}>
+        <Modal size='full' isCentered isOpen={isOpen} onClose={onClose}>
           {overlay}
           <ModalContent>
             <ModalHeader>
