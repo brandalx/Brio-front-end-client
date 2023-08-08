@@ -257,7 +257,7 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
 
       <AlertDialog isOpen={isAlertOpen} leastDestructiveRef={cancelRef} onClose={onCloseAlert}>
         <AlertDialogOverlay>
-          <AlertDialogContent>
+          <AlertDialogContent color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}>
             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
               Delete Category
             </AlertDialogHeader>
