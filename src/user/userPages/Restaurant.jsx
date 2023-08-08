@@ -994,7 +994,13 @@ export default function Restaurant() {
                                               <PopoverTrigger>
                                                 <Button>{defineUserLike(item)}</Button>
                                               </PopoverTrigger>
-                                              <PopoverContent>
+                                              <PopoverContent
+                                                color={
+                                                  localStorage.getItem('colormode') === 'dark'
+                                                    ? 'neutral.black'
+                                                    : 'neutral.black'
+                                                }
+                                              >
                                                 <PopoverArrow />
                                                 <PopoverCloseButton />
                                                 <PopoverHeader>Login or Signup </PopoverHeader>
@@ -1069,7 +1075,13 @@ export default function Restaurant() {
                                               <PopoverTrigger>
                                                 <Button>{defineUserDisLike(item)}</Button>
                                               </PopoverTrigger>
-                                              <PopoverContent>
+                                              <PopoverContent
+                                                color={
+                                                  localStorage.getItem('colormode') === 'dark'
+                                                    ? 'neutral.black'
+                                                    : 'neutral.black'
+                                                }
+                                              >
                                                 <PopoverArrow />
                                                 <PopoverCloseButton />
                                                 <PopoverHeader>Login or Signup </PopoverHeader>

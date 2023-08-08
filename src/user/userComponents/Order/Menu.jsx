@@ -82,15 +82,14 @@ export default function Menu({ item }) {
   }, []);
 
   return (
-    <>
+    <Box data-aos='fade-up'>
       <Link to={`/restaurant/product/${item.productId}`}>
         <Box
           cursor='pointer'
           borderRadius='12px'
           p={2}
-          data-aos='fade-up'
           transition='all 0.3s'
-          _hover={{ bg: 'neutral.grayLightest', transition: 'all 0.3s' }}
+          _hover={{ bg: () => (localStorage.getItem('colormode') === 'dark' ? '#414165' : 'primary.light') }}
         >
           <Grid templateColumns={{ base: '1fr', md: '1fr 1fr ' }} gap={4}>
             <GridItem w='100%'>
@@ -183,6 +182,6 @@ export default function Menu({ item }) {
         </Box>
       </Link>
       <Divider pt={4} />
-    </>
+    </Box>
   );
 }

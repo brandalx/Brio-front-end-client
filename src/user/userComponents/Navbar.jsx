@@ -542,7 +542,7 @@ export default function Navbar() {
                           ml='4px'
                           bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
                           color='black'
-                          _hover={{ bg: localStorage.getItem('colormode') === 'gray' ? '#414165' : 'primary.light' }}
+                          _hover={{ bg: localStorage.getItem('colormode') === 'dark' ? '#414165' : 'primary.light' }}
                           px={'2px'}
                           py={'2px'}
                           borderRadius='12px'
