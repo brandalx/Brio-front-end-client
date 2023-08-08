@@ -20,6 +20,23 @@ import Aos from 'aos';
 function getRandomIndex(length) {
   return Math.floor(Math.random() * length);
 }
+
+function Greeting() {
+  const currentHour = new Date().getHours();
+  let greeting;
+
+  if (currentHour >= 0 && currentHour < 6) {
+    greeting = 'Good night';
+  } else if (currentHour >= 6 && currentHour < 12) {
+    greeting = 'Good morning';
+  } else if (currentHour >= 12 && currentHour < 18) {
+    greeting = 'Good day';
+  } else {
+    greeting = 'Good evening';
+  }
+
+  return <Text>{greeting}</Text>;
+}
 export default function Home() {
   // todo: add tag into product into backend model and validation
 
@@ -224,6 +241,7 @@ export default function Home() {
       handleSortedByLocation(arr);
     }
   }, [city, setCity, sortedArr]);
+
   return (
     <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
       <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={loading} />
@@ -308,7 +326,7 @@ export default function Home() {
                       py={5}
                     >
                       {' '}
-                      Welcome back, {user.firstname}
+                      {Greeting()}, {user.firstname}
                     </Button>
                   </Link>
                 </Box>

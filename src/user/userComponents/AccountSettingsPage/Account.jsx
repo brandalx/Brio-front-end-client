@@ -31,7 +31,22 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { avatarContext } from '../../../context/globalContext';
 import { Popover } from '@chakra-ui/react';
+function Greeting() {
+  const currentHour = new Date().getHours();
+  let greeting;
 
+  if (currentHour >= 0 && currentHour < 6) {
+    greeting = 'Good night';
+  } else if (currentHour >= 6 && currentHour < 12) {
+    greeting = 'Good morning';
+  } else if (currentHour >= 12 && currentHour < 18) {
+    greeting = 'Good day';
+  } else {
+    greeting = 'Good evening';
+  }
+
+  return <Text>{greeting}, </Text>;
+}
 export default function Account() {
   const { avatarUser, setAvatarUser } = useContext(avatarContext);
   const [loading, setLoading] = useState(true);
@@ -224,8 +239,9 @@ export default function Account() {
         <Box pt={5}>
           <Skeleton borderRadius='16px' isLoaded={!loading} minHeight='20px' my={2} w='50%'>
             <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark' mb={0}>
-              Welcome back,
+              <span>{Greeting()}</span>
             </FormLabel>
+
             <Text
               fontSize='md'
               fontWeight='black'
