@@ -95,7 +95,7 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
     // console.log(amount);
   }, []);
   const cutInfoText = cutInfo(info);
-  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px) hue-rotate(90deg)' />;
+  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px) ' />;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
@@ -202,15 +202,17 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
   };
 
   return (
-    <>
+    <Box data-aos='fade-up'>
       <Box
         my={2}
         pt={5}
         px={4}
         borderRadius='12px'
-        data-aos='fade-up'
         transition='all 0.3s'
-        _hover={{ bg: 'neutral.grayLightest', transition: 'all 0.3s' }}
+        _hover={{
+          bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'),
+          transition: 'all 0.3s'
+        }}
       >
         <Grid templateColumns={{ base: '1fr', md: '1fr 1fr ' }} gap={4}>
           <GridItem w='100%'>
@@ -226,7 +228,11 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
                 </Box>
                 <Box>
                   <Box>
-                    <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
+                    <Text
+                      fontWeight='bold'
+                      color={localStorage.getItem('colorMode') === 'dark' ? 'neutral.black' : 'neutral.black'}
+                      fontSize='2xs'
+                    >
                       {item.title}{' '}
                       {currentPromotion && (
                         <Badge bg='primary.default' color='white' fontSize='3xs'>
@@ -247,6 +253,7 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
           <GridItem w='100%'>
             <Box
               h='100%'
+              w='100%'
               display='flex'
               alignItems='center'
               alignContent='center'
@@ -287,18 +294,19 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
                     </Button>
                   </Box>
                 </GridItem>
-                <GridItem w='100%' h='100%'>
+                {/* prettier-ignore */}
+                <GridItem w='100%' h='100%' px={5}>
                   <Box w='100%' display='flex' justifyContent='center'>
                     {' '}
                     {currentPromotion ? (
                       <Box display='flex'>
                         <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
-                          $ {(item.price * (1 - currentPromotion.discountPercent / 100) * amountMeals).toFixed(2)}
+                          ${(item.price * (1 - currentPromotion.discountPercent / 100) * amountMeals).toFixed(2)}
                         </Text>
                       </Box>
                     ) : (
                       <Text fontWeight='extrabold' color='neutral.black' fontSize='xs' p={0} m={0}>
-                        $ {(item.price * amountMeals).toFixed(2)}
+                        ${(item.price * amountMeals).toFixed(2)}
                       </Text>
                     )}
                   </Box>
@@ -354,12 +362,16 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
                     </Box>
                     <Box>
                       <Box>
-                        <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
+                        <Text
+                          fontWeight='bold'
+                          color={localStorage.getItem('colorMode') === 'dark' ? 'neutral.black' : 'neutral.black'}
+                          fontSize='2xs'
+                        >
                           {item.title}
                         </Text>
                       </Box>
                       <Box>
-                        <Text color='neutral.grayDark' fontSize='2xs'>
+                        <Text color='neutral.gray' fontSize='2xs'>
                           {cutInfoText}
                         </Text>
                       </Box>
@@ -418,6 +430,6 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
           </ModalContent>
         </Modal>
       </Box>
-    </>
+    </Box>
   );
 }

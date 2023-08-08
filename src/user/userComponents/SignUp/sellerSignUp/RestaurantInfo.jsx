@@ -61,6 +61,7 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       Title
                     </FormLabel>
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='title'
                       {...register('title', {})}
                       background='neutral.white'
@@ -79,6 +80,7 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       Address
                     </FormLabel>
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='address'
                       {...register('address', {
                         required: 'Address is required',
@@ -100,6 +102,7 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       Location
                     </FormLabel>
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='location'
                       {...register('location', {
                         required: 'Location is required',
@@ -120,6 +123,7 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       Company
                     </FormLabel>
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='company'
                       {...register('company', {})}
                       background='neutral.white'
@@ -138,6 +142,7 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       Restaurant Email
                     </FormLabel>
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='restaurantEmail'
                       type='email'
                       {...register('restaurantEmail', {
@@ -161,6 +166,7 @@ export default function RestaurantInfo({ mainBody, setMainBody }) {
                       Description
                     </FormLabel>
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='description'
                       {...register('description', {
                         required: 'Description is required',

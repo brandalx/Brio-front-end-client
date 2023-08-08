@@ -4,6 +4,7 @@ import defaultmap from '../../../assets/images/defaultmap.png';
 
 import axios from 'axios';
 import { Checkbox, Flex, Radio } from '@chakra-ui/react';
+import MapComponent from '../Order/MapComponent';
 
 export default function Pickup({ item, pickupLocation, setPickupLocation, setCheckoutBody }) {
   const [address, setAddress] = useState(null);
@@ -67,11 +68,16 @@ export default function Pickup({ item, pickupLocation, setPickupLocation, setChe
                 address.results[0].bounds &&
                 address.results[0].bounds.northeast &&
                 address.results[0].bounds.northeast.lat && (
-                  <iframe
-                    width='100%'
-                    src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
-                    title='Monochrome'
-                    style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '320px' }}
+                  <MapComponent
+                    styleInsert={{
+                      borderRadius: '16px',
+                      borderWidth: '5px',
+                      borderColor: 'white',
+                      minHeight: '320px'
+                    }}
+                    lng={address.results[0].bounds.northeast.lng}
+                    lat={address.results[0].bounds.northeast.lat}
+                    zoom={16}
                   />
                 )}{' '}
             </>

@@ -40,11 +40,15 @@ import ScrollToTopDefault from './utils/ScrollToTopDefault';
 import Search from './user/userPages/Search';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
+import Blogs from './user/userPages/Blogs';
+import Blog from './user/userPages/Blog';
+import NewBlogPost from './user/userPages/NewBlogPost';
+import { Box } from '@chakra-ui/react';
 
 export default function AppRoutes({ isToken }) {
   const [cartLen, setCartLen] = useState(0);
   const [avatarUser, setAvatarUser] = useState(null);
-  const { city, setCity, update, setUpdate, isTrue, setIsTrue } = useGeolocation();
+  const { city, setCity, update, setUpdate, isTrue, setIsTrue, setTimes, times } = useGeolocation();
   const [decodedToken, setDecodedToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -69,13 +73,16 @@ export default function AppRoutes({ isToken }) {
   return (
     <>
       <globalContext.Provider value={{ isToken }}>
-        <geolocationContext.Provider value={{ city, setCity, update, setUpdate, isTrue, setIsTrue }}>
+        <geolocationContext.Provider value={{ city, setCity, update, setUpdate, isTrue, setIsTrue, setTimes, times }}>
           <cartContext.Provider value={{ cartLen, setCartLen }}>
             <avatarContext.Provider value={{ avatarUser, setAvatarUser }}>
               {/* TODO: pass global values in value obj */}
               <BrowserRouter>
                 <ScrollToTopDefault>
-                  <div className='wrapper'>
+                  <Box
+                    bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}
+                    className='wrapper'
+                  >
                     <Routes>
                       {isToken && decodedToken.role === 'ADMIN' && <Route path='/admin/*' element={<AdminHeader />} />}
 
@@ -95,6 +102,7 @@ export default function AppRoutes({ isToken }) {
 
                         {/* ----------ALL USERS ROUTES------------ */}
                         <Route path='/' element={<Home />} />
+                        <Route path='/search' element={<Search />} />
                         <Route path='/login' element={<Login />} />
                         <Route path='/recoverpassword' element={<Forgotpassword />} />
                         <Route path='/signup/*' element={<SignUp />} />
@@ -109,10 +117,15 @@ export default function AppRoutes({ isToken }) {
                             <Route path='/user/checkout/' element={<Checkout />} />
                             <Route path='/user/orders' element={<UserOrders />} />
                             <Route path='/user/order/:id' element={<Order />} />
+                            <Route path='/blog/create/new' element={<NewBlogPost />} />
                           </>
                         )}
                         <Route path='/deals' element={<Deals />} />
-                        <Route path='/search' element={<Search />} />
+
+                        <Route path='/blog' element={<Blogs />} />
+                        <Route path='/blog/:id' element={<Blog />} />
+
+
                         <Route path='/about/' element={<About />} />
                         <Route path='/restaurant/' element={<Restaurants />} />
                         <Route path='/restaurant/:id' element={<Restaurant />} />
@@ -142,7 +155,7 @@ export default function AppRoutes({ isToken }) {
                       <Route path='/recoverpassword/*' element={<div />} />
                       <Route path='/signup/*' element={<div />} />
                     </Routes>
-                  </div>
+                  </Box>
                 </ScrollToTopDefault>
               </BrowserRouter>
             </avatarContext.Provider>

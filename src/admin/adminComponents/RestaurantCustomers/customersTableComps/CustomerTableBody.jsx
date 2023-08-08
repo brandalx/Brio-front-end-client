@@ -147,14 +147,7 @@ export default function CustomerTableBody() {
         Array.isArray(user.orders) &&
         user.orders.map((order) => (
           <Tr key={order._id} transition='all 0.2s' _hover={{ bg: 'bg', transition: 'all 0.2s', cursor: 'pointer' }}>
-            <Td
-              pl={isMobile ? '10px' : ''}
-              pt='19.5px'
-              pb='19.5px'
-              fontSize='2xs'
-              color='neutral.grayDark'
-              maxW='100px'
-            >
+            <Td pl={isMobile ? '10px' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.gray' maxW='100px'>
               {order.orderRef.slice(-5)}
             </Td>
             <Td
@@ -162,7 +155,7 @@ export default function CustomerTableBody() {
               pt='19.5px'
               pb='19.5px'
               fontSize='2xs'
-              color='neutral.grayDark'
+              color='neutral.gray'
             >
               {new Date(order.creationDate).toLocaleDateString('en-US', {
                 day: 'numeric',
@@ -175,7 +168,7 @@ export default function CustomerTableBody() {
               pt='19.5px'
               pb='19.5px'
               fontSize='2xs'
-              color='neutral.grayDark'
+              color='neutral.gray'
             >
               {new Date(order.creationDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
             </Td>
@@ -185,7 +178,7 @@ export default function CustomerTableBody() {
               pt='10px'
               pb='10px'
               fontSize='2.5xs'
-              color='neutral.black'
+              color='neutral.gray'
               fontWeight='semibold'
             >
               <Flex alignItems='center'>

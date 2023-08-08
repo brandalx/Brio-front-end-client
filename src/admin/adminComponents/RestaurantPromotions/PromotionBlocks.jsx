@@ -227,7 +227,12 @@ export default function PromotionBlocks({ active }) {
                         {active}
                       </Text>
                     </Box>
-                    <Text fontWeight='bold' fontSize='2xs'>
+                    <Text
+                      mt={2}
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+                      fontWeight='bold'
+                      fontSize='2xs'
+                    >
                       {promotion.discountDetails}
                     </Text>
                   </Box>

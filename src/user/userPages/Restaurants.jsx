@@ -54,7 +54,7 @@ export default function Restaurants() {
   return (
     <>
       <Container maxW='1110px'>
-        <Box py='25px'>
+        <Box data-aos='fade-up' py='25px'>
           <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>
             All restaurants
           </Text>

@@ -82,15 +82,14 @@ export default function Menu({ item }) {
   }, []);
 
   return (
-    <>
+    <Box data-aos='fade-up'>
       <Link to={`/restaurant/product/${item.productId}`}>
         <Box
           cursor='pointer'
           borderRadius='12px'
           p={2}
-          data-aos='fade-up'
           transition='all 0.3s'
-          _hover={{ bg: 'neutral.grayLightest', transition: 'all 0.3s' }}
+          _hover={{ bg: () => (localStorage.getItem('colormode') === 'dark' ? '#414165' : 'primary.light') }}
         >
           <Grid templateColumns={{ base: '1fr', md: '1fr 1fr ' }} gap={4}>
             <GridItem w='100%'>
@@ -109,7 +108,11 @@ export default function Menu({ item }) {
                   </Box>
                   <Box>
                     <Box>
-                      <Text fontWeight='bold' color='neutral.grayDark' fontSize='2xs'>
+                      <Text
+                        fontWeight='bold'
+                        color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.grayDark'}
+                        fontSize='2xs'
+                      >
                         {!loading && producAr.title}
                         {currentPromotion && (
                           <Badge ms={2} bg='primary.default' color='white' fontSize='3xs'>
@@ -119,7 +122,10 @@ export default function Menu({ item }) {
                       </Text>
                     </Box>
                     <Box>
-                      <Text color='neutral.grayDark' fontSize='2xs'>
+                      <Text
+                        color={localStorage.getItem('colormode') === 'dark' ? 'neutral.grayLight' : 'neutral.grayDark'}
+                        fontSize='2xs'
+                      >
                         {!loading && producAr.description.split(' ').slice(0, 10).join(' ')}...
                       </Text>
                     </Box>
@@ -176,6 +182,6 @@ export default function Menu({ item }) {
         </Box>
       </Link>
       <Divider pt={4} />
-    </>
+    </Box>
   );
 }

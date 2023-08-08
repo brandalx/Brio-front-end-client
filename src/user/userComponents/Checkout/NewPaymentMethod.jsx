@@ -118,6 +118,7 @@ export default function NewPaymentMethod({
                   </FormLabel>
 
                   <Input
+                    color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                     {...register('cardNumber', {
                       required: { value: true, message: 'This field is required' },
                       minLength: { value: 6, message: 'Minimum length should be 6' },
@@ -144,6 +145,7 @@ export default function NewPaymentMethod({
                     Expiration
                   </FormLabel>
                   <Input
+                    color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                     {...register('expirationDate', {
                       required: { value: true, message: 'This field is required' },
                       minLength: { value: 4, message: 'Minimum length should be 4' },
@@ -174,6 +176,7 @@ export default function NewPaymentMethod({
                   </FormLabel>
 
                   <Input
+                    color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                     {...register('securityCode', {
                       required: { value: true, message: 'This field is required' },
                       minLength: { value: 3, message: 'Minimum length should be 3' },
@@ -203,6 +206,7 @@ export default function NewPaymentMethod({
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       {...register('cardholder', {
                         required: { value: true, message: 'This field is required' },
                         minLength: { value: 4, message: 'Minimum length should be 4' }
@@ -227,6 +231,7 @@ export default function NewPaymentMethod({
                       Card type
                     </FormLabel>
                     <Select
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       {...register('cardType', {
                         required: { value: true, message: 'This field is required' },
                         minLength: { value: 4, message: 'Choose card type' }

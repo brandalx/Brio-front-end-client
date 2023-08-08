@@ -21,7 +21,12 @@ const CategoryPicker = ({ sortedArr, setSortedArr, emoji, label, size = '40' }) 
   const bgColor = isPressed ? 'primary.light' : isHovered ? 'primary.lightest' : 'neutral.white';
   const borderColor = isPressed ? 'primary.default' : isHovered ? 'neutral.white' : 'neutral.grayLightest';
   const borderWidth = '2px';
-  const textColor = isPressed ? 'primary.default' : 'primary.gray';
+  const textColor = isPressed
+    ? 'primary.default'
+    : isHovered && localStorage.getItem('colormode') === 'dark'
+    ? 'neutral.white'
+    : 'neutral.black';
+
   useEffect(() => {
     if (isPressed) {
       if (sortedArr && sortedArr.length > 0) {

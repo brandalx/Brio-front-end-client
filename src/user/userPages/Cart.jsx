@@ -286,7 +286,13 @@ export default function Cart() {
                           background={isDeliveryPage ? 'neutral.black' : 'neutral.grayLightest'}
                           fontWeight='bold'
                           variant='solid'
-                          color={isDeliveryPage ? 'neutral.white' : 'neutral.black'}
+                          color={
+                            isDeliveryPage && localStorage.getItem('colorMode') === 'dark'
+                              ? 'neutral.black'
+                              : isDeliveryPage
+                              ? 'neutral.white'
+                              : 'neutral.black'
+                          }
                           borderWidth='1px'
                           borderColor='neutral.grayLightest'
                           _hover={{
@@ -309,7 +315,13 @@ export default function Cart() {
                           background={isPickupPage ? 'neutral.black' : 'neutral.grayLightest'}
                           fontWeight='bold'
                           variant='solid'
-                          color={isPickupPage ? 'neutral.white' : 'neutral.black'}
+                          color={
+                            isPickupPage && localStorage.getItem('colorMode') === 'dark'
+                              ? 'neutral.black'
+                              : isPickupPage
+                              ? 'neutral.white'
+                              : 'neutral.black'
+                          }
                           borderWidth='1px'
                           borderColor='neutral.grayLightest'
                           _hover={{

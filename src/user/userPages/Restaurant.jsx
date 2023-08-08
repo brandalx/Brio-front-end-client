@@ -41,6 +41,7 @@ import { Popover } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
 import PickersCategory from '../userComponents/RestaurantPage/PickersCategory';
+import MapComponent from '../userComponents/Order/MapComponent';
 
 export default function Restaurant() {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -64,6 +65,15 @@ export default function Restaurant() {
   const params = useParams();
   const [promotions, setPromotions] = useState([]);
   const [activePromotions, setActivePromotions] = useState([]);
+  const [layout, setLayout] = useState('repeat(2, 1fr)');
+  const handleChangeLayout = () => {
+    console.log(layout);
+    if (layout === 'repeat(2, 1fr)') {
+      setLayout('repeat(1, 1fr)');
+    } else {
+      setLayout('repeat(2, 1fr)');
+    }
+  };
 
   const [usersArr, setUsersArr] = useState();
 
@@ -445,92 +455,108 @@ export default function Restaurant() {
   };
   return (
     <>
-      <Box background='bg' py='50px' data-aos='fade-up'>
-        <Container maxW='1110px'>
-          <Button my={4} _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
-            <Flex alignItems='center'>
-              <Icon as={FaChevronLeft} mr={1} boxSize={4} />
-              <Text onClick={() => handleGoBack()} color='neutral.black' fontSize='xs'>
-                Back
-              </Text>
-            </Flex>
-          </Button>
-          <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
-            <GridItem w='100%' h='100%'>
-              <Flex h='100%'>
-                <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '0.5fr 1fr' }} gap={4}>
-                  <Flex alignItems='center'>
-                    <GridItem w='100%'>
-                      <Skeleton borderRadius='16px' isLoaded={!loading}>
-                        <Image
-                          borderWidth='15px'
-                          borderColor='neutral.white'
-                          borderRadius='16px'
-                          src={restaurantArr.image ? restaurantArr.image : noimagerest}
-                        />
-                      </Skeleton>
-                    </GridItem>
-                  </Flex>
-                  <GridItem w='100%'>
-                    {' '}
-                    <Flex flexDirection='column' justifyContent='center' h='100%'>
-                      <Skeleton my={2} borderRadius='16px' isLoaded={!loading}>
-                        <Text fontSize='xl' fontWeight='extrabold'>
-                          {restaurantArr.title}
-                        </Text>
-                      </Skeleton>
-                      <Skeleton my={2} borderRadius='16px' isLoaded={!loading}>
-                        <Text fontSize='2xs'> {restaurantArr.description}</Text>
-                      </Skeleton>
-                      <Skeleton borderRadius='16px' isLoaded={!loading} my={2}>
-                        <Box display='flex'>
-                          <Box display='flex' alignItems='center' me={2}>
-                            {' '}
-                            <AiOutlineClockCircle color='#828282' />
-                          </Box>
-                          <Text color='neutral.gray' fontSize='3xs'>
-                            {(!loading && restaurantArr.time) || '10-30'} min • ${' '}
-                            {(!loading && restaurantArr.minprice) || 10} min sum
-                          </Text>
-                        </Box>
-                      </Skeleton>
-                    </Flex>
-                  </GridItem>
-                </Grid>
+      <Box data-aos='fade-up'>
+        <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'bg')} py='50px'>
+          <Container maxW='1110px'>
+            <Button my={4} _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
+              <Flex alignItems='center'>
+                <Icon
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+                  as={FaChevronLeft}
+                  mr={1}
+                  boxSize={4}
+                />
+                <Text onClick={() => handleGoBack()} color='neutral.black' fontSize='xs'>
+                  Back
+                </Text>
               </Flex>
-            </GridItem>
-            <GridItem w='100%' h='auto'>
-              <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' my={2}>
-                <Flex alignItems='center'>
-                  {!loading && (
-                    <Box w='100%'>
-                      {address?.results?.length > 0 &&
-                      address.results[0].bounds &&
-                      address.results[0].bounds.northeast.lng ? (
-                        <iframe
-                          width='100%'
-                          src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
-                          title='Monochrome'
-                          style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '230px' }}
-                        />
-                      ) : (
-                        <>
-                          <Box>
-                            <Text py={4} textAlign='center' fontSize='sm' fontWeight='bold' color='neutral.grayDark'>
-                              Sorry, we couldn't find location of this restaurant
+            </Button>
+
+            <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
+              <GridItem w='100%' h='100%'>
+                <Flex h='100%'>
+                  <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '0.5fr 1fr' }} gap={4}>
+                    <Flex alignItems='center'>
+                      <GridItem w='100%'>
+                        <Skeleton borderRadius='16px' isLoaded={!loading}>
+                          <Image
+                            borderWidth='15px'
+                            borderColor='neutral.white'
+                            borderRadius='16px'
+                            src={restaurantArr.image ? restaurantArr.image : noimagerest}
+                          />
+                        </Skeleton>
+                      </GridItem>
+                    </Flex>
+                    <GridItem w='100%'>
+                      {' '}
+                      <Flex flexDirection='column' justifyContent='center' h='100%'>
+                        <Skeleton my={2} borderRadius='16px' isLoaded={!loading}>
+                          <Text color='neutral.black' fontSize='xl' fontWeight='extrabold'>
+                            {restaurantArr.title}
+                          </Text>
+                        </Skeleton>
+                        <Skeleton my={2} borderRadius='16px' isLoaded={!loading}>
+                          <Text color='neutral.gray' fontSize='2xs'>
+                            {' '}
+                            {restaurantArr.description}
+                          </Text>
+                        </Skeleton>
+                        <Skeleton borderRadius='16px' isLoaded={!loading} my={2}>
+                          <Box display='flex'>
+                            <Box display='flex' alignItems='center' me={2}>
+                              {' '}
+                              <AiOutlineClockCircle color='#828282' />
+                            </Box>
+                            <Text color='neutral.gray' fontSize='3xs'>
+                              {(!loading && restaurantArr.time) || '10-30'} min • ${' '}
+                              {(!loading && restaurantArr.minprice) || 10} min sum
                             </Text>
                           </Box>
-                        </>
-                      )}
-                    </Box>
-                  )}
+                        </Skeleton>
+                      </Flex>
+                    </GridItem>
+                  </Grid>
                 </Flex>
-              </Skeleton>
-            </GridItem>
-          </Grid>
-        </Container>
+              </GridItem>
+              <GridItem w='100%' h='auto'>
+                <Skeleton borderRadius='16px' isLoaded={!loading} minH='200px' my={2}>
+                  <Flex alignItems='center'>
+                    {!loading && (
+                      <Box w='100%'>
+                        {address?.results?.length > 0 &&
+                        address.results[0].bounds &&
+                        address.results[0].bounds.northeast.lng ? (
+                          <MapComponent
+                            styleInsert={{
+                              borderRadius: '16px',
+                              borderWidth: '5px',
+                              borderColor: 'white',
+                              minHeight: '230px'
+                            }}
+                            lng={address.results[0].bounds.northeast.lng}
+                            lat={address.results[0].bounds.northeast.lat}
+                            zoom={16}
+                          />
+                        ) : (
+                          <>
+                            <Box>
+                              <Text py={4} textAlign='center' fontSize='sm' fontWeight='bold' color='neutral.grayDark'>
+                                Sorry, we couldn't find location of this restaurant
+                              </Text>
+                            </Box>
+                          </>
+                        )}
+                      </Box>
+                    )}
+                  </Flex>
+                </Skeleton>
+              </GridItem>
+            </Grid>
+          </Container>
+        </Box>
       </Box>
-      <Box>
+      <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
         <Container maxW='1110px' data-aos='fade-up'>
           {!showOops && (
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
@@ -544,6 +570,7 @@ export default function Restaurant() {
                       <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
                         Categories
                       </Text>
+
                       {!loading && categories && (
                         <Box>
                           {categories ? (
@@ -568,9 +595,40 @@ export default function Restaurant() {
                   )}
 
                   {!loading && keepArr.length > 0 && (
-                    <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
-                      Menu
-                    </Text>
+                    <>
+                      <Box py={2} display='flex' alignItems='center' justifyContent='space-between'>
+                        <Text mb={4} color='neutral.black' fontWeight='semibold' fontSize='sm'>
+                          Menu
+                        </Text>
+
+                        <Box display={{ base: 'none', sm: 'block' }}>
+                          <Button
+                            rightIcon={
+                              layout === 'repeat(2, 1fr)' ? <Text fontSize='md'>-</Text> : <Text fontSize='md'>=</Text>
+                            }
+                            borderColor='primary.default'
+                            border='1px'
+                            background='neutral.white'
+                            fontWeight='bold'
+                            variant='solid'
+                            color='primary.default'
+                            borderWidth='1px'
+                            _hover={{
+                              background: 'primary.default',
+                              color: 'white',
+                              borderWidth: '1px',
+                              borderColor: 'primary.default'
+                            }}
+                            py={5}
+                            onClick={() => {
+                              handleChangeLayout();
+                            }}
+                          >
+                            Change layout to {layout === 'repeat(2, 1fr)' ? 'list' : 'tiles'}
+                          </Button>
+                        </Box>
+                      </Box>
+                    </>
                   )}
 
                   <Box>
@@ -578,7 +636,7 @@ export default function Restaurant() {
                       <Grid
                         gridAutoColumns='1fr'
                         gridAutoRows='1fr'
-                        templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
+                        templateColumns={{ base: 'repeat(1, 1fr)', sm: layout }}
                         gap={4}
                       >
                         {!loading ? (
@@ -621,9 +679,10 @@ export default function Restaurant() {
                       </Grid>
                     ) : (
                       <Grid
+                        transition='all 0.3s'
                         gridAutoColumns='1fr'
                         gridAutoRows='1fr'
-                        templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
+                        templateColumns={{ base: 'repeat(1, 1fr)', sm: layout }}
                         gap={4}
                       >
                         {!loading ? (
@@ -635,7 +694,7 @@ export default function Restaurant() {
                               );
 
                               return (
-                                <Box key={index}>
+                                <Box transition='all 03.s' data-aos='fade-up' key={index}>
                                   <Skeleton borderRadius='16px' isLoaded={!loading}>
                                     <ProductCard
                                       promotion={promotion || null} // Pass the found promotion. If no promotion is found, it will be null
@@ -774,6 +833,11 @@ export default function Restaurant() {
                                           </FormLabel>
 
                                           <Textarea
+                                            color={() =>
+                                              localStorage.getItem('colormode') === 'dark'
+                                                ? 'neutral.black'
+                                                : 'neutral.black'
+                                            }
                                             {...register('comment', {
                                               required: false,
                                               minLength: { value: 4, message: 'Minimum length should be 4' }
@@ -798,6 +862,11 @@ export default function Restaurant() {
                                           </FormLabel>
 
                                           <Input
+                                            color={() =>
+                                              localStorage.getItem('colormode') === 'dark'
+                                                ? 'neutral.black'
+                                                : 'neutral.black'
+                                            }
                                             min='1'
                                             max='5'
                                             {...register('rate', {
@@ -925,7 +994,13 @@ export default function Restaurant() {
                                               <PopoverTrigger>
                                                 <Button>{defineUserLike(item)}</Button>
                                               </PopoverTrigger>
-                                              <PopoverContent>
+                                              <PopoverContent
+                                                color={
+                                                  localStorage.getItem('colormode') === 'dark'
+                                                    ? 'neutral.black'
+                                                    : 'neutral.black'
+                                                }
+                                              >
                                                 <PopoverArrow />
                                                 <PopoverCloseButton />
                                                 <PopoverHeader>Login or Signup </PopoverHeader>
@@ -978,13 +1053,16 @@ export default function Restaurant() {
                                               </PopoverContent>
                                             </Popover>
                                           ) : (
-                                            <Button
-                                              p={2}
-                                              _hover={{ transform: 'scale(1.2) rotate(-5deg)' }}
+                                            <Box
+                                              bg='neutral.white'
+                                              borderRadius='16px'
+                                              _hover={{ bg: 'primary.light' }}
                                               onClick={() => postLike(item._id)}
                                             >
-                                              {defineUserLike(item)}
-                                            </Button>
+                                              <Button _hover={{ transform: 'scale(1.2) rotate(-5deg)' }}>
+                                                {defineUserLike(item)}
+                                              </Button>
+                                            </Box>
                                           )}
 
                                           <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
@@ -997,7 +1075,13 @@ export default function Restaurant() {
                                               <PopoverTrigger>
                                                 <Button>{defineUserDisLike(item)}</Button>
                                               </PopoverTrigger>
-                                              <PopoverContent>
+                                              <PopoverContent
+                                                color={
+                                                  localStorage.getItem('colormode') === 'dark'
+                                                    ? 'neutral.black'
+                                                    : 'neutral.black'
+                                                }
+                                              >
                                                 <PopoverArrow />
                                                 <PopoverCloseButton />
                                                 <PopoverHeader>Login or Signup </PopoverHeader>
@@ -1050,13 +1134,16 @@ export default function Restaurant() {
                                               </PopoverContent>
                                             </Popover>
                                           ) : (
-                                            <Button
-                                              _hover={{ transform: 'scale(1.2) rotate(5deg)' }}
-                                              p={2}
+                                            <Box
+                                              bg='neutral.white'
+                                              borderRadius='16px'
+                                              _hover={{ bg: 'primary.light' }}
                                               onClick={() => postDislike(item._id)}
                                             >
-                                              {defineUserDisLike(item)}
-                                            </Button>
+                                              <Button _hover={{ transform: 'scale(1.2) rotate(-5deg)' }}>
+                                                {defineUserDisLike(item)}
+                                              </Button>
+                                            </Box>
                                           )}
 
                                           <Text color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>

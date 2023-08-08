@@ -225,12 +225,17 @@ export default function Product() {
   };
 
   return (
-    <>
+    <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
       <Box data-aos='fade-up'>
         <Container maxW='1110px' py={10}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
             <Flex alignItems='center'>
-              <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+              <Icon
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+                as={FaChevronLeft}
+                mr={1}
+                boxSize={4}
+              />
               <Text onClick={() => handleGoBack()} color='neutral.black' fontSize='xs'>
                 Back
               </Text>
@@ -294,17 +299,21 @@ export default function Product() {
                               color='neutral.black'
                               fontSize='md'
                             >
-                              {!loading && <>$ {arr.price * amount}</>}
+                              {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
                             </Text>
                             {currentPromotion && (
                               <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                                {!loading && <>$ {arr.price * (1 - currentPromotion.discountPercent / 100) * amount}</>}
+                                {!loading && (
+                                  <>
+                                    $ {(arr.price * (1 - currentPromotion.discountPercent / 100) * amount).toFixed(2)}
+                                  </>
+                                )}
                               </Text>
                             )}
                           </Box>
                         ) : (
                           <Text textDecoration='none' my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                            {!loading && <>$ {arr.price * amount}</>}
+                            {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
                           </Text>
                         )}
 
@@ -341,11 +350,15 @@ export default function Product() {
                               color='neutral.black'
                               fontSize='md'
                             >
-                              {!loading && <>$ {arr.price * amount}</>}
+                              {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
                             </Text>
                             {currentPromotion && (
                               <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                                {!loading && <>$ {arr.price * (1 - currentPromotion.discountPercent / 100) * amount}</>}
+                                {!loading && (
+                                  <>
+                                    $ {(arr.price * (1 - currentPromotion.discountPercent / 100) * amount).toFixed(2)}
+                                  </>
+                                )}
                               </Text>
                             )}
                           </Box>
@@ -358,7 +371,7 @@ export default function Product() {
                               color='neutral.black'
                               fontSize='md'
                             >
-                              {!loading && <>$ {arr.price * amount}</>}
+                              {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
                             </Text>
                           </>
                         )}
@@ -509,6 +522,6 @@ export default function Product() {
           </Box>
         </Container>
       </Box>
-    </>
+    </Box>
   );
 }

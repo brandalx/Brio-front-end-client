@@ -4,6 +4,7 @@ import defaultmap from '../../../assets/images/defaultmap.png';
 
 import axios from 'axios';
 import { Checkbox, Flex, Radio } from '@chakra-ui/react';
+import MapComponent from './MapComponent';
 
 export default function Shipping({ item, userArr, restaurantArr }) {
   const [address, setAddress] = useState(null);
@@ -57,8 +58,8 @@ export default function Shipping({ item, userArr, restaurantArr }) {
       setAddressString(finaladdressobj.address);
       setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
     } else {
-      finalstr = finaladdressobj.address;
-      setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
+      finalstr = finaladdressobj?.address;
+      setAddressStringToPrint(finaladdressobj?.replace(/%20/g, ' '));
       setAddressString(finalstr);
     }
     handleMapApi(finaladdressobj);
@@ -73,7 +74,11 @@ export default function Shipping({ item, userArr, restaurantArr }) {
       <Text fontWeight='semibold' fontSize={{ base: '14px', md: '3xs' }} color='neutral.gray'>
         {isSelf ? 'Pickup' : 'Delivery'} address
       </Text>
-      <Box fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold'>
+      <Box
+        fontSize={{ base: '14px', md: 'xs' }}
+        fontWeight='bold'
+        color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.grayDark'}
+      >
         {addressStringToPrint}
       </Box>
       <Skeleton minHeight='320px' my={4} borderRadius='16px' isLoaded={!addressLoading}>
@@ -86,11 +91,11 @@ export default function Shipping({ item, userArr, restaurantArr }) {
                 address.results[0].bounds &&
                 address.results[0].bounds.northeast &&
                 address.results[0].bounds.northeast.lat && (
-                  <iframe
-                    width='100%'
-                    src={`${REACT_APP_MAPBOX}&zoomwheel=false#8/${address.results[0].bounds.northeast.lat}/${address.results[0].bounds.northeast.lng}`}
-                    title='Monochrome'
-                    style={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '320px' }}
+                  <MapComponent
+                    styleInsert={{ borderRadius: '16px', borderWidth: '5px', borderColor: 'white', minHeight: '320px' }}
+                    lng={address.results[0].bounds.northeast.lng}
+                    lat={address.results[0].bounds.northeast.lat}
+                    zoom={16}
                   />
                 )}{' '}
             </>
@@ -99,7 +104,7 @@ export default function Shipping({ item, userArr, restaurantArr }) {
           )}
 
           <Box mt={4}>
-            <Text fontWeight='bold' fontSize='2xs' color='neutral.black'>
+            <Text fontWeight='bold' fontSize='2xs'>
               {/* prettier-igonre */}
 
               {item ? (

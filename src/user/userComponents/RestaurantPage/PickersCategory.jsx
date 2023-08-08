@@ -58,7 +58,17 @@ export default function PickersCategory({
                 ? 'neutral.white'
                 : 'neutral.grayLightest';
               const borderWidth = '2px';
-              const textColor = item.picked ? 'primary.default' : 'primary.gray';
+              const textColor = item.picked
+                ? 'primary.default'
+                : !isHovered && localStorage.getItem('colormode') !== 'dark'
+                ? 'neutral.black'
+                : isHovered && localStorage.getItem('colormode') !== 'dark'
+                ? 'neutral.black'
+                : isHovered && localStorage.getItem('colormode') === 'light'
+                ? 'neutral.white'
+                : !isHovered
+                ? 'neutral.black'
+                : 'neutral.white';
 
               return (
                 <GridItem

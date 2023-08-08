@@ -78,11 +78,15 @@ export default function ModalTextRedactor({ isOpen, onOpen, onClose, item }) {
           maxW='96%'
           MaxH='568px'
         >
-          <ModalHeader>Edit {item.title}</ModalHeader>
+          <ModalHeader color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}>
+            Edit {item.title}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody overflow='auto' pb={6}>
-            <FormControl>
-              <FormLabel>Title</FormLabel>
+            <FormControl color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}>
+              <FormLabel color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}>
+                Title
+              </FormLabel>
               <Controller
                 control={control}
                 name='title'

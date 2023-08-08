@@ -38,13 +38,13 @@ export default function PaymentCard({
         _hover={{
           cursor: 'pointer',
           transition: 'all 0.3s',
-          bg: 'primary.light',
+          bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.light'),
           borderColor: onitemselected ? 'primary.default' : 'primary.light'
         }}
         _active={{
           cursor: 'pointer',
           transition: 'all 0.3s',
-          bg: 'primary.light',
+          bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'),
           borderColor: 'primary.default'
         }}
         borderColor={onitemselected ? 'primary.default' : 'BlackAlpha 200'}
@@ -57,7 +57,11 @@ export default function PaymentCard({
         <Flex justifyContent='space-between'>
           <Flex alignItems='center'>
             <Box>
-              <Heading fontSize='2xs' fontWeight='bold'>
+              <Heading
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+                fontSize='2xs'
+                fontWeight='bold'
+              >
                 {item.cardNumber}
               </Heading>
               <Text fontSize='3xs' fontWeight='semibold' color='neutral.grayDark'>
