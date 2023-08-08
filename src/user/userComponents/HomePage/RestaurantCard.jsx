@@ -11,7 +11,18 @@ export default function RestaurantCard({ img, title, time, price, badgeData, _id
       {title && (
         <Link to={_id ? `/restaurant/${_id}` : '#'}>
           <GridItem w='100%' bg='neutral.white' data-aos='fade-up'>
-            <Box bg='neutral.white' border='1px' borderColor='neutral.grayLightest' borderRadius='lg'>
+            <Box
+              transition='all 0.3s'
+              _hover={{
+                bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.light'),
+                border: 'primary.default',
+                transition: 'all 0.3s'
+              }}
+              bg='neutral.white'
+              border='1px'
+              borderColor='neutral.grayLightest'
+              borderRadius='lg'
+            >
               <Image src={img ? img : noimagerest} roundedTop='lg' h='230px' objectFit='cover' w='100%' />
 
               <Box p='6'>

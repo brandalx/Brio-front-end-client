@@ -119,6 +119,7 @@ export default function Badges() {
                 mr={{ base: '3px', sm: '10px' }}
                 padding={{ base: '6px 0', sm: '12px 3px 3px 3px' }} // Adjust padding for smaller screens
                 border='1px solid'
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                 borderColor='neutral.grayLight'
                 borderRadius='8px'
                 display='flex'

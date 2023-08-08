@@ -2,13 +2,13 @@ import { PropagateLoader } from 'react-spinners';
 import React from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import Logo from '../../assets/svg/Logo';
-export default function Preloader({ loading }) {
+export default function Preloader({ loading, colorss = 'white' }) {
   if (!loading) return null;
 
   return (
     <div
       style={{
-        background: 'white',
+        background: colorss,
         position: 'fixed',
         top: 0,
         left: 0,

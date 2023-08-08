@@ -63,41 +63,45 @@ export default function Order() {
   const [isSelf, setIsSelf] = useState(false);
 
   const handleDefineAddress = (orderitem, useritem, restaurantitem) => {
-    let finaladdress = orderitem.userdata.selectedAddress;
-    // console.log(finaladdress);
-    // console.log('ok');
+    try {
+      let finaladdress = orderitem.userdata.selectedAddress;
+      // console.log(finaladdress);
+      // console.log('ok');
 
-    let finaladdressobj = useritem.address.find((address) => address._id === finaladdress);
-    if (finaladdressobj) {
-      finaladdressobj =
-        finaladdressobj.state +
-        '%20' +
-        finaladdressobj.city +
-        '%20' +
-        finaladdressobj.address1 +
-        '%20' +
-        finaladdressobj.address2;
-    }
+      let finaladdressobj = useritem.address.find((address) => address._id === finaladdress);
+      if (finaladdressobj) {
+        finaladdressobj =
+          finaladdressobj.state +
+          '%20' +
+          finaladdressobj.city +
+          '%20' +
+          finaladdressobj.address1 +
+          '%20' +
+          finaladdressobj.address2;
+      }
 
-    const restaurantObj = restaurantitem.find((restaurant) => restaurant._id === finaladdress);
-    if (restaurantObj) {
-      finaladdressobj = restaurantObj.location + ' ' + restaurantObj.address;
+      const restaurantObj = restaurantitem.find((restaurant) => restaurant._id === finaladdress);
+      if (restaurantObj) {
+        finaladdressobj = restaurantObj.location + ' ' + restaurantObj.address;
 
-      setIsSelf(true);
-    }
+        setIsSelf(true);
+      }
 
-    let finalstr;
+      let finalstr;
 
-    if (finaladdressobj && finaladdressobj.address && finaladdressobj.address.length > 10) {
-      setAddressString(finaladdressobj.address);
-      finalstr = finaladdressobj.address.replace(/%20/g, ' ');
-    } else {
-      finalstr = finaladdressobj.address;
-      setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
-      setAddressString(finalstr);
+      if (finaladdressobj && finaladdressobj.address && finaladdressobj.address.length > 10) {
+        setAddressString(finaladdressobj.address);
+        finalstr = finaladdressobj.address.replace(/%20/g, ' ');
+      } else {
+        finalstr = finaladdressobj?.address;
+        setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
+        setAddressString(finalstr);
+      }
+    } catch (error) {
+      return <Text>Nothing</Text>;
     }
   };
-  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px) hue-rotate(90deg)' />;
+  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px)' />;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
   const toast = useToast();
@@ -164,9 +168,9 @@ export default function Order() {
       setOrdersArr(order);
       setRestaurantArr(restaurant);
 
-      // console.log(user);
-      // console.log(order);
-      // console.log(restaurant);
+      console.log(user);
+      console.log(order);
+      console.log(restaurant);
       handleDefineAddress(order, user, restaurant);
       setLoading(false);
     } catch (error) {
@@ -263,12 +267,17 @@ export default function Order() {
   }
 
   return (
-    <Box>
+    <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
       {/* some of the data here is still be static and will changed in the future */}
       <Container maxW='1110px'>
         <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
           <Flex alignItems='center'>
-            <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+            <Icon
+              color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+              as={FaChevronLeft}
+              mr={1}
+              boxSize={4}
+            />
             <Text color='neutral.black' fontSize='xs'>
               <Link to='/user/orders'> My orders</Link>
             </Text>
@@ -348,10 +357,21 @@ export default function Order() {
                           {isSelf ? '(Pickup at)' : '(Delivery to)'}
                         </Text>
 
-                        <Text display={{ base: 'none', md: 'block' }} me={2} fontWeight='bold'>
+                        <Text
+                          color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.grayDark'}
+                          display={{ base: 'none', md: 'block' }}
+                          me={2}
+                          fontWeight='bold'
+                        >
                           {addressStringToPrint && addressStringToPrint}
                         </Text>
-                        <Text display={{ base: 'block', md: 'none' }} fontSize='10px' me={2} fontWeight='bold'>
+                        <Text
+                          color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.grayDark'}
+                          display={{ base: 'block', md: 'none' }}
+                          fontSize='10px'
+                          me={2}
+                          fontWeight='bold'
+                        >
                           {addressStringToPrint && addressStringToPrint}
                         </Text>
                         <Box>
@@ -518,9 +538,14 @@ export default function Order() {
               <Text fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold' color='neutral.black'>
                 Shipping address
               </Text>
-              {!loading && ordersArr && ordersArr.ordersdata && ordersArr.ordersdata.products && (
-                <Shipping userArr={userArr} restaurantArr={restaurantArr} item={ordersArr.userdata.selectedAddress} />
-              )}
+              {!loading &&
+                ordersArr &&
+                ordersArr.ordersdata &&
+                ordersArr.ordersdata.products &&
+                ordersArr.userdata &&
+                ordersArr.userdata.selectedAddress && (
+                  <Shipping userArr={userArr} restaurantArr={restaurantArr} item={ordersArr.userdata.selectedAddress} />
+                )}
             </Box>
             <Skeleton minH='250px' borderRadius='16px' isLoaded={!loading}>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
@@ -531,8 +556,8 @@ export default function Order() {
         </Grid>
       </Container>
 
-      <Box>
-        <Modal size='xl' isCentered isOpen={isOpen} onClose={onClose}>
+      <Box zIndex={99999}>
+        <Modal size='full' isCentered isOpen={isOpen} onClose={onClose}>
           {overlay}
           <ModalContent>
             <ModalHeader>
@@ -542,7 +567,7 @@ export default function Order() {
               </Text>
             </ModalHeader>
             <ModalBody>
-              <Text>
+              <Text color={localStorage.getItem('colormode') === 'dark' ? 'black' : 'neutral.grayDark'}>
                 This action cannot be undone. We will cancel your order and return your money. For further information,
                 cancelation fees and more visit our{' '}
                 <Box textDecoration='underline' color='primary.default' as='span'>

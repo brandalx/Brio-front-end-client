@@ -3,7 +3,6 @@ import { Box, Divider, Flex, Heading, Text } from '@chakra-ui/react';
 import Account from '../../../assets/svg/Account';
 import Administrators from '../../../assets/svg/Administrators';
 import Security from '../../../assets/svg/Security';
-import theme from '../../../utils/theme';
 import { Link, useLocation } from 'react-router-dom';
 import React from 'react';
 function SettingItem({ element, isSelected, onItemSelected }) {
@@ -40,7 +39,7 @@ function SettingItem({ element, isSelected, onItemSelected }) {
   const borderColor = isSelected ? 'primary.default' : isHovered ? 'primary.default' : 'neutral.grayLightest';
   const bgColor = isSelected ? 'primary.default' : isHovered ? 'primary.lightest' : 'neutral.white';
   const textColor = isSelected ? 'primary.default' : 'neutral.black';
-  const iconColor = isSelected ? theme.colors.neutral.white : theme.colors.neutral.black;
+  const iconColor = isSelected ? 'white' : 'black';
 
   return (
     <Box

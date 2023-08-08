@@ -25,16 +25,18 @@ import {
   MenuButton,
   Skeleton,
   useToast,
-  FormControl
+  FormControl,
+  useColorMode
 } from '@chakra-ui/react';
 import { IconShoppingBag } from '@tabler/icons-react';
-
+import Sun from '../../assets/svg/Sun';
+import Moon from '../../assets/svg/Moon';
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import Logo from '../../assets/svg/Logo';
 import { Form, Link, useLocation, useNavigate } from 'react-router-dom';
 import { API_URL, TOKEN_KEY, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import { useCheckToken } from '../../services/token';
-import { avatarContext, cartContext, geolocationContext } from '../../context/globalContext';
+import { avatarContext, cartContext, geolocationContext, useColorModeContext } from '../../context/globalContext';
 import GeolocationDefinder from './Navbar/GeolocationDefinder';
 import jwtDecode from 'jwt-decode';
 export default function Navbar() {
@@ -52,10 +54,10 @@ export default function Navbar() {
   const isInCart = location.pathname.startsWith('/user/cart');
 
   const isInRestaurants = location.pathname.startsWith('/restaurant');
+  const isInBlog = location.pathname.startsWith('/blog');
   const isInMyOrders = location.pathname.startsWith('/user/orders');
 
   const isInDeals = location.pathname.startsWith('/deals');
-
 
   const token = localStorage.getItem(TOKEN_KEY);
   let checkerIfAdmin = false;
@@ -155,8 +157,10 @@ export default function Navbar() {
       isClosable: true
     });
   };
+  const { colorMode, setColorMode } = useColorModeContext();
+
   return (
-    <>
+    <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
       <Container maxW='1110px'>
         <chakra.header w='full' px={{ base: 2, sm: 4 }} py={4}>
           <Flex alignItems='center' justifyContent='space-between' mx='auto'>
@@ -174,37 +178,60 @@ export default function Navbar() {
                 </Link>
               </Text>
 
-              <InputGroup display={{ base: 'none', md: 'inline-flex' }} size='md' fontSize='md' mx='10px'>
-                <form onSubmit={handleSearch}>
-                  <InputRightElement>
-                    <Button type='submit'>
-                      <AiOutlineSearch color='#828282' size={14} />
-                    </Button>
-                  </InputRightElement>
-                  <Input
-                    defaultValue={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    background='neutral.grayLightest'
-                    _placeholder={{ color: 'neutral.gray' }}
-                    borderRadius={100}
-                    fontSize='2xs'
-                    type='text'
-                    placeholder='Search...'
-                  />
-                </form>
-              </InputGroup>
+              <Box mx='10px' display={{ base: 'none', lg: 'block' }}>
+                <InputGroup display={{ base: 'none', md: 'inline-flex' }} size='md' fontSize='md'>
+                  <form onSubmit={handleSearch}>
+                    <InputRightElement>
+                      <Button type='submit'>
+                        <AiOutlineSearch color='#828282' size={14} />
+                      </Button>
+                    </InputRightElement>
+                    <Input
+                      defaultValue={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      background='neutral.grayLightest'
+                      _placeholder={{ color: 'neutral.gray' }}
+                      borderRadius={100}
+                      fontSize='2xs'
+                      type='text'
+                      placeholder='Search...'
+                    />
+                  </form>
+                </InputGroup>
+              </Box>
             </Flex>
             <HStack display='flex' alignItems='center' spacing={1}>
               <HStack spacing={2} mr={1} display={{ base: 'none', md: 'inline-flex' }}>
                 <Button
-                  color='neutral.black'
+                  bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
+                  variant={'link'}
+                  size='xs'
+                  py='8px'
+                  px='8px'
+                  color='primary.default'
+                  onClick={() => {
+                    const newColorMode = colorMode === 'light' ? 'dark' : 'light';
+                    localStorage.setItem('colormode', newColorMode);
+                    setColorMode(newColorMode);
+                  }}
+                >
+                  {localStorage.getItem('colormode') === 'dark' ? (
+                    <Box>
+                      <Moon />
+                    </Box>
+                  ) : (
+                    <Box>
+                      <Sun />
+                    </Box>
+                  )}
+                </Button>
+                <Button
                   fontWeight='bold'
                   fontSize='2xs'
                   _hover={{
                     borderRadius: '16px',
-                    background: 'primary.light',
-                    textDecoration: 'none',
-                    color: 'primary.default'
+                    background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654',
+                    textDecoration: 'none'
                   }}
                 >
                   <Link fontSize='fontSizes.2xs' to='/restaurant'>
@@ -212,7 +239,13 @@ export default function Navbar() {
                       fontWeight={isInRestaurants ? 'bold' : 'regular'}
                       m={0}
                       p={0}
-                      color={isInRestaurants ? 'primary.default' : 'neutral.black'}
+                      color={
+                        isInRestaurants
+                          ? 'primary.default'
+                          : localStorage.getItem('colormode') === 'dark'
+                          ? 'neutral.black'
+                          : 'neutral.black'
+                      }
                     >
                       Restaurants
                     </Text>
@@ -225,14 +258,50 @@ export default function Navbar() {
                     fontSize='2xs'
                     _hover={{
                       borderRadius: '16px',
-                      background: 'primary.light',
-                      textDecoration: 'none',
-                      color: 'primary.default'
+                      background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654',
+                      textDecoration: 'none'
                     }}
                   >
                     {' '}
-                    <Text m={0} p={0} color={isInDeals ? 'primary.default' : 'neutral.black'}>
+                    <Text
+                      m={0}
+                      p={0}
+                      color={
+                        isInDeals
+                          ? 'primary.default'
+                          : localStorage.getItem('colormode') === 'dark'
+                          ? 'neutral.black'
+                          : 'neutral.black'
+                      }
+                    >
                       Deals
+                    </Text>
+                  </Button>
+                </Link>
+                <Link to='/blog'>
+                  <Button
+                    color='neutral.black'
+                    fontWeight='bold'
+                    fontSize='2xs'
+                    _hover={{
+                      borderRadius: '16px',
+                      background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654',
+                      textDecoration: 'none'
+                    }}
+                  >
+                    {' '}
+                    <Text
+                      m={0}
+                      p={0}
+                      color={
+                        isInBlog
+                          ? 'primary.default'
+                          : localStorage.getItem('colormode') === 'dark'
+                          ? 'neutral.black'
+                          : 'neutral.black'
+                      }
+                    >
+                      Blogs
                     </Text>
                   </Button>
                 </Link>
@@ -246,13 +315,22 @@ export default function Navbar() {
                       fontSize='2xs'
                       _hover={{
                         borderRadius: '16px',
-                        background: 'primary.light',
-                        textDecoration: 'none',
-                        color: 'primary.default'
+                        background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654',
+                        textDecoration: 'none'
                       }}
                     >
                       {' '}
-                      <Text m={0} p={0} color={isInMyOrders ? 'primary.default' : 'neutral.black'}>
+                      <Text
+                        m={0}
+                        p={0}
+                        color={
+                          isInMyOrders
+                            ? 'primary.default'
+                            : localStorage.getItem('colormode') === 'dark'
+                            ? 'neutral.black'
+                            : 'neutral.black'
+                        }
+                      >
                         <Link fontSize='fontSizes.2xs' to='/user/orders'>
                           My orders
                         </Link>
@@ -272,8 +350,8 @@ export default function Navbar() {
                           borderColor={isInCart ? 'primary.default' : 'neutral.white'}
                           borderWidth='1px'
                           ml='4px'
-                          bg='primary.lightest'
-                          _hover={{ bg: 'primary.light' }}
+                          bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
+                          _hover={{ bg: localStorage.getItem('colormode') === 'dark' ? '#414165' : 'primary.light' }}
                           color='black'
                           px={'8px'}
                           py={'7.5px'}
@@ -281,19 +359,20 @@ export default function Navbar() {
                           position='relative'
                         >
                           <Box
+                            px={1}
                             position='absolute'
                             top='-2px'
                             right='-4px'
                             bg='primary.default'
                             h='20px'
-                            w='20px'
+                            minW='20px'
                             borderRadius='8px'
                             display='flex'
                             alignItems='center'
                             justifyContent='center'
                             fontSize='xs'
                             fontWeight='semibold'
-                            color='white'
+                            color='whiteAlpha.900'
                             textAlign='center'
                             minWidth='20px'
                           >
@@ -314,7 +393,14 @@ export default function Navbar() {
                             <MenuList>
                               <a href='/user/cart'>
                                 {/* //because it should refresh to update user logged in */}
-                                <MenuItem fontWeight='medium'>My cart</MenuItem>
+                                <MenuItem
+                                  color={
+                                    localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.black'
+                                  }
+                                  fontWeight='medium'
+                                >
+                                  My cart
+                                </MenuItem>
                               </a>
 
                               {!loading && cartLen > 0 && (
@@ -349,14 +435,14 @@ export default function Navbar() {
                           borderColor='neutral.white'
                           transition='all 0.3s'
                           _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
-                          borderRadius='2xl'
+                          borderRadius='100px'
                           display='flex'
                           alignItems='center'
                         >
                           <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                             <Avatar
                               py='2px'
-                              borderRadius='xl'
+                              borderRadius='100px'
                               size='md'
                               name={'Anonimus'}
                               src={'/assets/avatars/' + srcav}
@@ -371,14 +457,13 @@ export default function Navbar() {
                             borderColor='neutral.white'
                             transition='all 0.3s'
                             _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
-                            borderRadius='2xl'
+                            borderRadius='14px'
                             display='flex'
                             alignItems='center'
                           >
                             <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                               <Avatar
-                                py='2px'
-                                borderRadius='3xl'
+                                borderRadius='12px'
                                 size='md'
                                 name={!loading && arr.firstname + ' ' + arr.lastname}
                                 src={!loading && avatarUser}
@@ -442,39 +527,47 @@ export default function Navbar() {
                   {localStorage[TOKEN_KEY] && (
                     <>
                       <Box>
-                        <GeolocationDefinder setLoading={setLoading} loading={loading} isInCart={isInCart} />
+                        <GeolocationDefinder
+                          pxx={'2px'}
+                          pyy={'2px'}
+                          setLoading={setLoading}
+                          loading={loading}
+                          isInCart={isInCart}
+                        />
                       </Box>
                       <Skeleton borderRadius='16px' isLoaded={!loading}>
                         <Box
                           borderColor={isInCart ? 'primary.default' : 'neutral.white'}
                           borderWidth='1px'
                           ml='4px'
-                          bg='primary.lightest'
+                          bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
                           color='black'
-                          px={'8px'}
-                          py={'8px'}
-                          borderRadius='16px'
+                          _hover={{ bg: localStorage.getItem('colormode') === 'gray' ? '#414165' : 'primary.light' }}
+                          px={'2px'}
+                          py={'2px'}
+                          borderRadius='12px'
                           position='relative'
                         >
                           <Box
+                            px={1}
                             position='absolute'
                             top='-2px'
                             right='-4px'
                             bg='primary.default'
-                            h='18px'
-                            w='18px'
+                            h='20px'
+                            minW='20px'
                             borderRadius='8px'
                             display='flex'
                             alignItems='center'
                             justifyContent='center'
                             fontSize='xs'
                             fontWeight='semibold'
-                            color='white'
+                            color='whiteAlpha.900'
                             textAlign='center'
+                            minWidth='20px'
                           >
                             {!loading && cartLen}
                           </Box>
-
                           <Menu>
                             <MenuButton
                               as={Button}
@@ -489,7 +582,14 @@ export default function Navbar() {
                             <MenuList>
                               <a href='/user/cart'>
                                 {/* //because it should refresh to update user logged in */}
-                                <MenuItem fontWeight='medium'>My cart</MenuItem>
+                                <MenuItem
+                                  color={
+                                    localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.black'
+                                  }
+                                  fontWeight='medium'
+                                >
+                                  My cart
+                                </MenuItem>
                               </a>
 
                               {!loading && cartLen > 0 && (
@@ -523,14 +623,14 @@ export default function Navbar() {
                           borderColor='neutral.white'
                           transition='all 0.3s'
                           _hover={{ borderWidth: '2px', borderColor: 'primary.default', transition: 'all 0.3s' }}
-                          borderRadius='2xl'
+                          borderRadius='100px'
                           display='flex'
                           alignItems='center'
                         >
                           <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
                             <Avatar
                               py='2px'
-                              borderRadius='3xl'
+                              borderRadius='100px'
                               size='md'
                               name={'Anonimus'}
                               src={'/assets/avatars/' + srcav}
@@ -541,11 +641,11 @@ export default function Navbar() {
 
                       {localStorage[TOKEN_KEY] ? (
                         <>
-                          <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
+                          <MenuButton as={Button} variant={'link'} cursor={'pointer'} minW={0}>
                             <Avatar
-                              py='2px'
-                              borderRadius='xl'
+                              borderRadius='12px'
                               size='md'
+                              style={{ transform: 'scale(0.9)' }}
                               name={!loading && arr.firstname + ' ' + arr.lastname}
                               src={(!loading && avatarUser) || null}
                             />{' '}
@@ -601,13 +701,13 @@ export default function Navbar() {
                     display={{ base: 'flex', md: 'none' }}
                     aria-label='Open menu'
                     fontSize='20px'
-                    color='neutral.gray'
+                    bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
                     _dark={{ color: 'inherit' }}
                     variant='ghost'
-                    h='48px'
-                    w='48px'
-                    borderRadius='16px'
-                    bg='neutral.grayLightest'
+                    color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'grayLight')}
+                    h='40px'
+                    w='40px'
+                    borderRadius='12px'
                     icon={<AiOutlineMenu />}
                     onClick={mobileNav.onOpen}
                   />
@@ -649,7 +749,16 @@ export default function Navbar() {
                       </Text>
                     </Box>
                     <Button
-                      color={isInRestaurants ? 'primary.default' : 'neutral.black'}
+                      _hover={{
+                        background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654'
+                      }}
+                      color={
+                        isInRestaurants
+                          ? 'primary.default'
+                          : localStorage.getItem('colormode') === 'dark'
+                          ? 'neutral.black'
+                          : 'neutral.black'
+                      }
                       fontWeight='extrabold'
                       fontSize='xs'
                       variant='ghost'
@@ -658,7 +767,16 @@ export default function Navbar() {
                       <Link to='/restaurant'>Restaurants</Link>
                     </Button>
                     <Button
-                      color={isInDeals ? 'primary.default' : 'neutral.black'}
+                      _hover={{
+                        background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654'
+                      }}
+                      color={
+                        isInDeals
+                          ? 'primary.default'
+                          : localStorage.getItem('colormode') === 'dark'
+                          ? 'neutral.black'
+                          : 'neutral.black'
+                      }
                       fontWeight='extrabold'
                       fontSize='xs'
                       variant='ghost'
@@ -666,9 +784,36 @@ export default function Navbar() {
                     >
                       <Link to='/deals'>Deals </Link>
                     </Button>
+                    <Button
+                      _hover={{
+                        background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654'
+                      }}
+                      color={
+                        isInBlog
+                          ? 'primary.default'
+                          : localStorage.getItem('colormode') === 'dark'
+                          ? 'neutral.black'
+                          : 'neutral.black'
+                      }
+                      fontWeight='extrabold'
+                      fontSize='xs'
+                      variant='ghost'
+                      mb='24px'
+                    >
+                      <Link to='/blog'>Blogs </Link>
+                    </Button>
                     {localStorage[TOKEN_KEY] && (
                       <Button
-                        color={isInMyOrders ? 'primary.default' : 'neutral.black'}
+                        _hover={{
+                          background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654'
+                        }}
+                        color={
+                          isInMyOrders
+                            ? 'primary.default'
+                            : localStorage.getItem('colormode') === 'dark'
+                            ? 'neutral.black'
+                            : 'neutral.black'
+                        }
                         fontWeight='extrabold'
                         fontSize='xs'
                         variant='ghost'
@@ -677,6 +822,37 @@ export default function Navbar() {
                         <Link to='/user/orders'>My orders</Link>
                       </Button>
                     )}{' '}
+                    <Button
+                      textDecoration='none'
+                      mb={4}
+                      bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
+                      variant={'link'}
+                      size='xs'
+                      py='8px'
+                      px='8px'
+                      color='primary.default'
+                      onClick={() => {
+                        const newColorMode = colorMode === 'light' ? 'dark' : 'light';
+                        localStorage.setItem('colormode', newColorMode);
+                        setColorMode(newColorMode);
+                      }}
+                    >
+                      {localStorage.getItem('colormode') === 'dark' ? (
+                        <Box display='flex' alignItems='center'>
+                          <Moon />{' '}
+                          <Box textDecoration='none' ms={2} as='span'>
+                            {' Light mode '}
+                          </Box>
+                        </Box>
+                      ) : (
+                        <Box display='flex' alignItems='center'>
+                          <Sun />{' '}
+                          <Box textDecoration='none' ms={2} as='span'>
+                            {' Dark mode '}
+                          </Box>
+                        </Box>
+                      )}
+                    </Button>
                     <Box>
                       <form onSubmit={handleSearch}>
                         <Box my='8px' display='flex' justifyItems='center'>
@@ -704,7 +880,11 @@ export default function Navbar() {
                   </Flex>
                   <Flex w='100%' justifyContent='space-between' px='16px'>
                     <Flex justifyContent='flex-end'></Flex>
-                    <CloseButton aria-label='Close menu' onClick={mobileNav.onClose} />
+                    <CloseButton
+                      color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}
+                      aria-label='Close menu'
+                      onClick={mobileNav.onClose}
+                    />
                   </Flex>
                 </VStack>
               </Box>
@@ -712,6 +892,6 @@ export default function Navbar() {
           </Flex>
         </chakra.header>
       </Container>
-    </>
+    </Box>
   );
 }

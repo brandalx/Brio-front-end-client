@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 
 export default function AdditionalInfo({ mainBody, setMainBody }) {
   const [phone, setPhone] = useState('');
-  const isValid = () => phone.length > 6;
+  const isValid = () => phone.length > 9;
   const navigate = useNavigate();
 
   const handleGoBack = () => {
@@ -60,11 +60,12 @@ export default function AdditionalInfo({ mainBody, setMainBody }) {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='phone'
                       type='number'
                       {...register('phone', {
                         required: { value: true, message: 'This field is required' },
-                        minLength: { value: 9, message: 'Minimum length should be 9' }
+                        minLength: { value: 10, message: 'Minimum length should be 10' }
                       })}
                       background='neutral.white'
                       _placeholder={{ color: 'neutral.gray' }}

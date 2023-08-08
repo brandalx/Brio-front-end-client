@@ -97,6 +97,12 @@ export default function ProductCard({ img, title, description, price, _id, promo
       <Box
         w='100%'
         p={2}
+        transition='all 0.3s'
+        _hover={{
+          bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.light'),
+          border: 'primary.default',
+          transition: 'all 0.3s'
+        }}
         bg='neutral.white'
         border='1px'
         borderColor='neutral.grayLightest'
@@ -197,7 +203,7 @@ export default function ProductCard({ img, title, description, price, _id, promo
                     <Stack w='100%'>
                       <Flex w='100%' justifyContent='space-between' alignItems='center'>
                         <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                          $ {(price * priceCount).toFixed(2)}
+                          ${(price * priceCount).toFixed(2)}
                         </Text>
                         <Box display='flex' alignItems='center'>
                           <Button

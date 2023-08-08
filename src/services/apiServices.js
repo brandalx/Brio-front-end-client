@@ -1,5 +1,5 @@
 import axios from 'axios';
-const urlbackend = import.meta.env.VITE_BACKEND_URL;
+const urlbackend = import.meta.env.VITE_BACKEND_URL_DEVELOP;
 
 export const API_URL = urlbackend;
 // export const API_URL = 'http://172.20.10.3:3001';

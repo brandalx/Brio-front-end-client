@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import Users from '../../../assets/svg/Users';
 import Restaurants from '../../../assets/svg/Restaurants';
-import theme from '../../../utils/theme';
+
 import { Link, useLocation } from 'react-router-dom';
 
 function SignUpOptions({ element, isSelected, onItemSelected }) {
@@ -37,7 +37,7 @@ function SignUpOptions({ element, isSelected, onItemSelected }) {
   const borderColor = isSelected ? 'primary.default' : isHovered ? 'primary.default' : 'neutral.grayLightest';
   const bgColor = isSelected ? 'primary.default' : isHovered ? 'primary.lightest' : 'neutral.white';
   const textColor = isSelected ? 'primary.default' : 'neutral.black';
-  const iconColor = isSelected ? theme.colors.neutral.white : theme.colors.neutral.black;
+  const iconColor = isSelected ? 'white' : 'black';
 
   return (
     <Box

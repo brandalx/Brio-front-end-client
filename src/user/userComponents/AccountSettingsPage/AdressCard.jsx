@@ -98,13 +98,13 @@ export default function AdressCard({
           _hover={{
             cursor: 'pointer',
             transition: 'all 0.3s',
-            bg: isAddress ? 'primary.light' : 'error.hover',
+            bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.light'),
             borderColor: onitemselected ? 'primary.default' : 'primary.light'
           }}
           _active={{
             cursor: 'pointer',
             transition: 'all 0.3s',
-            bg: isAddress ? 'primary.light' : 'error.default',
+            bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'),
             borderColor: 'primary.default'
           }}
           borderColor={onitemselected ? 'primary.default' : 'BlackAlpha 200'}
@@ -144,17 +144,32 @@ export default function AdressCard({
 
               <Box color={isAddress ? 'initial' : 'neutral.white'}>
                 {!isAddress && (
-                  <Heading color={isAddress ? 'initial' : 'neutral.white'} fontSize='2xs' fontWeight='black'>
+                  <Heading
+                    color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}
+                    fontSize='2xs'
+                    fontWeight='black'
+                  >
                     This address cannot be used
                   </Heading>
                 )}
-                <Heading color={isAddress ? 'initial' : 'neutral.white'} fontSize='2xs' fontWeight='bold'>
+                <Heading
+                  color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}
+                  fontSize='2xs'
+                  fontWeight='bold'
+                >
                   {item.city || ''}
                 </Heading>
-                <Text color={isAddress ? 'initial' : 'neutral.white'} fontSize='3xs' fontWeight='semibold'>
+                <Text
+                  color={localStorage.getItem('colormode') === 'dark' ? 'neutral.gray' : 'neutral.black'}
+                  fontSize='3xs'
+                  fontWeight='semibold'
+                >
                   {item.state} State, {item.country}
                 </Text>
-                <Text color={isAddress ? 'initial' : 'neutral.white'} fontSize='3xs'>
+                <Text
+                  color={localStorage.getItem('colormode') === 'dark' ? 'neutral.gray' : 'neutral.black'}
+                  fontSize='3xs'
+                >
                   {item.address1} {item.address2}
                 </Text>
               </Box>

@@ -78,7 +78,7 @@ export default function SearchInput() {
                     background='primary.default'
                     fontWeight='bold'
                     variant='solid'
-                    color='neutral.white'
+                    color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'white')}
                     borderWidth='1px'
                     borderColor='neutral.white'
                     _hover={{
@@ -89,7 +89,14 @@ export default function SearchInput() {
                     }}
                     py={5}
                   >
-                    <Icon as={AiOutlineSearch} mr={1} boxSize={4} />
+                    <Icon
+                      color={() =>
+                        localStorage.getItem('colormode') === 'dark' ? 'neutral.grayLight' : 'neutral.grayLight'
+                      }
+                      as={AiOutlineSearch}
+                      mr={1}
+                      boxSize={4}
+                    />
                     Search
                   </Button>
                 </Box>

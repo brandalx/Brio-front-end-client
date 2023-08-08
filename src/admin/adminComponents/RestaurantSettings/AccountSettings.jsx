@@ -289,6 +289,7 @@ export default function AccountSettings() {
                 </FormLabel>
 
                 <Input
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                   type='text'
                   background='neutral.white'
                   value={formData.title}
@@ -306,6 +307,7 @@ export default function AccountSettings() {
                 </FormLabel>
 
                 <Input
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                   type='email'
                   value={formData.email}
                   background='neutral.white'
@@ -323,6 +325,7 @@ export default function AccountSettings() {
                 </FormLabel>
 
                 <Input
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                   type='phone'
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
@@ -344,6 +347,7 @@ export default function AccountSettings() {
                 </FormLabel>
 
                 <Textarea
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                   type='text'
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}
@@ -362,6 +366,7 @@ export default function AccountSettings() {
                 </FormLabel>
 
                 <Textarea
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                   type='text'
                   background='neutral.white'
                   _placeholder={{ color: 'neutral.gray' }}

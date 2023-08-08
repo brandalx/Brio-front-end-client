@@ -108,7 +108,12 @@ export default function Search() {
         transition='transform 0.2s ease-in-out'
       >
         <Flex transition={'all 0.1s'} _hover={{ color: 'neutral.gray', transition: 'all 0.1s' }} alignItems='center'>
-          <Icon as={FaChevronLeft} mr={1} boxSize={4} />
+          <Icon
+            color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+            as={FaChevronLeft}
+            mr={1}
+            boxSize={4}
+          />
           <Text color='neutral.black' fontSize='xs'>
             Back
           </Text>

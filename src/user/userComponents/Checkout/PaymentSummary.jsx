@@ -111,6 +111,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
                   $
                 </InputLeftElement>
                 <Input
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                   ref={tipref}
                   onChange={handleTipChange}
                   type='number'
@@ -175,7 +176,7 @@ export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
                 Total (tax incl.)
               </Text>
               <Text fontWeight='bold' fontSize='2xs' color='primary.default'>
-                ${!loading && Number(item.totalAmount) + Number(tipValue)}
+                ${!loading && (Number(item.totalAmount) + Number(tipValue)).toFixed(2)}
               </Text>
             </Flex>
           </Skeleton>

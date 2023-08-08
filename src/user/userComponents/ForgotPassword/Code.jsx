@@ -62,7 +62,7 @@ export default function Code({ handleUserSendRecoverCode, codeData, setCodeData 
           </Box>
           <FormControl my={5} id='password' isInvalid={errors.code}>
             <Box display='flex' justifyContent='center'>
-              <HStack>
+              <HStack color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}>
                 <PinInput
                   mask
                   id='code'

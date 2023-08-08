@@ -1,4 +1,3 @@
-import theme from '../../utils/theme';
 import React from 'react';
 import { Box, Container, Link, SimpleGrid, Stack, Text, useColorModeValue, Heading } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
@@ -7,8 +6,8 @@ import Logo from '../../assets/svg/Logo';
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className='page-header' style={{ background: theme.colors.neutral.black }}>
-      <Box>
+    <footer className='page-footer'>
+      <Box bg={() => (localStorage.getItem('colormode') === 'light' ? 'neutral.black' : '#363654')}>
         <Container as={Stack} maxW={'6xl'} py={10}>
           <SimpleGrid templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 1fr 2fr' }} spacing={8}>
             <Stack spacing={6}>
@@ -22,18 +21,18 @@ export default function Footer() {
                 © {new Date().getFullYear()} Brio - Bringing food really on-time
               </Text>
               <Stack direction={'row'} spacing={6} color='neutral.white'>
-                <FaTwitter />
+                <FaTwitter color='white' />
 
-                <FaYoutube />
+                <FaYoutube color='white' />
 
-                <FaInstagram />
+                <FaInstagram color='white' />
               </Stack>
             </Stack>
             <Stack align={'flex-start'} color='neutral.grayLight'>
-              <Heading fontSize='2xs' color='neutral.white'>
+              <Heading fontSize='2xs' color='whiteAlpha.900'>
                 Responses
               </Heading>
-              <Link fontSize='2xs' href={'#'}>
+              <Link color='whiteAlpha.900' fontSize='2xs' href={'#'}>
                 How it works
               </Link>
               <Link fontSize='2xs' href={'#'}>
@@ -47,7 +46,7 @@ export default function Footer() {
               </Link>
             </Stack>
             <Stack align={'flex-start'} color='neutral.grayLight'>
-              <Heading fontSize='2xs' color='neutral.white'>
+              <Heading fontSize='2xs' color='whiteAlpha.900'>
                 Company
               </Heading>
               <Link fontSize='2xs' href={'#'}>
@@ -65,7 +64,7 @@ export default function Footer() {
               </Link>
             </Stack>
             <Stack align={'flex-start'} color='neutral.grayLight'>
-              <Heading color='neutral.white' fontSize='2xs'>
+              <Heading color='whiteAlpha.900' fontSize='2xs'>
                 Support
               </Heading>
 

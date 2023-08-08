@@ -130,7 +130,7 @@ export default function SignUp() {
                   </Link>
                   <VisuallyHidden>Brio</VisuallyHidden>
                 </Box>
-                <Text fontSize='sm' fontWeight='extrabold' color='white' ml='2'>
+                <Text fontSize='sm' fontWeight='extrabold' color='whiteAlpha.900' ml='2'>
                   <Link to='/'> Brio</Link>
                 </Text>
               </Flex>
@@ -286,7 +286,7 @@ export default function SignUp() {
               </Routes>
 
               <Box textAlign='center' py={6}>
-                <Text w='100%'>
+                <Text color='neutral.black' w='100%'>
                   Already have an account?
                   <Link to='/login' w='100%'>
                     {' '}

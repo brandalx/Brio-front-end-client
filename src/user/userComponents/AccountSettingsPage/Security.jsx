@@ -149,6 +149,7 @@ export default function Security() {
                       Current password
                     </FormLabel>
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       isInvalid={errors.previouspassword}
                       {...register('previouspassword', {
                         required: { value: true, message: 'This field is required' },
@@ -173,6 +174,7 @@ export default function Security() {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       isInvalid={errors.password}
                       {...register('password', {
                         required: { value: true, message: 'This field is required' },
@@ -202,6 +204,7 @@ export default function Security() {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       isInvalid={errors.confirmpassword}
                       {...register('confirmpassword', {
                         required: { value: true, message: 'This field is required' },

@@ -6,6 +6,13 @@ export default function useGeolocation() {
   const [city, setCity] = useState(null);
   const [update, setUpdate] = useState(0);
   const [isTrue, setIsTrue] = useState(false);
+  const [times, setTimes] = useState(0);
+  useEffect(() => {
+    if (times >= 3) {
+      setIsTrue(false);
+      setCity(null);
+    }
+  }, []);
 
   useEffect(() => {
     // Fallback to IP-based location
@@ -19,7 +26,7 @@ export default function useGeolocation() {
     };
 
     // Try to get geolocation
-    if (navigator.geolocation) {
+    if (navigator.geolocation && times < 3) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const response = await axios.get(
@@ -31,12 +38,15 @@ export default function useGeolocation() {
           // If user declines to share location, get location based on IP
           console.log('Geolocation permission denied, falling back to IP-based location');
           fetchIPLocation();
+          setTimes(times + 1);
         }
       );
-    } else {
+    } else if (times < 3) {
       // If geolocation is not supported by the browser, get location based on IP
       console.log('Geolocation not available, falling back to IP-based location');
       fetchIPLocation();
+    } else {
+      console.log('Geolocation denided');
     }
   }, [update]);
 

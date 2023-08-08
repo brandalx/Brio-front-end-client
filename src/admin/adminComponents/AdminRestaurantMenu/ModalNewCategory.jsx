@@ -140,7 +140,9 @@ export default function ModalNewCategory({ fetchCategories, setCategories }) {
     <>
       <Button onClick={onOpen} width='100%' display='flex' flexDirection='column' h='70px'>
         <AddPlus />
-        <Text mt='6px'>New category</Text>
+        <Text color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'} mt='6px'>
+          New category
+        </Text>
       </Button>
 
       <Modal

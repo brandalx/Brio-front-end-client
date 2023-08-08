@@ -81,6 +81,7 @@ export default function ModalNoteRedactor({ isOpen, onClose, user, fetchUser, us
           }}
         />
         <ModalContent
+          color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'grayLight')}
           position='relative'
           boxSizing='content-box'
           width={['100%', '100%', '100%', '540px']}

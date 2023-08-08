@@ -22,6 +22,26 @@ body {
   overflow: hidden;
 }
 
+.map-container {
+  width: 100%;
+}
+
+.blogpostimage1 {
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 7%,
+    rgba(0, 0, 0, 0.08) 12%,
+    rgba(0, 0, 0, 0.16) 17%,
+    rgba(0, 0, 0, 0.22) 21%,
+    rgba(0, 0, 0, 0.32) 26%,
+    rgba(0, 0, 0, 0.42) 32%,
+    rgba(0, 0, 0, 0.52) 38%,
+    rgba(0, 0, 0, 0.62) 47%,
+    rgba(0, 0, 0, 0.72) 57%,
+    rgba(0, 0, 0, 0.82) 65%
+  );
+}
+
 .t-gra {
   background: linear-gradient(351deg, #31b3ec 23%, #524add 87%, #524add 102%);
   -webkit-background-clip: text;
@@ -44,6 +64,9 @@ html {
     touch-callout: none; /* Disables the callout (menu) when tapping and holding a touch target */
     -webkit-text-size-adjust: 100%; /* Prevents font scaling when user zooms in */
   }
+}
+.grayPlaceholder::placeholder {
+  color: gray;
 }
 
 /* animations */
@@ -102,4 +125,7 @@ html {
     -webkit-transform: translate(0);
     transform: translate(0);
   }
+}
+.ql-editor {
+  min-height: 300px;
 }

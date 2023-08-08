@@ -94,7 +94,7 @@ export default function OrdersTableBody() {
             const formattedDate = formatDate(item.creationDate);
             return (
               <Tr key={item._id} transition='all 0.2s' _hover={{ bg: 'bg', transition: 'all 0.2s', cursor: 'pointer' }}>
-                <Td pl={isMobile ? '10px' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+                <Td pl={isMobile ? '10px' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.gray'>
                   {item._id.substring(item._id.length - 6, item._id.length)}
                 </Td>
                 <Td
@@ -117,10 +117,10 @@ export default function OrdersTableBody() {
                       );
                     })}
                 </Td>
-                <Td pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+                <Td pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.gray'>
                   {formattedDate}
                 </Td>
-                <Td pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+                <Td pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.gray'>
                   {formatTime(item.creationDate)}
                 </Td>
                 <Td
@@ -181,7 +181,14 @@ export default function OrdersTableBody() {
                     <MenuList>
                       {' '}
                       <Link to={'/user/order/' + item.orderRef}>
-                        <MenuItem fontWeight='medium'>More info</MenuItem>{' '}
+                        <MenuItem
+                          color={() =>
+                            localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.black'
+                          }
+                          fontWeight='medium'
+                        >
+                          More info
+                        </MenuItem>{' '}
                       </Link>
                     </MenuList>
                   </Menu>

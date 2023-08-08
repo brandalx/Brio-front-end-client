@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 // import dotenv from 'dotenv';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Button, ChakraProvider, useColorMode } from '@chakra-ui/react';
 import AppRoutes from './AppRoutes';
 import './css/tools/stickyFooter.css';
-import theme from './utils/theme';
+
 import './css/tools/fonts.css';
 import './css/gallery.css';
 import './css/global.css';
 import { useCheckToken } from './services/token';
 import Aos from 'aos';
+import ThemeProvider from './utils/theme';
+
 export default function App() {
   const isTokenExpired = useCheckToken();
   const [isToken, setIsToken] = useState(false);
@@ -24,8 +26,8 @@ export default function App() {
     Aos.init();
   }, []);
   return (
-    <ChakraProvider theme={theme}>
+    <ThemeProvider>
       <AppRoutes isToken={isToken} />
-    </ChakraProvider>
+    </ThemeProvider>
   );
 }

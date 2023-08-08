@@ -1,14 +1,16 @@
 import React from 'react';
 import Navbar from './Navbar';
-import theme from '../../utils/theme';
+
+import { Box } from '@chakra-ui/react';
 
 export default function Header() {
   return (
-    <header
+    <Box
+      bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}
       className='page-header'
-      style={{ background: theme.colors.neutral.bg, height: 'auto', zIndex: '9999', paddingBottom: '10px' }}
+      style={{ height: 'auto', zIndex: '9999', paddingBottom: '10px' }}
     >
       <Navbar />
-    </header>
+    </Box>
   );
 }

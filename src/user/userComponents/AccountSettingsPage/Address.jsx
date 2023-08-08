@@ -89,6 +89,7 @@ export default function Adress() {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='country'
                       {...register('country', {
                         required: { value: true, message: 'This field is required' },
@@ -113,6 +114,7 @@ export default function Adress() {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       {...register('state', {
                         required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
@@ -141,6 +143,7 @@ export default function Adress() {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       {...register('city', {
                         required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
@@ -168,6 +171,7 @@ export default function Adress() {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       {...register('address1', {
                         required: { value: true, message: 'This field is required' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }
@@ -196,6 +200,7 @@ export default function Adress() {
                     </FormLabel>
 
                     <Input
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       {...register('address2', {
                         required: { value: false, message: 'Fill the field' },
                         minLength: { value: 2, message: 'Minimum length should be 2' }

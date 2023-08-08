@@ -143,7 +143,12 @@ export default function Checkout() {
         <Container maxW='1110px' py={10}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
             <Flex alignItems='center'>
-              <Icon as={FaChevronLeft} color='neutral.grayDark' mr={1} boxSize={4} />
+              <Icon
+                as={FaChevronLeft}
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+                mr={1}
+                boxSize={4}
+              />
               <Text color='neutral.grayDark' fontSize='2xs'>
                 <Link to='/user/cart'> Back to cart</Link>
               </Text>
@@ -213,7 +218,9 @@ export default function Checkout() {
                                     borderColor: 'primary.default',
                                     transition: 'all 0.3s'
                                   }}
-                                  color='black'
+                                  color={
+                                    localStorage.getItem('colormode') === 'dark' ? 'primary.default' : 'neutral.black'
+                                  }
                                   borderRadius='full'
                                   position='relative'
                                   display='flex'

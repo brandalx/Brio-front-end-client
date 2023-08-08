@@ -21,13 +21,13 @@ import {
 } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 
-export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom' }) {
+export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom', pxx = '8px', pyy = '8px' }) {
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const { city, setCity, update, setUpdate, isTrue, setIsTrue } = useContext(geolocationContext);
+  const { city, setCity, update, setUpdate, isTrue, setIsTrue, setTimes, times } = useContext(geolocationContext);
   const [loading2, setLoading2] = useState(true);
 
   useEffect(() => {
-    if (!loading && !sessionStorage['location'] && !sessionStorage['isTrue']) {
+    if (!loading && !sessionStorage['location'] && !sessionStorage['isTrue'] && times < 3) {
       onToggle();
     }
   }, [loading]);
@@ -41,11 +41,11 @@ export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom' 
             borderColor={'neutral.white'}
             borderWidth='1px'
             ml='4px'
-            bg='primary.lightest'
-            _hover={{ bg: 'primary.light' }}
+            bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
+            _hover={{ bg: localStorage.getItem('colormode') === 'dark' ? '#414165' : 'primary.light' }}
             color='black'
-            px={'8px'}
-            py={'7.5px'}
+            px={pxx}
+            py={pyy}
             borderRadius='16px'
             position='relative'
           >
@@ -147,12 +147,12 @@ export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom' 
             borderColor={'neutral.white'}
             borderWidth='1px'
             ml='4px'
-            bg='primary.lightest'
-            _hover={{ bg: 'primary.light' }}
+            bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
+            _hover={{ bg: localStorage.getItem('colormode') === 'dark' ? '#414165' : 'primary.light' }}
             color='black'
-            px={'8px'}
-            py={'7.5px'}
-            borderRadius='16px'
+            px={pxx}
+            py={pyy}
+            borderRadius={pxx === '8px' ? '16px' : '12px'}
             position='relative'
           >
             <Popover returnFocusOnClose={false} isOpen={isOpen} onClose={onClose} placement={pos} closeOnBlur={false}>

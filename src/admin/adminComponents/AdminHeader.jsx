@@ -1,14 +1,16 @@
 import React from 'react';
 import AdminNavbar from './AdminNavbar';
-import theme from '../../utils/theme';
+
+import { Box } from '@chakra-ui/react';
 
 export default function AdminHeader() {
   return (
-    <header
+    <Box
+      bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}
       className='page-header'
-      style={{ background: theme.colors.neutral.bg, height: 'auto', zIndex: '1', paddingBottom: '30px' }}
+      style={{ height: 'auto', zIndex: '1', paddingBottom: '30px' }}
     >
       <AdminNavbar />
-    </header>
+    </Box>
   );
 }
