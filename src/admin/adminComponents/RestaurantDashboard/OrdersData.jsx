@@ -122,7 +122,7 @@ export default function OrdersData({ setCurrentType, ordersRecived, ordersDelive
             <Box me={4} p={3} borderRadius={12}>
               <Box
                 ml='4px'
-                bg='secondary.light'
+                bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'secondary.light')}
                 color='black'
                 px={'8px'}
                 py={'7.5px'}
@@ -135,11 +135,18 @@ export default function OrdersData({ setCurrentType, ordersRecived, ordersDelive
               </Box>
             </Box>
             <Box>
-              <Heading fontSize='2xs' fontWeight='bold'>
+              <Heading
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'primary.default' : 'neutral.grayDark')}
+                fontSize='2xs'
+                fontWeight='bold'
+              >
                 {orders}
               </Heading>
 
-              <Text fontSize='3xs' color='neutral.grayDark'>
+              <Text
+                fontSize='3xs'
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'primary.default' : 'neutral.grayDark')}
+              >
                 Orders received
               </Text>
             </Box>
@@ -167,7 +174,7 @@ export default function OrdersData({ setCurrentType, ordersRecived, ordersDelive
             <Box me={4} p={3} borderRadius={12}>
               <Box
                 ml='4px'
-                bg='tertiary.light'
+                bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'tertiary.light')}
                 color='black'
                 px={'8px'}
                 py={'7.5px'}
@@ -180,10 +187,17 @@ export default function OrdersData({ setCurrentType, ordersRecived, ordersDelive
               </Box>
             </Box>
             <Box>
-              <Heading fontSize='2xs' fontWeight='bold'>
+              <Heading
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'primary.default' : 'neutral.grayDark')}
+                fontSize='2xs'
+                fontWeight='bold'
+              >
                 {receivedOrders}
               </Heading>
-              <Text fontSize='3xs' color='neutral.grayDark'>
+              <Text
+                fontSize='3xs'
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'primary.default' : 'neutral.grayDark')}
+              >
                 Orders delivered
               </Text>
             </Box>
@@ -211,7 +225,7 @@ export default function OrdersData({ setCurrentType, ordersRecived, ordersDelive
             <Box me={4} p={3} borderRadius={12}>
               <Box
                 ml='4px'
-                bg='primary.light'
+                bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.light')}
                 color='black'
                 px={'8px'}
                 py={'7.5px'}
@@ -224,10 +238,17 @@ export default function OrdersData({ setCurrentType, ordersRecived, ordersDelive
               </Box>
             </Box>
             <Box>
-              <Heading fontSize='2xs' fontWeight='bold'>
+              <Heading
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'primary.default' : 'neutral.grayDark')}
+                fontSize='2xs'
+                fontWeight='bold'
+              >
                 ${revenue}
               </Heading>
-              <Text fontSize='3xs' color='neutral.grayDark'>
+              <Text
+                fontSize='3xs'
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'primary.default' : 'neutral.grayDark')}
+              >
                 Revenue today
               </Text>
             </Box>

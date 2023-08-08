@@ -166,7 +166,7 @@ export default function RestaurantDashboard() {
 
   if (!restaurantId) {
     return (
-      <Box py={5}>
+      <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')} py={5}>
         <Container maxW='1110px'>
           <Skeleton height='30px' width='150px' my='8px' borderRadius='16px' />
 

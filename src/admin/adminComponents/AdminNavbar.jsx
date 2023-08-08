@@ -22,13 +22,15 @@ import {
   VisuallyHidden,
   VStack
 } from '@chakra-ui/react';
-
+import Moon from '../../assets/svg/Moon';
+import Sun from '../../assets/svg/Sun';
 import Logo from '../../assets/svg/Logo';
 import { Link, Link as RouterLink, useNavigate } from 'react-router-dom';
 import Notification from '../../assets/svg/Notification';
 import { AiOutlineMenu } from 'react-icons/ai';
 import '../../css/global.css';
 import { TOKEN_KEY } from '../../services/apiServices';
+import { useColorModeContext } from '../../context/globalContext';
 
 export default function AdminNavbar() {
   const bg = useColorModeValue('white', 'gray.800');
@@ -48,6 +50,7 @@ export default function AdminNavbar() {
       isClosable: true
     });
   };
+  const { colorMode, setColorMode } = useColorModeContext();
   return (
     <>
       <Container overflow-x='hidden' zIndex='9999999' maxW='none' borderBottom='1px solid #EDEEF2' p={0} width='100%'>
@@ -86,6 +89,29 @@ export default function AdminNavbar() {
               <HStack display='flex' alignItems='center' spacing={1}>
                 {/* Deckstop Navbar */}
                 <HStack spacing={3} mr={0} display={{ base: 'none', md: 'inline-flex' }}>
+                  <Button
+                    bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
+                    variant={'link'}
+                    size='xs'
+                    py='8px'
+                    px='8px'
+                    color='primary.default'
+                    onClick={() => {
+                      const newColorMode = colorMode === 'light' ? 'dark' : 'light';
+                      localStorage.setItem('colormode', newColorMode);
+                      setColorMode(newColorMode);
+                    }}
+                  >
+                    {localStorage.getItem('colormode') === 'dark' ? (
+                      <Box>
+                        <Moon />
+                      </Box>
+                    ) : (
+                      <Box>
+                        <Sun />
+                      </Box>
+                    )}
+                  </Button>
                   <Box
                     as={Button}
                     color='neutral.black'

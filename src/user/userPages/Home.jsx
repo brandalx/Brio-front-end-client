@@ -325,7 +325,7 @@ export default function Home() {
                     textAlign={{ base: 'center', md: 'start' }}
                     fontSize={{ base: '2xs', md: '2xs' }}
                     lineHeight={{ base: '15px', md: '20px' }}
-                    color='white'
+                    color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'white')}
                     fontWeight='black'
                   >
                     Touchable!

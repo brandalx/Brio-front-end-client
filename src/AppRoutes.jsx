@@ -43,6 +43,7 @@ import axios from 'axios';
 import Blogs from './user/userPages/Blogs';
 import Blog from './user/userPages/Blog';
 import NewBlogPost from './user/userPages/NewBlogPost';
+import { Box } from '@chakra-ui/react';
 
 export default function AppRoutes({ isToken }) {
   const [cartLen, setCartLen] = useState(0);
@@ -78,7 +79,10 @@ export default function AppRoutes({ isToken }) {
               {/* TODO: pass global values in value obj */}
               <BrowserRouter>
                 <ScrollToTopDefault>
-                  <div className='wrapper'>
+                  <Box
+                    bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}
+                    className='wrapper'
+                  >
                     <Routes>
                       {isToken && decodedToken.role === 'ADMIN' && <Route path='/admin/*' element={<AdminHeader />} />}
 
@@ -149,7 +153,7 @@ export default function AppRoutes({ isToken }) {
                       <Route path='/recoverpassword/*' element={<div />} />
                       <Route path='/signup/*' element={<div />} />
                     </Routes>
-                  </div>
+                  </Box>
                 </ScrollToTopDefault>
               </BrowserRouter>
             </avatarContext.Provider>
