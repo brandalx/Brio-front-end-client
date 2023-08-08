@@ -245,7 +245,12 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                     <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>
                       {item.title}
                     </Heading>
-                    <Box fontSize='2xs'>{item.description}</Box>
+                    <Box
+                      color={localStorage.getItem('colormode') === 'dark' ? 'neutral.gray' : 'neutral.grayDark'}
+                      fontSize='2xs'
+                    >
+                      {item.description}
+                    </Box>
                   </Box>
                 </Box>
                 {isDek && (
@@ -279,7 +284,9 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
               )}
               <AlertDialog isOpen={isAlertDialogOpen} leastDestructiveRef={cancelRef} onClose={onCloseDialog}>
                 <AlertDialogOverlay>
-                  <AlertDialogContent>
+                  <AlertDialogContent
+                    color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}
+                  >
                     <AlertDialogHeader fontSize='lg' fontWeight='bold'>
                       Delete Product
                     </AlertDialogHeader>
@@ -306,15 +313,21 @@ export default function ListOfProducts({ selectedCategory, categoryCounts, setCa
                   <Heading fontSize='2xs' lineHeight='24px' fontWeight='bold' color='neutral.black'>
                     Ingredients
                   </Heading>
-                  <Text fontSize='13px' color='neutral.grayDark'>
+                  <Text
+                    fontSize='13px'
+                    color={localStorage.getItem('colormode') === 'dark' ? 'neutral.gray' : 'neutral.grayDark'}
+                  >
                     {item.ingredients.join(', ')}
                   </Text>
                 </Box>
                 <Box padding='3px'>
-                  <Heading fontSize='' lineHeight='24px' fontWeight='bold'>
+                  <Heading fontSize='' lineHeight='24px' color='neutral.black' fontWeight='bold'>
                     Nutritional value
                   </Heading>
-                  <Text fontSize='13px' color='neutral.grayDark'>
+                  <Text
+                    fontSize='13px'
+                    color={localStorage.getItem('colormode') === 'dark' ? 'neutral.gray' : 'neutral.grayDark'}
+                  >
                     {item.nutritionals.join(', ')}
                   </Text>
                 </Box>

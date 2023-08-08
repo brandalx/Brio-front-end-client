@@ -301,7 +301,9 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
             isDisabled={!isCategorySelected}
           >
             <AddPlus />
-            <Text mt='6px'>New meal</Text>
+            <Text color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'} mt='6px'>
+              New meal
+            </Text>
           </Button>
         </Box>
       </Box>
