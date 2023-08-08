@@ -271,7 +271,7 @@ export default function OrdersTableBody() {
               pt='19.5px'
               pb='19.5px'
               fontSize='2xs'
-              color='neutral.grayDark'
+              color='neutral.gray'
               fontWeight='semibold'
               border='none'
             >
@@ -284,10 +284,10 @@ export default function OrdersTableBody() {
               {`${user.address[0].address1}`}
             </Td>
 
-            <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+            <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.gray'>
               {formatDate(order.creationDate)}
             </Td>
-            <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+            <Td display={isTablet ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.gray'>
               {new Date(order.creationDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </Td>
 

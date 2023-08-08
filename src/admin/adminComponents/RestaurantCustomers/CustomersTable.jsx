@@ -110,7 +110,7 @@ export default function CustomersTable() {
 
   ////////////
 
-  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(3px) hue-rotate(90deg)' />;
+  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(3px) ' />;
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
   const [openModalId, setOpenModalId] = useState(null);
   const handleOpenModal = (userId) => {
@@ -344,6 +344,7 @@ export default function CustomersTable() {
                   {overlay}
 
                   <ModalContent
+                    color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'grayLight')}
                     position='relative'
                     boxSizing='content-box'
                     width={['100%', '100%', '100%', '540px']}

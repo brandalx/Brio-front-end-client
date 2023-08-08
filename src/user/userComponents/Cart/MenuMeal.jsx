@@ -95,7 +95,7 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
     // console.log(amount);
   }, []);
   const cutInfoText = cutInfo(info);
-  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px) hue-rotate(90deg)' />;
+  const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px) ' />;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayOne />);

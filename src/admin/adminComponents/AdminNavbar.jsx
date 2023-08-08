@@ -339,18 +339,19 @@ export default function AdminNavbar() {
                       display={{ base: 'flex', md: 'none' }}
                       aria-label='Open menu'
                       fontSize='20px'
-                      color='neutral.gray'
+                      bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'grayLight')}
                       _dark={{ color: 'inherit' }}
                       variant='ghost'
                       h='48px'
                       w='48px'
                       borderRadius='16px'
-                      bg='neutral.grayLightest'
                       icon={<AiOutlineMenu />}
                       onClick={mobileNav.onOpen}
                     />
                   </HStack>
                   <VStack
+                    color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'grayLight')}
                     transition='all 0.2s'
                     flexDir='column-reverse'
                     alignItems='start'
@@ -387,10 +388,45 @@ export default function AdminNavbar() {
                       <Button fontWeight='extrabold' fontSize='xs' variant='ghost'>
                         <Link to='/admin/restaurant/dashboard'>Dashboard</Link>
                       </Button>
+                      <Button
+                        textDecoration='none'
+                        mb={4}
+                        bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
+                        variant={'link'}
+                        size='xs'
+                        py='8px'
+                        px='8px'
+                        color='primary.default'
+                        onClick={() => {
+                          const newColorMode = colorMode === 'light' ? 'dark' : 'light';
+                          localStorage.setItem('colormode', newColorMode);
+                          setColorMode(newColorMode);
+                        }}
+                      >
+                        {localStorage.getItem('colormode') === 'dark' ? (
+                          <Box display='flex' alignItems='center'>
+                            <Moon />{' '}
+                            <Box textDecoration='none' ms={2} as='span'>
+                              {' Light mode '}
+                            </Box>
+                          </Box>
+                        ) : (
+                          <Box display='flex' alignItems='center'>
+                            <Sun />{' '}
+                            <Box textDecoration='none' ms={2} as='span'>
+                              {' Dark mode '}
+                            </Box>
+                          </Box>
+                        )}
+                      </Button>
                     </Flex>
                     <Flex w='100%' justifyContent='space-between' px='16px'>
                       <Flex justifyContent='flex-end'></Flex>
-                      <CloseButton aria-label='Close menu' onClick={mobileNav.onClose} />
+                      <CloseButton
+                        color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'grayLight')}
+                        aria-label='Close menu'
+                        onClick={mobileNav.onClose}
+                      />
                     </Flex>
                   </VStack>
                 </Box>
