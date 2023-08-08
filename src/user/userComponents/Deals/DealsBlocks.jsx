@@ -104,7 +104,10 @@ export default function DealsBlocks() {
                           </Text>
                         </Box>
                         <Text
-                          color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.grayDark'}
+                          mt={2}
+                          color={() =>
+                            localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
+                          }
                           fontWeight='bold'
                           fontSize='2xs'
                         >
