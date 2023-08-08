@@ -226,14 +226,12 @@ export default function Navbar() {
                   )}
                 </Button>
                 <Button
-                  color='neutral.black'
                   fontWeight='bold'
                   fontSize='2xs'
                   _hover={{
                     borderRadius: '16px',
-                    background: 'primary.light',
-                    textDecoration: 'none',
-                    color: 'primary.default'
+                    background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654',
+                    textDecoration: 'none'
                   }}
                 >
                   <Link fontSize='fontSizes.2xs' to='/restaurant'>
@@ -241,7 +239,13 @@ export default function Navbar() {
                       fontWeight={isInRestaurants ? 'bold' : 'regular'}
                       m={0}
                       p={0}
-                      color={isInRestaurants ? 'primary.default' : 'neutral.black'}
+                      color={
+                        isInRestaurants
+                          ? 'primary.default'
+                          : localStorage.getItem('colormode') === 'dark'
+                          ? 'neutral.black'
+                          : 'neutral.black'
+                      }
                     >
                       Restaurants
                     </Text>
@@ -254,13 +258,22 @@ export default function Navbar() {
                     fontSize='2xs'
                     _hover={{
                       borderRadius: '16px',
-                      background: 'primary.light',
-                      textDecoration: 'none',
-                      color: 'primary.default'
+                      background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654',
+                      textDecoration: 'none'
                     }}
                   >
                     {' '}
-                    <Text m={0} p={0} color={isInDeals ? 'primary.default' : 'neutral.black'}>
+                    <Text
+                      m={0}
+                      p={0}
+                      color={
+                        isInDeals
+                          ? 'primary.default'
+                          : localStorage.getItem('colormode') === 'dark'
+                          ? 'neutral.black'
+                          : 'neutral.black'
+                      }
+                    >
                       Deals
                     </Text>
                   </Button>
@@ -272,13 +285,22 @@ export default function Navbar() {
                     fontSize='2xs'
                     _hover={{
                       borderRadius: '16px',
-                      background: 'primary.light',
-                      textDecoration: 'none',
-                      color: 'primary.default'
+                      background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654',
+                      textDecoration: 'none'
                     }}
                   >
                     {' '}
-                    <Text m={0} p={0} color={isInBlog ? 'primary.default' : 'neutral.black'}>
+                    <Text
+                      m={0}
+                      p={0}
+                      color={
+                        isInBlog
+                          ? 'primary.default'
+                          : localStorage.getItem('colormode') === 'dark'
+                          ? 'neutral.black'
+                          : 'neutral.black'
+                      }
+                    >
                       Blogs
                     </Text>
                   </Button>
@@ -293,13 +315,22 @@ export default function Navbar() {
                       fontSize='2xs'
                       _hover={{
                         borderRadius: '16px',
-                        background: 'primary.light',
-                        textDecoration: 'none',
-                        color: 'primary.default'
+                        background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654',
+                        textDecoration: 'none'
                       }}
                     >
                       {' '}
-                      <Text m={0} p={0} color={isInMyOrders ? 'primary.default' : 'neutral.black'}>
+                      <Text
+                        m={0}
+                        p={0}
+                        color={
+                          isInMyOrders
+                            ? 'primary.default'
+                            : localStorage.getItem('colormode') === 'dark'
+                            ? 'neutral.black'
+                            : 'neutral.black'
+                        }
+                      >
                         <Link fontSize='fontSizes.2xs' to='/user/orders'>
                           My orders
                         </Link>
@@ -717,7 +748,16 @@ export default function Navbar() {
                       </Text>
                     </Box>
                     <Button
-                      color={isInRestaurants ? 'primary.default' : 'neutral.black'}
+                      _hover={{
+                        background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654'
+                      }}
+                      color={
+                        isInRestaurants
+                          ? 'primary.default'
+                          : localStorage.getItem('colormode') === 'dark'
+                          ? 'neutral.black'
+                          : 'neutral.black'
+                      }
                       fontWeight='extrabold'
                       fontSize='xs'
                       variant='ghost'
@@ -726,7 +766,16 @@ export default function Navbar() {
                       <Link to='/restaurant'>Restaurants</Link>
                     </Button>
                     <Button
-                      color={isInDeals ? 'primary.default' : 'neutral.black'}
+                      _hover={{
+                        background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654'
+                      }}
+                      color={
+                        isInDeals
+                          ? 'primary.default'
+                          : localStorage.getItem('colormode') === 'dark'
+                          ? 'neutral.black'
+                          : 'neutral.black'
+                      }
                       fontWeight='extrabold'
                       fontSize='xs'
                       variant='ghost'
@@ -735,7 +784,16 @@ export default function Navbar() {
                       <Link to='/deals'>Deals </Link>
                     </Button>
                     <Button
-                      color={isInBlog ? 'primary.default' : 'neutral.black'}
+                      _hover={{
+                        background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654'
+                      }}
+                      color={
+                        isInBlog
+                          ? 'primary.default'
+                          : localStorage.getItem('colormode') === 'dark'
+                          ? 'neutral.black'
+                          : 'neutral.black'
+                      }
                       fontWeight='extrabold'
                       fontSize='xs'
                       variant='ghost'
@@ -745,7 +803,16 @@ export default function Navbar() {
                     </Button>
                     {localStorage[TOKEN_KEY] && (
                       <Button
-                        color={isInMyOrders ? 'primary.default' : 'neutral.black'}
+                        _hover={{
+                          background: localStorage.getItem('colormode') !== 'dark' ? 'primary.light' : '#363654'
+                        }}
+                        color={
+                          isInMyOrders
+                            ? 'primary.default'
+                            : localStorage.getItem('colormode') === 'dark'
+                            ? 'neutral.black'
+                            : 'neutral.black'
+                        }
                         fontWeight='extrabold'
                         fontSize='xs'
                         variant='ghost'
