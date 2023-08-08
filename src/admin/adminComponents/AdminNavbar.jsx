@@ -391,6 +391,7 @@ export default function AdminNavbar() {
                       <Button
                         textDecoration='none'
                         mb={4}
+                        mt={4}
                         bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
                         variant={'link'}
                         size='xs'
