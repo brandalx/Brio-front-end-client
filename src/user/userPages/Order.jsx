@@ -557,7 +557,7 @@ export default function Order() {
       </Container>
 
       <Box zIndex={99999}>
-        <Modal size='full' isCentered isOpen={isOpen} onClose={onClose}>
+        <Modal isCentered isOpen={isOpen} onClose={onClose}>
           {overlay}
           <ModalContent>
             <ModalHeader>
