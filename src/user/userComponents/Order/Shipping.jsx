@@ -58,8 +58,8 @@ export default function Shipping({ item, userArr, restaurantArr }) {
       setAddressString(finaladdressobj.address);
       setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
     } else {
-      finalstr = finaladdressobj.address;
-      setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
+      finalstr = finaladdressobj?.address;
+      setAddressStringToPrint(finaladdressobj?.replace(/%20/g, ' '));
       setAddressString(finalstr);
     }
     handleMapApi(finaladdressobj);

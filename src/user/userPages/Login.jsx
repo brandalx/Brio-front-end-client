@@ -144,7 +144,7 @@ export default function Login() {
                           {errors.email && errors.email.message}
                         </FormErrorMessage>
                       </FormControl>
-                      <FormControl id='password' isInvalid={errors.password}>
+                      <FormControl mt={4} id='password' isInvalid={errors.password}>
                         <FormLabel color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
                           Password
                         </FormLabel>

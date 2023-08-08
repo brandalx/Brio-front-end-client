@@ -63,38 +63,42 @@ export default function Order() {
   const [isSelf, setIsSelf] = useState(false);
 
   const handleDefineAddress = (orderitem, useritem, restaurantitem) => {
-    let finaladdress = orderitem.userdata.selectedAddress;
-    // console.log(finaladdress);
-    // console.log('ok');
+    try {
+      let finaladdress = orderitem.userdata.selectedAddress;
+      // console.log(finaladdress);
+      // console.log('ok');
 
-    let finaladdressobj = useritem.address.find((address) => address._id === finaladdress);
-    if (finaladdressobj) {
-      finaladdressobj =
-        finaladdressobj.state +
-        '%20' +
-        finaladdressobj.city +
-        '%20' +
-        finaladdressobj.address1 +
-        '%20' +
-        finaladdressobj.address2;
-    }
+      let finaladdressobj = useritem.address.find((address) => address._id === finaladdress);
+      if (finaladdressobj) {
+        finaladdressobj =
+          finaladdressobj.state +
+          '%20' +
+          finaladdressobj.city +
+          '%20' +
+          finaladdressobj.address1 +
+          '%20' +
+          finaladdressobj.address2;
+      }
 
-    const restaurantObj = restaurantitem.find((restaurant) => restaurant._id === finaladdress);
-    if (restaurantObj) {
-      finaladdressobj = restaurantObj.location + ' ' + restaurantObj.address;
+      const restaurantObj = restaurantitem.find((restaurant) => restaurant._id === finaladdress);
+      if (restaurantObj) {
+        finaladdressobj = restaurantObj.location + ' ' + restaurantObj.address;
 
-      setIsSelf(true);
-    }
+        setIsSelf(true);
+      }
 
-    let finalstr;
+      let finalstr;
 
-    if (finaladdressobj && finaladdressobj.address && finaladdressobj.address.length > 10) {
-      setAddressString(finaladdressobj.address);
-      finalstr = finaladdressobj.address.replace(/%20/g, ' ');
-    } else {
-      finalstr = finaladdressobj.address;
-      setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
-      setAddressString(finalstr);
+      if (finaladdressobj && finaladdressobj.address && finaladdressobj.address.length > 10) {
+        setAddressString(finaladdressobj.address);
+        finalstr = finaladdressobj.address.replace(/%20/g, ' ');
+      } else {
+        finalstr = finaladdressobj?.address;
+        setAddressStringToPrint(finaladdressobj.replace(/%20/g, ' '));
+        setAddressString(finalstr);
+      }
+    } catch (error) {
+      return <Text>Nothing</Text>;
     }
   };
   const OverlayOne = () => <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px)' />;
@@ -164,9 +168,9 @@ export default function Order() {
       setOrdersArr(order);
       setRestaurantArr(restaurant);
 
-      // console.log(user);
-      // console.log(order);
-      // console.log(restaurant);
+      console.log(user);
+      console.log(order);
+      console.log(restaurant);
       handleDefineAddress(order, user, restaurant);
       setLoading(false);
     } catch (error) {
@@ -534,9 +538,14 @@ export default function Order() {
               <Text fontSize={{ base: '14px', md: 'xs' }} fontWeight='bold' color='neutral.black'>
                 Shipping address
               </Text>
-              {!loading && ordersArr && ordersArr.ordersdata && ordersArr.ordersdata.products && (
-                <Shipping userArr={userArr} restaurantArr={restaurantArr} item={ordersArr.userdata.selectedAddress} />
-              )}
+              {!loading &&
+                ordersArr &&
+                ordersArr.ordersdata &&
+                ordersArr.ordersdata.products &&
+                ordersArr.userdata &&
+                ordersArr.userdata.selectedAddress && (
+                  <Shipping userArr={userArr} restaurantArr={restaurantArr} item={ordersArr.userdata.selectedAddress} />
+                )}
             </Box>
             <Skeleton minH='250px' borderRadius='16px' isLoaded={!loading}>
               <Box borderRadius='16px' borderWidth='1px' py='20px' px='10px' my={5}>
