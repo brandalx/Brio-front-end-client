@@ -13,13 +13,13 @@ export default function DefaultPaymentMethod({ cash, selectCard, defaultmethod }
           _hover={{
             cursor: 'pointer',
             transition: 'all 0.3s',
-            bg: 'primary.light',
+            bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.light'),
             borderColor: defaultmethod ? 'primary.default' : 'primary.light'
           }}
           _active={{
             cursor: 'pointer',
             transition: 'all 0.3s',
-            bg: 'primary.light',
+            bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'),
             borderColor: 'primary.default'
           }}
           borderColor={defaultmethod ? 'primary.default' : 'BlackAlpha 200'}

@@ -202,15 +202,17 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
   };
 
   return (
-    <>
+    <Box data-aos='fade-up'>
       <Box
         my={2}
         pt={5}
         px={4}
         borderRadius='12px'
-        data-aos='fade-up'
         transition='all 0.3s'
-        _hover={{ bg: 'neutral.grayLightest', transition: 'all 0.3s' }}
+        _hover={{
+          bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'),
+          transition: 'all 0.3s'
+        }}
       >
         <Grid templateColumns={{ base: '1fr', md: '1fr 1fr ' }} gap={4}>
           <GridItem w='100%'>
@@ -369,7 +371,7 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
                         </Text>
                       </Box>
                       <Box>
-                        <Text color='neutral.grayDark' fontSize='2xs'>
+                        <Text color='neutral.gray' fontSize='2xs'>
                           {cutInfoText}
                         </Text>
                       </Box>
@@ -428,6 +430,6 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
           </ModalContent>
         </Modal>
       </Box>
-    </>
+    </Box>
   );
 }

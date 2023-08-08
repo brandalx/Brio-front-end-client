@@ -98,13 +98,13 @@ export default function AdressCard({
           _hover={{
             cursor: 'pointer',
             transition: 'all 0.3s',
-            bg: isAddress ? 'primary.light' : 'error.hover',
+            bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.light'),
             borderColor: onitemselected ? 'primary.default' : 'primary.light'
           }}
           _active={{
             cursor: 'pointer',
             transition: 'all 0.3s',
-            bg: isAddress ? 'primary.light' : 'error.default',
+            bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'),
             borderColor: 'primary.default'
           }}
           borderColor={onitemselected ? 'primary.default' : 'BlackAlpha 200'}

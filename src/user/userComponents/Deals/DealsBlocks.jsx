@@ -72,85 +72,89 @@ export default function DealsBlocks() {
         <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
           {deals.length > 0 &&
             deals.map((promotion, index) => (
-              <Box
-                data-aos='fade-up'
-                key={index}
-                display='flex'
-                justifyContent='space-between'
-                flexDirection='column'
-                borderRadius='16px'
-                border='1px'
-                transition='all 0.3s'
-                borderColor='neutral.grayLight'
-                _hover={{ borderColor: 'primary.default', transition: 'all 0.3s', bg: 'primary.light' }}
-                p='16px'
-              >
-                <Link to={`/restaurant/${promotion.restaurantRef}`}>
-                  <Box display='flex' justifyContent='space-between'>
-                    <Box marginRight='10px' maxW='50%'>
-                      <Box
-                        textAlign='center'
-                        border='1px'
-                        borderRadius='full'
-                        width='53px'
-                        height='24px'
-                        borderColor='success.default'
-                      >
-                        <Text color='success.default' fontWeight='semibold' p='3px' fontSize='3xs'>
-                          Active
+              <Box key={index} data-aos='fade-up'>
+                <Box
+                  display='flex'
+                  justifyContent='space-between'
+                  flexDirection='column'
+                  borderRadius='16px'
+                  border='1px'
+                  transition='all 0.3s'
+                  borderColor='neutral.grayLight'
+                  _hover={{
+                    borderColor: 'primary.default',
+                    transition: 'all 0.3s',
+                    bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.light')
+                  }}
+                  p='16px'
+                >
+                  <Link to={`/restaurant/${promotion.restaurantRef}`}>
+                    <Box display='flex' justifyContent='space-between'>
+                      <Box marginRight='10px' maxW='50%'>
+                        <Box
+                          textAlign='center'
+                          border='1px'
+                          borderRadius='full'
+                          width='53px'
+                          height='24px'
+                          borderColor='success.default'
+                        >
+                          <Text color='success.default' fontWeight='semibold' p='3px' fontSize='3xs'>
+                            Active
+                          </Text>
+                        </Box>
+                        <Text
+                          color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.grayDark'}
+                          fontWeight='bold'
+                          fontSize='2xs'
+                        >
+                          {promotion.discountDetails}
                         </Text>
                       </Box>
-                      <Text
-                        color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.grayDark'}
-                        fontWeight='bold'
-                        fontSize='2xs'
-                      >
-                        {promotion.discountDetails}
-                      </Text>
-                    </Box>
-                    {/* <Image
+                      {/* <Image
                       width='112px'
                       height='92px'
                       src={promotion.image}
                       objectFit='cover'
                       borderRadius='16px' objectPosition='center' 
                     /> */}
-                    <Box minH='92px' objectFit='cover' borderRadius='16px' width='100%'>
-                      <LazyLoadImage
-                        style={{ objectFit: 'cover', objectPosition: 'center', borderRadius: '16px' }}
-                        width='100%'
-                        height='100%'
-                        alt={`Lazy loaded image number ${index}`}
-                        src={promotion.image}
-                        effect='blur'
-                      />
+                      <Box minH='92px' objectFit='cover' borderRadius='16px' width='100%'>
+                        <LazyLoadImage
+                          style={{ objectFit: 'cover', objectPosition: 'center', borderRadius: '16px' }}
+                          width='100%'
+                          height='100%'
+                          alt={`Lazy loaded image number ${index}`}
+                          src={promotion.image}
+                          effect='blur'
+                        />
+                      </Box>
                     </Box>
-                  </Box>
-                  <Divider mt='10px' mb='8px' />
-                  <Box display='flex' flexDirection='column'>
-                    <Box>
-                      <Box display='flex' flexDirection='row' alignItems='center' mt='4px'>
-                        <ValidThrough />
-                        <Text marginLeft='6px' color='neutral.gray' fontSize='3xs' fontWeight='semibold'>
-                          Valid through
+                    <Divider mt='10px' mb='8px' />
+                    <Box display='flex' flexDirection='column'>
+                      <Box>
+                        <Box display='flex' flexDirection='row' alignItems='center' mt='4px'>
+                          <ValidThrough />
+                          <Text marginLeft='6px' color='neutral.gray' fontSize='3xs' fontWeight='semibold'>
+                            Valid through
+                          </Text>
+                        </Box>
+                        <Text color='neutral.black' fontSize='2.5xs'>
+                          {formatDate(promotion.startDate)} – {formatDate(promotion.endDate)}
+                          {promotion.discountDays.length > 0 ? '(' + promotion.discountDays.join(', ') + ' only)' : ''}
                         </Text>
                       </Box>
-                      <Text color='neutral.black' fontSize='2.5xs'>
-                        {formatDate(promotion.startDate)} – {formatDate(promotion.endDate)}
-                        {promotion.discountDays.length > 0 ? '(' + promotion.discountDays.join(', ') + ' only)' : ''}
-                      </Text>
-                    </Box>
-                    <Box>
-                      <Box display='flex' flexDirection='row' alignItems='center' mt='4px'>
-                        <Location w={12} h={12} />
-                        <Text marginLeft='6px' color='neutral.gray' fontSize='3xs' fontWeight='semibold'>
-                          Restaurant
-                        </Text>
+                      <Box>
+                        <Box display='flex' flexDirection='row' alignItems='center' mt='4px'>
+                          <Location w={12} h={12} />
+                          <Text marginLeft='6px' color='neutral.gray' fontSize='3xs' fontWeight='semibold'>
+                            Restaurant
+                          </Text>
+                        </Box>
+                        <Text color='neutral.black'>{promotion.restaurantName}</Text>
                       </Box>
-                      <Text color='neutral.black'>{promotion.restaurantName}</Text>
                     </Box>
-                  </Box>
-                </Link>
+                  </Link>
+                </Box>
               </Box>
             ))}
 

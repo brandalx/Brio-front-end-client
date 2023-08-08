@@ -351,7 +351,7 @@ export default function Navbar() {
                           borderWidth='1px'
                           ml='4px'
                           bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
-                          _hover={{ bg: 'primary.light' }}
+                          _hover={{ bg: localStorage.getItem('colormode') === 'dark' ? '#414165' : 'primary.light' }}
                           color='black'
                           px={'8px'}
                           py={'7.5px'}
@@ -542,6 +542,7 @@ export default function Navbar() {
                           ml='4px'
                           bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
                           color='black'
+                          _hover={{ bg: localStorage.getItem('colormode') === 'gray' ? '#414165' : 'primary.light' }}
                           px={'2px'}
                           py={'2px'}
                           borderRadius='12px'

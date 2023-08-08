@@ -13,7 +13,11 @@ export default function RestaurantCard({ img, title, time, price, badgeData, _id
           <GridItem w='100%' bg='neutral.white' data-aos='fade-up'>
             <Box
               transition='all 0.3s'
-              _hover={{ bg: 'primary.light', border: 'primary.default', transition: 'all 0.3s' }}
+              _hover={{
+                bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.light'),
+                border: 'primary.default',
+                transition: 'all 0.3s'
+              }}
               bg='neutral.white'
               border='1px'
               borderColor='neutral.grayLightest'

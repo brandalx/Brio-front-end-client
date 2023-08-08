@@ -42,7 +42,7 @@ export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom',
             borderWidth='1px'
             ml='4px'
             bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
-            _hover={{ bg: 'primary.light' }}
+            _hover={{ bg: localStorage.getItem('colormode') === 'dark' ? '#414165' : 'primary.light' }}
             color='black'
             px={pxx}
             py={pyy}
@@ -148,7 +148,7 @@ export default function GeolocationDefinder({ loading, isInCart, pos = 'bottom',
             borderWidth='1px'
             ml='4px'
             bg={localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.lightest'}
-            _hover={{ bg: 'primary.light' }}
+            _hover={{ bg: localStorage.getItem('colormode') === 'dark' ? '#414165' : 'primary.light' }}
             color='black'
             px={pxx}
             py={pyy}
