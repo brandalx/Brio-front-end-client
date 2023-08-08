@@ -137,7 +137,7 @@ export default function TableAdmins() {
                 transition='all 0.2s'
                 _hover={{ bg: 'bg', transition: 'all 0.2s', cursor: 'pointer' }}
               >
-                <Td fontSize='2xs' color='neutral.grayDark'>
+                <Td fontSize='2xs' color='neutral.gray'>
                   {admin.firstname} {admin.lastname}
                 </Td>
                 <Td fontSize='2xs' color='neutral.black' fontWeight='semibold'>

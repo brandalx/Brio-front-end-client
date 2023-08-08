@@ -214,6 +214,7 @@ export default function Security() {
                   Current password
                 </FormLabel>
                 <Input
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                   w={{ base: '100%', md: '90%' }}
                   type='password'
                   background='neutral.white'
@@ -230,6 +231,7 @@ export default function Security() {
                   New password
                 </FormLabel>
                 <Input
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                   w={{ base: '100%', md: '90%' }}
                   type='password'
                   background='neutral.white'
@@ -246,6 +248,7 @@ export default function Security() {
                   Confirm new password
                 </FormLabel>
                 <Input
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                   w={{ base: '100%', md: '90%' }}
                   type='password'
                   background='neutral.white'

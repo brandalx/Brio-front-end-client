@@ -197,10 +197,10 @@ export default function Administrators() {
 
           <Modal isOpen={isOpen} onClose={onClose} size={['xs', 'sm', 'md', 'lg', 'xl']}>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}>
               <ModalHeader>Invite New Admin</ModalHeader>
               <ModalCloseButton />
-              <ModalBody>
+              <ModalBody color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}>
                 <FormControl id='admin-id' isRequired>
                   <FormLabel>Admin Email</FormLabel>
                   <Input type='text' value={newAdminEmail} onChange={(e) => setNewAdminEmail(e.target.value)} />
