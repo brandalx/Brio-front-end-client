@@ -257,7 +257,7 @@ export default function OrdersTableBody() {
               pt='19.5px'
               pb='19.5px'
               fontSize='2xs'
-              color='neutral.grayDark'
+              color='neutral.gray'
               textOverflow='ellipsis'
               maxW='100px'
             >
@@ -280,7 +280,7 @@ export default function OrdersTableBody() {
                 <Avatar size='md' name={getUserName(user._id)} src={getUserAvatar(user._id)} />
               </Box>
             </Td>
-            <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.grayDark'>
+            <Td display={isMobile ? 'none' : ''} pt='19.5px' pb='19.5px' fontSize='2xs' color='neutral.gray'>
               {`${user.address[0].address1}`}
             </Td>
 

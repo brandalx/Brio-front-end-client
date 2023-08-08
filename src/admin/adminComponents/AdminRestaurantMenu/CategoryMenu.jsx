@@ -215,16 +215,24 @@ export default function CategoryMenu({ selectedCategory, onCategoryChange, categ
                 borderRadius='16px'
                 cursor='pointer'
                 bg={selectedItem === element._id ? 'primary.light' : 'white'}
+                color={
+                  localStorage.getItem('colormode') === 'dark'
+                    ? selectedItem === element._id
+                      ? 'primary.default'
+                      : 'neutral.black'
+                    : 'neutral.black'
+                }
                 borderColor={selectedItem === element._id ? 'primary.default' : 'neutral.grayLightest'}
                 _hover={{
                   borderColor: 'primary.default',
                   transition: '450ms',
-                  bg: 'primary.light'
+                  bg: 'primary.light',
+                  color: localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.black'
                 }}
                 onClick={() => handleCategoryClick(element)}
                 maxH='72px'
               >
-                <Heading fontSize='2xs' fontWeight='bold' color='neutral.black'>
+                <Heading fontSize='2xs' fontWeight='bold'>
                   {element.categoryName.length > 0 ? element.categoryName : 'N/A'}
                 </Heading>
 

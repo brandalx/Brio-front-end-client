@@ -69,7 +69,7 @@ export default function AdminNavbar() {
           >
             {' '}
             <Flex display='flex' alignItems='center' justifyContent='space-between' mx='auto'>
-              <Link to='/admin' _hover={{ textDecoration: 'none' }}>
+              <Link to='/admin/restaurant/dashboard' _hover={{ textDecoration: 'none' }}>
                 <Box display='flex' alignItems='center'>
                   <Logo />
                   <VisuallyHidden>Brio</VisuallyHidden>
