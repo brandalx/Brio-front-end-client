@@ -198,7 +198,7 @@ export default function ForgotPassword() {
   return (
     <>
       {isLoading ? (
-        <Preloader loading={isLoading} />
+        <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={isLoading} />
       ) : (
         <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
           <Container maxW='550px'>
