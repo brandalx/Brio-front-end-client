@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Box, Container, Flex, Text, Avatar, GridItem, Skeleton } from '@chakra-ui/react';
 import BlogEditor from '../userComponents/Blog/BlogEditor';
 import { Button } from '@chakra-ui/react';
@@ -8,6 +8,8 @@ import Logo from '../../assets/svg/Logo';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import 'quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
+import { Icon } from '@chakra-ui/react';
+import { FaChevronLeft } from 'react-icons/fa';
 
 export default function Blog() {
   const [arr, setArr] = useState([]);
@@ -159,7 +161,10 @@ export default function Blog() {
     const usTime = date.toLocaleTimeString('en-US');
     return usTime;
   };
-
+  const navigate = useNavigate();
+  const handleGoBack = () => {
+    navigate(-1);
+  };
   return (
     <Box mb='150px'>
       {loading && (
@@ -187,10 +192,26 @@ export default function Blog() {
           </Container>
         </>
       )}
+
       {!showOops && !loading && arr._id && (
         <Box>
           {!loading && (
             <Container maxW='1110px' py={30}>
+              {!loading && (
+                <Button my={4} _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
+                  <Flex alignItems='center'>
+                    <Icon
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+                      as={FaChevronLeft}
+                      mr={1}
+                      boxSize={4}
+                    />
+                    <Text onClick={() => handleGoBack()} color='neutral.black' fontSize='xs'>
+                      Back
+                    </Text>
+                  </Flex>
+                </Button>
+              )}
               {!loading && localStorage[TOKEN_KEY] && (
                 <Box my={5} px={3}>
                   <Link to='/blog/create/new'>

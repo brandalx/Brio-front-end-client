@@ -51,7 +51,7 @@ export default function BlogCard({ data, index, getUserName, getUserAvatar, getB
                 backgroundColor='none'
                 me={2}
                 fontSize='xs'
-                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.white')}
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                 fontWeight='bold'
               >
                 By {getUserName(data.userRef)}

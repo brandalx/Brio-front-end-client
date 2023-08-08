@@ -196,19 +196,26 @@ export default function Blogs() {
           )}
 
           {!loading && (
-            <Grid transition='all 0.3s' templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={2}>
+            <Grid
+              w='100%'
+              transition='all 0.3s'
+              templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
+              gap={2}
+            >
               {blogsArr.map((item, index) => {
                 if (index != 0) {
                   return (
-                    <GridItem key={index}>
-                      <BlogCard
-                        getBlogImage={getBlogImage}
-                        getUserAvatar={getUserAvatar}
-                        getUserName={getUserName}
-                        index={index}
-                        key={index}
-                        data={item}
-                      />
+                    <GridItem w='100%' key={index}>
+                      <Container maxW={{ base: '390px', sm: '460px', md: '350px', lg: '100%' }}>
+                        <BlogCard
+                          getBlogImage={getBlogImage}
+                          getUserAvatar={getUserAvatar}
+                          getUserName={getUserName}
+                          index={index}
+                          key={index}
+                          data={item}
+                        />
+                      </Container>
                     </GridItem>
                   );
                 }
