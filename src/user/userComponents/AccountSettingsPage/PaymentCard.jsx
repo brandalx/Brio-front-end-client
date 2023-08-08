@@ -57,7 +57,11 @@ export default function PaymentCard({
         <Flex justifyContent='space-between'>
           <Flex alignItems='center'>
             <Box>
-              <Heading fontSize='2xs' fontWeight='bold'>
+              <Heading
+                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
+                fontSize='2xs'
+                fontWeight='bold'
+              >
                 {item.cardNumber}
               </Heading>
               <Text fontSize='3xs' fontWeight='semibold' color='neutral.grayDark'>
