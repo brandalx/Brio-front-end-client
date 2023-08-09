@@ -156,8 +156,11 @@ export default function Search() {
                       value={searchString}
                       onChange={(e) => setSearchString(e.target.value)}
                       defaultValue={searchString}
-                      background='neutral.grayLightest'
+                      background={() =>
+                        localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.grayLightest'
+                      }
                       _placeholder={{ color: 'neutral.gray' }}
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       borderRadius={100}
                       fontSize='2xs'
                       type='text'

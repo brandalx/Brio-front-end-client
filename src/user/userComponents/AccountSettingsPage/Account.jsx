@@ -313,7 +313,9 @@ export default function Account() {
                             Remove
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent>
+                        <PopoverContent
+                          color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}
+                        >
                           <PopoverArrow />
                           <PopoverCloseButton />
                           <PopoverHeader>Confirmation!</PopoverHeader>
