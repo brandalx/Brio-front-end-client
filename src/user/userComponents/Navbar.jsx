@@ -200,8 +200,11 @@ export default function Navbar() {
                     <Input
                       defaultValue={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      background='neutral.grayLightest'
+                      background={() =>
+                        localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.grayLightest'
+                      }
                       _placeholder={{ color: 'neutral.gray' }}
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       borderRadius={100}
                       fontSize='2xs'
                       type='text'
