@@ -45,8 +45,7 @@ function SignUpOptions({ element, isSelected, onItemSelected }) {
 
   const textColor = isSelected ? 'primary.default' : 'neutral.black';
   const iconColor = isSelected ? 'white' : localStorage.getItem('colormode') === 'dark' ? 'white' : 'black';
-  // localStorage.getItem('colormode') === 'dark' ? '#414165' : 'primary.light'
-  // 'primary.lightest' : 'neutral.white';
+
   return (
     <Box
       _hover={{ cursor: 'pointer', transition: 'all 0.3s' }}
