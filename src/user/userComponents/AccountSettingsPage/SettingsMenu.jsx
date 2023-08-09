@@ -7,6 +7,7 @@ import Security from '../../../assets/svg/Security';
 import { Link, useLocation } from 'react-router-dom';
 import React from 'react';
 import PaymentMethod from '../../../assets/svg/PaymentMethod';
+import { useColorModeContext } from '../../../context/globalContext';
 
 function SettingItem({ element, isSelected, onItemSelected }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -40,11 +41,27 @@ function SettingItem({ element, isSelected, onItemSelected }) {
       onItemSelected(4);
     }
   }, [location.pathname]);
+  const { colorMode, setColorMode } = useColorModeContext();
+  const colorModeDef = localStorage.getItem('colormode');
 
   const borderColor = isSelected ? 'primary.default' : isHovered ? 'primary.default' : 'neutral.grayLightest';
-  const bgColor = isSelected ? 'primary.default' : isHovered ? 'primary.lightest' : 'neutral.white';
+  const bgColor = isSelected
+    ? 'primary.default'
+    : isHovered && colorModeDef === 'dark'
+    ? '#414165'
+    : isHovered && colorModeDef !== 'dark'
+    ? 'primary.lightest'
+    : 'neutral.white';
   const textColor = isSelected ? 'primary.default' : 'neutral.black';
-  const iconColor = isSelected ? 'white' : 'black';
+  const iconColor = isSelected ? 'white' : colorModeDef === 'dark' ? 'white' : 'black';
+
+  const [bgColorDef, setbgColorDef] = useState(bgColor);
+  const [iconColorDef, seticonColorDef] = useState(iconColor);
+
+  useEffect(() => {
+    setbgColorDef(bgColor);
+    seticonColorDef(iconColor);
+  }, [bgColor, iconColor, localStorage, colorMode]);
 
   return (
     <Box
@@ -62,8 +79,8 @@ function SettingItem({ element, isSelected, onItemSelected }) {
       onClick={handleClick}
     >
       <Flex alignItems='center'>
-        <Box me={4} p={3} bg={bgColor} borderRadius={12}>
-          <Icon color={iconColor} />
+        <Box me={4} p={3} bg={bgColorDef} borderRadius={12}>
+          <Icon color={iconColorDef} />
         </Box>
         <Box>
           <Heading fontSize='2xs' fontWeight='bold' color={textColor}>
