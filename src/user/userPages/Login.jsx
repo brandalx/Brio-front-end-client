@@ -41,12 +41,17 @@ export default function Login() {
 
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  const imagesrc =
+    'http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/1eaf823f-eb94-4d99-b7cf-65611acdc26e/3295x2543.jpeg';
+  const image = new Image();
   useEffect(() => {
-    const image = new Image();
-    image.src = render1;
+    image.src = imagesrc;
     image.onload = () => {
       setImageLoaded(true);
-      setLoading(false); // Image is loaded, set loading to false
+      setLoading(false);
+    };
+    return () => {
+      image.onload = null;
     };
   }, []);
 
@@ -372,7 +377,7 @@ export default function Login() {
           </Container>
           <GridItem
             data-aos='fade-left'
-            backgroundImage={isImageLoaded ? `url(${render1})` : ''}
+            backgroundImage={isImageLoaded ? `url(${imagesrc})` : ''}
             backgroundRepeat='no-repeat'
             backgroundSize='cover'
             backgroundPosition='center'

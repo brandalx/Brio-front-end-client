@@ -41,12 +41,17 @@ export default function ForgotPassword() {
   const toast = useToast();
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  const imagesrc =
+    'http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/95668696-2416-4d4d-b49f-7b2be72cfe32/3295x2543.jpeg';
+  const image = new Image();
   useEffect(() => {
-    const image = new Image();
-    image.src = render1;
+    image.src = imagesrc;
     image.onload = () => {
       setImageLoaded(true);
-      setLoading(false); // Image is loaded, set loading to false
+      setLoading(false);
+    };
+    return () => {
+      image.onload = null;
     };
   }, []);
 
@@ -359,7 +364,7 @@ export default function ForgotPassword() {
           <GridItem
             display={{ base: 'none', md: 'inline-flex' }}
             w='100%'
-            backgroundImage={render1}
+            backgroundImage={isImageLoaded ? `url(${imagesrc})` : ''}
             backgroundRepeat='no-repeat'
             backgroundSize='cover'
             backgroundPosition='center'
