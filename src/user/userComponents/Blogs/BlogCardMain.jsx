@@ -108,51 +108,55 @@ export default function BlogCardMain({ data, getUserName, getUserAvatar }) {
             }}
           >
             <Flex direction='column' justifyContent='flex-end' h='100%' p={4}>
-              <Text
-                backgroundColor='none'
-                mt={5}
-                ms={5}
-                data-aos='fade-up'
-                textAlign='center'
-                fontSize={{ base: 'xl', md: '2xl' }}
-                lineHeight={{ base: '40px', md: '50px' }}
-                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.white')}
-                fontWeight='black'
-              >
-                {data._id && data.title}
-              </Text>
-              <Text
-                backgroundColor='none'
-                mt={3}
-                ms={5}
-                data-aos='fade-up'
-                textAlign='center'
-                fontSize='xs'
-                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.gray' : 'neutral.gray')}
-                fontWeight='bold'
-              >
-                {data.tags.map((item, index) => {
-                  return (
-                    <Box as='span' key={index}>
-                      {' '}
-                      #{item}
-                    </Box>
-                  );
-                })}
-              </Text>
-
-              <Text
-                backgroundColor='none'
-                mt={3}
-                ms={5}
-                data-aos='fade-up'
-                textAlign='center'
-                fontSize='xs'
-                color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.white')}
-                fontWeight='bold'
-              >
-                {data._id && data.desc}
-              </Text>
+              <Box data-aos='fade-up'>
+                <Text
+                  backgroundColor='none'
+                  mt={5}
+                  ms={5}
+                  textAlign='center'
+                  fontSize={{ base: 'xl', md: '2xl' }}
+                  lineHeight={{ base: '40px', md: '50px' }}
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.white')}
+                  fontWeight='black'
+                >
+                  {data._id && data.title}
+                </Text>
+              </Box>
+              <Box data-aos='fade-up'>
+                <Text
+                  backgroundColor='none'
+                  mt={3}
+                  ms={5}
+                  data-aos='fade-up'
+                  textAlign='center'
+                  fontSize='xs'
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.gray' : 'neutral.gray')}
+                  fontWeight='bold'
+                >
+                  {data.tags.map((item, index) => {
+                    return (
+                      <Box as='span' key={index}>
+                        {' '}
+                        #{item}
+                      </Box>
+                    );
+                  })}
+                </Text>
+              </Box>
+              <Box data-aos='fade-up'>
+                <Text
+                  backgroundColor='none'
+                  mt={3}
+                  ms={5}
+                  data-aos='fade-up'
+                  textAlign='center'
+                  fontSize='xs'
+                  color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.white')}
+                  fontWeight='bold'
+                >
+                  {data._id && data.desc}
+                </Text>
+              </Box>
 
               <Box mt={2} mx='auto' display='flex' alignItems='center'>
                 <Text
