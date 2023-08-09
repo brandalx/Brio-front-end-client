@@ -39,6 +39,8 @@ import { useCheckToken } from '../../services/token';
 import { avatarContext, cartContext, geolocationContext, useColorModeContext } from '../../context/globalContext';
 import GeolocationDefinder from './Navbar/GeolocationDefinder';
 import jwtDecode from 'jwt-decode';
+import onAudio from '../../assets//sounds/on.mp3';
+import offAudio from '../../assets//sounds/off.mp3';
 export default function Navbar() {
   const isTokenExpired = useCheckToken();
   const { cartLen, setCartLen } = useContext(cartContext);
@@ -159,6 +161,15 @@ export default function Navbar() {
   };
   const { colorMode, setColorMode } = useColorModeContext();
 
+  const audioRef = useRef(null);
+  const playAudio = () => {
+    if (audioRef.current) {
+      const audioSource = localStorage.getItem('colormode') === 'light' ? offAudio : onAudio;
+      audioRef.current.src = audioSource;
+      audioRef.current.play();
+    }
+  };
+
   return (
     <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
       <Container maxW='1110px'>
@@ -213,6 +224,7 @@ export default function Navbar() {
                     const newColorMode = colorMode === 'light' ? 'dark' : 'light';
                     localStorage.setItem('colormode', newColorMode);
                     setColorMode(newColorMode);
+                    playAudio();
                   }}
                 >
                   {localStorage.getItem('colormode') === 'dark' ? (
@@ -835,8 +847,11 @@ export default function Navbar() {
                         const newColorMode = colorMode === 'light' ? 'dark' : 'light';
                         localStorage.setItem('colormode', newColorMode);
                         setColorMode(newColorMode);
+                        playAudio();
                       }}
                     >
+                      <audio ref={audioRef} />
+
                       {localStorage.getItem('colormode') === 'dark' ? (
                         <Box display='flex' alignItems='center'>
                           <Moon />{' '}
