@@ -10,7 +10,8 @@ import 'quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import { Icon } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
-
+import noimage from '../../assets/images/noimageblog.jpg';
+import axios from 'axios';
 export default function Blog() {
   const [arr, setArr] = useState([]);
   const [editorState, setEditorState] = useState();
@@ -19,6 +20,7 @@ export default function Blog() {
   let [userArr, setUsersArr] = useState([]);
   const [customStyleMap, setCustomStyleMap] = useState({});
   const [hovered, setHovered] = useState(false);
+  const [definedImage, setDefinedImage] = useState('');
   const params = useParams();
 
   const handleMouseEnter = () => {
@@ -43,7 +45,9 @@ export default function Blog() {
       } else {
         console.log(data);
         setArr(data);
+        await defineCoverImage(data);
       }
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -106,30 +110,6 @@ export default function Blog() {
     }
   };
 
-  let getBlogImage = (blogid) => {
-    // console.log(arr);
-    // console.log(blogid);
-    try {
-      const blog = arr._id;
-      if (blog) {
-        // check if blog exists
-        if (arr.cover) {
-          // check if cover exists
-          let stringCover = API_URL + (API_URL.endsWith('/') ? '' : '/') + arr.cover;
-          return stringCover;
-        } else {
-          console.log(`No cover found for blog ${blogid}`);
-        }
-      } else {
-        console.log(`No cover found for ID ${blogid}`);
-      }
-      return '';
-    } catch (error) {
-      console.log('Error in getCoverImage: ', error);
-      return '';
-    }
-  };
-
   const QuillModules = {
     toolbar: false
   };
@@ -164,6 +144,74 @@ export default function Blog() {
   const navigate = useNavigate();
   const handleGoBack = () => {
     navigate(-1);
+  };
+
+  async function checkValidURL(url, data) {
+    try {
+      let stringCover = API_URL + (API_URL.endsWith('/') ? '' : '/') + data.cover;
+      const response = await axios.get(stringCover);
+      return true;
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        return false;
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  let getBlogImage = async (blogid, data) => {
+    console.log(data);
+    console.log(blogid);
+    console.log(await checkValidURL(data.cover, data));
+    try {
+      const blog = data._id;
+      if (blog) {
+        // check if blog exists
+        if (data.cover && (await checkValidURL(data.cover, data)) === true) {
+          // check if cover exists
+          let stringCover = API_URL + (API_URL.endsWith('/') ? '' : '/') + data.cover;
+          return stringCover;
+        } else {
+          console.log(`No cover found for blog ${blogid}`);
+          return false;
+        }
+      } else {
+        console.log(`No cover found for ID ${blogid}`);
+        return false;
+      }
+    } catch (error) {
+      console.log('Error in getCoverImage: ', error);
+      return false;
+    }
+  };
+
+  const defineCoverImage = async (data) => {
+    console.log(data);
+
+    if (data && data._id && data.cover && data.cover.startsWith('images/')) {
+      if ((await getBlogImage(data._id, data)) === false) {
+        console.log('here 1');
+        let finaldes = noimage;
+        setDefinedImage(finaldes);
+        return;
+      } else if ((await getBlogImage(data._id, data)) != false) {
+        console.log('here 2');
+        let finaldes = await getBlogImage(data._id, data);
+        setDefinedImage(finaldes);
+        return;
+      }
+    } else if (data && data.cover) {
+      let finaldes = data.cover;
+      setDefinedImage(finaldes);
+      console.log('here 3');
+      return;
+    } else {
+      let finaldes = noimage;
+      setDefinedImage(finaldes);
+      console.log('here 4');
+      return;
+    }
   };
   return (
     <Box mb='150px'>
@@ -214,7 +262,7 @@ export default function Blog() {
               )}
               {!loading && localStorage[TOKEN_KEY] && (
                 <Box my={5} px={3}>
-                  <Link to='/blog/create/new'>
+                  <a href='/blog/create/new'>
                     <Box
                       style={{ transition: 'all 0.3s' }}
                       cursor='pointer'
@@ -262,16 +310,14 @@ export default function Blog() {
                         </Box>
                       </Flex>
                     </Box>
-                  </Link>
+                  </a>
                 </Box>
               )}
               <Box
                 cursor='pointer'
                 py={5}
                 borderRadius='16px'
-                backgroundImage={`url(${
-                  arr._id && arr.cover.startsWith('images/') ? getBlogImage(arr._id) : arr.cover
-                })`}
+                backgroundImage={`url(${arr._id && definedImage})`}
                 backgroundRepeat='no-repeat'
                 backgroundSize='cover'
                 backgroundPosition='center'

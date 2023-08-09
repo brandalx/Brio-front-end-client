@@ -120,7 +120,7 @@ export default function Blogs() {
 
         {!loading && localStorage[TOKEN_KEY] && (
           <Box mt={4} px={3}>
-            <Link to='/blog/create/new'>
+            <a href='/blog/create/new'>
               <Box
                 style={{ transition: 'all 0.3s' }}
                 cursor='pointer'
@@ -163,7 +163,7 @@ export default function Blogs() {
                   </Box>
                 </Flex>
               </Box>
-            </Link>
+            </a>
           </Box>
         )}
 

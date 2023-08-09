@@ -1,10 +1,85 @@
 import { Box, Container, Flex, Text } from '@chakra-ui/react';
 import { Avatar } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { API_URL } from '../../../services/apiServices';
+import axios from 'axios';
+import noimage from '../../../assets/images/noimageblog.jpg';
 
-export default function BlogCardMain({ data, getUserName, getUserAvatar, getBlogImage }) {
+export default function BlogCardMain({ data, getUserName, getUserAvatar }) {
   const params = useParams();
+
+  const [definedImage, setDefinedImage] = useState('');
+
+  async function checkValidURL(url, data) {
+    try {
+      let stringCover = API_URL + (API_URL.endsWith('/') ? '' : '/') + data.cover;
+      const response = await axios.get(stringCover);
+      return true;
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        return false;
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  let getBlogImage = async (blogid, data) => {
+    console.log(await checkValidURL(data.cover, data));
+    try {
+      const blog = data._id;
+      if (blog) {
+        // check if blog exists
+        if (data.cover && (await checkValidURL(data.cover, data)) === true) {
+          // check if cover exists
+          let stringCover = API_URL + (API_URL.endsWith('/') ? '' : '/') + data.cover;
+          return stringCover;
+        } else {
+          console.log(`No cover found for blog ${blogid}`);
+          return false;
+        }
+      } else {
+        console.log(`No cover found for ID ${blogid}`);
+        return false;
+      }
+    } catch (error) {
+      console.log('Error in getCoverImage: ', error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    defineCoverImage(data);
+  }, []);
+
+  const defineCoverImage = async (data) => {
+    console.log(data);
+
+    if (data && data._id && data.cover && data.cover.startsWith('images/')) {
+      if ((await getBlogImage(data._id, data)) === false) {
+        console.log('here 1');
+        let finaldes = noimage;
+        setDefinedImage(finaldes);
+        return;
+      } else if ((await getBlogImage(data._id, data)) != false) {
+        console.log('here 2');
+        let finaldes = await getBlogImage(data._id, data);
+        setDefinedImage(finaldes);
+        return;
+      }
+    } else if (data && data.cover) {
+      let finaldes = data.cover;
+      setDefinedImage(finaldes);
+      console.log('here 3');
+      return;
+    } else {
+      let finaldes = noimage;
+      setDefinedImage(finaldes);
+      console.log('here 4');
+      return;
+    }
+  };
   return (
     <Link to={'/blog/' + data._id}>
       <Container maxW='1110px' py={30}>
@@ -12,9 +87,7 @@ export default function BlogCardMain({ data, getUserName, getUserAvatar, getBlog
           cursor='pointer'
           py={5}
           borderRadius='16px'
-          backgroundImage={`url(${
-            data && data._id && data.cover.startsWith('images/') ? getBlogImage(data._id) : data.cover
-          })`}
+          backgroundImage={`url(${data && data._id && definedImage})`}
           backgroundRepeat='no-repeat'
           backgroundSize='cover'
           backgroundPosition='center'
