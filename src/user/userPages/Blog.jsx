@@ -145,6 +145,15 @@ export default function Blog() {
   const handleGoBack = () => {
     navigate(-1);
   };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    return formattedDate;
+  };
 
   async function checkValidURL(url, data) {
     try {
@@ -392,6 +401,7 @@ export default function Blog() {
                     src={getUserAvatar(arr.userRef)}
                   />
                 </Box>
+                {/* prettier-ignore */}
                 <Text
                   backgroundColor='none'
                   me={2}
@@ -401,7 +411,8 @@ export default function Blog() {
                   color='neutral.gray'
                   fontWeight='normal'
                 >
-                  {arr.creationDate ? formatTime(arr.creationDate) : ''}
+                  {arr.creationDate ? formatDate(arr.creationDate) : ''} {" "}
+                  at{" "}{arr.creationDate ? formatTime(arr.creationDate) : ''}
                 </Text>
               </Flex>
             </Container>

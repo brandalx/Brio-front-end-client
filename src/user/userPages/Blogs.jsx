@@ -11,10 +11,15 @@ export default function Blogs() {
   let [blogsArr, setBlogsArr] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hovered, setHovered] = useState(false);
+  const [rndIndex, setRndIndex] = useState();
+
   const handleBlogsApi = async () => {
     const url = API_URL + '/blogs';
     const data = await handleApiGet(url);
     setBlogsArr(data);
+    const randomIndex = Math.floor(Math.random() * data.length);
+    setRndIndex(randomIndex);
+
     await handleUsersPublicData(data);
     setLoading(false);
   };
@@ -173,7 +178,7 @@ export default function Blogs() {
               getBlogImage={getBlogImage}
               getUserAvatar={getUserAvatar}
               getUserName={getUserName}
-              data={blogsArr[0]}
+              data={blogsArr[rndIndex]}
             />
           </Box>
         )}
