@@ -35,10 +35,18 @@ function SignUpOptions({ element, isSelected, onItemSelected }) {
   }, [location.pathname]);
 
   const borderColor = isSelected ? 'primary.default' : isHovered ? 'primary.default' : 'neutral.grayLightest';
-  const bgColor = isSelected ? 'primary.default' : isHovered ? 'primary.lightest' : 'neutral.white';
-  const textColor = isSelected ? 'primary.default' : 'neutral.black';
-  const iconColor = isSelected ? 'white' : 'black';
+  const bgColor = isSelected
+    ? 'primary.default'
+    : isHovered && localStorage.getItem('colormode') === 'dark'
+    ? '#414165'
+    : isHovered && localStorage.getItem('colormode') !== 'dark'
+    ? 'primary.lightest'
+    : 'neutral.white';
 
+  const textColor = isSelected ? 'primary.default' : 'neutral.black';
+  const iconColor = isSelected ? 'white' : localStorage.getItem('colormode') === 'dark' ? 'white' : 'black';
+  // localStorage.getItem('colormode') === 'dark' ? '#414165' : 'primary.light'
+  // 'primary.lightest' : 'neutral.white';
   return (
     <Box
       _hover={{ cursor: 'pointer', transition: 'all 0.3s' }}
