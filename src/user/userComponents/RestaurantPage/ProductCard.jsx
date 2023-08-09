@@ -7,6 +7,7 @@ import noimage from '../../../assets/images/noimage.jpg';
 
 import { cartContext } from '../../../context/globalContext';
 import { useCheckToken } from '../../../services/token.js';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 export default function ProductCard({ img, title, description, price, _id, promotion }) {
   const { cartLen, setCartLen } = useContext(cartContext);
   const toast = useToast();
@@ -112,7 +113,14 @@ export default function ProductCard({ img, title, description, price, _id, promo
       >
         <Link h='100%' to={`/restaurant/product/${_id}`}>
           <Box>
-            <Image borderRadius='16px' w='100%' src={img.length > 0 ? img : noimage} h='230px' objectFit='cover' />
+            <LazyLoadImage
+              width='100%'
+              style={{ objectFit: 'cover', borderRadius: '16px', width: '100%', height: '230px' }}
+              src={img.length > 0 ? img : noimage}
+              effect='blur'
+            />
+            {/* 
+            <Image borderRadius='16px' w='100%' src={img.length > 0 ? img : noimage} h='230px' objectFit='cover' /> */}
           </Box>
         </Link>
         <Stack h='100%'>

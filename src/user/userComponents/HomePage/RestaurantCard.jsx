@@ -4,16 +4,16 @@ import Emoji from 'react-emojis';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import noimagerest from '../../../assets/images/noimagerest.jpg';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export default function RestaurantCard({ img, title, time, price, badgeData, _id }) {
   return (
     <>
       {title && (
         <Link to={_id ? `/restaurant/${_id}` : '#'}>
-
           <GridItem h='100%' w='100%' bg='neutral.white' data-aos='fade-up'>
             <Box
-            h='100%'
+              h='100%'
               transition='all 0.3s'
               _hover={{
                 bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'primary.light'),
@@ -25,8 +25,14 @@ export default function RestaurantCard({ img, title, time, price, badgeData, _id
               borderColor='neutral.grayLightest'
               borderRadius='lg'
             >
+              {/* <Image src={img ? img : noimagerest} roundedTop='lg' h='230px' objectFit='cover' w='100%' /> */}
 
-              <Image src={img ? img : noimagerest} roundedTop='lg' h='230px' objectFit='cover' w='100%' />
+              <LazyLoadImage
+                width='100%'
+                style={{ objectFit: 'cover', borderRadius: '16px', width: '100%', height: '230px' }}
+                src={img ? img : noimagerest}
+                effect='blur'
+              />
 
               <Box p='6'>
                 <Box>
