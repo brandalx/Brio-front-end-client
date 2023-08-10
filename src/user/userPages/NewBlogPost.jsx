@@ -14,7 +14,7 @@ export default function NewBlogPost() {
   };
 
   return (
-    <Box py='60px' bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
+    <Box pb='30px' bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
       <Container maxW='1110px' pt={15}>
         <Box my={4}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
