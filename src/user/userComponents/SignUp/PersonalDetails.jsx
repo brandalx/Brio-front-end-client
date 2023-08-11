@@ -9,13 +9,15 @@ import {
   Flex,
   FormErrorMessage,
   InputGroup,
-  InputRightElement
+  InputRightElement,
+  useToast
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { API_URL, handleApiMethod } from '../../../services/apiServices';
+
 export default function PersonalDetails({ type, setMainBody, mainBody }) {
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -24,27 +26,68 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
 
   const [show2, setShow2] = useState(false);
   const handleClickShow2 = () => setShow2(!show2);
+  const [isUnique, setIsUnique] = useState(true);
+  const toast = useToast();
+
   const navigate = useNavigate();
-  const isValid = () =>
-    email.length > 5 && password.length > 5 && confirmPassword.length > 5 && password === confirmPassword;
 
   const {
     handleSubmit,
     register,
+    getValues,
+    watch,
     formState: { errors, isSubmitting }
-  } = useForm();
-  const onSubForm = (_bodyData) => {
-    // console.log(_bodyData);
-    setMainBody((prevState) => ({
-      ...prevState,
-      firstname: _bodyData.firstname,
-      lastname: _bodyData.lastname,
-      email: _bodyData.email,
-      password: _bodyData.password,
-      confirmpassword: _bodyData.confirmpassword
-    }));
-    navigate('/signup/personal/info');
+  } = useForm({ mode: 'onChange' });
+  const email = watch('email', '');
+
+  const isValid = () =>
+    email.length > 5 && password.length > 5 && confirmPassword.length > 5 && password === confirmPassword;
+  const handleCheckUnique = async (_emailData) => {
+    try {
+      const url = API_URL + '/users/checkemail';
+      const data = await handleApiMethod(url, 'POST', { email: _emailData });
+      if (data.true) {
+        setIsUnique(true);
+        return true;
+      } else if (data.false) {
+        setIsUnique(false);
+        toast({
+          title: 'Such email already exist',
+          description: 'Please provide another email address.',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true
+        });
+        return false;
+      }
+    } catch (error) {
+      setIsUnique(false);
+      toast({
+        title: 'Such email already exist',
+        description: 'Please provide another email address.',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true
+      });
+      return false;
+    }
   };
+
+  const onSubForm = async (_bodyData) => {
+    const isEmailUnique = await handleCheckUnique(_bodyData.email);
+    if (isEmailUnique) {
+      setMainBody((prevState) => ({
+        ...prevState,
+        firstname: _bodyData.firstname,
+        lastname: _bodyData.lastname,
+        email: _bodyData.email,
+        password: _bodyData.password,
+        confirmpassword: _bodyData.confirmpassword
+      }));
+      navigate('/signup/personal/info');
+    }
+  };
+
   return (
     <>
       <Flex h='100%' w='100' justifyContent='center' data-aos='fade-left'>
@@ -123,7 +166,6 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                     <FormLabel fontWeight='semibold' fontSize='3xs' color='neutral.grayDark'>
                       Email
                     </FormLabel>
-
                     <Input
                       color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       {...register('email', {
@@ -131,16 +173,23 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                         minLength: { value: 6, message: 'Minimum length should be 6' }
                       })}
                       type='email'
-                      background='neutral.white'
+                      background={isUnique ? 'neutral.white' : 'error.default'}
                       _placeholder={{ color: 'neutral.gray' }}
                       borderRadius='8px'
                       fontSize='2xs'
                       placeholder='name@example.com'
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onBlur={() => {
+                        console.log(email);
+                        handleCheckUnique(email);
+                      }}
                     />
+
                     <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                      {errors.email && errors.email.message}
+                      {!isUnique
+                        ? 'Email is already exist'
+                        : errors.email && errors.email.message
+                        ? errors.email.message
+                        : ''}
                     </FormErrorMessage>
                   </FormControl>
 
