@@ -251,7 +251,7 @@ export default function ForgotPassword() {
                               Forgot Password
                             </Text>
                             <Text fontSize='2xs' color='neutral.grayDark'>
-                              Enter the email and phone number associated with your account.
+                              Enter the email associated with your account.
                             </Text>
                           </Box>
                           <Box mt='20px'>
