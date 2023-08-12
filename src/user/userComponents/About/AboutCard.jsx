@@ -1,10 +1,12 @@
 import { Box, Grid, GridItem, Image, Link, Text } from '@chakra-ui/react';
 import React from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export default function AboutCard({ data, index }) {
   return (
-    <Box data-aos='fade-up' my={4}>
+    <Box h='100%' data-aos='fade-up' my={4}>
       <Box
+        h='100%'
         border='1px'
         borderColor='neutral.grayLightest'
         py={5}
@@ -16,7 +18,7 @@ export default function AboutCard({ data, index }) {
         <Box w='100%'>
           <Box justifyContent={{ base: 'center', md: 'start' }} px={8} display='flex' alignItems='center'>
             <Box>
-              <Image h='150px' rounded='lg' src={data.image} />
+              <LazyLoadImage effect='blur' h='150px' rounded='lg' src={data.image} />
             </Box>
 
             <Box ps={3}>

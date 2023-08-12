@@ -8,6 +8,7 @@ import AboutCard from '../userComponents/About/AboutCard';
 import dataJson from '../userComponents/About/about.json';
 import Revenue from '../../assets/svg/Revenue';
 import { Heading } from '@chakra-ui/react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export default function About() {
   const navigate = useNavigate();
@@ -92,7 +93,10 @@ export default function About() {
                 borderRadius='lg'
               >
                 <Box px={8}>
-                  <Image src='http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/960bec92-ae6e-4946-99af-34de5bcd508b/4393x3391.png' />
+                  <LazyLoadImage
+                    effect='blur'
+                    src='http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/960bec92-ae6e-4946-99af-34de5bcd508b/4393x3391.png'
+                  />
                   <Box>
                     <Text color='neutral.black' fontSize='60px' textAlign='center' fontWeight='black'>
                       About Brio
@@ -477,7 +481,10 @@ export default function About() {
                 borderRadius='lg'
               >
                 <Box px={8}>
-                  <Image src='http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/51319dd6-cc2f-46c1-a598-a7f763331242/4393x3391.png' />
+                  <LazyLoadImage
+                    effect='blur'
+                    src='http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/51319dd6-cc2f-46c1-a598-a7f763331242/4393x3391.png'
+                  />
                   <Box>
                     <Text color='neutral.black' fontSize='60px' textAlign='center' fontWeight='black'>
                       Meet Brio Developers!
@@ -488,12 +495,12 @@ export default function About() {
             </Box>
           </Box>
           <Box my={5}>
-            <Grid my={4} templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr' }} gap={4}>
+            <Grid h='100%' my={4} templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr' }} gap={4}>
               {numbers.map((randomIndex, index) => {
                 const item = dataJson[randomIndex];
                 return (
-                  <Box key={randomIndex}>
-                    <GridItem>
+                  <Box h='100%' key={randomIndex}>
+                    <GridItem h='100%'>
                       <AboutCard index={index} data={item} />
                     </GridItem>
                   </Box>
