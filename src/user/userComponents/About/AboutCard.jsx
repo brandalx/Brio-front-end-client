@@ -10,7 +10,7 @@ export default function AboutCard({ data, index }) {
         py={5}
         overflow='hidden'
         minH={{ base: '350px', md: '250px' }}
-        bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : '#FCFCFC')}
+        bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'white')}
         borderRadius='lg'
       >
         <Box w='100%'>
@@ -24,12 +24,7 @@ export default function AboutCard({ data, index }) {
                 <Text color='neutral.black' fontSize='lg' fontWeight='extrabold'>
                   {data.name}
                 </Text>
-                <Box
-                  textAlign={index % 2 === 0 ? 'start' : 'end'}
-                  fontWeight='normal'
-                  color='neutral.grayLight'
-                  fontSize='3xs'
-                >
+                <Box fontWeight='normal' color='neutral.grayLight' fontSize='3xs'>
                   {data.age}
                 </Box>
               </Box>

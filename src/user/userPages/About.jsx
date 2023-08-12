@@ -316,6 +316,155 @@ export default function About() {
             </GridItem>
           </Grid>
 
+          <Grid my={4} templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr' }} gap={4}>
+            <GridItem w='100%' ata-aos='fade-up'>
+              <a
+                target='_blank'
+                rel='noreferrer'
+                href='https://github.com/brandalx/Brio-front-end-client/pkgs/container/brio-front-end-client'
+              >
+                <Box>
+                  <Box
+                    py={5}
+                    minH={{ base: '150px', md: '250px' }}
+                    bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'white')}
+                    display='flex'
+                    justifyContent='center'
+                    alignItems='center'
+                    _hover={{
+                      transform: 'translateY(-10px)',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s',
+                      bg: () => (localStorage.getItem('colormode') === 'dark' ? '#4F4F7D' : 'primary.lightest'),
+                      borderColor: 'primary.light'
+                    }}
+                    _active={{
+                      cursor: 'pointer',
+                      transition: 'all 0.3s',
+                      bg: 'primary.light',
+                      borderColor: 'primary.default'
+                    }}
+                    borderRadius='16px'
+                    transition='all 0.3s'
+                    borderWidth='1px'
+                  >
+                    <Flex alignItems='center'>
+                      <Box p={4}>
+                        <Box p={5} borderRadius={12}>
+                          <Box
+                            mx='auto'
+                            display='flex'
+                            alignItems='center'
+                            justifyContent='center'
+                            bg={() => (localStorage.getItem('colormode') === 'dark' ? '#343450' : 'primary.light')}
+                            color='black'
+                            width='60px'
+                            height='60px'
+                            px={'8px'}
+                            py={'8px'}
+                            borderRadius='16px'
+                          >
+                            <Box mx='auto' display='flex' alignItems='center' justifyContent='center' p='8px'>
+                              <Revenue />
+                            </Box>
+                          </Box>
+                        </Box>
+                        <Box textAlign='center' px={2}>
+                          <Heading
+                            color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'black')}
+                            fontSize='2xs'
+                            fontWeight='bold'
+                          >
+                            Front-end GitHub docker package releases
+                          </Heading>
+                          <Text
+                            fontSize='3xs'
+                            color={() => (localStorage.getItem('colormode') === 'dark' ? 'gray' : 'gray')}
+                          >
+                            GitHub
+                          </Text>
+                        </Box>
+                      </Box>
+                    </Flex>
+                  </Box>
+                </Box>
+              </a>
+            </GridItem>
+            <GridItem w='100%' ata-aos='fade-up'>
+              <a
+                target='_blank'
+                rel='noreferrer'
+                href='https://github.com/Okeanid-ISR/Brio-back-end/pkgs/container/brio-back-end'
+              >
+                <Box>
+                  <Box
+                    py={5}
+                    minH={{ base: '150px', md: '250px' }}
+                    bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'white')}
+                    display='flex'
+                    justifyContent='center'
+                    alignItems='center'
+                    _hover={{
+                      transform: 'translateY(-10px)',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s',
+                      bg: () => (localStorage.getItem('colormode') === 'dark' ? '#4F4F7D' : 'primary.lightest'),
+                      borderColor: 'primary.light'
+                    }}
+                    _active={{
+                      cursor: 'pointer',
+                      transition: 'all 0.3s',
+                      bg: 'primary.light',
+                      borderColor: 'primary.default'
+                    }}
+                    borderRadius='16px'
+                    transition='all 0.3s'
+                    borderWidth='1px'
+                  >
+                    <Flex alignItems='center'>
+                      <Box p={4}>
+                        <Box p={5} borderRadius={12}>
+                          <Box
+                            mx='auto'
+                            display='flex'
+                            alignItems='center'
+                            justifyContent='center'
+                            bg={() => (localStorage.getItem('colormode') === 'dark' ? '#343450' : 'primary.light')}
+                            color='black'
+                            width='60px'
+                            height='60px'
+                            px={'8px'}
+                            py={'8px'}
+                            borderRadius='16px'
+                          >
+                            <Box mx='auto' display='flex' alignItems='center' justifyContent='center' p='8px'>
+                              <Revenue />
+                            </Box>
+                          </Box>
+                        </Box>
+                        <Box textAlign='center' px={2}>
+                          <Heading
+                            color={() => (localStorage.getItem('colormode') === 'dark' ? 'black' : 'black')}
+                            fontSize='2xs'
+                            fontWeight='bold'
+                          >
+                            Back-end GitHub docker package releases
+                          </Heading>
+                          <Text
+                            fontSize='3xs'
+                            color={() => (localStorage.getItem('colormode') === 'dark' ? 'gray' : 'gray')}
+                          >
+                            GitHub
+                          </Text>
+                        </Box>
+                      </Box>
+                    </Flex>
+                  </Box>
+                </Box>
+              </a>
+            </GridItem>
+          </Grid>
+
           <Box data-aos='fade-up'>
             <Box my={4}>
               <Box
@@ -339,14 +488,18 @@ export default function About() {
             </Box>
           </Box>
           <Box my={5}>
-            {numbers.map((randomIndex, index) => {
-              const item = dataJson[randomIndex];
-              return (
-                <Box key={randomIndex}>
-                  <AboutCard index={index} data={item} />
-                </Box>
-              );
-            })}
+            <Grid my={4} templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr' }} gap={4}>
+              {numbers.map((randomIndex, index) => {
+                const item = dataJson[randomIndex];
+                return (
+                  <Box key={randomIndex}>
+                    <GridItem>
+                      <AboutCard index={index} data={item} />
+                    </GridItem>
+                  </Box>
+                );
+              })}
+            </Grid>
           </Box>
         </Box>
       </Container>
