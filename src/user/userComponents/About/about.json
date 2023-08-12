@@ -12,6 +12,11 @@
         "displayText": "brandalx"
       },
       {
+        "type": "LinkedIn",
+        "link": "https://www.linkedin.com/in/brandonolan/",
+        "displayText": "LinkedIn profile"
+      },
+      {
         "type": "Developer Portfolio",
         "link": "https://brandnolandev.com",
         "displayText": "https://brandnolandev.com"
@@ -44,6 +49,11 @@
         "type": "GitHub",
         "link": "http://localhost:5173/about",
         "displayText": "brandalx"
+      },
+      {
+        "type": "LinkedIn",
+        "link": "https://www.linkedin.com/in/brandonolan/",
+        "displayText": "LinkedIn profile"
       },
       {
         "type": "Developer Portfolio",
