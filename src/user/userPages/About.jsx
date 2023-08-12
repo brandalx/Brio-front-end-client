@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Container, Text, Flex, Icon } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
+import Spline from '@splinetool/react-spline';
+import Preloader from '../../components/Loaders/preloader';
 
 export default function About() {
   const navigate = useNavigate();
   const handleGoBack = () => {
     navigate(-1);
   };
+  const [heightchange, setheightchange] = useState(1);
+  const [loading, setLoading] = useState(true);
+
+  const onload = () => {
+    setheightchange(250);
+    setLoading(false);
+  };
 
   return (
     <Box py='60px' bg='neutral.white'>
+      <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={loading} />
       <Container maxW='1110px' pt={15}>
         <Box my={4}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
@@ -45,6 +55,10 @@ export default function About() {
             >
               Learn more about our mission, vision, and values.
             </Text>
+
+            <Box borderRadius='16px' h={`${heightchange}px`} w='100%'>
+              <Spline scene='https://draft.spline.design/wzcQPaZUf8Lx1H2y/scene.splinecode' onLoad={onload} />
+            </Box>
           </Box>
         </Box>
 

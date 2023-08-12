@@ -42,7 +42,7 @@ export default function Login() {
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const imagesrc =
-    'http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/1eaf823f-eb94-4d99-b7cf-65611acdc26e/3295x2543.jpeg';
+    'http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/51319dd6-cc2f-46c1-a598-a7f763331242/4393x3391.png';
   const image = new Image();
   useEffect(() => {
     image.src = imagesrc;

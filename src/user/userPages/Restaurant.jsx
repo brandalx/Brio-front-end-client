@@ -120,7 +120,12 @@ export default function Restaurant() {
       await handleUserApi();
     } catch (error) {
       setResponseFalls(false);
+
       setLoading(false);
+      if (!restaurantArr._id) {
+        navigate('/404');
+      }
+
       console.log(error);
     }
   };
@@ -269,7 +274,7 @@ export default function Restaurant() {
   }, [restaurantArr]);
 
   const handleLoadings = () => {
-    if (restaurantArr && productArr && address && keepArr) {
+    if (restaurantArr && productArr.length > 0 && address && keepArr) {
       setLoading(false);
     }
   };

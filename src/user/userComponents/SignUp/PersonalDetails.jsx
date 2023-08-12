@@ -173,7 +173,7 @@ export default function PersonalDetails({ type, setMainBody, mainBody }) {
                         minLength: { value: 6, message: 'Minimum length should be 6' }
                       })}
                       type='email'
-                      background={isUnique ? 'neutral.white' : 'error.default'}
+                      background='neutral.white'
                       _placeholder={{ color: 'neutral.gray' }}
                       borderRadius='8px'
                       fontSize='2xs'

@@ -42,7 +42,7 @@ export default function ForgotPassword() {
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const imagesrc =
-    'http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/95668696-2416-4d4d-b49f-7b2be72cfe32/3295x2543.jpeg';
+    'http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/960bec92-ae6e-4946-99af-34de5bcd508b/4393x3391.png';
   const image = new Image();
   useEffect(() => {
     image.src = imagesrc;
