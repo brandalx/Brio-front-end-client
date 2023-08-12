@@ -1,0 +1,70 @@
+[
+  {
+    "image": "https://i.postimg.cc/YSJqZRhJ/Frame-48-1.png",
+    "name": "Brandon Nolan",
+    "age": "23 years old",
+    "bio": "I am a Full Stack Engineer and Graphic Designer with expertise in developing in both Front-End and Back-End development with a passion for creating web applications that are user-friendly and efficient. I have a srong focus on user experience and meeting business needs, and i strive to deliver fast and productive solutions. I enjoy working on projects that challenge me to learn new technologies and problem-solving skills",
+    "role": "Front-end and Back-end development for the user (customer) side, development of the project's architecture, UX/UI experience enhancement, managing micro-user interactions, integration of project technologies.",
+    "contacts": [
+      {
+        "type": "GitHub",
+        "link": "http://localhost:5173/about",
+        "displayText": "brandalx"
+      },
+      {
+        "type": "Developer Portfolio",
+        "link": "https://brandnolandev.com",
+        "displayText": "https://brandnolandev.com"
+      },
+      {
+        "type": "Design portfolio",
+        "link": "https://brandnolan.com",
+        "displayText": "https://brandnolan.com"
+      },
+      {
+        "type": "Cell",
+        "link": "tel:+972-52-2733369",
+        "displayText": "+972-52-2733369"
+      },
+      {
+        "type": "Email",
+        "link": "mailto:brndalx2@gmail.com",
+        "displayText": "brndalx2@gmail.com"
+      }
+    ]
+  },
+  {
+    "image": "https://i.postimg.cc/mDC2s99h/Frame-49.png",
+    "name": "Ilya Tsoy",
+    "age": "22 years old",
+    "bio": "I am a Full Stack Engineer and Graphic Designer with expertise in developing in both Front-End and Back-End development with a passion for creating web applications that are user-friendly and efficient. I have a srong focus on user experience and meeting business needs, and i strive to deliver fast and productive solutions. I enjoy working on projects that challenge me to learn new technologies and problem-solving skills",
+    "role": "Front-end and Back-end development for the user (customer) side, development of the project's architecture, UX/UI experience enhancement, managing micro-user interactions, integration of project technologies.",
+    "contacts": [
+      {
+        "type": "GitHub",
+        "link": "http://localhost:5173/about",
+        "displayText": "brandalx"
+      },
+      {
+        "type": "Developer Portfolio",
+        "link": "https://brandnolandev.com",
+        "displayText": "https://brandnolandev.com"
+      },
+      {
+        "type": "Design portfolio",
+        "link": "https://brandnolan.com",
+        "displayText": "https://brandnolan.com"
+      },
+      {
+        "type": "Cell",
+        "link": "tel:+972-52-2733369",
+        "displayText": "+972-52-2733369"
+      },
+      {
+        "type": "Email",
+        "link": "mailto:brndalx2@gmail.com",
+        "displayText": "brndalx2@gmail.com"
+      }
+    ]
+  }
+]
