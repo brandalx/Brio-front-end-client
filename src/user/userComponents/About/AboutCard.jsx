@@ -14,7 +14,7 @@ export default function AboutCard({ data, index }) {
         borderRadius='lg'
       >
         <Box w='100%'>
-          <Box px={8} display='flex' flexDir={index % 2 === 0 ? 'row' : 'row-reverse'} alignItems='center'>
+          <Box justifyContent={{ base: 'center', md: 'start' }} px={8} display='flex' alignItems='center'>
             <Box>
               <Image h='150px' rounded='lg' src={data.image} />
             </Box>
