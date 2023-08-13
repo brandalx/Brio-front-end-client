@@ -41,7 +41,7 @@ export default function AboutCard({ data, index }) {
         <Box w='100%'>
           <Box justifyContent={{ base: 'center', md: 'start' }} px={8} display='flex' alignItems='center'>
             <Box>
-              <LazyLoadImage effect='blur' h='150px' rounded='lg' src={data.image} />
+              <LazyLoadImage style={{ height: '150px' }} effect='blur' rounded='lg' src={data.image} />
             </Box>
 
             <Box ps={3}>
