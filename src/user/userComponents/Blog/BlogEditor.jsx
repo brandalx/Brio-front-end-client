@@ -26,15 +26,31 @@ import { QuillOptionsStatic } from 'quill';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { API_URL, TOKEN_KEY } from '../../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiGet } from '../../../services/apiServices';
 import axios from 'axios';
 export default function BlogEditor() {
+  const [userRefApi, setUserRefApi] = useState();
+  const handleUserData = async () => {
+    const url = API_URL + '/users/info/user';
+    try {
+      const data = await handleApiGet(url);
+      setUserRefApi(data._id);
+      // console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const [contentState, setContentState] = useState(''); //
 
   const [mainBody, setMainBody] = useState();
   const quillContainerRef = useRef(null);
 
   const [quillInstance, setQuillInstance] = useState(null);
+
+  useEffect(() => {
+    handleUserData();
+  }),
+    [];
 
   useEffect(() => {
     if (quillContainerRef && quillContainerRef.current) {
@@ -77,7 +93,7 @@ export default function BlogEditor() {
         title: _bodyData.title,
         desc: _bodyData.desc,
         tags: _bodyData.tags.split(/[\s,]+/),
-        userRef: _bodyData.userRef,
+        userRef: userRefApi,
         content: quillInstance.getContents()
       };
     } else {
