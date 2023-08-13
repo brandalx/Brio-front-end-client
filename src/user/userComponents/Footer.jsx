@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Container, Link, SimpleGrid, Stack, Text, useColorModeValue, Heading } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import Logo from '../../assets/svg/Logo';
+import { TOKEN_KEY } from '../../services/apiServices';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -67,10 +68,12 @@ export default function Footer() {
               <Heading color='whiteAlpha.900' fontSize='2xs'>
                 Support
               </Heading>
+              {!localStorage[TOKEN_KEY] && (
+                <Link fontSize='2xs' href={'/signup'}>
+                  Getting started
+                </Link>
+              )}
 
-              <Link fontSize='2xs' href={'/signup'}>
-                Getting started
-              </Link>
               <Link fontSize='2xs' href={'/about'}>
                 Help Center
               </Link>

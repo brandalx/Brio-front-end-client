@@ -9,19 +9,20 @@ import dataJson from '../userComponents/About/about.json';
 import Revenue from '../../assets/svg/Revenue';
 import { Heading } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { IconBrandDocker, IconBrandGithub, IconBuilding } from '@tabler/icons-react';
 
 export default function About() {
   const navigate = useNavigate();
   const handleGoBack = () => {
     navigate(-1);
   };
-  const [heightchange, setheightchange] = useState(1);
-  const [loading, setLoading] = useState(true);
+  // const [heightchange, setheightchange] = useState(1);
+  // const [loading, setLoading] = useState(true);
 
-  const onload = () => {
-    setheightchange(250);
-    setLoading(false);
-  };
+  // const onload = () => {
+  //   setheightchange(250);
+  //   setLoading(false);
+  // };
   const [numbers, setNumbers] = useState([]);
 
   const generateNumbers = () => {
@@ -35,11 +36,11 @@ export default function About() {
   };
   useEffect(() => {
     generateNumbers();
-    onload();
+    // onload();
   }, []);
   return (
     <Box bg='neutral.white'>
-      <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={loading} />
+      {/* <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={loading} /> */}
       <Container maxW='960px' pt={15}>
         <Box my={4}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
@@ -92,13 +93,21 @@ export default function About() {
                 bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : '#FCFCFC')}
                 borderRadius='lg'
               >
-                <Box px={8}>
-                  <LazyLoadImage
-                    effect='blur'
+                <Box w='100%' px={8}>
+                  <Image
+                    loading='lazy'
+                    w='100%'
+                    maxH='665px'
+                    m='auto'
                     src='http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/960bec92-ae6e-4946-99af-34de5bcd508b/4393x3391.png'
                   />
                   <Box>
-                    <Text color='neutral.black' fontSize='60px' textAlign='center' fontWeight='black'>
+                    <Text
+                      color='neutral.black'
+                      fontSize={{ base: '40px', md: '60px' }}
+                      textAlign='center'
+                      fontWeight='black'
+                    >
                       About Brio
                     </Text>
                   </Box>
@@ -124,12 +133,6 @@ export default function About() {
                       bg: () => (localStorage.getItem('colormode') === 'dark' ? '#4F4F7D' : 'primary.lightest'),
                       borderColor: 'primary.light'
                     }}
-                    _active={{
-                      cursor: 'pointer',
-                      transition: 'all 0.3s',
-                      bg: 'primary.light',
-                      borderColor: 'primary.default'
-                    }}
                     borderRadius='16px'
                     transition='all 0.3s'
                     borderWidth='1px'
@@ -151,7 +154,7 @@ export default function About() {
                             borderRadius='16px'
                           >
                             <Box mx='auto' display='flex' alignItems='center' justifyContent='center' p='8px'>
-                              <Revenue />
+                              <Icon color='primary.default' children={<IconBrandGithub />} />
                             </Box>
                           </Box>
                         </Box>
@@ -197,12 +200,6 @@ export default function About() {
                       bg: () => (localStorage.getItem('colormode') === 'dark' ? '#4F4F7D' : 'primary.lightest'),
                       borderColor: 'primary.light'
                     }}
-                    _active={{
-                      cursor: 'pointer',
-                      transition: 'all 0.3s',
-                      bg: 'primary.light',
-                      borderColor: 'primary.default'
-                    }}
                     borderRadius='16px'
                     transition='all 0.3s'
                     borderWidth='1px'
@@ -224,7 +221,7 @@ export default function About() {
                             borderRadius='16px'
                           >
                             <Box mx='auto' display='flex' alignItems='center' justifyContent='center' p='8px'>
-                              <Revenue />
+                              <Icon color='primary.default' children={<IconBuilding />} />
                             </Box>
                           </Box>
                         </Box>
@@ -266,12 +263,6 @@ export default function About() {
                       bg: () => (localStorage.getItem('colormode') === 'dark' ? '#4F4F7D' : 'primary.lightest'),
                       borderColor: 'primary.light'
                     }}
-                    _active={{
-                      cursor: 'pointer',
-                      transition: 'all 0.3s',
-                      bg: 'primary.light',
-                      borderColor: 'primary.default'
-                    }}
                     borderRadius='16px'
                     transition='all 0.3s'
                     borderWidth='1px'
@@ -293,7 +284,7 @@ export default function About() {
                             borderRadius='16px'
                           >
                             <Box mx='auto' display='flex' alignItems='center' justifyContent='center' p='8px'>
-                              <Revenue />
+                              <Icon color='primary.default' children={<IconBrandGithub />} />
                             </Box>
                           </Box>
                         </Box>
@@ -342,12 +333,6 @@ export default function About() {
                       bg: () => (localStorage.getItem('colormode') === 'dark' ? '#4F4F7D' : 'primary.lightest'),
                       borderColor: 'primary.light'
                     }}
-                    _active={{
-                      cursor: 'pointer',
-                      transition: 'all 0.3s',
-                      bg: 'primary.light',
-                      borderColor: 'primary.default'
-                    }}
                     borderRadius='16px'
                     transition='all 0.3s'
                     borderWidth='1px'
@@ -369,7 +354,7 @@ export default function About() {
                             borderRadius='16px'
                           >
                             <Box mx='auto' display='flex' alignItems='center' justifyContent='center' p='8px'>
-                              <Revenue />
+                              <Icon color='primary.default' children={<IconBrandDocker />} />
                             </Box>
                           </Box>
                         </Box>
@@ -415,12 +400,6 @@ export default function About() {
                       bg: () => (localStorage.getItem('colormode') === 'dark' ? '#4F4F7D' : 'primary.lightest'),
                       borderColor: 'primary.light'
                     }}
-                    _active={{
-                      cursor: 'pointer',
-                      transition: 'all 0.3s',
-                      bg: 'primary.light',
-                      borderColor: 'primary.default'
-                    }}
                     borderRadius='16px'
                     transition='all 0.3s'
                     borderWidth='1px'
@@ -442,7 +421,7 @@ export default function About() {
                             borderRadius='16px'
                           >
                             <Box mx='auto' display='flex' alignItems='center' justifyContent='center' p='8px'>
-                              <Revenue />
+                              <Icon color='primary.default' children={<IconBrandDocker />} />
                             </Box>
                           </Box>
                         </Box>
@@ -480,13 +459,21 @@ export default function About() {
                 bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : '#FCFCFC')}
                 borderRadius='lg'
               >
-                <Box px={8}>
-                  <LazyLoadImage
-                    effect='blur'
+                <Box w='100%' px={8}>
+                  <Image
+                    loading='lazy'
+                    w='100%'
+                    maxH='665px'
+                    m='auto'
                     src='http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/51319dd6-cc2f-46c1-a598-a7f763331242/4393x3391.png'
                   />
                   <Box>
-                    <Text color='neutral.black' fontSize='60px' textAlign='center' fontWeight='black'>
+                    <Text
+                      color='neutral.black'
+                      fontSize={{ base: '40px', md: '60px' }}
+                      textAlign='center'
+                      fontWeight='black'
+                    >
                       Meet Brio Developers!
                     </Text>
                   </Box>

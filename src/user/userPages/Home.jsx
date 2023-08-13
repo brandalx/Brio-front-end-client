@@ -429,9 +429,17 @@ export default function Home() {
                         h='auto'
                         borderColor='white'
                         borderWidth='1px'
-                        bg={index % 2 === 0 ? 'secondary.light' : 'primary.light'}
+                        bg={() =>
+                          index % 2 === 0 && localStorage.getItem('colormode') === 'light'
+                            ? 'secondary.light'
+                            : index % 2 !== 0 && localStorage.getItem('colormode') === 'light'
+                            ? 'primary.light'
+                            : index % 2 === 0
+                            ? '#363654'
+                            : '#363654'
+                        }
                         _hover={{
-                          bg: 'white',
+                          bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'white'),
                           borderWidth: '1px',
                           borderColor: 'primary.default',
                           transition: 'all 0.3s'
@@ -443,7 +451,13 @@ export default function Home() {
                               <Image src={index % 2 === 0 ? burgertest : caketest} alt='Promotion 1' />
                             </Box>
                             <Box w='50%'>
-                              <Text fontSize='xs' color='neutral.black' fontWeight='medium'>
+                              <Text
+                                fontSize='xs'
+                                color={() =>
+                                  localStorage.getItem('colormode') === 'dark' ? 'primary.default' : 'black'
+                                }
+                                fontWeight='medium'
+                              >
                                 {item.discountDetails}
                               </Text>
                               <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>

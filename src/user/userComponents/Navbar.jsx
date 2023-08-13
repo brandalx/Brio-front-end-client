@@ -346,9 +346,9 @@ export default function Navbar() {
                             : 'neutral.black'
                         }
                       >
-                        <Link fontSize='fontSizes.2xs' to='/user/orders'>
+                        <a fontSize='fontSizes.2xs' href='/user/orders'>
                           My orders
-                        </Link>
+                        </a>
                       </Text>
                     </Button>
                   </>

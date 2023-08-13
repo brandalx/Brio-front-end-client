@@ -39,13 +39,21 @@ export default function AboutCard({ data, index }) {
         borderRadius='lg'
       >
         <Box w='100%'>
-          <Box justifyContent={{ base: 'center', md: 'start' }} px={8} display='flex' alignItems='center'>
+          <Box
+            justifyContent={{ base: 'center', md: 'start' }}
+            px={8}
+            display='flex'
+            flexDirection={{ base: 'column', md: 'row' }}
+            alignItems='center'
+          >
             <Box>
-              <LazyLoadImage style={{ height: '150px' }} effect='blur' rounded='lg' src={data.image} />
+              <Box w='100%' display='flex' justifyItems='center'>
+                <Image height='150px' src={data.image} />
+              </Box>
             </Box>
 
             <Box ps={3}>
-              <Box pt='5'>
+              <Box pt={{ base: 0, md: 5 }}>
                 <Text color='neutral.black' fontSize='lg' fontWeight='extrabold'>
                   {data.name}
                 </Text>
@@ -83,7 +91,10 @@ export default function AboutCard({ data, index }) {
                 {data.contacts.map((contact, idx) => (
                   <Box display='flex' key={idx}>
                     <Text mt={1} fontWeight='medium' color='neutral.black' fontSize='2xs'>
-                      <Icon boxSize='20px'>{renderIcon(contact.type)}</Icon> {contact.type}:
+                      <Icon color='primary.default' boxSize='20px'>
+                        {renderIcon(contact.type)}
+                      </Icon>{' '}
+                      {contact.type}:
                     </Text>
                     <Link
                       _hover={{ color: 'primary.default' }}
