@@ -27,7 +27,7 @@ export default function AboutCard({ data, index }) {
     }
   };
   return (
-    <Box h='100%' data-aos='fade-up' my={4}>
+    <Box h='100%' data-aos='fade-up' mb={4}>
       <Box
         h='100%'
         border='1px'

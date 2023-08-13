@@ -32,16 +32,16 @@ export default function Footer() {
               <Heading fontSize='2xs' color='whiteAlpha.900'>
                 Responses
               </Heading>
-              <Link color='whiteAlpha.900' fontSize='2xs' href={'#'}>
+              <Link fontSize='2xs' href={'/about'}>
                 How it works
               </Link>
-              <Link fontSize='2xs' href={'#'}>
+              <Link fontSize='2xs' href={'/about'}>
                 Guarantee
               </Link>
-              <Link fontSize='2xs' href={'#'}>
+              <Link fontSize='2xs' href={'/about'}>
                 Security
               </Link>
-              <Link fontSize='2xs' href={'#'}>
+              <Link fontSize='2xs' href={'/about'}>
                 Pricing
               </Link>
             </Stack>
@@ -49,17 +49,17 @@ export default function Footer() {
               <Heading fontSize='2xs' color='whiteAlpha.900'>
                 Company
               </Heading>
-              <Link fontSize='2xs' href={'#'}>
+              <Link fontSize='2xs' href={'/about'}>
                 About us
               </Link>
 
-              <Link fontSize='2xs' href={'#'}>
+              <Link fontSize='2xs' href={'/about'}>
                 Prices
               </Link>
-              <Link fontSize='2xs' href={'#'}>
+              <Link fontSize='2xs' href={'/about'}>
                 Blog
               </Link>
-              <Link fontSize='2xs' href={'#'}>
+              <Link fontSize='2xs' href={'/about'}>
                 License
               </Link>
             </Stack>
@@ -68,16 +68,16 @@ export default function Footer() {
                 Support
               </Heading>
 
-              <Link fontSize='2xs' href={'#'}>
+              <Link fontSize='2xs' href={'/signup'}>
                 Getting started
               </Link>
-              <Link fontSize='2xs' href={'#'}>
+              <Link fontSize='2xs' href={'/about'}>
                 Help Center
               </Link>
-              <Link fontSize='2xs' href={'#'}>
+              <Link fontSize='2xs' href={'/about'}>
                 Report a bug
               </Link>
-              <Link fontSize='2xs' href={'#'}>
+              <Link fontSize='2xs' href={'/about'}>
                 Contact us
               </Link>
             </Stack>
