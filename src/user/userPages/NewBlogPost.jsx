@@ -6,7 +6,13 @@ import { useForm, Controller } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { Flex } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
-
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.bubble.css';
+// import { useQuill } from 'react-quilljs';
+import Quill from 'quill';
+import { QuillOptionsStatic } from 'quill';
 export default function NewBlogPost() {
   const navigate = useNavigate();
   const handleGoBack = () => {
