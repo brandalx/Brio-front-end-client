@@ -139,16 +139,9 @@ export default function ForgotPassword() {
       const url = API_URL + '/users/recoverrequestdata';
       const data = await handleApiMethod(url, 'POST', finalBody);
       if (data.token) {
-        toast({
-          title: 'Password recovered.',
-          description: "We've recovered your password.",
-          status: 'success',
-          duration: 9000,
-          isClosable: true
-        });
-
+        sessionStorage.setItem('cameFromRecovery', 'true');
         localStorage.setItem(TOKEN_KEY, data.token);
-        navigate('/');
+        window.location.href = '/';
       }
     } catch (error) {
       console.log(error);

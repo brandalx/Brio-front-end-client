@@ -346,9 +346,9 @@ export default function Navbar() {
                             : 'neutral.black'
                         }
                       >
-                        <a fontSize='fontSizes.2xs' href='/user/orders'>
+                        <Link fontSize='fontSizes.2xs' to='/user/orders'>
                           My orders
-                        </a>
+                        </Link>
                       </Text>
                     </Button>
                   </>
@@ -406,7 +406,7 @@ export default function Navbar() {
                             </MenuButton>
 
                             <MenuList>
-                              <a href='/user/cart'>
+                              <Link to='/user/cart'>
                                 {/* //because it should refresh to update user logged in */}
                                 <MenuItem
                                   color={
@@ -416,7 +416,7 @@ export default function Navbar() {
                                 >
                                   My cart
                                 </MenuItem>
-                              </a>
+                              </Link>
 
                               {!loading && cartLen > 0 && (
                                 <MenuItem
@@ -490,10 +490,10 @@ export default function Navbar() {
                       {localStorage[TOKEN_KEY] ? (
                         <>
                           <MenuList>
-                            <a href='/user/account'>
+                            <Link to='/user/account'>
                               {/* //because it should refresh to update user logged in */}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
-                            </a>
+                            </Link>
                             {checkerIfAdmin && (
                               <Link to='/admin/restaurant/dashboard'>
                                 <MenuItem fontWeight='medium'>Your restaurant</MenuItem>
@@ -595,7 +595,7 @@ export default function Navbar() {
                               <IconShoppingBag color='#4E60FF' />
                             </MenuButton>
                             <MenuList>
-                              <a href='/user/cart'>
+                              <Link to='/user/cart'>
                                 {/* //because it should refresh to update user logged in */}
                                 <MenuItem
                                   color={
@@ -605,7 +605,7 @@ export default function Navbar() {
                                 >
                                   My cart
                                 </MenuItem>
-                              </a>
+                              </Link>
 
                               {!loading && cartLen > 0 && (
                                 <MenuItem
@@ -667,10 +667,10 @@ export default function Navbar() {
                           </MenuButton>
                           <MenuList>
                             {/* //because it should refresh to update user logged in */}
-                            <a href='/user/account'>
+                            <Link to='/user/account'>
                               {' '}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
-                            </a>
+                            </Link>
                             {checkerIfAdmin && (
                               <Link to='/admin/restaurant/dashboard'>
                                 <MenuItem fontWeight='medium'>Your restaurant</MenuItem>

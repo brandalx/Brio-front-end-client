@@ -33,16 +33,16 @@ export default function Footer() {
               <Heading fontSize='2xs' color='whiteAlpha.900'>
                 Responses
               </Heading>
-              <Link fontSize='2xs' href={'/about'}>
+              <Link fontSize='2xs' h to={'/about'}>
                 How it works
               </Link>
-              <Link fontSize='2xs' href={'/about'}>
+              <Link fontSize='2xs' to={'/about'}>
                 Guarantee
               </Link>
-              <Link fontSize='2xs' href={'/about'}>
+              <Link fontSize='2xs' to={'/about'}>
                 Security
               </Link>
-              <Link fontSize='2xs' href={'/about'}>
+              <Link fontSize='2xs' to={'/about'}>
                 Pricing
               </Link>
             </Stack>
@@ -50,17 +50,17 @@ export default function Footer() {
               <Heading fontSize='2xs' color='whiteAlpha.900'>
                 Company
               </Heading>
-              <Link fontSize='2xs' href={'/about'}>
+              <Link fontSize='2xs' to={'/about'}>
                 About us
               </Link>
 
-              <Link fontSize='2xs' href={'/about'}>
+              <Link fontSize='2xs' to={'/about'}>
                 Prices
               </Link>
-              <Link fontSize='2xs' href={'/about'}>
+              <Link fontSize='2xs' to={'/about'}>
                 Blog
               </Link>
-              <Link fontSize='2xs' href={'/about'}>
+              <Link fontSize='2xs' to={'/about'}>
                 License
               </Link>
             </Stack>
@@ -69,18 +69,18 @@ export default function Footer() {
                 Support
               </Heading>
               {!localStorage[TOKEN_KEY] && (
-                <Link fontSize='2xs' href={'/signup'}>
+                <Link fontSize='2xs' to={'/signup'}>
                   Getting started
                 </Link>
               )}
 
-              <Link fontSize='2xs' href={'/about'}>
+              <Link fontSize='2xs' to={'/about'}>
                 Help Center
               </Link>
-              <Link fontSize='2xs' href={'/about'}>
+              <Link fontSize='2xs' to={'/about'}>
                 Report a bug
               </Link>
-              <Link fontSize='2xs' href={'/about'}>
+              <Link fontSize='2xs' to={'/about'}>
                 Contact us
               </Link>
             </Stack>

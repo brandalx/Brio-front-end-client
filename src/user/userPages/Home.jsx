@@ -1,5 +1,5 @@
 import React, { Suspense, useContext, useEffect, useState } from 'react';
-import { Box, Container, Flex, Text, GridItem, Grid, Image, Skeleton } from '@chakra-ui/react';
+import { Box, Container, Flex, Text, GridItem, Grid, Image, Skeleton, useToast } from '@chakra-ui/react';
 import burgertest from '../../assets/images/burgertest.png';
 import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
 import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
@@ -39,6 +39,32 @@ function Greeting() {
 }
 export default function Home() {
   // todo: add tag into product into backend model and validation
+  const toast = useToast();
+  useEffect(() => {
+    if (localStorage.getItem(TOKEN_KEY) && sessionStorage.getItem('cameFromLogin')) {
+      toast({
+        title: 'Successful login.',
+        description: 'Welcome to brio!.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      });
+
+      sessionStorage.removeItem('cameFromLogin');
+    }
+
+    if (localStorage.getItem(TOKEN_KEY) && sessionStorage.getItem('cameFromRecovery')) {
+      toast({
+        title: 'Password recovered.',
+        description: "We've recovered your password.",
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      });
+
+      sessionStorage.removeItem('cameFromRecovery');
+    }
+  }, []);
 
   const [arr, setAr] = useState([]);
   const [arr2, setAr2] = useState([]);

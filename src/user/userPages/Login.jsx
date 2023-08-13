@@ -75,19 +75,21 @@ export default function Login() {
       console.log(_bodyData);
       const data = await handleApiMethod(url, 'POST', _bodyData);
       if (data.token) {
-        toast({
-          title: 'Successful login.',
-          description: 'Welcome to brio!.',
-          status: 'success',
-          duration: 9000,
-          isClosable: true
-        });
+        // toast({
+        //   title: 'Successful login.',
+        //   description: 'Welcome to brio!.',
+        //   status: 'success',
+        //   duration: 9000,
+        //   isClosable: true
+        // });
+        sessionStorage.setItem('cameFromLogin', 'true');
+
         localStorage.setItem(TOKEN_KEY, data.token);
         const tempDecodedToken = jwtDecode(data.token);
         if (tempDecodedToken.role === 'ADMIN') {
           window.location.href = '/admin/restaurant/dashboard';
         } else {
-          navigate('/');
+          window.location.href = '/';
         }
       }
     } catch (error) {
