@@ -107,7 +107,7 @@ export default function About() {
             </Box>
           </Box>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr 1fr' }} gap={4}>
-            <GridItem w='100%' ata-aos='fade-up'>
+            <GridItem data-aos='fade-up' w='100%' ata-aos='fade-up'>
               <a target='_blank' rel='noreferrer' href='https://github.com/brandalx/Brio-front-end-client/'>
                 <Box>
                   <Box
@@ -176,7 +176,7 @@ export default function About() {
                 </Box>
               </a>
             </GridItem>
-            <GridItem w='100%' ata-aos='fade-up'>
+            <GridItem data-aos='fade-up' w='100%'>
               <a
                 target='_blank'
                 rel='noreferrer'
@@ -249,7 +249,7 @@ export default function About() {
                 </Box>
               </a>
             </GridItem>
-            <GridItem w='100%' ata-aos='fade-up'>
+            <GridItem data-aos='fade-up' w='100%'>
               <a target='_blank' rel='noreferrer' href='https://github.com/Okeanid-ISR/Brio-back-end'>
                 <Box>
                   <Box
@@ -321,7 +321,7 @@ export default function About() {
           </Grid>
 
           <Grid my={4} templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 1fr' }} gap={4}>
-            <GridItem w='100%' ata-aos='fade-up'>
+            <GridItem data-aos='fade-up' w='100%'>
               <a
                 target='_blank'
                 rel='noreferrer'
@@ -394,7 +394,7 @@ export default function About() {
                 </Box>
               </a>
             </GridItem>
-            <GridItem w='100%' ata-aos='fade-up'>
+            <GridItem data-aos='fade-up' w='100%'>
               <a
                 target='_blank'
                 rel='noreferrer'
@@ -499,7 +499,7 @@ export default function About() {
               {numbers.map((randomIndex, index) => {
                 const item = dataJson[randomIndex];
                 return (
-                  <Box h='100%' key={randomIndex}>
+                  <Box data-aos='fade-up' h='100%' key={randomIndex}>
                     <GridItem h='100%'>
                       <AboutCard index={index} data={item} />
                     </GridItem>

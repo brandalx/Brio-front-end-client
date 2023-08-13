@@ -1,8 +1,31 @@
-import { Box, Grid, GridItem, Image, Link, Text } from '@chakra-ui/react';
+import { Box, Grid, GridItem, Icon, Image, Link, Text } from '@chakra-ui/react';
+import { IconBrandGithub, IconBrandLinkedin, IconCodeAsterix, IconMail, IconPhone } from '@tabler/icons-react';
+import { IconPhoneCall } from '@tabler/icons-react';
+import { IconCodeCircle } from '@tabler/icons-react';
+import { IconBriefcase, IconCategory2, IconCode } from '@tabler/icons-react';
 import React from 'react';
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export default function AboutCard({ data, index }) {
+  const renderIcon = (contactType) => {
+    switch (contactType) {
+      case 'GitHub':
+        return <IconBrandGithub />;
+      case 'LinkedIn':
+        return <IconBrandLinkedin />;
+      case 'Developer Portfolio':
+        return <IconCodeCircle />;
+      case 'Design portfolio':
+        return <IconCategory2 />;
+      case 'Cell':
+        return <IconPhoneCall />;
+      case 'Email':
+        return <IconMail />;
+      default:
+        return <></>;
+    }
+  };
   return (
     <Box h='100%' data-aos='fade-up' my={4}>
       <Box
@@ -33,7 +56,7 @@ export default function AboutCard({ data, index }) {
             </Box>
           </Box>
 
-          <Box width={{ base: '100%', md: '90%' }}>
+          <Box width={{ base: '100%' }}>
             <Box px={5}>
               <Box my={2}>
                 <Text fontWeight='bold' color='neutral.black' fontSize='xs'>
@@ -60,7 +83,7 @@ export default function AboutCard({ data, index }) {
                 {data.contacts.map((contact, idx) => (
                   <Box display='flex' key={idx}>
                     <Text mt={1} fontWeight='medium' color='neutral.black' fontSize='2xs'>
-                      {contact.type}:
+                      <Icon boxSize='20px'>{renderIcon(contact.type)}</Icon> {contact.type}:
                     </Text>
                     <Link
                       _hover={{ color: 'primary.default' }}
