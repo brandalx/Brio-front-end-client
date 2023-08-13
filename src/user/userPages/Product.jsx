@@ -291,23 +291,24 @@ export default function Product() {
                       <Box>
                         {currentPromotion ? (
                           <Box display='flex'>
-                            <Text
-                              me={4}
-                              textDecoration='line-through 4px red'
-                              my={4}
-                              fontWeight='extrabold'
-                              color='neutral.black'
-                              fontSize='md'
-                            >
-                              {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
-                            </Text>
-                            {currentPromotion && (
+                            {currentPromotion ? (
                               <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
                                 {!loading && (
                                   <>
                                     $ {(arr.price * (1 - currentPromotion.discountPercent / 100) * amount).toFixed(2)}
                                   </>
                                 )}
+                              </Text>
+                            ) : (
+                              <Text
+                                me={4}
+                                textDecoration='line-through 4px red'
+                                my={4}
+                                fontWeight='extrabold'
+                                color='neutral.black'
+                                fontSize='md'
+                              >
+                                {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
                               </Text>
                             )}
                           </Box>
@@ -342,21 +343,15 @@ export default function Product() {
                       <Flex justifyContent='space-between' alignItems='center'>
                         {currentPromotion ? (
                           <Box display='flex' flexDir='column'>
-                            <Text
-                              me={4}
-                              textDecoration='line-through 4px red'
-                              my={4}
-                              fontWeight='extrabold'
-                              color='neutral.black'
-                              fontSize='md'
-                            >
-                              {!loading && <>${(arr.price * amount).toFixed(2)}</>}
-                            </Text>
-                            {currentPromotion && (
+                            {currentPromotion ? (
                               <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
                                 {!loading && (
                                   <>${(arr.price * (1 - currentPromotion.discountPercent / 100) * amount).toFixed(2)}</>
                                 )}
+                              </Text>
+                            ) : (
+                              <Text me={4} my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                                {!loading && <>${(arr.price * amount).toFixed(2)}</>}
                               </Text>
                             )}
                           </Box>
@@ -484,17 +479,15 @@ export default function Product() {
                     let promotion = activePromotions.find((promo) => promo.discountProducts.includes(item._id));
 
                     return (
-                      <Box key={index}>
-                        <Skeleton borderRadius='16px' isLoaded={!loading}>
-                          <ProductCard
-                            promotion={promotion || null} // Pass the found promotion. If no promotion is found, it will be null
-                            _id={item._id}
-                            img={item.image}
-                            title={item.title}
-                            description={item.description}
-                            price={item.price}
-                          />
-                        </Skeleton>
+                      <Box h='100%' key={index}>
+                        <ProductCard
+                          promotion={promotion || null} // Pass the found promotion. If no promotion is found, it will be null
+                          _id={item._id}
+                          img={item.image}
+                          title={item.title}
+                          description={item.description}
+                          price={item.price}
+                        />
                       </Box>
                     );
                   })}

@@ -1,6 +1,6 @@
 import { Box, GridItem, Image, Text, Button, Flex, Stack, border, useToast, Badge } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiServices';
 
 import noimage from '../../../assets/images/noimage.jpg';
@@ -13,7 +13,7 @@ export default function ProductCard({ img, title, description, price, _id, promo
   const toast = useToast();
   const [userar, setUserAr] = useState([]);
   const [priceCount, setPriceCount] = useState(1);
-
+  let location = useLocation();
   const handleApi = async () => {
     const url = API_URL + '/users/info/user';
     try {
@@ -94,8 +94,8 @@ export default function ProductCard({ img, title, description, price, _id, promo
   const isTokenExpired = useCheckToken();
 
   return (
-    <Box data-aos='fade-up'>
-      <GridItem h='100%' w='100%' maxH={!isTokenExpired ? '430px' : '450px'} bg='neutral.white'>
+    <Box h='100%' data-aos='fade-up'>
+      <GridItem h='100%' w='100%' maxH={!isTokenExpired ? '480px' : '450px'} bg='neutral.white'>
         <Box
           h='100%'
           w='100%'
@@ -138,9 +138,26 @@ export default function ProductCard({ img, title, description, price, _id, promo
             <Box w='100%'>
               {isTokenExpired ? (
                 <Box>
-                  <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                    $ {price}
-                  </Text>
+                  {location.pathname === '/search' ? (
+                    <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                      ${price}
+                    </Text>
+                  ) : (
+                    <>
+                      {promotion === null && (
+                        <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                          ${price}
+                        </Text>
+                      )}
+
+                      {promotion !== null && (
+                        <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                          ${(price * (1 - promotion.discountPercent / 100)).toFixed(2)}
+                        </Text>
+                      )}
+                    </>
+                  )}
+
                   <Link to='/signup'>
                     <Button
                       w='100%'
@@ -167,9 +184,25 @@ export default function ProductCard({ img, title, description, price, _id, promo
                   {priceCount === 1 ? (
                     <>
                       <Flex w='100%' justifyContent='space-between' alignItems='center'>
-                        <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                          $ {price}
-                        </Text>
+                        {location.pathname === '/search' ? (
+                          <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                            ${price}
+                          </Text>
+                        ) : (
+                          <>
+                            {promotion === null && (
+                              <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                                ${price}
+                              </Text>
+                            )}
+
+                            {promotion !== null && (
+                              <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                                ${(price * (1 - promotion.discountPercent / 100)).toFixed(2)}
+                              </Text>
+                            )}
+                          </>
+                        )}
                         <Button
                           onClick={handlePriceAdd}
                           background='primary.light'
@@ -210,9 +243,25 @@ export default function ProductCard({ img, title, description, price, _id, promo
                     <Box w='100%'>
                       <Stack w='100%'>
                         <Flex w='100%' justifyContent='space-between' alignItems='center'>
-                          <Text fontWeight='extrabold' color='neutral.black' fontSize='md'>
-                            ${(price * priceCount).toFixed(2)}
-                          </Text>
+                          {location.pathname === '/search' ? (
+                            <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                              ${price}
+                            </Text>
+                          ) : (
+                            <>
+                              {promotion === null && (
+                                <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                                  ${(price * priceCount).toFixed(2)}
+                                </Text>
+                              )}
+
+                              {promotion !== null && (
+                                <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                                  ${(price * priceCount * (1 - promotion.discountPercent / 100)).toFixed(2)}
+                                </Text>
+                              )}
+                            </>
+                          )}
                           <Box display='flex' alignItems='center'>
                             <Button
                               onClick={handlePriceMinus}

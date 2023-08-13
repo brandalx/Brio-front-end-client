@@ -562,7 +562,7 @@ export default function Restaurant() {
         </Box>
       </Box>
       <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
-        <Container maxW='1110px' data-aos='fade-up'>
+        <Container pb='100px' maxW='1110px' data-aos='fade-up'>
           {!showOops && (
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
               <GridItem w='100%' h='100%'>
