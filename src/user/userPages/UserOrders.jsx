@@ -30,7 +30,7 @@ export default function UserOrders() {
   }, []);
   return (
     <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
-      <Container maxW='1110px' my={10}>
+      <Container maxW='1440px' my={10}>
         <Box>
           <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
             My orders
