@@ -43,52 +43,52 @@ export default function Footer() {
               <Heading fontSize='2xs' color='whiteAlpha.900'>
                 Responses
               </Heading>
-              <Link to={'/about'}>
+              <a href={'/about'}>
                 <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
                   How it works
                 </Text>
-              </Link>
-              <Link to={'/about'}>
+              </a>
+              <a href={'/about'}>
                 <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
                   Guarantee
                 </Text>
-              </Link>
-              <Link to={'/about'}>
+              </a>
+              <a href={'/about'}>
                 <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
                   Security
                 </Text>
-              </Link>
-              <Link to={'/about'}>
+              </a>
+              <a href={'/about'}>
                 <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
                   Pricing
                 </Text>
-              </Link>
+              </a>
             </Stack>
             <Stack align={'flex-start'} color='neutral.grayLight'>
               <Heading fontSize='2xs' color='whiteAlpha.900'>
                 Company
               </Heading>
-              <Link to={'/about'}>
+              <a href={'/about'}>
                 <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
                   About us
                 </Text>
-              </Link>
+              </a>
 
-              <Link to={'/about'}>
+              <a href={'/about'}>
                 <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
                   Prices
                 </Text>
-              </Link>
+              </a>
               <Link to={'/blog'}>
                 <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
                   Blog
                 </Text>
               </Link>
-              <Link to={'/about'}>
+              <a href={'/about'}>
                 <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
                   License
                 </Text>
-              </Link>
+              </a>
             </Stack>
             <Stack align={'flex-start'} color='neutral.grayLight'>
               <Heading color='whiteAlpha.900' fontSize='2xs'>
@@ -102,21 +102,21 @@ export default function Footer() {
                 </a>
               )}
 
-              <Link to={'/about'}>
+              <a href={'/about'}>
                 <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
                   Help Center
                 </Text>
-              </Link>
-              <Link to={'/about'}>
+              </a>
+              <a href={'/about'}>
                 <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
                   Report a bug
                 </Text>
-              </Link>
-              <Link to={'/about'}>
+              </a>
+              <a href={'/about'}>
                 <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
                   Contact us
                 </Text>
-              </Link>
+              </a>
             </Stack>
           </SimpleGrid>
         </Container>
