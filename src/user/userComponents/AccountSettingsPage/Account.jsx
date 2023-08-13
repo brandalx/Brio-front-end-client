@@ -151,7 +151,7 @@ export default function Account() {
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
     sessionStorage.removeItem('location');
-    navigate('/login');
+    window.location.href = '/login';
     toast({
       title: 'Logged out.',
       description: 'Successfuly logged out!',

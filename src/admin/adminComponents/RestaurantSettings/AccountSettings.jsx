@@ -133,7 +133,7 @@ export default function AccountSettings() {
 
   const onLogOut = () => {
     localStorage.removeItem('x-api-key');
-    navigate('/login');
+    window.location.href = '/login';
     toast({
       title: 'Logging out.',
       description: 'Successfully logged out!',

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, Container, Link, SimpleGrid, Stack, Text, useColorModeValue, Heading } from '@chakra-ui/react';
+import { Box, Container, SimpleGrid, Stack, Text, useColorModeValue, Heading } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import Logo from '../../assets/svg/Logo';
 import { TOKEN_KEY } from '../../services/apiServices';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -12,12 +13,21 @@ export default function Footer() {
         <Container as={Stack} maxW={'6xl'} py={10}>
           <SimpleGrid templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 1fr 2fr' }} spacing={8}>
             <Stack spacing={6}>
-              <Box display='flex'>
-                <Logo />
-                <Text fontSize='sm' fontWeight='extrabold' color='primary.default' ml='2'>
-                  Brio
-                </Text>
-              </Box>
+              <Link _hover={{ textDecoration: 'none' }} textDecoration='none' to='/'>
+                <Box display='flex'>
+                  <Logo />
+                  <Text
+                    textDecoration='none'
+                    _hover={{ textDecoration: 'none' }}
+                    fontSize='sm'
+                    fontWeight='extrabold'
+                    color='primary.default'
+                    ml='2'
+                  >
+                    Brio
+                  </Text>
+                </Box>
+              </Link>
               <Text color='neutral.gray' fontSize='3xs'>
                 © {new Date().getFullYear()} Brio - Bringing food really on-time
               </Text>
@@ -33,35 +43,51 @@ export default function Footer() {
               <Heading fontSize='2xs' color='whiteAlpha.900'>
                 Responses
               </Heading>
-              <Link fontSize='2xs' h to={'/about'}>
-                How it works
+              <Link to={'/about'}>
+                <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
+                  How it works
+                </Text>
               </Link>
-              <Link fontSize='2xs' to={'/about'}>
-                Guarantee
+              <Link to={'/about'}>
+                <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
+                  Guarantee
+                </Text>
               </Link>
-              <Link fontSize='2xs' to={'/about'}>
-                Security
+              <Link to={'/about'}>
+                <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
+                  Security
+                </Text>
               </Link>
-              <Link fontSize='2xs' to={'/about'}>
-                Pricing
+              <Link to={'/about'}>
+                <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
+                  Pricing
+                </Text>
               </Link>
             </Stack>
             <Stack align={'flex-start'} color='neutral.grayLight'>
               <Heading fontSize='2xs' color='whiteAlpha.900'>
                 Company
               </Heading>
-              <Link fontSize='2xs' to={'/about'}>
-                About us
+              <Link to={'/about'}>
+                <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
+                  About us
+                </Text>
               </Link>
 
-              <Link fontSize='2xs' to={'/about'}>
-                Prices
+              <Link to={'/about'}>
+                <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
+                  Prices
+                </Text>
               </Link>
-              <Link fontSize='2xs' to={'/about'}>
-                Blog
+              <Link to={'/blog'}>
+                <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
+                  Blog
+                </Text>
               </Link>
-              <Link fontSize='2xs' to={'/about'}>
-                License
+              <Link to={'/about'}>
+                <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
+                  License
+                </Text>
               </Link>
             </Stack>
             <Stack align={'flex-start'} color='neutral.grayLight'>
@@ -69,19 +95,27 @@ export default function Footer() {
                 Support
               </Heading>
               {!localStorage[TOKEN_KEY] && (
-                <Link fontSize='2xs' to={'/signup'}>
-                  Getting started
-                </Link>
+                <a fontSize='2xs' href={'/signup'}>
+                  <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
+                    Getting started
+                  </Text>
+                </a>
               )}
 
-              <Link fontSize='2xs' to={'/about'}>
-                Help Center
+              <Link to={'/about'}>
+                <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
+                  Help Center
+                </Text>
               </Link>
-              <Link fontSize='2xs' to={'/about'}>
-                Report a bug
+              <Link to={'/about'}>
+                <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
+                  Report a bug
+                </Text>
               </Link>
-              <Link fontSize='2xs' to={'/about'}>
-                Contact us
+              <Link to={'/about'}>
+                <Text _hover={{ textDecor: 'underline' }} fontSize='2xs'>
+                  Contact us
+                </Text>
               </Link>
             </Stack>
           </SimpleGrid>

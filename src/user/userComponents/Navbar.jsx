@@ -150,7 +150,7 @@ export default function Navbar() {
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
     sessionStorage.removeItem('location');
-    navigate('/login');
+    window.location.href = '/login';
     toast({
       title: 'Loggin out.',
       description: 'Successfuly logged out!',
@@ -521,15 +521,15 @@ export default function Navbar() {
                         </>
                       ) : (
                         <MenuList>
-                          <Link to='/signup'>
+                          <a href='/signup'>
                             {' '}
                             <MenuItem fontWeight='medium'>Sign up</MenuItem>
-                          </Link>
+                          </a>
 
-                          <Link to='/login'>
+                          <a href='/login'>
                             {' '}
                             <MenuItem fontWeight='medium'>Log in</MenuItem>
-                          </Link>
+                          </a>
                         </MenuList>
                       )}
                     </Menu>
@@ -698,15 +698,15 @@ export default function Navbar() {
                         </>
                       ) : (
                         <MenuList>
-                          <Link to='/signup'>
+                          <a href='/signup'>
                             {' '}
                             <MenuItem fontWeight='medium'>Sign up</MenuItem>
-                          </Link>
+                          </a>
 
-                          <Link to='/login'>
+                          <a href='/login'>
                             {' '}
                             <MenuItem fontWeight='medium'>Log in</MenuItem>
-                          </Link>
+                          </a>
                         </MenuList>
                       )}
                     </Menu>
