@@ -53,7 +53,7 @@ export default function ForgotPassword() {
     return () => {
       image.onload = null;
     };
-  }, []);
+  }, [image]);
 
   // const [state, handleSubmit] = useForm('xpzeyzgq');
   useEffect(() => {

@@ -53,7 +53,7 @@ export default function Login() {
     return () => {
       image.onload = null;
     };
-  }, []);
+  }, [image]);
 
   const {
     handleSubmit,

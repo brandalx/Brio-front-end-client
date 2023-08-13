@@ -64,9 +64,10 @@ export default function Code({ handleUserSendRecoverCode, codeData, setCodeData 
             <Box display='flex' justifyContent='center'>
               <HStack color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}>
                 <PinInput
+                  otp
                   mask
                   id='code'
-                  type='text'
+                  type='number'
                   onChange={(value) => {
                     setValue('code', value);
                     setCodeData(value);

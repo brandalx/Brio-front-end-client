@@ -74,7 +74,7 @@ export default function SignUp() {
     return () => {
       image.onload = null;
     };
-  }, []);
+  }, [image]);
 
   const [mainBodyUser, setMainBodyUser] = useState({
     firstname: '',
