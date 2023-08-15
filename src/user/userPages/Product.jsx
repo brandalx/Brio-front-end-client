@@ -30,6 +30,7 @@ import { API_URL, handleApiGet, handleApiMethod } from '../../services/apiServic
 import { cartContext } from '../../context/globalContext';
 import { useCheckToken } from '../../services/token';
 import { Badge } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet-async';
 export default function Product() {
   const [isNoImage, setIsNoImage] = useState(false);
   const { cartLen, setCartLen } = useContext(cartContext);
@@ -226,6 +227,9 @@ export default function Product() {
 
   return (
     <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
+      <Helmet>
+        <title>{!loading && arr.title}</title>
+      </Helmet>
       <Box data-aos='fade-up'>
         <Container maxW='1110px' py={10}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>

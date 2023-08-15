@@ -13,6 +13,7 @@ import 'react-quill/dist/quill.bubble.css';
 // import { useQuill } from 'react-quilljs';
 import Quill from 'quill';
 import { QuillOptionsStatic } from 'quill';
+import { Helmet } from 'react-helmet-async';
 export default function NewBlogPost() {
   const navigate = useNavigate();
   const handleGoBack = () => {
@@ -21,6 +22,9 @@ export default function NewBlogPost() {
 
   return (
     <Box pb='30px' bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
+      <Helmet>
+        <title>Post New Blog</title>
+      </Helmet>
       <Container maxW='1110px' pt={15}>
         <Box my={4}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>

@@ -36,6 +36,7 @@ import RestaurantInfo from '../userComponents/SignUp/sellerSignUp/RestaurantInfo
 import RestaurantConfirmation from '../userComponents/SignUp/sellerSignUp/RestaurantConfirmation';
 
 import Preloader from '../../components/Loaders/preloader';
+import { Helmet } from 'react-helmet-async';
 function RedirectHandler({ setRedirect }) {
   useEffect(() => {
     setRedirect(true);
@@ -125,6 +126,9 @@ export default function SignUp() {
 
   return (
     <>
+      <Helmet>
+        <title>Sign up</title>
+      </Helmet>
       {isLoading ? (
         <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={isLoading} />
       ) : (

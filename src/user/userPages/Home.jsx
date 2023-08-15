@@ -17,6 +17,7 @@ import Pickers from '../userComponents/HomePage/Pickers';
 import SearchInput from '../userComponents/Search/SearchInput';
 import Arrow from '../../assets/svg/Arrow';
 import Aos from 'aos';
+import { Helmet } from 'react-helmet-async';
 function getRandomIndex(length) {
   return Math.floor(Math.random() * length);
 }
@@ -270,6 +271,9 @@ export default function Home() {
 
   return (
     <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
+      <Helmet>
+        <title> {'Welcome to Brio!'}</title>
+      </Helmet>
       <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={loading} />
 
       {/* {loading && (

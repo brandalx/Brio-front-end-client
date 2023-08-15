@@ -8,6 +8,7 @@ import noimage from '../../../assets/images/noimagepromo.jpg';
 import Location from '../../../assets/svg/Location.jsx';
 import { API_URL, handleApiGet } from '../../../services/apiServices.js';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 export default function DealsBlocks() {
   const [deals, setDeals] = useState([]);
@@ -69,6 +70,9 @@ export default function DealsBlocks() {
 
   return (
     <Box>
+      <Helmet>
+        <title>{!loading && deals.length > 0 && deals.length + ' Active Deals'}</title>
+      </Helmet>
       <Container maxW='1110px'>
         <Grid alignItems='stretch' templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
           {deals.length > 0 &&

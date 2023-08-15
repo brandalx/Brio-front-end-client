@@ -7,10 +7,14 @@ import Address from '../userComponents/AccountSettingsPage/Address';
 import Account from '../userComponents/AccountSettingsPage/Account';
 import PaymentMethod from '../userComponents/AccountSettingsPage/PaymentMethod';
 import Security from '../userComponents/AccountSettingsPage/Security';
+import { Helmet } from 'react-helmet-async';
 
 export default function AccountSettings() {
   return (
     <Box py={5}>
+      <Helmet>
+        <title>Settings</title>
+      </Helmet>
       <Container maxW='1110px'>
         <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 2fr ' }} gap={6}>
           <GridItem w='100%'>

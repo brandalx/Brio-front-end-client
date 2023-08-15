@@ -12,6 +12,7 @@ import { Icon } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
 import noimage from '../../assets/images/noimageblog.jpg';
 import axios from 'axios';
+import { Helmet } from 'react-helmet-async';
 export default function Blog() {
   const [arr, setArr] = useState([]);
   const [editorState, setEditorState] = useState();
@@ -224,6 +225,9 @@ export default function Blog() {
   };
   return (
     <Box mb='150px'>
+      <Helmet>
+        <title>Blog - {(arr._id && arr.title) || ''}</title>
+      </Helmet>
       {loading && (
         <>
           <Container maxW='1110px' data-aos='fade-up'>

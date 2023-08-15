@@ -10,6 +10,7 @@ import Revenue from '../../assets/svg/Revenue';
 import { Heading } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { IconBrandDocker, IconBrandGithub, IconBuilding } from '@tabler/icons-react';
+import { Helmet } from 'react-helmet-async';
 
 export default function About() {
   const navigate = useNavigate();
@@ -40,6 +41,9 @@ export default function About() {
   }, []);
   return (
     <Box bg='neutral.white'>
+      <Helmet>
+        <title>About Brio</title>
+      </Helmet>
       {/* <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={loading} /> */}
       <Container maxW='960px' pt={15}>
         <Box my={4}>

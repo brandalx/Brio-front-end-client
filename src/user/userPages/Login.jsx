@@ -30,6 +30,7 @@ import render1 from '../../assets/images/render7.jpg';
 
 import jwtDecode from 'jwt-decode';
 import Preloader from '../../components/Loaders/preloader';
+import { Helmet } from 'react-helmet-async';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -106,6 +107,9 @@ export default function Login() {
   };
   return (
     <>
+      <Helmet>
+        <title>Login</title>
+      </Helmet>
       {isLoading ? (
         <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={isLoading} />
       ) : (

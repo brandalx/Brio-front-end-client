@@ -21,6 +21,7 @@ import { FaChevronLeft } from 'react-icons/fa';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 import { Grid } from '@chakra-ui/react';
 import ProductCard from '../userComponents/RestaurantPage/ProductCard';
+import { Helmet } from 'react-helmet-async';
 
 export default function Search() {
   const [restaurantData, setRestaurantData] = useState([]);
@@ -100,6 +101,9 @@ export default function Search() {
   }, [arr]);
   return (
     <Container maxW='1110px'>
+      <Helmet>
+        <title>Search in Brio</title>
+      </Helmet>
       <Button
         data-aos='fade-right'
         onClick={() => handleGoBack()}

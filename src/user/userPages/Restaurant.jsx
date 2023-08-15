@@ -42,6 +42,7 @@ import { Icon } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
 import PickersCategory from '../userComponents/RestaurantPage/PickersCategory';
 import MapComponent from '../userComponents/Order/MapComponent';
+import { Helmet } from 'react-helmet-async';
 
 export default function Restaurant() {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -460,6 +461,9 @@ export default function Restaurant() {
   };
   return (
     <>
+      <Helmet>
+        <title>{!loading && restaurantArr.title}</title>
+      </Helmet>
       <Box data-aos='fade-up'>
         <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'bg')} py='50px'>
           <Container maxW='1110px'>

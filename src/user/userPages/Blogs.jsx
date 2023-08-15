@@ -5,6 +5,7 @@ import BlogCard from '../userComponents/Blogs/BlogCard';
 import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import { Link } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet-async';
 
 export default function Blogs() {
   let [userArr, setUsersArr] = useState([]);
@@ -112,6 +113,9 @@ export default function Blogs() {
   };
   return (
     <Container maxW='1110px'>
+      <Helmet>
+        <title>Brio Blogs</title>
+      </Helmet>
       <Box py='25px'>
         <Text ms={6} fontWeight='black' color='neutral.black' fontSize='xl'>
           Blogs

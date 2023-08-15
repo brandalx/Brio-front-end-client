@@ -32,6 +32,7 @@ import RecoverPassword from '../userComponents/ForgotPassword/RecoverPassword';
 import { API_URL, TOKEN_KEY, handleApiMethod } from '../../services/apiServices';
 import Code from '../userComponents/ForgotPassword/Code';
 import Preloader from '../../components/Loaders/preloader';
+import { Helmet } from 'react-helmet-async';
 
 export default function ForgotPassword() {
   const [recoverData, setRecoverData] = useState();
@@ -195,6 +196,9 @@ export default function ForgotPassword() {
 
   return (
     <>
+      <Helmet>
+        <title>Forgot password</title>
+      </Helmet>
       {isLoading ? (
         <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={isLoading} />
       ) : (

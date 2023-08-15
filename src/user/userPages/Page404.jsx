@@ -2,10 +2,14 @@ import React from 'react';
 import { Box, Button, Flex, Text, VisuallyHidden, chakra } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/svg/Logo';
+import { Helmet } from 'react-helmet-async';
 
 export default function Page404() {
   return (
     <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
+      <Helmet>
+        <title>404</title>
+      </Helmet>
       <Box data-aos='zoom-in' display='flex' justifyContent='center' alignItems='center' height='90vh'>
         <Box
           textAlign='center'
