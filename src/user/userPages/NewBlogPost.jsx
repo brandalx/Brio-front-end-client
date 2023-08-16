@@ -6,7 +6,14 @@ import { useForm, Controller } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { Flex } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
-
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.bubble.css';
+// import { useQuill } from 'react-quilljs';
+import Quill from 'quill';
+import { QuillOptionsStatic } from 'quill';
+import { Helmet } from 'react-helmet-async';
 export default function NewBlogPost() {
   const navigate = useNavigate();
   const handleGoBack = () => {
@@ -14,7 +21,10 @@ export default function NewBlogPost() {
   };
 
   return (
-    <Box py='60px' bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
+    <Box pb='30px' bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
+      <Helmet>
+        <title>Post New Blog</title>
+      </Helmet>
       <Container maxW='1110px' pt={15}>
         <Box my={4}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>

@@ -30,6 +30,7 @@ import render1 from '../../assets/images/render7.jpg';
 
 import jwtDecode from 'jwt-decode';
 import Preloader from '../../components/Loaders/preloader';
+import { Helmet } from 'react-helmet-async';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -41,14 +42,19 @@ export default function Login() {
 
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  const imagesrc =
+    'http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/51319dd6-cc2f-46c1-a598-a7f763331242/4393x3391.png';
+  const image = new Image();
   useEffect(() => {
-    const image = new Image();
-    image.src = render1;
+    image.src = imagesrc;
     image.onload = () => {
       setImageLoaded(true);
-      setLoading(false); // Image is loaded, set loading to false
+      setLoading(false);
     };
-  }, []);
+    return () => {
+      image.onload = null;
+    };
+  }, [image]);
 
   const {
     handleSubmit,
@@ -70,19 +76,21 @@ export default function Login() {
       console.log(_bodyData);
       const data = await handleApiMethod(url, 'POST', _bodyData);
       if (data.token) {
-        toast({
-          title: 'Successful login.',
-          description: 'Welcome to brio!.',
-          status: 'success',
-          duration: 9000,
-          isClosable: true
-        });
+        // toast({
+        //   title: 'Successful login.',
+        //   description: 'Welcome to brio!.',
+        //   status: 'success',
+        //   duration: 9000,
+        //   isClosable: true
+        // });
+        sessionStorage.setItem('cameFromLogin', 'true');
+
         localStorage.setItem(TOKEN_KEY, data.token);
         const tempDecodedToken = jwtDecode(data.token);
         if (tempDecodedToken.role === 'ADMIN') {
           window.location.href = '/admin/restaurant/dashboard';
         } else {
-          navigate('/');
+          window.location.href = '/';
         }
       }
     } catch (error) {
@@ -99,8 +107,11 @@ export default function Login() {
   };
   return (
     <>
+      <Helmet>
+        <title>Login</title>
+      </Helmet>
       {isLoading ? (
-        <Preloader loading={isLoading} />
+        <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={isLoading} />
       ) : (
         <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
           <Container maxW='550px'>
@@ -139,114 +150,111 @@ export default function Login() {
                             Email
                           </FormLabel>
 
-
-                        <Input
-                          id='email'
-                          {...register('email', {
-                            required: { value: true, message: 'This field is required' },
-                            minLength: { value: 6, message: 'Minimum length should be 6' }
-                          })}
-                          type='email'
-                          color={() =>
-                            localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
-                          }
-                          background='neutral.white'
-                          _placeholder={{ color: 'neutral.gray' }}
-                          borderRadius='8px'
-                          fontSize='2xs'
-                          placeholder='name@example.com'
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                          {errors.email && errors.email.message}
-                        </FormErrorMessage>
-                      </FormControl>
-                      <FormControl mt={4} id='password' isInvalid={errors.password}>
-                        <FormLabel color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
-                          Password
-                        </FormLabel>
-                        <InputGroup>
                           <Input
-                            color={() =>
-                              localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
-                            }
-                            type={show ? 'text' : 'password'}
-                            {...register('password', {
+                            id='email'
+                            {...register('email', {
                               required: { value: true, message: 'This field is required' },
                               minLength: { value: 6, message: 'Minimum length should be 6' }
                             })}
-                            id='password'
-
+                            type='email'
+                            color={() =>
+                              localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
+                            }
                             background='neutral.white'
                             _placeholder={{ color: 'neutral.gray' }}
                             borderRadius='8px'
                             fontSize='2xs'
-
-                            placeholder='min. 8 characters'
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder='name@example.com'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                           />
-                          {password.length > 0 && (
-                            <InputRightElement me={2}>
-                              <Button h='1.75rem' size='2xs' onClick={handleClickShow}>
-                                {show ? (
-                                  <span>
-                                    <svg
-                                      xmlns='http://www.w3.org/2000/svg'
-                                      className='icon icon-tabler icon-tabler-eye'
-                                      width={18}
-                                      height={18}
-                                      viewBox='0 0 24 24'
-                                      strokeWidth={2}
-                                      stroke='#4E60FF'
-                                      fill='none'
-                                      strokeLinecap='round'
-                                      strokeLinejoin='round'
-                                    >
-                                      <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-                                      <path d='M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0' />
-                                      <path d='M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6' />
-                                    </svg>
-                                  </span>
-                                ) : (
-                                  <span>
-                                    <svg
-                                      xmlns='http://www.w3.org/2000/svg'
-                                      className='icon icon-tabler icon-tabler-eye-off'
-                                      width={18}
-                                      height={18}
-                                      viewBox='0 0 24 24'
-                                      strokeWidth={2}
-                                      stroke='#C7C8D2'
-                                      fill='none'
-                                      strokeLinecap='round'
-                                      strokeLinejoin='round'
-                                    >
-                                      <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-                                      <path d='M10.585 10.587a2 2 0 0 0 2.829 2.828' />
-                                      <path d='M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87' />
-                                      <path d='M3 3l18 18' />
-                                    </svg>
-                                  </span>
-                                )}
-                              </Button>
-                            </InputRightElement>
-                          )}
-                        </InputGroup>
+                          <FormErrorMessage p={0} mt={2} fontSize='3xs'>
+                            {errors.email && errors.email.message}
+                          </FormErrorMessage>
+                        </FormControl>
+                        <FormControl mt={4} id='password' isInvalid={errors.password}>
+                          <FormLabel color='neutral.grayDark' fontWeight='semibold' fontSize='3xs'>
+                            Password
+                          </FormLabel>
+                          <InputGroup>
+                            <Input
+                              color={() =>
+                                localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'
+                              }
+                              type={show ? 'text' : 'password'}
+                              {...register('password', {
+                                required: { value: true, message: 'This field is required' },
+                                minLength: { value: 6, message: 'Minimum length should be 6' }
+                              })}
+                              id='password'
+                              background='neutral.white'
+                              _placeholder={{ color: 'neutral.gray' }}
+                              borderRadius='8px'
+                              fontSize='2xs'
+                              placeholder='min. 8 characters'
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                            />
+                            {password.length > 0 && (
+                              <InputRightElement me={2}>
+                                <Button h='1.75rem' size='2xs' onClick={handleClickShow}>
+                                  {show ? (
+                                    <span>
+                                      <svg
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        className='icon icon-tabler icon-tabler-eye'
+                                        width={18}
+                                        height={18}
+                                        viewBox='0 0 24 24'
+                                        strokeWidth={2}
+                                        stroke='#4E60FF'
+                                        fill='none'
+                                        strokeLinecap='round'
+                                        strokeLinejoin='round'
+                                      >
+                                        <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+                                        <path d='M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0' />
+                                        <path d='M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6' />
+                                      </svg>
+                                    </span>
+                                  ) : (
+                                    <span>
+                                      <svg
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        className='icon icon-tabler icon-tabler-eye-off'
+                                        width={18}
+                                        height={18}
+                                        viewBox='0 0 24 24'
+                                        strokeWidth={2}
+                                        stroke='#C7C8D2'
+                                        fill='none'
+                                        strokeLinecap='round'
+                                        strokeLinejoin='round'
+                                      >
+                                        <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+                                        <path d='M10.585 10.587a2 2 0 0 0 2.829 2.828' />
+                                        <path d='M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87' />
+                                        <path d='M3 3l18 18' />
+                                      </svg>
+                                    </span>
+                                  )}
+                                </Button>
+                              </InputRightElement>
+                            )}
+                          </InputGroup>
 
-                        <FormErrorMessage p={0} mt={2} fontSize='3xs'>
-                          {errors.password && errors.password.message}
-                        </FormErrorMessage>
-                      </FormControl>
-                      <Stack spacing={10}>
-                        <Stack
-                          mt={2}
-                          direction={{ base: 'column', sm: 'row' }}
-                          align={'start'}
-                          justify={'space-between'}
-                        >
-                          {/* <Flex alignItems='center'>
+                          <FormErrorMessage p={0} mt={2} fontSize='3xs'>
+                            {errors.password && errors.password.message}
+                          </FormErrorMessage>
+                        </FormControl>
+                        <Stack spacing={10}>
+                          <Stack
+                            mt={2}
+                            direction={{ base: 'column', sm: 'row' }}
+                            align={'start'}
+                            justify={'space-between'}
+                          >
+                            {/* <Flex alignItems='center'>
 
                             placeholder='name@example.com'
                             value={email}
@@ -297,28 +305,26 @@ export default function Login() {
                           </Flex> */}
                           </Stack>
 
-
-                        <Button
-                          isDisabled={!isValid()}
-                          type='submit'
-                          w='100%'
-                          background='primary.default'
-                          fontWeight='bold'
-                          variant='solid'
-                          color='white'
-                          borderWidth='1px'
-                          borderColor='neutral.white'
-                          _hover={{
-                            background: 'neutral.white',
-                            color: 'primary.default',
-                            borderWidth: '1px',
-                            borderColor: 'primary.default'
-                          }}
-                          py={5}
-                        >
-                          Login
-                        </Button>
-
+                          <Button
+                            isDisabled={!isValid()}
+                            type='submit'
+                            w='100%'
+                            background='primary.default'
+                            fontWeight='bold'
+                            variant='solid'
+                            color='white'
+                            borderWidth='1px'
+                            borderColor='neutral.white'
+                            _hover={{
+                              background: 'neutral.white',
+                              color: 'primary.default',
+                              borderWidth: '1px',
+                              borderColor: 'primary.default'
+                            }}
+                            py={5}
+                          >
+                            Login
+                          </Button>
 
                           <Link to='/recoverpassword'>
                             <Box display='flex' justifyItems='center'>
@@ -341,9 +347,8 @@ export default function Login() {
                     </Box>
                   </Box>
 
-
                   <Box textAlign='center' py={6}>
-           <Text color='neutral.black'>
+                    <Text color='neutral.black'>
                       Don’t have an account?{' '}
                       <Link to='/signup'>
                         {' '}
@@ -378,7 +383,7 @@ export default function Login() {
           </Container>
           <GridItem
             data-aos='fade-left'
-            backgroundImage={isImageLoaded ? `url(${render1})` : ''}
+            backgroundImage={isImageLoaded ? `url(${imagesrc})` : ''}
             backgroundRepeat='no-repeat'
             backgroundSize='cover'
             backgroundPosition='center'

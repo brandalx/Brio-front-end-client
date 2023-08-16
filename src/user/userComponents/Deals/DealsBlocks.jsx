@@ -4,9 +4,11 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
 import ValidThrough from '../../../assets/svg/ValidThrough.jsx';
+import noimage from '../../../assets/images/noimagepromo.jpg';
 import Location from '../../../assets/svg/Location.jsx';
 import { API_URL, handleApiGet } from '../../../services/apiServices.js';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 export default function DealsBlocks() {
   const [deals, setDeals] = useState([]);
@@ -68,12 +70,16 @@ export default function DealsBlocks() {
 
   return (
     <Box>
+      <Helmet>
+        <title>{!loading && deals.length > 0 && deals.length + ' Active Deals'}</title>
+      </Helmet>
       <Container maxW='1110px'>
-        <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
+        <Grid alignItems='stretch' templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
           {deals.length > 0 &&
             deals.map((promotion, index) => (
-              <Box key={index} data-aos='fade-up'>
+              <Box h='100%' key={index} data-aos='fade-up'>
                 <Box
+                  h='100%'
                   display='flex'
                   justifyContent='space-between'
                   flexDirection='column'
@@ -127,7 +133,7 @@ export default function DealsBlocks() {
                           width='100%'
                           height='100%'
                           alt={`Lazy loaded image number ${index}`}
-                          src={promotion.image}
+                          src={promotion.image.length > 0 ? promotion.image : noimage}
                           effect='blur'
                         />
                       </Box>

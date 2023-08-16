@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import OrdersTableBody from '../userComponents/UserOrdrs/OrdersTableBody';
 import { Link } from 'react-router-dom';
 import { API_URL, handleApiGet } from '../../services/apiServices';
+import { Helmet } from 'react-helmet-async';
 
 export default function UserOrders() {
   const [isTablet] = useMediaQuery('(max-width: 1199px)');
@@ -30,7 +31,10 @@ export default function UserOrders() {
   }, []);
   return (
     <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
-      <Container maxW='1110px' my={10}>
+      <Helmet>
+        <title>Your orders</title>
+      </Helmet>
+      <Container maxW='1440px' my={10}>
         <Box>
           <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
             My orders

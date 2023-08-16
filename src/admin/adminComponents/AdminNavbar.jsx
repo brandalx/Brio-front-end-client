@@ -41,7 +41,7 @@ export default function AdminNavbar() {
     localStorage.removeItem(TOKEN_KEY);
     sessionStorage.removeItem('location');
 
-    navigate('/login');
+    window.location.href = '/login';
     toast({
       title: 'Loggin out.',
       description: 'Successfuly logged out!',

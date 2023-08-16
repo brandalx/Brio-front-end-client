@@ -5,16 +5,22 @@ import BlogCard from '../userComponents/Blogs/BlogCard';
 import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
 import { Link } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet-async';
 
 export default function Blogs() {
   let [userArr, setUsersArr] = useState([]);
   let [blogsArr, setBlogsArr] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hovered, setHovered] = useState(false);
+  const [rndIndex, setRndIndex] = useState();
+
   const handleBlogsApi = async () => {
     const url = API_URL + '/blogs';
     const data = await handleApiGet(url);
     setBlogsArr(data);
+    const randomIndex = Math.floor(Math.random() * data.length);
+    setRndIndex(randomIndex);
+
     await handleUsersPublicData(data);
     setLoading(false);
   };
@@ -107,6 +113,9 @@ export default function Blogs() {
   };
   return (
     <Container maxW='1110px'>
+      <Helmet>
+        <title>Brio Blogs</title>
+      </Helmet>
       <Box py='25px'>
         <Text ms={6} fontWeight='black' color='neutral.black' fontSize='xl'>
           Blogs
@@ -173,7 +182,7 @@ export default function Blogs() {
               getBlogImage={getBlogImage}
               getUserAvatar={getUserAvatar}
               getUserName={getUserName}
-              data={blogsArr[0]}
+              data={blogsArr[rndIndex]}
             />
           </Box>
         )}

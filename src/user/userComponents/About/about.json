@@ -1,0 +1,76 @@
+[
+  {
+    "image": "https://i.postimg.cc/YSJqZRhJ/Frame-48-1.png",
+    "name": "Brandon Nolan",
+    "age": "23 years old",
+    "bio": "I am a Full Stack Engineer and Graphic Designer with expertise in developing in both Front-End and Back-End development with a passion for creating web applications that are user-friendly and efficient. I have a srong focus on user experience and meeting business needs, and i strive to deliver fast and productive solutions. I enjoy working on projects that challenge me to learn new technologies and problem-solving skills",
+    "role": "Front-end and Back-end development for the user (customer) side, development of the project's architecture, UX/UI experience enhancement, managing micro-user interactions, integration of project technologies.",
+    "contacts": [
+      {
+        "type": "GitHub",
+        "link": "https://github.com/brandalx",
+        "displayText": "brandalx"
+      },
+      {
+        "type": "LinkedIn",
+        "link": "https://www.linkedin.com/in/brandonolan/",
+        "displayText": "LinkedIn profile"
+      },
+      {
+        "type": "Developer Portfolio",
+        "link": "https://brandnolandev.com",
+        "displayText": "https://brandnolandev.com"
+      },
+      {
+        "type": "Design portfolio",
+        "link": "https://brandnolan.com",
+        "displayText": "https://brandnolan.com"
+      },
+      {
+        "type": "Cell",
+        "link": "tel:+972-52-2733369",
+        "displayText": "+972-52-2733369"
+      },
+      {
+        "type": "Email",
+        "link": "mailto:brndalx2@gmail.com",
+        "displayText": "brndalx2@gmail.com"
+      }
+    ]
+  },
+  {
+    "image": "https://i.postimg.cc/mDC2s99h/Frame-49.png",
+    "name": "Ilya Tsoy",
+    "age": "22 years old",
+    "bio": "I'm a programmer on the hunt for a new job. When I'm not writing code, you can usually find me trying to explain what I do to my parents, petting my cat for inspiration, or arguing with my keyboard. If you're in need of a witty and slightly delirious developer to join your team, look no further - I'm your coding superhero!",
+    "role": "Front-end and Back-end development for the admin (restaurant) side, development of the process of creating products and categories, dashboard of restaurant, UI process for admin, managing, integration of project technologies.",
+    "contacts": [
+      {
+        "type": "GitHub",
+        "link": "https://github.com/Okeanid-ISR",
+        "displayText": "Okeanid-ISR"
+      },
+      {
+        "type": "LinkedIn",
+        "link": "https://www.linkedin.com/in/ilya-tsoy-126769242",
+        "displayText": "LinkedIn profile"
+      },
+      {
+        "type": "Developer Portfolio",
+        "link": "https://ilyatsoyweb.com/",
+        "displayText": "https://ilyatsoyweb.com/"
+      },
+
+      {
+        "type": "Cell",
+        "link": "tel:+972 50-988-0081",
+        "displayText": "+972 50-988-0081"
+      },
+      {
+        "type": "Email",
+        "link": "mailto:ilyatsoy27@gmail.com",
+        "displayText": "ilyatsoy27@gmail.com"
+      }
+    ]
+  }
+]

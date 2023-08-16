@@ -10,6 +10,7 @@ import './css/global.css';
 import { useCheckToken } from './services/token';
 import Aos from 'aos';
 import ThemeProvider from './utils/theme';
+import { HelmetProvider } from 'react-helmet-async';
 
 export default function App() {
   const isTokenExpired = useCheckToken();
@@ -27,7 +28,9 @@ export default function App() {
   }, []);
   return (
     <ThemeProvider>
-      <AppRoutes isToken={isToken} />
+      <HelmetProvider>
+        <AppRoutes isToken={isToken} />
+      </HelmetProvider>
     </ThemeProvider>
   );
 }

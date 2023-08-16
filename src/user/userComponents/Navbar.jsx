@@ -39,6 +39,8 @@ import { useCheckToken } from '../../services/token';
 import { avatarContext, cartContext, geolocationContext, useColorModeContext } from '../../context/globalContext';
 import GeolocationDefinder from './Navbar/GeolocationDefinder';
 import jwtDecode from 'jwt-decode';
+import onAudio from '../../assets//sounds/on.mp3';
+import offAudio from '../../assets//sounds/off.mp3';
 export default function Navbar() {
   const isTokenExpired = useCheckToken();
   const { cartLen, setCartLen } = useContext(cartContext);
@@ -148,7 +150,7 @@ export default function Navbar() {
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
     sessionStorage.removeItem('location');
-    navigate('/login');
+    window.location.href = '/login';
     toast({
       title: 'Loggin out.',
       description: 'Successfuly logged out!',
@@ -158,6 +160,15 @@ export default function Navbar() {
     });
   };
   const { colorMode, setColorMode } = useColorModeContext();
+
+  const audioRef = useRef(null);
+  const playAudio = () => {
+    if (audioRef.current) {
+      const audioSource = localStorage.getItem('colormode') === 'light' ? offAudio : onAudio;
+      audioRef.current.src = audioSource;
+      audioRef.current.play();
+    }
+  };
 
   return (
     <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
@@ -189,8 +200,11 @@ export default function Navbar() {
                     <Input
                       defaultValue={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      background='neutral.grayLightest'
+                      background={() =>
+                        localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.grayLightest'
+                      }
                       _placeholder={{ color: 'neutral.gray' }}
+                      color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       borderRadius={100}
                       fontSize='2xs'
                       type='text'
@@ -213,6 +227,7 @@ export default function Navbar() {
                     const newColorMode = colorMode === 'light' ? 'dark' : 'light';
                     localStorage.setItem('colormode', newColorMode);
                     setColorMode(newColorMode);
+                    playAudio();
                   }}
                 >
                   {localStorage.getItem('colormode') === 'dark' ? (
@@ -391,7 +406,7 @@ export default function Navbar() {
                             </MenuButton>
 
                             <MenuList>
-                              <a href='/user/cart'>
+                              <Link to='/user/cart'>
                                 {/* //because it should refresh to update user logged in */}
                                 <MenuItem
                                   color={
@@ -401,7 +416,7 @@ export default function Navbar() {
                                 >
                                   My cart
                                 </MenuItem>
-                              </a>
+                              </Link>
 
                               {!loading && cartLen > 0 && (
                                 <MenuItem
@@ -475,10 +490,10 @@ export default function Navbar() {
                       {localStorage[TOKEN_KEY] ? (
                         <>
                           <MenuList>
-                            <a href='/user/account'>
+                            <Link to='/user/account'>
                               {/* //because it should refresh to update user logged in */}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
-                            </a>
+                            </Link>
                             {checkerIfAdmin && (
                               <Link to='/admin/restaurant/dashboard'>
                                 <MenuItem fontWeight='medium'>Your restaurant</MenuItem>
@@ -506,15 +521,15 @@ export default function Navbar() {
                         </>
                       ) : (
                         <MenuList>
-                          <Link to='/signup'>
+                          <a href='/signup'>
                             {' '}
                             <MenuItem fontWeight='medium'>Sign up</MenuItem>
-                          </Link>
+                          </a>
 
-                          <Link to='/login'>
+                          <a href='/login'>
                             {' '}
                             <MenuItem fontWeight='medium'>Log in</MenuItem>
-                          </Link>
+                          </a>
                         </MenuList>
                       )}
                     </Menu>
@@ -580,7 +595,7 @@ export default function Navbar() {
                               <IconShoppingBag color='#4E60FF' />
                             </MenuButton>
                             <MenuList>
-                              <a href='/user/cart'>
+                              <Link to='/user/cart'>
                                 {/* //because it should refresh to update user logged in */}
                                 <MenuItem
                                   color={
@@ -590,7 +605,7 @@ export default function Navbar() {
                                 >
                                   My cart
                                 </MenuItem>
-                              </a>
+                              </Link>
 
                               {!loading && cartLen > 0 && (
                                 <MenuItem
@@ -652,10 +667,10 @@ export default function Navbar() {
                           </MenuButton>
                           <MenuList>
                             {/* //because it should refresh to update user logged in */}
-                            <a href='/user/account'>
+                            <Link to='/user/account'>
                               {' '}
                               <MenuItem fontWeight='medium'>Settings</MenuItem>
-                            </a>
+                            </Link>
                             {checkerIfAdmin && (
                               <Link to='/admin/restaurant/dashboard'>
                                 <MenuItem fontWeight='medium'>Your restaurant</MenuItem>
@@ -683,15 +698,15 @@ export default function Navbar() {
                         </>
                       ) : (
                         <MenuList>
-                          <Link to='/signup'>
+                          <a href='/signup'>
                             {' '}
                             <MenuItem fontWeight='medium'>Sign up</MenuItem>
-                          </Link>
+                          </a>
 
-                          <Link to='/login'>
+                          <a href='/login'>
                             {' '}
                             <MenuItem fontWeight='medium'>Log in</MenuItem>
-                          </Link>
+                          </a>
                         </MenuList>
                       )}
                     </Menu>
@@ -835,8 +850,11 @@ export default function Navbar() {
                         const newColorMode = colorMode === 'light' ? 'dark' : 'light';
                         localStorage.setItem('colormode', newColorMode);
                         setColorMode(newColorMode);
+                        playAudio();
                       }}
                     >
+                      <audio ref={audioRef} />
+
                       {localStorage.getItem('colormode') === 'dark' ? (
                         <Box display='flex' alignItems='center'>
                           <Moon />{' '}

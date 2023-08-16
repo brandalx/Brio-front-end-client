@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { extendTheme, ChakraProvider, useColorMode } from '@chakra-ui/react';
 import { ColorModeProvider } from '../context/globalContext';
+const getUserPreferredColorMode = () => {
+  if (localStorage.getItem('colormode')) {
+    return localStorage.getItem('colormode');
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  } else {
+    return 'light';
+  }
+};
 
 const ThemeProvider = ({ children }) => {
   const config = {
@@ -180,15 +189,33 @@ const ThemeProvider = ({ children }) => {
     components,
     styles
   });
-  const [colorMode, setColorMode] = useState(localStorage.getItem('colormode') || 'light');
+  const [colorMode, setColorMode] = useState(getUserPreferredColorMode());
 
   useEffect(() => {
+    localStorage.setItem('colormode', colorMode);
+
     if (colorMode === 'light') {
       setColors(lightColors);
     } else {
       setColors(darkColors);
     }
   }, [colorMode]);
+
+  const handleSystemColorChange = (e) => {
+    if (e.matches) {
+      setColorMode('dark');
+    } else {
+      setColorMode('light');
+    }
+  };
+  useEffect(() => {
+    const matcher = window.matchMedia('(prefers-color-scheme: dark)');
+    matcher.addListener(handleSystemColorChange);
+
+    return () => {
+      matcher.removeListener(handleSystemColorChange);
+    };
+  }, []);
 
   return (
     <ChakraProvider theme={theme}>

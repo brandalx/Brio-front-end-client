@@ -17,37 +17,61 @@ import {
   useToast,
   Container
 } from '@chakra-ui/react';
-import ReactQuill from 'react-quill';
+
 import 'react-quill/dist/quill.bubble.css';
-import { useQuill } from 'react-quilljs';
+
 import 'quill/dist/quill.snow.css';
+import Quill from 'quill';
+import { QuillOptionsStatic } from 'quill';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { API_URL, TOKEN_KEY } from '../../../services/apiServices';
+import { API_URL, TOKEN_KEY, handleApiGet } from '../../../services/apiServices';
 import axios from 'axios';
 export default function BlogEditor() {
+  const [userRefApi, setUserRefApi] = useState();
+  const handleUserData = async () => {
+    const url = API_URL + '/users/info/user';
+    try {
+      const data = await handleApiGet(url);
+      setUserRefApi(data._id);
+      // console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const [contentState, setContentState] = useState(''); //
 
   const [mainBody, setMainBody] = useState();
-  const { quill, quillRef } = useQuill({
-    modules: {
-      toolbar: [
-        ['bold', 'italic', 'underline', 'strike'],
+  const quillContainerRef = useRef(null);
 
-        [{ header: 1 }, { header: 2 }],
-        [{ list: 'ordered' }, { list: 'bullet' }],
+  const [quillInstance, setQuillInstance] = useState(null);
 
-        [{ size: ['small', false, 'large', 'huge'] }],
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        [{ color: [] }, { background: [] }],
+  useEffect(() => {
+    handleUserData();
+  }),
+    [];
 
-        [{ align: [] }],
-        ['image', 'link']
-      ]
-    },
-    theme: 'snow'
-  });
+  useEffect(() => {
+    if (quillContainerRef && quillContainerRef.current) {
+      const instance = new Quill(quillContainerRef.current, {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ header: 1 }, { header: 2 }],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            [{ size: ['small', false, 'large', 'huge'] }],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            [{ color: [] }, { background: [] }],
+            [{ align: [] }],
+            ['image', 'link']
+          ]
+        }
+      });
+      setQuillInstance(instance);
+    }
+  }, []);
 
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
@@ -64,13 +88,13 @@ export default function BlogEditor() {
     console.log(_bodyData);
 
     let PreMainBody;
-    if (quill) {
+    if (quillInstance) {
       PreMainBody = {
         title: _bodyData.title,
         desc: _bodyData.desc,
         tags: _bodyData.tags.split(/[\s,]+/),
-        userRef: _bodyData.userRef,
-        content: quill.getContents()
+        userRef: userRefApi,
+        content: quillInstance.getContents()
       };
     } else {
       return;
@@ -81,7 +105,7 @@ export default function BlogEditor() {
 
   const uploadRef = useRef();
   useEffect(() => {
-    if (uploadRef.current && uploadRef.current.files[0]) {
+    if (uploadRef && uploadRef.current && uploadRef.current.files[0]) {
       setTextUpload(uploadRef.current.files[0].name);
     }
   }, [uploadRef.current]);
@@ -306,7 +330,7 @@ export default function BlogEditor() {
                   border: 'none',
                   minHeight: '300px'
                 }}
-                ref={quillRef}
+                ref={quillContainerRef}
               />
             </Box>
           </Container>

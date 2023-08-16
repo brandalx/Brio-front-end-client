@@ -19,13 +19,14 @@ import { API_URL, handleApiGet, handleApiMethod } from '../../../services/apiSer
 
 import { cartContext } from '../../../context/globalContext';
 
-export default function PaymentSummary({ item, loading, finalCheckoutBody }) {
+export default function PaymentSummary({ item, loading, finalCheckoutBody, tipHemlet, setTipHemlet }) {
   const { cartLen, setCartLen } = useContext(cartContext);
   const [tipValue, setTipValue] = useState(0);
   const tipref = useRef(null);
   const handleTipChange = () => {
     const value = tipref.current.value ? tipref.current.value : 0;
     setTipValue(value);
+    setTipHemlet(value);
   };
   const navigate = useNavigate();
   const toast = useToast();
