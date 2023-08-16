@@ -64,10 +64,10 @@ export default function PaymentCard({
               >
                 {item.cardNumber}
               </Heading>
-              <Text fontSize='3xs' fontWeight='semibold' color='neutral.grayDark'>
+              <Text fontSize='3xs' fontWeight='semibold' color='neutral.gray'>
                 {item.expirationDate}
               </Text>
-              <Text fontSize='3xs' color='neutral.grayDark'>
+              <Text fontSize='3xs' color='neutral.gray'>
                 {item.cardholder}
               </Text>
             </Box>

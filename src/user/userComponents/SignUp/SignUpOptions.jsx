@@ -35,9 +35,16 @@ function SignUpOptions({ element, isSelected, onItemSelected }) {
   }, [location.pathname]);
 
   const borderColor = isSelected ? 'primary.default' : isHovered ? 'primary.default' : 'neutral.grayLightest';
-  const bgColor = isSelected ? 'primary.default' : isHovered ? 'primary.lightest' : 'neutral.white';
+  const bgColor = isSelected
+    ? 'primary.default'
+    : isHovered && localStorage.getItem('colormode') === 'dark'
+    ? '#414165'
+    : isHovered && localStorage.getItem('colormode') !== 'dark'
+    ? 'primary.lightest'
+    : 'neutral.white';
+
   const textColor = isSelected ? 'primary.default' : 'neutral.black';
-  const iconColor = isSelected ? 'white' : 'black';
+  const iconColor = isSelected ? 'white' : localStorage.getItem('colormode') === 'dark' ? 'white' : 'black';
 
   return (
     <Box

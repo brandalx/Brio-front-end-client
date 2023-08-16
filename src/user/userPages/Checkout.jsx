@@ -22,9 +22,10 @@ import PaymentSummary from '../userComponents/Checkout/PaymentSummary';
 import NewPaymentMethod from '../userComponents/Checkout/NewPaymentMethod';
 import { API_URL, handleApiGet, handleApiMethod } from '../../services/apiServices';
 import DefaultPaymentMethod from '../userComponents/AccountSettingsPage/DefaultPaymentMethod';
+import { Helmet } from 'react-helmet-async';
 export default function Checkout() {
   const location = useLocation();
-
+  const [tipHemlet, setTipHemlet] = useState(0);
   const [switcher, setSwitcher] = useState(true);
 
   const [loading, setLoading] = useState(true);
@@ -139,6 +140,14 @@ export default function Checkout() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          {!loading &&
+            preSummary &&
+            preSummary.totalAmount &&
+            'Checkout - ' + (Number(preSummary.totalAmount) + Number(tipHemlet)).toFixed(2) + '$ total'}
+        </title>
+      </Helmet>
       <Box>
         <Container maxW='1110px' py={10}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
@@ -284,6 +293,7 @@ export default function Checkout() {
                   isDisabled={finalCheckoutBody.checkoutBodyData.userdata.selectedPaymentMethod ? false : true}
                 >
                   <PaymentSummary
+                    setTipHemlet={setTipHemlet}
                     finalCheckoutBody={finalCheckoutBody}
                     setFinalCheckoutBody={setFinalCheckoutBody}
                     item={preSummary}

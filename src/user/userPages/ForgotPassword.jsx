@@ -32,6 +32,7 @@ import RecoverPassword from '../userComponents/ForgotPassword/RecoverPassword';
 import { API_URL, TOKEN_KEY, handleApiMethod } from '../../services/apiServices';
 import Code from '../userComponents/ForgotPassword/Code';
 import Preloader from '../../components/Loaders/preloader';
+import { Helmet } from 'react-helmet-async';
 
 export default function ForgotPassword() {
   const [recoverData, setRecoverData] = useState();
@@ -41,14 +42,19 @@ export default function ForgotPassword() {
   const toast = useToast();
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  const imagesrc =
+    'http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/960bec92-ae6e-4946-99af-34de5bcd508b/4393x3391.png';
+  const image = new Image();
   useEffect(() => {
-    const image = new Image();
-    image.src = render1;
+    image.src = imagesrc;
     image.onload = () => {
       setImageLoaded(true);
-      setLoading(false); // Image is loaded, set loading to false
+      setLoading(false);
     };
-  }, []);
+    return () => {
+      image.onload = null;
+    };
+  }, [image]);
 
   // const [state, handleSubmit] = useForm('xpzeyzgq');
   useEffect(() => {
@@ -134,16 +140,9 @@ export default function ForgotPassword() {
       const url = API_URL + '/users/recoverrequestdata';
       const data = await handleApiMethod(url, 'POST', finalBody);
       if (data.token) {
-        toast({
-          title: 'Password recovered.',
-          description: "We've recovered your password.",
-          status: 'success',
-          duration: 9000,
-          isClosable: true
-        });
-
+        sessionStorage.setItem('cameFromRecovery', 'true');
         localStorage.setItem(TOKEN_KEY, data.token);
-        navigate('/');
+        window.location.href = '/';
       }
     } catch (error) {
       console.log(error);
@@ -197,8 +196,11 @@ export default function ForgotPassword() {
 
   return (
     <>
+      <Helmet>
+        <title>Forgot password</title>
+      </Helmet>
       {isLoading ? (
-        <Preloader loading={isLoading} />
+        <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={isLoading} />
       ) : (
         <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap={0}>
           <Container maxW='550px'>
@@ -246,7 +248,7 @@ export default function ForgotPassword() {
                               Forgot Password
                             </Text>
                             <Text fontSize='2xs' color='neutral.grayDark'>
-                              Enter the email and phone number associated with your account.
+                              Enter the email associated with your account.
                             </Text>
                           </Box>
                           <Box mt='20px'>
@@ -359,7 +361,7 @@ export default function ForgotPassword() {
           <GridItem
             display={{ base: 'none', md: 'inline-flex' }}
             w='100%'
-            backgroundImage={render1}
+            backgroundImage={isImageLoaded ? `url(${imagesrc})` : ''}
             backgroundRepeat='no-repeat'
             backgroundSize='cover'
             backgroundPosition='center'

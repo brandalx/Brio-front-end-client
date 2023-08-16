@@ -5,6 +5,7 @@ import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 import RestaurantCard from '../userComponents/HomePage/RestaurantCard';
 import Pickers from '../userComponents/HomePage/Pickers';
+import { Helmet } from 'react-helmet-async';
 export default function Restaurants() {
   const [sortedArr, setSortedArr] = useState([]);
   const [keepArr, setKeepArr] = useState([]);
@@ -53,6 +54,9 @@ export default function Restaurants() {
   };
   return (
     <>
+      <Helmet>
+        <title>{!loading && arr.length > 0 && arr.length + ' Restaurants available'}</title>
+      </Helmet>
       <Container maxW='1110px'>
         <Box data-aos='fade-up' py='25px'>
           <Text fontWeight='semibold' color='neutral.black' fontSize='sm'>

@@ -151,7 +151,7 @@ export default function Account() {
   const onLogOut = () => {
     localStorage.removeItem(TOKEN_KEY);
     sessionStorage.removeItem('location');
-    navigate('/login');
+    window.location.href = '/login';
     toast({
       title: 'Logged out.',
       description: 'Successfuly logged out!',
@@ -313,7 +313,9 @@ export default function Account() {
                             Remove
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent>
+                        <PopoverContent
+                          color={localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black'}
+                        >
                           <PopoverArrow />
                           <PopoverCloseButton />
                           <PopoverHeader>Confirmation!</PopoverHeader>
@@ -385,8 +387,11 @@ export default function Account() {
                       color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='firstname'
                       {...register('firstname', {
-                        required: { value: true, message: 'This field is required' },
-                        minLength: { value: 2, message: 'Minimum length should be 2' }
+                        required: { value: false, message: 'This field is required' },
+                        pattern: { value: /^[A-Za-z]+$/, message: 'Enter valid characters only' },
+
+                        minLength: { value: 2, message: 'Minimum length should be 2' },
+                        maxLength: { value: 20, message: 'Minimum length should be 20' }
                       })}
                       type='text'
                       background='neutral.white'
@@ -413,9 +418,10 @@ export default function Account() {
                       color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='lastname'
                       {...register('lastname', {
-                        required: { value: true, message: 'This field is required' },
-
-                        minLength: { value: 2, message: 'Minimum length should be 2' }
+                        required: { value: false, message: 'This field is required' },
+                        pattern: { value: /^[A-Za-z]+$/, message: 'Enter valid characters only' },
+                        minLength: { value: 2, message: 'Minimum length should be 2' },
+                        maxLength: { value: 20, message: 'Minimum length should be 20' }
                       })}
                       type='text'
                       background='neutral.white'
@@ -442,11 +448,12 @@ export default function Account() {
                       color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='email'
                       {...register('email', {
-                        required: { value: true, message: 'This field is required' },
+                        required: { value: false, message: 'This field is required' },
 
                         pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Enter valid email' },
 
-                        minLength: { value: 2, message: 'Minimum length should be 2' }
+                        minLength: { value: 5, message: 'Minimum length should be 5' },
+                        maxLength: { value: 30, message: 'Minimum length should be 30' }
                       })}
                       type='email'
                       background='neutral.white'
@@ -478,9 +485,10 @@ export default function Account() {
                       color={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.black' : 'neutral.black')}
                       id='phone'
                       {...register('phone', {
-                        required: { value: true, message: 'This field is required' },
+                        required: { value: false, message: 'This field is required' },
 
-                        minLength: { value: 2, message: 'Minimum length should be 2' }
+                        minLength: { value: 6, message: 'Minimum length should be 6' },
+                        maxLength: { value: 12, message: 'Minimum length should be 12' }
                       })}
                       type='phone'
                       background='neutral.white'

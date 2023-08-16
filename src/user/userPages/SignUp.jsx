@@ -14,7 +14,6 @@ import {
   VisuallyHidden,
   InputGroup,
   InputRightElement,
-  Image,
   Grid,
   GridItem,
   Skeleton,
@@ -35,12 +34,13 @@ import SignupStatus from '../../assets/svg/SignupStatus';
 import SellerPersonalDetails from '../userComponents/SignUp/sellerSignUp/SellerPersonalDetails';
 import RestaurantInfo from '../userComponents/SignUp/sellerSignUp/RestaurantInfo';
 import RestaurantConfirmation from '../userComponents/SignUp/sellerSignUp/RestaurantConfirmation';
-import render1 from '../../assets/images/render6.jpg';
+
 import Preloader from '../../components/Loaders/preloader';
+import { Helmet } from 'react-helmet-async';
 function RedirectHandler({ setRedirect }) {
   useEffect(() => {
     setRedirect(true);
-    return () => setRedirect(false); // обновленная строка
+    return () => setRedirect(false);
   }, [setRedirect]);
 
   return null;
@@ -63,14 +63,19 @@ export default function SignUp() {
 
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  const imagesrc =
+    'http://cdn.mcauto-images-production.sendgrid.net/27548861a3bba7f7/b8bf9b11-2d01-4853-9fa6-21c87ab551be/2250x1688.jpeg';
+  const image = new Image();
   useEffect(() => {
-    const img = new window.Image();
-    img.src = render1;
-    img.onload = () => {
+    image.src = imagesrc;
+    image.onload = () => {
       setImageLoaded(true);
       setLoading(false);
     };
-  }, []);
+    return () => {
+      image.onload = null;
+    };
+  }, [image]);
 
   const [mainBodyUser, setMainBodyUser] = useState({
     firstname: '',
@@ -121,43 +126,40 @@ export default function SignUp() {
 
   return (
     <>
-
-     {isLoading ? (
-        <Preloader loading={isLoading} />
+      <Helmet>
+        <title>Sign up</title>
+      </Helmet>
+      {isLoading ? (
+        <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={isLoading} />
       ) : (
-      <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 2fr' }} gap={0}>
-        <GridItem
-          data-aos='fade-right'
-          backgroundImage={render1}
-          backgroundRepeat='no-repeat'
-          backgroundSize='cover'
-          backgroundPosition='center'
-          // className='css-selector1'
-          display={{ base: 'none', md: 'inline-flex' }}
-          h='100vh'
-        >
-          <Box mx='auto' py={6}>
-            <Flex h='100%' alignItems='center' flexDir='column' justifyContent='space-between'>
-              <Flex>
-                <Box title='Homepage' display='flex' alignItems='center'>
-                  <Link to='/'>
-                    {' '}
-                    <Logo color='white' />
-                  </Link>
-                  <VisuallyHidden>Brio</VisuallyHidden>
-                </Box>
-                <Text fontSize='sm' fontWeight='extrabold' color='whiteAlpha.900' ml='2'>
-                  <Link to='/'> Brio</Link>
-             
-
-     
-      
+        <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: '1fr 2fr' }} gap={0}>
+          <GridItem
+            data-aos='fade-right'
+            backgroundImage={isImageLoaded ? `url(${imagesrc})` : ''}
+            backgroundRepeat='no-repeat'
+            backgroundSize='cover'
+            backgroundPosition='center'
+            // className='css-selector1'
+            display={{ base: 'none', md: 'inline-flex' }}
+            h='100vh'
+          >
+            <Box mx='auto' py={6}>
+              <Flex h='100%' alignItems='center' flexDir='column' justifyContent='space-between'>
+                <Flex>
+                  <Box title='Homepage' display='flex' alignItems='center'>
+                    <Link to='/'>
+                      {' '}
+                      <Logo color='white' />
+                    </Link>
+                    <VisuallyHidden>Brio</VisuallyHidden>
+                  </Box>
+                  <Text fontSize='sm' fontWeight='extrabold' color='whiteAlpha.900' ml='2'>
+                    <Link to='/'> Brio</Link>
                   </Text>
                 </Flex>
                 <Box></Box>
 
                 <Box></Box>
-
               </Flex>
             </Box>
           </GridItem>
@@ -310,7 +312,6 @@ export default function SignUp() {
                   <Route path='/*' element={<RedirectHandler setRedirect={setShouldRedirectTo404} />} />
                 </Routes>
 
-
                 <Box textAlign='center' py={6}>
                   <Text color='neutral.black' w='100%'>
                     Already have an account?
@@ -336,7 +337,6 @@ export default function SignUp() {
                       fontSize='3xs'
                       color='neutral.grayDark'
                       mb={0}
-
                     >
                       Back to home
                     </FormLabel>

@@ -48,6 +48,7 @@ import Calendar from '../../assets/svg/Calendar';
 import Shipping from '../userComponents/Order/Shipping';
 import { useDisclosure } from '@chakra-ui/react';
 import { Modal } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet-async';
 export default function Order() {
   const [placed, setPlaced] = useState(true);
   const [prepared, setPrepared] = useState(false);
@@ -268,6 +269,9 @@ export default function Order() {
 
   return (
     <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
+      <Helmet>
+        <title>My order</title>
+      </Helmet>
       {/* some of the data here is still be static and will changed in the future */}
       <Container maxW='1110px'>
         <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>

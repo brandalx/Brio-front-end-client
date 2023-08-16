@@ -8,6 +8,7 @@ import Pickup from '../userComponents/Cart/Pickup';
 import Summary from '../userComponents/Cart/Summary';
 import { API_URL, handleApiGet } from '../../services/apiServices';
 import Spline from '@splinetool/react-spline';
+import { Helmet } from 'react-helmet-async';
 export default function Cart() {
   const [loading, setLoading] = useState(true);
   const [arr, setAr] = useState([]);
@@ -176,6 +177,13 @@ export default function Cart() {
 
   return (
     <Box>
+      <Helmet>
+        <title>
+          {'Cart -' + !loading && arr && arr.cart && arr.cart.length > 0
+            ? arr.cart.length + ' items in cart'
+            : 'Cart - 0 items in cart'}
+        </title>
+      </Helmet>
       <Container maxW='1110px'>
         <Text mb='16px' fontSize='sm' fontWeight='semibold' color='neutral.black'>
           My cart

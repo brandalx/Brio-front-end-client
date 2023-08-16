@@ -30,6 +30,7 @@ import { API_URL, handleApiGet, handleApiMethod } from '../../services/apiServic
 import { cartContext } from '../../context/globalContext';
 import { useCheckToken } from '../../services/token';
 import { Badge } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet-async';
 export default function Product() {
   const [isNoImage, setIsNoImage] = useState(false);
   const { cartLen, setCartLen } = useContext(cartContext);
@@ -226,6 +227,9 @@ export default function Product() {
 
   return (
     <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
+      <Helmet>
+        <title>{!loading && arr.title}</title>
+      </Helmet>
       <Box data-aos='fade-up'>
         <Container maxW='1110px' py={10}>
           <Button _hover={{ transform: 'scale(1.010)' }} transition='transform 0.2s ease-in-out'>
@@ -291,23 +295,24 @@ export default function Product() {
                       <Box>
                         {currentPromotion ? (
                           <Box display='flex'>
-                            <Text
-                              me={4}
-                              textDecoration='line-through 4px red'
-                              my={4}
-                              fontWeight='extrabold'
-                              color='neutral.black'
-                              fontSize='md'
-                            >
-                              {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
-                            </Text>
-                            {currentPromotion && (
+                            {currentPromotion ? (
                               <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
                                 {!loading && (
                                   <>
                                     $ {(arr.price * (1 - currentPromotion.discountPercent / 100) * amount).toFixed(2)}
                                   </>
                                 )}
+                              </Text>
+                            ) : (
+                              <Text
+                                me={4}
+                                textDecoration='line-through 4px red'
+                                my={4}
+                                fontWeight='extrabold'
+                                color='neutral.black'
+                                fontSize='md'
+                              >
+                                {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
                               </Text>
                             )}
                           </Box>
@@ -341,24 +346,16 @@ export default function Product() {
                     ) : (
                       <Flex justifyContent='space-between' alignItems='center'>
                         {currentPromotion ? (
-                          <Box display='flex'>
-                            <Text
-                              me={4}
-                              textDecoration='line-through 4px red'
-                              my={4}
-                              fontWeight='extrabold'
-                              color='neutral.black'
-                              fontSize='md'
-                            >
-                              {!loading && <>$ {(arr.price * amount).toFixed(2)}</>}
-                            </Text>
-                            {currentPromotion && (
+                          <Box display='flex' flexDir='column'>
+                            {currentPromotion ? (
                               <Text my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
                                 {!loading && (
-                                  <>
-                                    $ {(arr.price * (1 - currentPromotion.discountPercent / 100) * amount).toFixed(2)}
-                                  </>
+                                  <>${(arr.price * (1 - currentPromotion.discountPercent / 100) * amount).toFixed(2)}</>
                                 )}
+                              </Text>
+                            ) : (
+                              <Text me={4} my={4} fontWeight='extrabold' color='neutral.black' fontSize='md'>
+                                {!loading && <>${(arr.price * amount).toFixed(2)}</>}
                               </Text>
                             )}
                           </Box>
@@ -486,17 +483,15 @@ export default function Product() {
                     let promotion = activePromotions.find((promo) => promo.discountProducts.includes(item._id));
 
                     return (
-                      <Box key={index}>
-                        <Skeleton borderRadius='16px' isLoaded={!loading}>
-                          <ProductCard
-                            promotion={promotion || null} // Pass the found promotion. If no promotion is found, it will be null
-                            _id={item._id}
-                            img={item.image}
-                            title={item.title}
-                            description={item.description}
-                            price={item.price}
-                          />
-                        </Skeleton>
+                      <Box h='100%' key={index}>
+                        <ProductCard
+                          promotion={promotion || null} // Pass the found promotion. If no promotion is found, it will be null
+                          _id={item._id}
+                          img={item.image}
+                          title={item.title}
+                          description={item.description}
+                          price={item.price}
+                        />
                       </Box>
                     );
                   })}

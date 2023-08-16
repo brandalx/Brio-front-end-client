@@ -1,5 +1,5 @@
 import React, { Suspense, useContext, useEffect, useState } from 'react';
-import { Box, Container, Flex, Text, GridItem, Grid, Image, Skeleton } from '@chakra-ui/react';
+import { Box, Container, Flex, Text, GridItem, Grid, Image, Skeleton, useToast } from '@chakra-ui/react';
 import burgertest from '../../assets/images/burgertest.png';
 import CategoryPicker from '../userComponents/HomePage/CategoryPicker';
 import { API_URL, TOKEN_KEY, handleApiGet } from '../../services/apiServices';
@@ -17,6 +17,7 @@ import Pickers from '../userComponents/HomePage/Pickers';
 import SearchInput from '../userComponents/Search/SearchInput';
 import Arrow from '../../assets/svg/Arrow';
 import Aos from 'aos';
+import { Helmet } from 'react-helmet-async';
 function getRandomIndex(length) {
   return Math.floor(Math.random() * length);
 }
@@ -39,6 +40,32 @@ function Greeting() {
 }
 export default function Home() {
   // todo: add tag into product into backend model and validation
+  const toast = useToast();
+  useEffect(() => {
+    if (localStorage.getItem(TOKEN_KEY) && sessionStorage.getItem('cameFromLogin')) {
+      toast({
+        title: 'Successful login.',
+        description: 'Welcome to brio!.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      });
+
+      sessionStorage.removeItem('cameFromLogin');
+    }
+
+    if (localStorage.getItem(TOKEN_KEY) && sessionStorage.getItem('cameFromRecovery')) {
+      toast({
+        title: 'Password recovered.',
+        description: "We've recovered your password.",
+        status: 'success',
+        duration: 9000,
+        isClosable: true
+      });
+
+      sessionStorage.removeItem('cameFromRecovery');
+    }
+  }, []);
 
   const [arr, setAr] = useState([]);
   const [arr2, setAr2] = useState([]);
@@ -244,6 +271,9 @@ export default function Home() {
 
   return (
     <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
+      <Helmet>
+        <title> {'Welcome to Brio!'}</title>
+      </Helmet>
       <Preloader colorss={localStorage.getItem('colormode') === 'dark' ? '#2B2B43' : 'white'} loading={loading} />
 
       {/* {loading && (
@@ -429,9 +459,17 @@ export default function Home() {
                         h='auto'
                         borderColor='white'
                         borderWidth='1px'
-                        bg={index % 2 === 0 ? 'secondary.light' : 'primary.light'}
+                        bg={() =>
+                          index % 2 === 0 && localStorage.getItem('colormode') === 'light'
+                            ? 'secondary.light'
+                            : index % 2 !== 0 && localStorage.getItem('colormode') === 'light'
+                            ? 'primary.light'
+                            : index % 2 === 0
+                            ? '#363654'
+                            : '#363654'
+                        }
                         _hover={{
-                          bg: 'white',
+                          bg: () => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'white'),
                           borderWidth: '1px',
                           borderColor: 'primary.default',
                           transition: 'all 0.3s'
@@ -443,7 +481,13 @@ export default function Home() {
                               <Image src={index % 2 === 0 ? burgertest : caketest} alt='Promotion 1' />
                             </Box>
                             <Box w='50%'>
-                              <Text fontSize='xs' color='neutral.black' fontWeight='medium'>
+                              <Text
+                                fontSize='xs'
+                                color={() =>
+                                  localStorage.getItem('colormode') === 'dark' ? 'primary.default' : 'black'
+                                }
+                                fontWeight='medium'
+                              >
                                 {item.discountDetails}
                               </Text>
                               <Text fontSize='xl' fontWeight='extrabold' color='primary.default'>

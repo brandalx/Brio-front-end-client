@@ -42,6 +42,7 @@ import { Icon } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
 import PickersCategory from '../userComponents/RestaurantPage/PickersCategory';
 import MapComponent from '../userComponents/Order/MapComponent';
+import { Helmet } from 'react-helmet-async';
 
 export default function Restaurant() {
   const REACT_APP_API_URL = import.meta.env.VITE_APIURL;
@@ -120,7 +121,12 @@ export default function Restaurant() {
       await handleUserApi();
     } catch (error) {
       setResponseFalls(false);
+
       setLoading(false);
+      if (!restaurantArr._id) {
+        navigate('/404');
+      }
+
       console.log(error);
     }
   };
@@ -269,7 +275,7 @@ export default function Restaurant() {
   }, [restaurantArr]);
 
   const handleLoadings = () => {
-    if (restaurantArr && productArr && address && keepArr) {
+    if (restaurantArr && productArr.length > 0 && address && keepArr) {
       setLoading(false);
     }
   };
@@ -455,6 +461,9 @@ export default function Restaurant() {
   };
   return (
     <>
+      <Helmet>
+        <title>{!loading && restaurantArr.title}</title>
+      </Helmet>
       <Box data-aos='fade-up'>
         <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? '#363654' : 'bg')} py='50px'>
           <Container maxW='1110px'>
@@ -557,7 +566,7 @@ export default function Restaurant() {
         </Box>
       </Box>
       <Box bg={() => (localStorage.getItem('colormode') === 'dark' ? 'neutral.white' : 'neutral.white')}>
-        <Container maxW='1110px' data-aos='fade-up'>
+        <Container pb='100px' maxW='1110px' data-aos='fade-up'>
           {!showOops && (
             <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: '1.3fr 1fr' }} gap={2}>
               <GridItem w='100%' h='100%'>

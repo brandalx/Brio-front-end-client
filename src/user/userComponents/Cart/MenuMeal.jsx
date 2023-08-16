@@ -242,7 +242,10 @@ export default function MenuMeal({ user, setReload2, reload2, reload, setReload,
                     </Text>
                   </Box>
                   <Box>
-                    <Text color='neutral.grayDark' fontSize='2xs'>
+                    <Text
+                      color={localStorage.getItem('colormode') === 'dark' ? 'neutral.gray' : 'neutral.black'}
+                      fontSize='2xs'
+                    >
                       {cutInfoText}
                     </Text>
                   </Box>
