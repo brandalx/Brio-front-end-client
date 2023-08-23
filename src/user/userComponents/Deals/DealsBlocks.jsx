@@ -71,11 +71,13 @@ export default function DealsBlocks() {
   return (
     <Box>
       <Helmet>
-        <title>{!loading && deals.length > 0 && deals.length + ' Active Deals'}</title>
+        <title>{!loading && deals && deals.length > 0 && deals.length + ' Active Deals'}</title>
       </Helmet>
       <Container maxW='1110px'>
         <Grid alignItems='stretch' templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
-          {deals.length > 0 &&
+          {!loading &&
+            deals &&
+            deals.length > 0 &&
             deals.map((promotion, index) => (
               <Box h='100%' key={index} data-aos='fade-up'>
                 <Box
@@ -133,7 +135,7 @@ export default function DealsBlocks() {
                           width='100%'
                           height='100%'
                           alt={`Lazy loaded image number ${index}`}
-                          src={promotion.image.length > 0 ? promotion.image : noimage}
+                          src={promotion && promotion.image && promotion.image.length > 0 ? promotion.image : noimage}
                           effect='blur'
                         />
                       </Box>
@@ -170,7 +172,7 @@ export default function DealsBlocks() {
           {/* Closing tag for the Grid component */}
         </Grid>
 
-        {deals.length === 0 && (
+        {deals && deals.length === 0 && (
           <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
             <Skeleton borderRadius='16px' height='298px' width='100%' isLoaded={!loading}></Skeleton>
             <Skeleton borderRadius='16px' height='298px' width='100%' isLoaded={!loading}></Skeleton>
