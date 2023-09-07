@@ -7,7 +7,7 @@ The Brio project is a visionary food delivery platform that seeks to redefine th
 
 ## Table of Contents
 
-- [Tech Stack](#tech-stack)
+- [Tech Stack](#technologies-used)
 - [Development Timeline](#development-timeline)
 - [GitHub Repositories](#github-repositories)
 - [Project Preview](#project-preview)
@@ -19,31 +19,42 @@ The Brio project is a visionary food delivery platform that seeks to redefine th
 - [Challenges and Solutions](#challenges-and-solutions)
 - [Conclusion](#conclusion)
 
-## Tech Stack
+## Technologies Used
 
-- react
-- nodejs
-- express
-- chakra ui
-- swagger
-- axios
-- refreshtoken
-- docker
-- eslint
-- prettier
-- vite
-- aos
-- javascript
-- typescript
-- docker-compose
-- bcrypt
-- dotenv
-- leaflet
-- mapbox
-- quill
-- html
-- css
+- **Frontend:**
+  - React
+  - Chakra UI
+  - Axios
+  - Vite
+  - AOS
+  - JavaScript
+  - TypeScript
+  - Framer-motion
+  - Leaflet
+  - Mapbox
+  - Quill
+  - HTML
+  - CSS
 
+- **Backend:**
+  - Nodejs
+  - Express
+  - JWT (JSON Web Tokens)
+  - SendGrid
+  - Joi
+  - MongoDB
+  - Mongoose
+  - Bcrypt
+  - Dotenv
+  - UUID
+
+- **DevOps & Tools:**
+  - Docker
+  - Docker-compose
+  - ESLint
+  - Prettier
+  - Swagger
+  - RefreshToken
 
 ## Development Timeline
 
