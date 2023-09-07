@@ -5,20 +5,6 @@
 
 The Brio project is a visionary food delivery platform that seeks to redefine the food delivery experience, focusing on user-centric design, functionality, and innovative architecture.
 
-- [Brio - Bringing Food Really On Time](#brio---bringing-food-really-on-time)
-  - [Table of Contents](#table-of-contents)
-  - [Tech Stack](#tech-stack)
-  - [Development Timeline](#development-timeline)
-  - [GitHub Repositories](#github-repositories)
-  - [Project Preview](#project-preview)
-  - [Introduction](#introduction)
-  - [Features](#features)
-  - [User Interface](#user-interface)
-  - [Code Architecture](#code-architecture)
-  - [Technologies Used](#technologies-used)
-  - [Challenges and Solutions](#challenges-and-solutions)
-  - [Conclusion](#conclusion)
-
 ## Table of Contents
 
 - [Tech Stack](#tech-stack)
